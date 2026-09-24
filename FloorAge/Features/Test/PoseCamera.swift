@@ -131,7 +131,7 @@ final class PoseCamera: NSObject, ObservableObject {
 extension PoseCamera: AVCaptureVideoDataOutputSampleBufferDelegate {
     private static let joints: [(VNHumanBodyPoseObservation.JointName, BodyJoint)] = [
         (.nose, .nose), (.neck, .neck), (.leftShoulder, .leftShoulder), (.rightShoulder, .rightShoulder),
-        (.leftWrist, .leftWrist), (.rightWrist, .rightWrist), (.leftHip, .leftHip), (.rightHip, .rightHip),
+        (.leftElbow, .leftElbow), (.rightElbow, .rightElbow), (.leftWrist, .leftWrist), (.rightWrist, .rightWrist), (.leftHip, .leftHip), (.rightHip, .rightHip),
         (.leftKnee, .leftKnee), (.rightKnee, .rightKnee), (.leftAnkle, .leftAnkle), (.rightAnkle, .rightAnkle),
     ]
 
@@ -162,7 +162,10 @@ extension PoseCamera: AVCaptureVideoDataOutputSampleBufferDelegate {
 struct CameraStage: View {
     @ObservedObject var camera: PoseCamera
     let feature: Feature
-    let hint: String
+    /// Joints this test measures, highlighted on the figure.
+    var focus: Set<BodyJoint> = []
+    /// What the camera currently reads ("Seated", "Foot up"…), shown top right.
+    var reading: String?
 
     var body: some View {
         ZStack {
@@ -173,16 +176,20 @@ struct CameraStage: View {
             } else {
                 CameraPreview(session: camera.session)
             }
-            SkeletonOverlay(pose: camera.pose, frameSize: camera.frameSize, feature: feature)
-            VStack {
-                Spacer()
-                Label(hint, systemImage: camera.pose?.legsVisible == true ? "figure.stand" : "viewfinder")
-                    .font(.subheadline.weight(.semibold))
+            BodyOverlay(pose: camera.pose, frameSize: camera.frameSize, feature: feature, focus: focus)
+            if let reading, camera.pose?.legsVisible == true {
+                Text(reading)
+                    .font(.subheadline.weight(.bold))
                     .foregroundStyle(.white)
-                    .padding(.horizontal, 14)
-                    .padding(.vertical, 8)
-                    .background(.black.opacity(0.45), in: Capsule())
-                    .padding(.bottom, 14)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 6)
+                    .background(feature.gradient, in: Capsule())
+                    .overlay(Capsule().strokeBorder(.white.opacity(0.4), lineWidth: 1))
+                    .shadow(color: feature.colors.last!.opacity(0.5), radius: 8)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+                    .padding(.top, 44)
+                    .padding(.trailing, 14)
+                    .animation(.snappy, value: reading)
             }
         }
     }
@@ -206,41 +213,113 @@ private struct CameraPreview: UIViewRepresentable {
     }
 }
 
-/// Bones and joints over the camera image, mapped the same way the preview fills the frame.
-private struct SkeletonOverlay: View {
+/// A glowing figure over the camera image: a head, a torso and rounded limbs in the test's
+/// colours, with the joints the test measures pulsing. Mapped the same way the preview fits the frame.
+private struct BodyOverlay: View {
     let pose: BodyPose?
     let frameSize: CGSize
     let feature: Feature
+    let focus: Set<BodyJoint>
 
-    private static let bones: [(BodyJoint, BodyJoint)] = [
-        (.nose, .neck), (.neck, .leftShoulder), (.neck, .rightShoulder),
-        (.leftShoulder, .leftWrist), (.rightShoulder, .rightWrist),
-        (.neck, .leftHip), (.neck, .rightHip), (.leftHip, .rightHip),
-        (.leftHip, .leftKnee), (.leftKnee, .leftAnkle), (.rightHip, .rightKnee), (.rightKnee, .rightAnkle),
+    private static let limbs: [[BodyJoint]] = [
+        [.leftShoulder, .leftElbow, .leftWrist], [.rightShoulder, .rightElbow, .rightWrist],
+        [.leftHip, .leftKnee, .leftAnkle], [.rightHip, .rightKnee, .rightAnkle],
     ]
 
     var body: some View {
-        Canvas { context, size in
-            guard let pose else { return }
-            let scale = min(size.width / frameSize.width, size.height / frameSize.height)
-            let drawn = CGSize(width: frameSize.width * scale, height: frameSize.height * scale)
-            func place(_ p: CGPoint) -> CGPoint {
-                CGPoint(x: p.x * drawn.width - (drawn.width - size.width) / 2,
-                        y: (1 - p.y) * drawn.height - (drawn.height - size.height) / 2)
-            }
-            var path = Path()
-            for (a, b) in Self.bones {
-                guard let pa = pose[a], let pb = pose[b] else { continue }
-                path.move(to: place(pa))
-                path.addLine(to: place(pb))
-            }
-            context.stroke(path, with: .linearGradient(Gradient(colors: feature.colors), startPoint: .zero, endPoint: CGPoint(x: size.width, y: size.height)),
-                           style: StrokeStyle(lineWidth: 5, lineCap: .round))
-            for point in pose.joints.values {
-                let p = place(point)
-                context.fill(Path(ellipseIn: CGRect(x: p.x - 5, y: p.y - 5, width: 10, height: 10)), with: .color(.white))
+        TimelineView(.animation(paused: focus.isEmpty || pose == nil)) { timeline in
+            let pulse = (sin(timeline.date.timeIntervalSinceReferenceDate * 4) + 1) / 2
+            Canvas { context, size in
+                guard let pose else { return }
+                draw(pose, in: &context, size: size, pulse: pulse)
             }
         }
         .allowsHitTesting(false)
+    }
+
+    private func draw(_ pose: BodyPose, in context: inout GraphicsContext, size: CGSize, pulse: Double) {
+        let scale = min(size.width / frameSize.width, size.height / frameSize.height)
+        let drawn = CGSize(width: frameSize.width * scale, height: frameSize.height * scale)
+        func place(_ joint: BodyJoint) -> CGPoint? {
+            pose[joint].map {
+                CGPoint(x: $0.x * drawn.width - (drawn.width - size.width) / 2,
+                        y: (1 - $0.y) * drawn.height - (drawn.height - size.height) / 2)
+            }
+        }
+        func mid(_ a: CGPoint?, _ b: CGPoint?) -> CGPoint? {
+            switch (a, b) {
+            case let (a?, b?): CGPoint(x: (a.x + b.x) / 2, y: (a.y + b.y) / 2)
+            default: a ?? b
+            }
+        }
+
+        // Size everything from the body, so a person far away gets a slimmer figure. The shin keeps
+        // its length whether standing, sitting or folded, so it steadies the trunk measure.
+        let shoulders = mid(place(.leftShoulder), place(.rightShoulder)) ?? place(.neck)
+        let hips = mid(place(.leftHip), place(.rightHip))
+        let knee = mid(place(.leftKnee), place(.rightKnee)), ankle = mid(place(.leftAnkle), place(.rightAnkle))
+        let shin = knee.flatMap { k in ankle.map { hypot(k.x - $0.x, k.y - $0.y) } } ?? 0
+        let trunk = max(shoulders.flatMap { s in hips.map { hypot(s.x - $0.x, s.y - $0.y) } } ?? 120, shin * 1.3)
+        let limbWidth = min(max(trunk * 0.16, 7), 24)
+        let shading = GraphicsContext.Shading.linearGradient(Gradient(colors: feature.colors),
+                                                             startPoint: CGPoint(x: 0, y: 0), endPoint: CGPoint(x: size.width, y: size.height))
+
+        var limbs = Path()
+        for chain in Self.limbs {
+            let points = chain.compactMap(place)
+            guard points.count >= 2 else { continue }
+            limbs.addLines(points)
+        }
+        if let neck = place(.neck) ?? shoulders, let hips {
+            limbs.move(to: neck)
+            limbs.addLine(to: hips)
+        }
+
+        var torso = Path()
+        let corners = [place(.leftShoulder), place(.rightShoulder), place(.rightHip), place(.leftHip)].compactMap { $0 }
+        if corners.count == 4 {
+            torso.addLines(corners)
+            torso.closeSubpath()
+        }
+
+        var head = Path()
+        if let nose = place(.nose) ?? place(.neck).map({ CGPoint(x: $0.x, y: $0.y - trunk * 0.25) }) {
+            let r = max(trunk * 0.2, 9)
+            head.addEllipse(in: CGRect(x: nose.x - r, y: nose.y - r * 1.1, width: r * 2, height: r * 2.2))
+        }
+
+        let style = StrokeStyle(lineWidth: limbWidth, lineCap: .round, lineJoin: .round)
+        // Soft glow underneath.
+        context.drawLayer { glow in
+            glow.addFilter(.blur(radius: limbWidth * 0.9))
+            glow.opacity = 0.75
+            glow.stroke(limbs, with: shading, style: StrokeStyle(lineWidth: limbWidth * 1.8, lineCap: .round, lineJoin: .round))
+            glow.fill(torso, with: shading)
+            glow.fill(head, with: shading)
+        }
+        context.fill(torso, with: shading)
+        context.opacity = 0.9
+        context.fill(torso, with: .color(.white.opacity(0.12)))
+        context.opacity = 1
+        context.stroke(limbs, with: shading, style: style)
+        // A light core down each limb gives the figure some depth.
+        context.stroke(limbs, with: .color(.white.opacity(0.35)), style: StrokeStyle(lineWidth: limbWidth * 0.3, lineCap: .round, lineJoin: .round))
+        context.fill(head, with: shading)
+        context.stroke(head, with: .color(.white.opacity(0.85)), lineWidth: 2)
+        context.stroke(torso, with: .color(.white.opacity(0.5)), lineWidth: 1.5)
+
+        for joint in [BodyJoint.leftElbow, .rightElbow, .leftWrist, .rightWrist, .leftKnee, .rightKnee, .leftAnkle, .rightAnkle, .leftHip, .rightHip] {
+            guard let p = place(joint) else { continue }
+            if focus.contains(joint) {
+                let ring = limbWidth * (0.9 + 0.6 * pulse)
+                context.stroke(Path(ellipseIn: CGRect(x: p.x - ring, y: p.y - ring, width: ring * 2, height: ring * 2)),
+                               with: .color(.white.opacity(0.9 - 0.5 * pulse)), lineWidth: 2.5)
+                let dot = limbWidth * 0.45
+                context.fill(Path(ellipseIn: CGRect(x: p.x - dot, y: p.y - dot, width: dot * 2, height: dot * 2)), with: .color(.white))
+            } else {
+                let dot = limbWidth * 0.28
+                context.fill(Path(ellipseIn: CGRect(x: p.x - dot, y: p.y - dot, width: dot * 2, height: dot * 2)), with: .color(.white.opacity(0.9)))
+            }
+        }
     }
 }

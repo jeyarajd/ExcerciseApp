@@ -3,7 +3,7 @@ import Foundation
 
 /// Body joints the camera tracks (a subset of Vision's body pose joints).
 enum BodyJoint: String, CaseIterable {
-    case nose, neck, leftShoulder, rightShoulder, leftWrist, rightWrist
+    case nose, neck, leftShoulder, rightShoulder, leftElbow, rightElbow, leftWrist, rightWrist
     case leftHip, rightHip, leftKnee, rightKnee, leftAnkle, rightAnkle
 }
 
@@ -185,15 +185,25 @@ extension BodyPose {
         let leanForward = fold * 0.2
         let neck = CGPoint(x: 0.5 + leanForward, y: hipY + torso * (1 - fold * 0.9))
         let wristY = fold > 0 ? ankleY + shin * (wristDepth + (1 - fold) * 2) : hipY - 0.02
+        let leftWrist = CGPoint(x: 0.6 + leanForward * 0.5, y: wristY)
+        let rightWrist = CGPoint(x: 0.4 + leanForward * 0.5, y: wristY + 0.01)
+        func elbow(_ shoulder: CGPoint, _ wrist: CGPoint, out: Double) -> CGPoint {
+            CGPoint(x: (shoulder.x + wrist.x) / 2 + out, y: (shoulder.y + wrist.y) / 2)
+        }
+        let leftShoulder = CGPoint(x: neck.x + 0.08, y: neck.y - 0.01)
+        let rightShoulder = CGPoint(x: neck.x - 0.08, y: neck.y - 0.01)
         let leftAnkleY = ankleY + lift * 0.14
         let leftKneeY = kneeY + lift * 0.1
         return BodyPose(joints: [
-            .nose: CGPoint(x: neck.x, y: neck.y + 0.07),
+            // The head tips forward and down with the fold.
+            .nose: CGPoint(x: neck.x + 0.07 * fold, y: neck.y + 0.07 * (1 - fold) - 0.02 * fold),
             .neck: neck,
-            .leftShoulder: CGPoint(x: neck.x + 0.08, y: neck.y - 0.01),
-            .rightShoulder: CGPoint(x: neck.x - 0.08, y: neck.y - 0.01),
-            .leftWrist: CGPoint(x: 0.6 + leanForward * 0.5, y: wristY),
-            .rightWrist: CGPoint(x: 0.4 + leanForward * 0.5, y: wristY + 0.01),
+            .leftShoulder: leftShoulder,
+            .rightShoulder: rightShoulder,
+            .leftElbow: elbow(leftShoulder, leftWrist, out: 0.03),
+            .rightElbow: elbow(rightShoulder, rightWrist, out: -0.03),
+            .leftWrist: leftWrist,
+            .rightWrist: rightWrist,
             .leftHip: CGPoint(x: 0.55, y: hipY),
             .rightHip: CGPoint(x: 0.45, y: hipY),
             .leftKnee: CGPoint(x: 0.56, y: leftKneeY),

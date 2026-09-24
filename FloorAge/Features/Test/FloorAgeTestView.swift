@@ -170,7 +170,7 @@ struct FloorAgeTestView: View {
             VStack(alignment: .leading, spacing: 18) {
                 Group {
                     if useCamera, test.usesCamera {
-                        CameraStage(camera: camera, feature: test.feature, hint: cameraHint(test))
+                        CameraStage(camera: camera, feature: test.feature, focus: test.cameraFocus, reading: cameraReading(test))
                             .frame(height: 440)
                     } else {
                         AvatarView(controller: avatar)
@@ -181,6 +181,15 @@ struct FloorAgeTestView: View {
                                            center: .bottom, startRadius: 10, endRadius: 230))
                 .clipShape(RoundedRectangle(cornerRadius: 28, style: .continuous))
                 .overlay(alignment: .top) { progressBar.padding(14) }
+
+                if useCamera, test.usesCamera {
+                    // Under the picture, so it never covers the feet.
+                    Label(cameraHint(test), systemImage: camera.pose?.legsVisible == true ? "checkmark.circle.fill" : "viewfinder")
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundStyle(camera.pose?.legsVisible == true ? AnyShapeStyle(test.feature.gradient) : AnyShapeStyle(.secondary))
+                        .frame(maxWidth: .infinity)
+                        .padding(.top, -8)
+                }
 
                 VStack(alignment: .leading, spacing: 6) {
                     Eyebrow("Test \(step) of \(tests.count)", feature: test.feature)
@@ -468,6 +477,21 @@ struct FloorAgeTestView: View {
         }
     }
 
+    /// What the camera sees right now, so people can tell it's following them.
+    private func cameraReading(_ test: FloorTest) -> String? {
+        switch test {
+        case .chairStand:
+            switch chairCounter.current {
+            case .standing: String(localized: "Standing")
+            case .seated: String(localized: "Seated")
+            case .unknown: nil
+            }
+        case .balance: balanceDetector.isLifted ? String(localized: "Foot up") : String(localized: "Both feet down")
+        case .reach: reachEstimator.level.map { String(localized: "Best reach: \($0.label)") }
+        case .sitRise: nil
+        }
+    }
+
     private func cameraHint(_ test: FloorTest) -> String {
         switch camera.status {
         case .denied: return String(localized: "Camera access is off. Allow it in iPhone Settings › Privacy & Security › Camera.")
@@ -599,6 +623,16 @@ extension FloorTest {
     /// Tests the camera can score. Sit to rise is entered by hand: hands and knees touching the
     /// floor are too easy to miss from one camera.
     var usesCamera: Bool { self != .sitRise }
+
+    /// The joints each camera test measures, highlighted on the figure.
+    var cameraFocus: Set<BodyJoint> {
+        switch self {
+        case .chairStand: [.leftHip, .rightHip, .leftKnee, .rightKnee]
+        case .balance: [.leftAnkle, .rightAnkle]
+        case .reach: [.leftWrist, .rightWrist]
+        case .sitRise: []
+        }
+    }
 
     /// Each test keeps its own colours through the check and on the result.
     var feature: Feature {
