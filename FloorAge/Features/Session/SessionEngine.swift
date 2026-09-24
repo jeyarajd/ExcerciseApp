@@ -70,14 +70,14 @@ final class SessionEngine: ObservableObject {
         secondsLeft = Double(item.seconds ?? 0)
         avatar.play(item.exercise)
         avatar.isPlaying = true
-        voice.say("Ready. Go!", interrupt: true)
+        voice.say(String(localized: "Ready. Go!"), interrupt: true)
         startTimer()
     }
 
     func togglePause() {
         isPaused.toggle()
         avatar.isPlaying = !isPaused
-        voice.say(isPaused ? "Paused." : "Let's continue.", interrupt: true)
+        voice.say(isPaused ? String(localized: "Paused.") : String(localized: "Let's continue."), interrupt: true)
     }
 
     /// During rest the next exercise is already current, so skipping rest just starts its intro.
@@ -114,8 +114,8 @@ final class SessionEngine: ObservableObject {
         cueText = nil
         avatar.play(item.exercise)
         avatar.isPlaying = true
-        let amount = item.reps.map { "\($0) reps." } ?? "\(item.seconds ?? 0) seconds."
-        voice.say("\(item.exercise.intro) \(amount)", interrupt: true)
+        let amount = item.reps.map { String(localized: "\($0) reps.") } ?? String(localized: "\(item.seconds ?? 0) seconds.")
+        voice.say(String(localized: "\(item.exercise.intro) \(amount)"), interrupt: true)
     }
 
     private func advance() {
@@ -135,7 +135,7 @@ final class SessionEngine: ObservableObject {
         cueText = nil
         if let item = current {
             avatar.play(item.exercise)
-            voice.say("Nice work. Rest. Next up, \(item.exercise.name).", interrupt: true)
+            voice.say(String(localized: "Nice work. Rest. Next up, \(item.exercise.name)."), interrupt: true)
         }
         startTimer()
     }
@@ -145,7 +145,7 @@ final class SessionEngine: ObservableObject {
         phase = .done
         avatar.play(id: "idle")
         cueText = nil
-        voice.say("That's the session done. Great job showing up today!", interrupt: true)
+        voice.say(String(localized: "That's the session done. Great job showing up today!"), interrupt: true)
     }
 
     // MARK: - Ticking
@@ -171,17 +171,17 @@ final class SessionEngine: ObservableObject {
             if item.exercise.mirrorHalfway == true, !mirrored, secondsLeft <= total / 2 {
                 mirrored = true
                 avatar.play(item.exercise, mirrored: true)
-                voice.say("Switch sides.", interrupt: true)
+                voice.say(String(localized: "Switch sides."), interrupt: true)
             } else if before > 10, secondsLeft <= 10, total > 20 {
-                voice.say("Ten seconds left.")
+                voice.say(String(localized: "Ten seconds left."))
             } else if Int(before.rounded(.up)) != Int(secondsLeft.rounded(.up)), (1...3).contains(Int(secondsLeft.rounded(.up))) {
-                voice.say("\(Int(secondsLeft.rounded(.up)))", interrupt: true)
+                voice.say(String(localized: "\(Int(secondsLeft.rounded(.up)))"), interrupt: true)
             } else if elapsed - lastCueAt >= 9, secondsLeft > 12 {
                 sayNextCue(item)
                 lastCueAt = elapsed
             }
             if secondsLeft <= 0 {
-                voice.say("And rest.", interrupt: true)
+                voice.say(String(localized: "And rest."), interrupt: true)
                 advance()
             }
         default:
@@ -193,20 +193,20 @@ final class SessionEngine: ObservableObject {
         guard phase == .active, !isPaused, !stopped, let item = current, let target = item.reps else { return }
         repsDone += 1
         if repsDone >= target {
-            voice.say("\(repsDone). Done!", interrupt: true)
+            voice.say(String(localized: "\(repsDone). Done!"), interrupt: true)
             advance()
             return
         }
         if item.exercise.mirrorHalfway == true, !mirrored, repsDone == target / 2 {
             mirrored = true
             avatar.play(item.exercise, mirrored: true)
-            voice.say("\(repsDone). Switch sides.", interrupt: true)
+            voice.say(String(localized: "\(repsDone). Switch sides."), interrupt: true)
             return
         }
-        voice.say("\(repsDone)", interrupt: true)
+        voice.say(String(localized: "\(repsDone)"), interrupt: true)
         let timedCues = item.exercise.keyframes.contains { $0.cue != nil }
         if target - repsDone == 2 {
-            voice.say("Two more!")
+            voice.say(String(localized: "Two more!"))
         } else if repsDone % 4 == 2, !timedCues {
             sayNextCue(item)
         }

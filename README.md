@@ -25,7 +25,8 @@
 - **Sleep.** Log bedtime and wake time, or read them from Apple Health, and compare with the recommended 7–9 hours (7–8 from 65; National Sleep Foundation).
 - **Editable profile.** Change your age or limitations in Settings. Your plan and safety filtering update right away.
 - **Privacy.** Everything is stored on the phone and nothing is sent anywhere.
-- **Look.** A warm, slowly drifting gradient behind every screen, glass cards, and the 3D coach standing right on the background.
+- **Languages.** English (default), Hindi and Spanish, following the iPhone's language. Screens, spoken coaching (in the matching iPhone voice), exercise instructions and food names are all translated.
+- **Look.** A warm, slowly drifting gradient behind every screen and the 3D coach standing right on the background. Each area has its own colours: orange steps, green calories, violet BMI, midnight sleep, ocean-blue plan, amber Floor Age. Headline numbers sit on gradient hero cards with semicircle gauges, and headings use a serif display face.
 
 ## Repository layout
 
@@ -103,6 +104,19 @@ To change a coach's look (body shape, skin, hair, clothes), edit `COACHES` in `t
 1. Install Blender 4.2+ and the MPFB extension (extensions.blender.org/add-ons/mpfb).
 2. Load the CC0 packs `makehuman_system_assets`, `skins01`, `skins02`, `hair01`, `shirts01`, `pants01` and `shoes01` from the [asset packs page](https://static.makehumancommunity.org/assets/assetpacks/index.html) into MPFB.
 3. Run `blender -b --python tools/build_coach.py -- FloorAge/Resources`, then `xcodegen generate`.
+
+## Translations
+
+English is the development language, with Hindi (`hi`) and Spanish (`es`) in String Catalogs in `FloorAge/Resources`:
+
+| Catalog | What it holds |
+|---|---|
+| `Localizable.xcstrings` | Screen text and spoken lines, extracted from the code automatically. Wrap text built in code in `String(localized:)`. |
+| `InfoPlist.xcstrings` | The permission prompts. |
+| `Exercises.xcstrings` | Exercise names, instructions, cues and safety notes, keyed `<exercise id>.name`, `.intro`, `.cue.0`, `.safety`. |
+| `Foods.xcstrings` | Food names and servings, keyed by the English name. |
+
+The translations were machine-assisted. **Have a native speaker review the Hindi and Spanish, especially the safety wording**, before release. `python3 tools/check_translations.py` (also run in CI) fails if a string is missing a translation or a placeholder like `%lld` doesn't match. To try a language, set the app's language in iPhone Settings › Floor Age › Language.
 
 ## Floor Age scoring
 

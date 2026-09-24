@@ -1,0 +1,126 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "CFBundleDisplayName" : {
+      "comment" : "Bundle display name",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Floor Age"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Floor Age"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Floor Age"
+          }
+        }
+      }
+    },
+    "CFBundleName" : {
+      "comment" : "Bundle name",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "FloorAge"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "FloorAge"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "FloorAge"
+          }
+        }
+      }
+    },
+    "NSCameraUsageDescription" : {
+      "comment" : "Privacy - Camera Usage Description",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Take a photo of your meal to get calorie suggestions. The photo is checked on your iPhone and is never saved or sent."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toma una foto de tu comida para obtener sugerencias de calorías. La foto se analiza en tu iPhone y nunca se guarda ni se envía."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कैलोरी के सुझाव पाने के लिए अपने खाने की फ़ोटो लें। फ़ोटो की जांच आपके iPhone पर ही होती है, और वह कभी सेव नहीं होती, न कहीं भेजी जाती है।"
+          }
+        }
+      }
+    },
+    "NSHealthShareUsageDescription" : {
+      "comment" : "Privacy - Health Share Usage Description",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Floor Age reads your sleep from Apple Health to show how long you sleep. It never changes your Health data or sends it anywhere."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Floor Age lee tus datos de sueño de Apple Health para mostrarte cuánto duermes. Nunca modifica tus datos de salud ni los envía a ninguna parte."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Floor Age आपकी नींद का डेटा Apple Health से पढ़ता है, ताकि दिखा सके कि आप कितनी देर सोते हैं। यह आपका Health डेटा कभी नहीं बदलता, और न ही उसे कहीं भेजता है।"
+          }
+        }
+      }
+    },
+    "NSMotionUsageDescription" : {
+      "comment" : "Privacy - Motion Usage Description",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Floor Age counts your daily steps on this iPhone. Your steps never leave your phone."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Floor Age cuenta tus pasos diarios en este iPhone. Tus pasos nunca salen de tu teléfono."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Floor Age इस iPhone पर आपके रोज़ के कदम गिनता है। आपके कदमों का डेटा कभी आपके फ़ोन से बाहर नहीं जाता।"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.2"
+}

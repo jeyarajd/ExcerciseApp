@@ -96,7 +96,7 @@ struct FloorAgeTestView: View {
             }
             .padding()
         }
-        .onAppear { voice.say("Let's find your Floor Age. Four short tests. I'll show you each one first.", interrupt: true) }
+        .onAppear { voice.say(String(localized: "Let's find your Floor Age. Four short tests. I'll show you each one first."), interrupt: true) }
     }
 
     // MARK: - Test steps
@@ -172,7 +172,7 @@ struct FloorAgeTestView: View {
                     Button {
                         balanceStart = Date()
                         balanceNow = 0
-                        voice.say("Lift your foot. Go.", interrupt: true)
+                        voice.say(String(localized: "Lift your foot. Go."), interrupt: true)
                     } label: {
                         Text(balanceBest == nil ? "Start timer" : "Try again").frame(maxWidth: .infinity)
                     }
@@ -240,7 +240,7 @@ struct FloorAgeTestView: View {
         guard newStep >= 1, newStep <= tests.count else { return }
         let test = tests[newStep - 1]
         avatar.play(id: test.exerciseID)
-        voice.say("\(test.title). \(test.instructions)", interrupt: true)
+        voice.say(String(localized: "\(test.title). \(test.instructions)"), interrupt: true)
     }
 
     private func canSave(_ test: FloorTest) -> Bool {
@@ -291,8 +291,8 @@ struct FloorAgeTestView: View {
         avatar.play(id: "idle")
         let difference = result.floorAge - result.age
         let summary = difference > 0
-            ? "Your Floor Age is \(result.floorAge). That's \(difference) years above your age, and we'll work on it together."
-            : "Your Floor Age is \(result.floorAge). Brilliant, your body moves younger than your age!"
+            ? String(localized: "Your Floor Age is \(result.floorAge). That's \(difference) years above your age, and we'll work on it together.")
+            : String(localized: "Your Floor Age is \(result.floorAge). Brilliant, your body moves younger than your age!")
         voice.say(summary, interrupt: true)
     }
 
@@ -301,7 +301,7 @@ struct FloorAgeTestView: View {
         let held = min(Date().timeIntervalSince(start), 45)
         balanceStart = nil
         balanceBest = max(balanceBest ?? 0, held)
-        voice.say(String(format: "%.0f seconds.", held), interrupt: true)
+        voice.say(String(localized: "\(Int(held.rounded())) seconds."), interrupt: true)
     }
 
     /// Stops a running balance timer or chair-stand countdown without recording anything.
@@ -314,7 +314,7 @@ struct FloorAgeTestView: View {
 
     private func startChairStand() {
         chairCountdown = 3
-        voice.say("Arms crossed. Three. Two. One. Go!", interrupt: true)
+        voice.say(String(localized: "Arms crossed. Three. Two. One. Go!"), interrupt: true)
         chairTask = Task { @MainActor in
             for n in stride(from: 2, through: 1, by: -1) {
                 try? await Task.sleep(for: .seconds(1))
@@ -326,14 +326,14 @@ struct FloorAgeTestView: View {
             avatar.play(id: FloorTest.chairStand.exerciseID)
             for remaining in stride(from: 30, through: 1, by: -1) {
                 chairCountdown = remaining
-                if remaining == 15 { voice.say("Fifteen seconds.") }
-                if remaining == 5 { voice.say("Five, four, three, two, one.") }
+                if remaining == 15 { voice.say(String(localized: "Fifteen seconds.")) }
+                if remaining == 5 { voice.say(String(localized: "Five, four, three, two, one.")) }
                 try? await Task.sleep(for: .seconds(1))
                 guard !Task.isCancelled else { return }
             }
             chairCountdown = nil
             chairDone = true
-            voice.say("Stop! How many full stands did you do?", interrupt: true)
+            voice.say(String(localized: "Stop! How many full stands did you do?"), interrupt: true)
         }
     }
 }

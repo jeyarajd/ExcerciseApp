@@ -21,9 +21,9 @@ enum TrainingPlan {
 
         var title: String {
             switch self {
-            case .runWalk: "Couch to 5K run/walk"
-            case .briskWalk: "Brisk walking plan"
-            case .gentleWalk: "Gentle walking plan"
+            case .runWalk: String(localized: "Couch to 5K run/walk")
+            case .briskWalk: String(localized: "Brisk walking plan")
+            case .gentleWalk: String(localized: "Gentle walking plan")
             }
         }
 
@@ -36,6 +36,18 @@ enum TrainingPlan {
         }
         let kind: Kind
         let seconds: Int
+
+        /// The interval's name in the person's language ("Run", "Brisk walk").
+        var title: String {
+            switch kind {
+            case .warmUp: String(localized: "Warm-up walk")
+            case .run: String(localized: "Run")
+            case .walk: String(localized: "Walk")
+            case .brisk: String(localized: "Brisk walk")
+            case .easy: String(localized: "Easy walk")
+            case .coolDown: String(localized: "Cool-down walk")
+            }
+        }
 
         /// Typical cadence: brisk walking is about 100+ steps a minute, running about 160.
         var steps: Int {
@@ -253,14 +265,14 @@ extension TrainingPlan {
     /// "5 min walk, (run 1 min, walk 1½ min) × 7, run 1 min, 5 min walk".
     static func describe(_ intervals: [TrainingPlan.Interval]) -> String {
         func time(_ s: Int) -> String {
-            if s % 60 == 0 { return "\(s / 60) min" }
-            if s % 60 == 30 { return s < 60 ? "30 s" : "\(s / 60)½ min" }
-            return "\(s) s"
+            if s % 60 == 0 { return String(localized: "\(s / 60) min") }
+            if s % 60 == 30 { return s < 60 ? String(localized: "30 s") : String(localized: "\(s / 60)½ min") }
+            return String(localized: "\(s) s")
         }
         func name(_ i: TrainingPlan.Interval) -> String {
             switch i.kind {
-            case .warmUp, .coolDown: "\(time(i.seconds)) walk"
-            default: "\(i.kind.rawValue.lowercased()) \(time(i.seconds))"
+            case .warmUp, .coolDown: String(localized: "\(time(i.seconds)) walk")
+            default: String(localized: "\(i.title.lowercased()) \(time(i.seconds))")
             }
         }
         var parts: [String] = []
@@ -272,7 +284,7 @@ extension TrainingPlan {
                 repeats += 1
             }
             if repeats > 1 {
-                parts.append("(\(name(intervals[i])), \(name(intervals[i + 1]))) × \(repeats)")
+                parts.append(String(localized: "(\(name(intervals[i])), \(name(intervals[i + 1]))) × \(repeats)"))
                 i += 2 * repeats
             } else {
                 parts.append(name(intervals[i]))
@@ -284,19 +296,25 @@ extension TrainingPlan {
 }
 
 extension TrainingPlan {
+    /// "Run/walk", "Brisk walk" or "Walk".
+    static func cardioName(_ program: Program, _ intervals: [Interval]) -> String {
+        if program == .runWalk { return String(localized: "Run/walk") }
+        return intervals.contains { $0.kind == .brisk } ? String(localized: "Brisk walk") : String(localized: "Walk")
+    }
+
     /// "Brisk walk 30 min + strength 2 sets", for the plan card and reminders.
     static func headline(_ day: Day) -> String {
         let parts = day.activities.compactMap { activity -> String? in
             switch activity {
             case .cardio(let program, let intervals):
-                let name = program == .runWalk ? "Run/walk" : intervals.contains { $0.kind == .brisk } ? "Brisk walk" : "Walk"
-                return "\(name) \(activity.minutes) min"
-            case .strength(let sets, _): return "strength \(sets) \(sets == 1 ? "set" : "sets")"
-            case .balance: return "balance"
+                return String(localized: "\(cardioName(program, intervals)) \(activity.minutes) min")
+            case .strength(let sets, _):
+                return sets == 1 ? String(localized: "strength 1 set") : String(localized: "strength \(sets) sets")
+            case .balance: return String(localized: "balance")
             case .rest: return nil
             }
         }
-        guard let first = parts.first else { return "Rest day" }
+        guard let first = parts.first else { return String(localized: "Rest day") }
         return ([first.prefix(1).uppercased() + first.dropFirst()] + parts.dropFirst()).joined(separator: " + ")
     }
 }

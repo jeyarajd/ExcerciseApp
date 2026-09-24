@@ -143,8 +143,8 @@ struct FoodPhotoView: View {
                         .font(.title3)
                         .foregroundStyle(servings == nil ? Color.secondary : Color.accentColor)
                     VStack(alignment: .leading) {
-                        Text(item.name).foregroundStyle(Color.primary)
-                        Text("\(item.serving) · \(item.kcal) kcal").font(.caption).foregroundStyle(.secondary)
+                        Text(item.displayName).foregroundStyle(Color.primary)
+                        Text("\(item.displayServing) · \(item.kcal) kcal").font(.caption).foregroundStyle(.secondary)
                     }
                     Spacer()
                     if let servings {
@@ -155,7 +155,7 @@ struct FoodPhotoView: View {
             }
             .buttonStyle(.plain)
             if let servings {
-                Stepper("\(servings.formatted()) × \(item.serving)",
+                Stepper("\(servings.formatted()) × \(item.displayServing)",
                         value: Binding(get: { servings }, set: { picked[item.name] = $0 }), in: 0.5...10, step: 0.5)
                     .font(.subheadline)
                     .padding(.leading, 34)
@@ -175,8 +175,14 @@ struct FoodPhotoView: View {
                 }
                 dismiss()
             } label: {
-                Text("Add \(items.count) \(items.count == 1 ? "item" : "items") · \(total.formatted()) kcal")
-                    .frame(maxWidth: .infinity)
+                Group {
+                    if items.count == 1 {
+                        Text("Add 1 item · \(total.formatted()) kcal")
+                    } else {
+                        Text("Add \(items.count) items · \(total.formatted()) kcal")
+                    }
+                }
+                .frame(maxWidth: .infinity)
             }
             .buttonStyle(.borderedProminent)
             .controlSize(.large)

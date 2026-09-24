@@ -25,6 +25,9 @@ jobs:
           sudo xcode-select -s "$XCODE"
           xcodebuild -version
 
+      - name: Check translations
+        run: python3 tools/check_translations.py
+
       - name: Generate Xcode project
         run: |
           brew install xcodegen

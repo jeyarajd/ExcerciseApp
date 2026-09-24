@@ -28,7 +28,7 @@ enum Region {
         }
     }
 
-    static var greeting: String { isSouthAsia ? "Namaste!" : "Hello!" }
+    static var greeting: String { isSouthAsia ? String(localized: "Namaste!") : String(localized: "Hello!") }
 
     /// Indian foods first in South Asia, international foods first elsewhere.
     static var prefersIndianFood: Bool { isSouthAsia }

@@ -23,19 +23,19 @@ enum SleepGuide {
 
     static func assessment(hours: Double, age: Int) -> String {
         let range = recommended(age: age)
-        if hours < range.lowerBound - 1 { return "Well short of the \(label(range)) most adults need. Try an earlier, regular bedtime." }
-        if hours < range.lowerBound { return "A little under the recommended \(label(range))." }
-        if hours > range.upperBound + 1 { return "Longer than usual. If you often need this much, it's worth mentioning to your doctor." }
-        return "Right in the recommended \(label(range)). Well done."
+        if hours < range.lowerBound - 1 { return String(localized: "Well short of the \(label(range)) most adults need. Try an earlier, regular bedtime.") }
+        if hours < range.lowerBound { return String(localized: "A little under the recommended \(label(range)).") }
+        if hours > range.upperBound + 1 { return String(localized: "Longer than usual. If you often need this much, it's worth mentioning to your doctor.") }
+        return String(localized: "Right in the recommended \(label(range)). Well done.")
     }
 
     static func label(_ range: ClosedRange<Double>) -> String {
-        "\(Int(range.lowerBound))–\(Int(range.upperBound)) hours"
+        String(localized: "\(Int(range.lowerBound))–\(Int(range.upperBound)) hours")
     }
 
     static func duration(_ hours: Double) -> String {
         let minutes = Int((hours * 60).rounded())
-        return "\(minutes / 60) h \(String(format: "%02d", minutes % 60)) min"
+        return String(localized: "\(minutes / 60) h \(String(format: "%02d", minutes % 60)) min")
     }
 
     /// A sleep record from Apple Health: a stretch of time asleep, or only in bed.

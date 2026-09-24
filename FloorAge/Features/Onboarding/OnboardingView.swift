@@ -27,7 +27,7 @@ struct OnboardingView: View {
         }
         .background(AppBackground())
         .onAppear {
-            voice.say("\(Region.greeting) I'm your coach. Let's find out how old your body moves, and make it younger.")
+            voice.say(String(localized: "\(Region.greeting) I'm your coach. Let's find out how old your body moves, and make it younger."))
         }
     }
 
@@ -95,7 +95,7 @@ struct OnboardingView: View {
         }
     }
 
-    private func primaryButton(_ title: String, action: @escaping () -> Void) -> some View {
+    private func primaryButton(_ title: LocalizedStringKey, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             Text(title).frame(maxWidth: .infinity)
         }

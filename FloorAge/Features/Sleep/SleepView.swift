@@ -54,21 +54,23 @@ struct SleepView: View {
             Section {
                 VStack(spacing: 10) {
                     if let last = model.sleepLog.last {
-                        Text(Calendar.current.isDateInToday(last.day) ? "Last night" : last.day.formatted(date: .abbreviated, time: .omitted))
-                            .font(.subheadline).foregroundStyle(.secondary)
+                        Text(Calendar.current.isDateInToday(last.day) ? String(localized: "Last night") : last.day.formatted(date: .abbreviated, time: .omitted))
+                            .font(.subheadline).opacity(0.85)
                         Text(SleepGuide.duration(last.hours))
-                            .font(.system(size: 44, weight: .bold, design: .rounded))
+                            .font(.metric(44))
                         Text("\(last.bedtime.formatted(date: .omitted, time: .shortened)) – \(last.wake.formatted(date: .omitted, time: .shortened))")
-                            .font(.subheadline).foregroundStyle(.secondary)
+                            .font(.subheadline).opacity(0.85)
                         Text(SleepGuide.assessment(hours: last.hours, age: age))
                             .font(.subheadline).multilineTextAlignment(.center)
                     } else {
-                        Image(systemName: "moon.stars.fill").font(.largeTitle).foregroundStyle(.indigo)
+                        Image(systemName: "moon.stars.fill").font(.largeTitle)
                         Text("Log how you slept to see your nights here.").font(.subheadline).multilineTextAlignment(.center)
                     }
                 }
                 .frame(maxWidth: .infinity)
-                .padding(.vertical, 6)
+                .heroCard(.sleep, padding: 20)
+                .listRowBackground(Color.clear)
+                .listRowInsets(EdgeInsets(top: 6, leading: 0, bottom: 10, trailing: 0))
             }
 
             if !nights.isEmpty {
@@ -78,7 +80,7 @@ struct SleepView: View {
                             .foregroundStyle(Color.green.opacity(0.12))
                         ForEach(nights) { night in
                             BarMark(x: .value("Night", night.day, unit: .day), y: .value("Hours", night.hours))
-                                .foregroundStyle(range.contains(night.hours) ? Color.indigo.gradient : Color.orange.gradient)
+                                .foregroundStyle(range.contains(night.hours) ? Feature.sleep.gradient : Feature.steps.gradient)
                                 .clipShape(RoundedRectangle(cornerRadius: 4))
                         }
                     }
@@ -142,7 +144,8 @@ struct SleepView: View {
                         HStack {
                             VStack(alignment: .leading) {
                                 Text(night.day.formatted(date: .abbreviated, time: .omitted))
-                                Text(night.fromHealth ? "Apple Health" : ["", "Slept poorly", "Slept OK", "Slept well"][night.quality ?? 0])
+                                Text(night.fromHealth ? "Apple Health"
+                                     : [String(localized: "Logged"), String(localized: "Slept poorly"), String(localized: "Slept OK"), String(localized: "Slept well")][night.quality ?? 0])
                                     .font(.caption).foregroundStyle(.secondary)
                             }
                             Spacer()
@@ -182,28 +185,23 @@ struct SleepCard: View {
         let age = model.profile?.age ?? 40
         let range = SleepGuide.recommended(age: age)
         HStack(spacing: 16) {
-            Image(systemName: "moon.stars.fill")
-                .font(.title2)
-                .frame(width: 48, height: 48)
-                .background(Color.indigo.opacity(0.15), in: RoundedRectangle(cornerRadius: 12))
-                .foregroundStyle(.indigo)
             VStack(alignment: .leading, spacing: 3) {
-                Text("Sleep").font(.subheadline).foregroundStyle(.secondary)
+                Label("Sleep", systemImage: "moon.stars.fill").font(.headline)
                 if let last = model.sleepLog.last, Calendar.current.isDateInToday(last.day) || Calendar.current.isDateInYesterday(last.day) {
-                    Text(SleepGuide.duration(last.hours)).font(.system(.title2, design: .rounded, weight: .bold))
+                    Text(SleepGuide.duration(last.hours)).font(.metric(30))
                 } else {
-                    Text("How did you sleep?").font(.headline)
+                    Text("How did you sleep?").font(.title3.weight(.semibold))
                 }
                 if let average = model.averageSleep {
                     Text("7-night average \(SleepGuide.duration(average)) · goal \(SleepGuide.label(range))")
-                        .font(.caption).foregroundStyle(.secondary)
+                        .font(.caption).opacity(0.85)
                 } else {
-                    Text("Goal \(SleepGuide.label(range)) a night").font(.caption).foregroundStyle(.secondary)
+                    Text("Goal \(SleepGuide.label(range)) a night").font(.caption).opacity(0.85)
                 }
             }
             Spacer(minLength: 0)
-            Image(systemName: "chevron.right").foregroundStyle(.tertiary)
+            Image(systemName: "chevron.right").opacity(0.7)
         }
-        .card()
+        .heroCard(.sleep)
     }
 }

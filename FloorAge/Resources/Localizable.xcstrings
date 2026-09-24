@@ -1,0 +1,7316 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "(%@, %@) × %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "(%1$@, %2$@) × %3$lld"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(%1$@, %2$@) × %3$lld"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(%1$@, %2$@) × %3$lld"
+          }
+        }
+      }
+    },
+    "%@ – %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ – %2$@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ – %2$@"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ – %2$@"
+          }
+        }
+      }
+    },
+    "%@ · %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ · %2$@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ · %2$@"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ · %2$@"
+          }
+        }
+      }
+    },
+    "%@ · %lld kcal" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ · %2$lld kcal"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ · %2$lld kcal"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ · %2$lld kcal"
+          }
+        }
+      }
+    },
+    "%@ · %lld min" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ · %2$lld min"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ · %2$lld min"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ · %2$lld मिनट"
+          }
+        }
+      }
+    },
+    "%@ · ≈ %@ steps" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ · ≈ %2$@ steps"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ · ≈ %2$@ pasos"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ · ≈ %2$@ कदम"
+          }
+        }
+      }
+    },
+    "%@ · week %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ · week %2$lld"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ · semana %2$lld"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ · हफ़्ता %2$lld"
+          }
+        }
+      }
+    },
+    "%@ (recommended)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ (recomendado)"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ (सुझाया गया)"
+          }
+        }
+      }
+    },
+    "%@ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ %2$@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ %2$@"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ %2$@"
+          }
+        }
+      }
+    },
+    "%@ %lld min" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ %2$lld min"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ %2$lld min"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ %2$lld मिनट"
+          }
+        }
+      }
+    },
+    "%@ %lld s" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ %2$lld s"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ %2$lld s"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ %2$lld सेकंड"
+          }
+        }
+      }
+    },
+    "%@ × %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ × %2$@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ × %2$@"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ × %2$@"
+          }
+        }
+      }
+    },
+    "%@ × %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ × %2$lld"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ × %2$lld"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ × %2$lld"
+          }
+        }
+      }
+    },
+    "%@ × %lld kcal" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ × %2$lld kcal"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ × %2$lld kcal"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ × %2$lld kcal"
+          }
+        }
+      }
+    },
+    "%@ and above" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ o más"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ और उससे ज़्यादा"
+          }
+        }
+      }
+    },
+    "%@ I'm your coach. Let's find out how old your body moves, and make it younger." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ Voy a entrenarte. Vamos a descubrir qué edad tiene tu cuerpo al moverse, y a rejuvenecerlo."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ कोच के रूप में मैं आपके साथ हूं। चलिए पता करते हैं कि आपका शरीर किस उम्र जैसा चलता है, और उसे और जवान बनाते हैं।"
+          }
+        }
+      }
+    },
+    "%@ kcal left" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quedan %@ kcal"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ kcal बाकी"
+          }
+        }
+      }
+    },
+    "%@ kcal over" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ kcal de más"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ kcal ज़्यादा"
+          }
+        }
+      }
+    },
+    "%@ left" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quedan %@"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ बाकी"
+          }
+        }
+      }
+    },
+    "%@ over" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ de más"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ ज़्यादा"
+          }
+        }
+      }
+    },
+    "%@ walk" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ de caminata"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ वॉक"
+          }
+        }
+      }
+    },
+    "%@, %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@, %2$@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, %2$@"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, %2$@"
+          }
+        }
+      }
+    },
+    "%@, %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@, %2$lld"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, %2$lld"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, %2$lld"
+          }
+        }
+      }
+    },
+    "%@, week %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@, week %2$lld"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, semana %2$lld"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, हफ़्ता %2$lld"
+          }
+        }
+      }
+    },
+    "%@. %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@. %2$@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@. %2$@"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@। %2$@"
+          }
+        }
+      }
+    },
+    "%@. Hold a wall or chair if you need to." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@. Apóyate en una pared o una silla si lo necesitas."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@। ज़रूरत हो तो दीवार या कुर्सी पकड़ लें।"
+          }
+        }
+      }
+    },
+    "%@. Rest 1 minute between sets." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@. Descansa 1 minuto entre series."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@। हर सेट के बीच 1 मिनट आराम करें।"
+          }
+        }
+      }
+    },
+    "%lld" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld"
+          }
+        }
+      }
+    },
+    "%lld and a half minutes" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld minutos y medio"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld मिनट 30 सेकंड"
+          }
+        }
+      }
+    },
+    "%lld cm" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld cm"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld सेमी"
+          }
+        }
+      }
+    },
+    "%lld exercises" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld ejercicios"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld एक्सरसाइज़"
+          }
+        }
+      }
+    },
+    "%lld ft" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld ft"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld फ़ुट"
+          }
+        }
+      }
+    },
+    "%lld h %@ min" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld h %2$@ min"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld h %2$@ min"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld घंटे %2$@ मिनट"
+          }
+        }
+      }
+    },
+    "%lld in" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld in"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld इंच"
+          }
+        }
+      }
+    },
+    "%lld kcal" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld kcal"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld kcal"
+          }
+        }
+      }
+    },
+    "%lld min" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld min"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld मिनट"
+          }
+        }
+      }
+    },
+    "%lld minutes" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld minutos"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld मिनट"
+          }
+        }
+      }
+    },
+    "%lld minutes %lld seconds" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld minutes %2$lld seconds"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld minutos y %2$lld segundos"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld मिनट %2$lld सेकंड"
+          }
+        }
+      }
+    },
+    "%lld of %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld of %2$lld"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld de %2$lld"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld / %2$lld"
+          }
+        }
+      }
+    },
+    "%lld of the last 7 days" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld de los últimos 7 días"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "पिछले 7 में से %lld दिन"
+          }
+        }
+      }
+    },
+    "%lld reps" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld rep."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld रेप्स"
+          }
+        }
+      }
+    },
+    "%lld reps." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld repeticiones."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld रेप्स।"
+          }
+        }
+      }
+    },
+    "%lld s" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld s"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld सेकंड"
+          }
+        }
+      }
+    },
+    "%lld sec" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld seg"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld सेकंड"
+          }
+        }
+      }
+    },
+    "%lld seconds" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld segundos"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld सेकंड"
+          }
+        }
+      }
+    },
+    "%lld seconds." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld segundos."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld सेकंड।"
+          }
+        }
+      }
+    },
+    "%lld years older than my age (%lld)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld years older than my age (%2$lld)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld años más que mi edad (%2$lld)"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "मेरी उम्र (%2$lld) से %1$lld साल ज़्यादा"
+          }
+        }
+      }
+    },
+    "%lld years younger than my age (%lld)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld years younger than my age (%2$lld)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld años menos que mi edad (%2$lld)"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "मेरी उम्र (%2$lld) से %1$lld साल कम"
+          }
+        }
+      }
+    },
+    "%lld–%lld hours" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld–%2$lld hours"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld–%2$lld horas"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld–%2$lld घंटे"
+          }
+        }
+      }
+    },
+    "%lld. Done!" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld. ¡Y listo!"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld। हो गया!"
+          }
+        }
+      }
+    },
+    "%lld. Switch sides." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld. Cambia de lado."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld। अब दूसरी तरफ़।"
+          }
+        }
+      }
+    },
+    "%lld/7" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld/7"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld/7"
+          }
+        }
+      }
+    },
+    "%lld½ min" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld½ min"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld½ मिनट"
+          }
+        }
+      }
+    },
+    "~%lld min" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "~%lld min"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "~%lld मिनट"
+          }
+        }
+      }
+    },
+    "1 minute" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 minuto"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 मिनट"
+          }
+        }
+      }
+    },
+    "2 days" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2 días"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2 दिन"
+          }
+        }
+      }
+    },
+    "4 quick tests show how old your body moves. Your plan adapts to the result." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "4 pruebas rápidas muestran qué edad tiene tu cuerpo al moverse. Tu plan se adapta al resultado."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "4 छोटे टेस्ट बताते हैं कि आपका शरीर किस उम्र जैसा चलता है। आपका प्लान नतीजे के हिसाब से बदलता है।"
+          }
+        }
+      }
+    },
+    "7-night average" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Promedio de 7 noches"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "7 रातों का औसत"
+          }
+        }
+      }
+    },
+    "7-night average %@ · goal %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "7-night average %1$@ · goal %2$@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Promedio de 7 noches: %1$@ · objetivo: %2$@"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "7 रातों का औसत %1$@ · लक्ष्य %2$@"
+          }
+        }
+      }
+    },
+    "9 weeks, 3 run/walk sessions a week (about 30 min), building from 1-minute runs to 30 minutes of running, plus 2 strength days." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "9 semanas, 3 sesiones semanales de correr y caminar (unos 30 min), empezando con carreras de 1 minuto hasta llegar a 30 minutos corriendo, más 2 días de fuerza."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "9 हफ़्ते, हर हफ़्ते दौड़/वॉक के 3 सेशन (लगभग 30 मिनट), 1 मिनट की दौड़ से बढ़ते हुए 30 मिनट की दौड़ तक, साथ में 2 दिन स्ट्रेंथ।"
+          }
+        }
+      }
+    },
+    "9 weeks, 3 run/walk sessions a week building to 30 minutes of running." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "9 semanas, 3 sesiones semanales de correr y caminar hasta llegar a 30 minutos corriendo."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "9 हफ़्ते, हर हफ़्ते दौड़/वॉक के 3 सेशन, धीरे-धीरे 30 मिनट की दौड़ तक।"
+          }
+        }
+      }
+    },
+    "12 guided Kegel squeezes · about 2 min. Do them sitting, anywhere." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "12 contracciones de Kegel guiadas · unos 2 min. Hazlas en posición sentada, en cualquier lugar."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "12 गाइडेड कीगल स्क्वीज़ · लगभग 2 मिनट। बैठकर, कहीं भी करें।"
+          }
+        }
+      }
+    },
+    "12 weeks of brisk walking on 5 days, from 20 minutes up to %@ a day (%@ min a week), plus 2 strength days." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "12 weeks of brisk walking on 5 days, from 20 minutes up to %1$@ a day (%2$@ min a week), plus 2 strength days."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "12 semanas de caminata rápida 5 días a la semana, de 20 minutos hasta %1$@ al día (%2$@ min a la semana), más 2 días de fuerza."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "12 हफ़्ते, हफ़्ते में 5 दिन तेज़ वॉक, रोज़ 20 मिनट से बढ़ाकर %1$@ तक (हफ़्ते में %2$@ मिनट), साथ में 2 दिन स्ट्रेंथ।"
+          }
+        }
+      }
+    },
+    "12 weeks of easy walking on 5 days, from 10 minutes up to %@ a day, plus 2 gentle strength days with a chair." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "12 semanas de caminata suave 5 días a la semana, de 10 minutos hasta %@ al día, más 2 días de fuerza suave con una silla."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "12 हफ़्ते, हफ़्ते में 5 दिन आराम से वॉक, रोज़ 10 मिनट से बढ़ाकर %@ तक, साथ में कुर्सी के सहारे 2 दिन हल्की स्ट्रेंथ।"
+          }
+        }
+      }
+    },
+    "30 s" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "30 s"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "30 सेकंड"
+          }
+        }
+      }
+    },
+    "30-Second Chair Stand" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Levantarse de la silla en 30 segundos"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "30 सेकंड में कुर्सी से उठना"
+          }
+        }
+      }
+    },
+    "150–300 active minutes a week, strength on 2+ days, balance on 3+ days from 65." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "150–300 minutos activos a la semana, fuerza 2+ días y, a partir de los 65, equilibrio 3+ días."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "हफ़्ते में 150–300 मिनट सक्रिय रहना, 2+ दिन स्ट्रेंथ, और 65 की उम्र से 3+ दिन संतुलन।"
+          }
+        }
+      }
+    },
+    "A doctor has told me to limit exercise" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un médico me ha indicado limitar el ejercicio"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "डॉक्टर ने मुझे एक्सरसाइज़ सीमित रखने को कहा है"
+          }
+        }
+      }
+    },
+    "A general fitness plan, not medical advice. Stop and rest if anything hurts, and seek help for chest pain, dizziness or severe breathlessness." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Es un plan general de actividad física, no un consejo médico. Detente y descansa si algo te duele, y busca ayuda si tienes dolor en el pecho, mareos o falta de aire intensa."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "यह एक सामान्य फ़िटनेस प्लान है, मेडिकल सलाह नहीं। कहीं भी दर्द हो तो रुककर आराम करें, और सीने में दर्द, चक्कर या सांस बहुत ज़्यादा फूलने पर मदद लें।"
+          }
+        }
+      }
+    },
+    "a gentle start builds fitness safely" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "empezar con suavidad te pone en forma sin riesgos"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "हल्की शुरुआत से फ़िटनेस सुरक्षित तरीके से बनती है"
+          }
+        }
+      }
+    },
+    "A healthy weight for your height is about %@–%@." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "A healthy weight for your height is about %1$@–%2$@."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un peso saludable para tu estatura es de unos %1$@–%2$@."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आपकी लंबाई के हिसाब से स्वस्थ वज़न लगभग %1$@–%2$@ है।"
+          }
+        }
+      }
+    },
+    "A little under the recommended %@." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un poco menos de las %@ recomendadas."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "सुझाए गए %@ से थोड़ा कम।"
+          }
+        }
+      }
+    },
+    "a minute and a half" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "un minuto y medio"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "डेढ़ मिनट"
+          }
+        }
+      }
+    },
+    "A support is any hand, knee, forearm or side of the leg touching the floor or a surface." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cuenta como apoyo cualquier mano, rodilla, antebrazo o costado de la pierna que toque el suelo u otra superficie."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "हाथ, घुटना, बांह (कोहनी से कलाई तक) या पैर का किनारा अगर ज़मीन या किसी सतह को छुए, तो उसे एक सहारा माना जाता है।"
+          }
+        }
+      }
+    },
+    "About 7,000–8,000 steps a day is linked with good health. A brisk 10-minute walk is roughly 1,000 steps. Missing a day never resets your progress." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unos 7000–8000 pasos al día se asocian con una buena salud. Una caminata rápida de 10 minutos son unos 1000 pasos. Saltarte un día nunca reinicia tu progreso."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "रोज़ लगभग 7,000–8,000 कदम अच्छी सेहत से जुड़े हैं। 10 मिनट की तेज़ वॉक लगभग 1,000 कदम होती है। एक दिन छूटने से आपकी प्रगति कभी शून्य नहीं होती।"
+          }
+        }
+      }
+    },
+    "About you" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sobre ti"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आपके बारे में"
+          }
+        }
+      }
+    },
+    "Accent" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acento"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "लहजा"
+          }
+        }
+      }
+    },
+    "active min" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "min activos"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "सक्रिय मिनट"
+          }
+        }
+      }
+    },
+    "Adapted for %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adaptado para: %@"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ के हिसाब से बदला गया"
+          }
+        }
+      }
+    },
+    "Add %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir %@"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ जोड़ें"
+          }
+        }
+      }
+    },
+    "Add %lld items · %@ kcal" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Add %1$lld items · %2$@ kcal"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir %1$lld alimentos · %2$@ kcal"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld चीज़ें जोड़ें · %2$@ kcal"
+          }
+        }
+      }
+    },
+    "Add 1 item · %@ kcal" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir 1 alimento · %@ kcal"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 चीज़ जोड़ें · %@ kcal"
+          }
+        }
+      }
+    },
+    "Add food" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir alimento"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "खाना जोड़ें"
+          }
+        }
+      }
+    },
+    "Add height and weight" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir estatura y peso"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "लंबाई और वज़न जोड़ें"
+          }
+        }
+      }
+    },
+    "Add to log" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir al registro"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "लॉग में जोड़ें"
+          }
+        }
+      }
+    },
+    "Add your height and weight for a plan that fits your weight" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añade tu estatura y peso para tener un plan adaptado a tu peso"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अपने वज़न के हिसाब से प्लान पाने के लिए लंबाई और वज़न जोड़ें"
+          }
+        }
+      }
+    },
+    "Add your height and weight under BMI to get a daily target." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añade tu estatura y peso en IMC para obtener un objetivo diario."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "रोज़ का लक्ष्य पाने के लिए BMI में अपनी लंबाई और वज़न जोड़ें।"
+          }
+        }
+      }
+    },
+    "Adds about a minute of guided pelvic floor squeezes to the end of each session. Good for bladder control, core support and recovery, for women and men." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añade al final de cada sesión alrededor de un minuto de contracciones guiadas del suelo pélvico. Ayudan al control de la vejiga, a la estabilidad del core y a la recuperación, en mujeres y en hombres."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "हर सेशन के आख़िर में लगभग एक मिनट की गाइडेड पेल्विक फ़्लोर एक्सरसाइज़ जोड़ता है। पेशाब पर नियंत्रण, कोर को सहारा देने और रिकवरी के लिए अच्छा, महिलाओं और पुरुषों दोनों के लिए।"
+          }
+        }
+      }
+    },
+    "age %lld" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "tu edad (%lld)"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "उम्र %lld"
+          }
+        }
+      }
+    },
+    "Age %lld" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edad: %lld"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "उम्र %lld"
+          }
+        }
+      }
+    },
+    "Age: %lld" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edad: %lld"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "उम्र: %lld"
+          }
+        }
+      }
+    },
+    "Aim for %@ steps" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Intenta dar %@ pasos"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ कदम का लक्ष्य रखें"
+          }
+        }
+      }
+    },
+    "Allow Motion & Fitness" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permitir Movimiento y forma física"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "गति और फ़िटनेस की अनुमति दें"
+          }
+        }
+      }
+    },
+    "American College of Sports Medicine (2009)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "American College of Sports Medicine (2009)"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "American College of Sports Medicine (2009)"
+          }
+        }
+      }
+    },
+    "And rest." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Y descansa."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अब आराम करें।"
+          }
+        }
+      }
+    },
+    "Anything we should know?" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Hay algo que debamos saber?"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कोई बात जो हमें पता होनी चाहिए?"
+          }
+        }
+      }
+    },
+    "Arms crossed. Three. Two. One. Go!" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brazos cruzados. Tres. Dos. Uno. ¡Ya!"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "हाथ क्रॉस करें। तीन। दो। एक। शुरू!"
+          }
+        }
+      }
+    },
+    "Asian" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Asiático"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "एशियाई"
+          }
+        }
+      }
+    },
+    "Asian ranges (healthy 18.5–22.9) are recommended for people of Asian descent, whose health risks start at a lower BMI." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los rangos asiáticos (saludable 18,5–22,9) se recomiendan para personas de origen asiático, cuyos riesgos para la salud empiezan con un IMC más bajo."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "एशियाई मूल के लोगों के लिए एशियाई रेंज (स्वस्थ 18.5–22.9) की सलाह दी जाती है, क्योंकि उनमें सेहत के जोखिम कम BMI पर ही शुरू हो जाते हैं।"
+          }
+        }
+      }
+    },
+    "back" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "espalda"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कमर"
+          }
+        }
+      }
+    },
+    "Back pain" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dolor de espalda"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कमर या पीठ दर्द"
+          }
+        }
+      }
+    },
+    "balance" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "equilibrio"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "संतुलन"
+          }
+        }
+      }
+    },
+    "Balance" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Equilibrio"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "संतुलन"
+          }
+        }
+      }
+    },
+    "Balance · %lld sets" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Equilibrio · %lld series"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "संतुलन · %lld सेट"
+          }
+        }
+      }
+    },
+    "Balance · 1 set" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Equilibrio · 1 serie"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "संतुलन · 1 सेट"
+          }
+        }
+      }
+    },
+    "Based on what you told us, skip this test or do it only if it feels completely safe." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Por lo que nos contaste, sáltate esta prueba o hazla solo si te parece totalmente segura."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आपने जो बताया है, उसके हिसाब से यह टेस्ट छोड़ दें, या तभी करें जब यह पूरी तरह सुरक्षित लगे।"
+          }
+        }
+      }
+    },
+    "Based on your %@, we recommend this plan: %@." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Based on your %1$@, we recommend this plan: %2$@."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Según %1$@, te recomendamos este plan: %2$@."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ के आधार पर हम यह प्लान सुझाते हैं: %2$@।"
+          }
+        }
+      }
+    },
+    "below %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "menos de %@"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ से कम"
+          }
+        }
+      }
+    },
+    "Benefits of walking level off at 8,000–10,000 steps a day under 60, and 6,000–8,000 from 60." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los beneficios de caminar se estabilizan en 8000–10 000 pasos al día antes de los 60 años, y en 6000–8000 a partir de los 60."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "चलने का फ़ायदा 60 से कम उम्र में रोज़ 8,000–10,000 कदम तक, और 60 की उम्र से 6,000–8,000 कदम तक बढ़ता है, फिर लगभग स्थिर हो जाता है।"
+          }
+        }
+      }
+    },
+    "Best: %.1f s" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mejor: %.1f s"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "सबसे अच्छा: %.1f सेकंड"
+          }
+        }
+      }
+    },
+    "BMI" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "IMC"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "BMI"
+          }
+        }
+      }
+    },
+    "BMI %@ (%@)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "BMI %1$@ (%2$@)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "tu IMC de %1$@ (%2$@)"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "BMI %1$@ (%2$@)"
+          }
+        }
+      }
+    },
+    "BMI calculator" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calculadora de IMC"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "BMI कैलकुलेटर"
+          }
+        }
+      }
+    },
+    "BMI doesn't account for muscle, so treat it as a rough guide, not a diagnosis." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El IMC no tiene en cuenta el músculo, así que tómalo como una guía aproximada, no como un diagnóstico."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "BMI मांसपेशियों को नहीं गिनता, इसलिए इसे एक मोटा अंदाज़ा मानें, डायग्नोसिस नहीं।"
+          }
+        }
+      }
+    },
+    "BMI ranges" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rangos de IMC"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "BMI रेंज"
+          }
+        }
+      }
+    },
+    "Brisk walk" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Caminata rápida"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "तेज़ वॉक"
+          }
+        }
+      }
+    },
+    "brisk walking burns fat while being kind to your joints" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "caminar a paso rápido quema grasa y cuida tus articulaciones"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "तेज़ वॉक से चर्बी घटती है और जोड़ों पर ज़्यादा ज़ोर भी नहीं पड़ता"
+          }
+        }
+      }
+    },
+    "Brisk walking plan" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plan de caminata rápida"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "तेज़ वॉकिंग प्लान"
+          }
+        }
+      }
+    },
+    "Build strength with your daily sessions and eat regular, balanced meals." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gana fuerza con tus sesiones diarias y haz comidas regulares y equilibradas."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "रोज़ के सेशन से ताकत बढ़ाएं, और समय पर संतुलित खाना खाएं।"
+          }
+        }
+      }
+    },
+    "By area" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Por área"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "हर पहलू में"
+          }
+        }
+      }
+    },
+    "Calories" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calorías"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कैलोरी"
+          }
+        }
+      }
+    },
+    "Calories (kcal)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calorías (kcal)"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कैलोरी (kcal)"
+          }
+        }
+      }
+    },
+    "Calories are typical values for home portions and vary with recipe and oil." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Las calorías son valores típicos de porciones caseras y varían según la receta y el aceite."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कैलोरी घर की आम मात्रा के हिसाब से अंदाज़न हैं, और रेसिपी व तेल के हिसाब से बदलती हैं।"
+          }
+        }
+      }
+    },
+    "Cancel" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelar"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "रद्द करें"
+          }
+        }
+      }
+    },
+    "Change or restart plan" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cambiar o reiniciar el plan"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "प्लान बदलें या फिर से शुरू करें"
+          }
+        }
+      }
+    },
+    "Check with your doctor before starting if you have a heart, lung or joint condition, are pregnant, or haven't been active for a long time." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Consulta a tu médico antes de empezar si tienes una afección cardíaca, pulmonar o articular, si estás embarazada o si llevas mucho tiempo sin hacer actividad física."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अगर आपको दिल, फेफड़ों या जोड़ों की कोई बीमारी है, आप गर्भवती हैं, या लंबे समय से सक्रिय नहीं रहे हैं, तो शुरू करने से पहले अपने डॉक्टर से सलाह लें।"
+          }
+        }
+      }
+    },
+    "Checks" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pruebas"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "पिछली जांचें"
+          }
+        }
+      }
+    },
+    "Close" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cerrar"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "बंद करें"
+          }
+        }
+      }
+    },
+    "cm" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "cm"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "सेमी"
+          }
+        }
+      }
+    },
+    "Coach" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Coach"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कोच"
+          }
+        }
+      }
+    },
+    "Coach look" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aspecto del coach"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कोच का रूप"
+          }
+        }
+      }
+    },
+    "Common foods" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alimentos comunes"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "रोज़मर्रा के खाने"
+          }
+        }
+      }
+    },
+    "Cool-down walk" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Caminata de enfriamiento"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कूल-डाउन वॉक"
+          }
+        }
+      }
+    },
+    "Couch to 5K run/walk" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Correr y caminar (Couch to 5K)"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couch to 5K दौड़/वॉक"
+          }
+        }
+      }
+    },
+    "Couldn't recognise this plate. Add the foods from the list instead." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No pudimos reconocer este plato. Añade los alimentos desde la lista."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "इस प्लेट का खाना पहचाना नहीं जा सका। इसके बजाय सूची से खाना जोड़ें।"
+          }
+        }
+      }
+    },
+    "Daily goal: %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Objetivo diario: %@"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "रोज़ का लक्ष्य: %@"
+          }
+        }
+      }
+    },
+    "Daily session" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sesión diaria"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "रोज़ का सेशन"
+          }
+        }
+      }
+    },
+    "Daily target about %@ kcal" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Objetivo diario: unas %@ kcal"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "रोज़ का लक्ष्य लगभग %@ kcal"
+          }
+        }
+      }
+    },
+    "Date" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fecha"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "तारीख"
+          }
+        }
+      }
+    },
+    "Day" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Día"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "दिन"
+          }
+        }
+      }
+    },
+    "Daytime activity, like your walks, helps you fall asleep." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La actividad durante el día, como tus caminatas, te ayuda a conciliar el sueño."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "दिन में सक्रिय रहना, जैसे आपकी वॉक, रात को नींद आने में मदद करता है।"
+          }
+        }
+      }
+    },
+    "Delete all my data" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Borrar todos mis datos"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "मेरा सारा डेटा मिटाएं"
+          }
+        }
+      }
+    },
+    "Delete everything" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Borrar todo"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "सब कुछ मिटाएं"
+          }
+        }
+      }
+    },
+    "Delete your profile, Floor Age results and session history?" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Borrar tu perfil, tus resultados de Floor Age y tu historial de sesiones?"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आपकी प्रोफ़ाइल, Floor Age के नतीजे और सेशन का इतिहास मिटा दें?"
+          }
+        }
+      }
+    },
+    "distance" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "distancia"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "दूरी"
+          }
+        }
+      }
+    },
+    "dizziness" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "mareos"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "चक्कर"
+          }
+        }
+      }
+    },
+    "Dizziness or balance problems" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mareos o problemas de equilibrio"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "चक्कर आना या संतुलन की समस्या"
+          }
+        }
+      }
+    },
+    "Do it again" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Repetir"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "फिर से करें"
+          }
+        }
+      }
+    },
+    "doctor's advice" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "indicación médica"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "डॉक्टर की सलाह"
+          }
+        }
+      }
+    },
+    "Done" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hecho"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "हो गया"
+          }
+        }
+      }
+    },
+    "Done for today" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Completado por hoy"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आज का हो गया"
+          }
+        }
+      }
+    },
+    "Easy walk" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Caminata suave"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आराम से वॉक"
+          }
+        }
+      }
+    },
+    "Easy walk for %@." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Caminata suave durante %@."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ तक आराम से वॉक करें।"
+          }
+        }
+      }
+    },
+    "elapsed" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "transcurrido"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "बीत गया"
+          }
+        }
+      }
+    },
+    "en-AU" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "en-AU"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "en-AU"
+          }
+        }
+      }
+    },
+    "en-GB" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "en-GB"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "en-GB"
+          }
+        }
+      }
+    },
+    "en-IN" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "en-IN"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "en-IN"
+          }
+        }
+      }
+    },
+    "en-US" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "en-US"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "en-US"
+          }
+        }
+      }
+    },
+    "End session" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terminar sesión"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "सेशन ख़त्म करें"
+          }
+        }
+      }
+    },
+    "English (Australia)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inglés (Australia)"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अंग्रेज़ी (ऑस्ट्रेलिया)"
+          }
+        }
+      }
+    },
+    "English (India)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inglés (India)"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अंग्रेज़ी (भारत)"
+          }
+        }
+      }
+    },
+    "English (UK)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inglés (Reino Unido)"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अंग्रेज़ी (ब्रिटेन)"
+          }
+        }
+      }
+    },
+    "English (US)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inglés (EE. UU.)"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अंग्रेज़ी (अमेरिका)"
+          }
+        }
+      }
+    },
+    "Enter your height and weight" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Indica tu estatura y peso"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अपनी लंबाई और वज़न डालें"
+          }
+        }
+      }
+    },
+    "Estimates for everyday fitness, not medical advice." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estimaciones de tu forma física para el día a día, no consejo médico."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "रोज़मर्रा की फ़िटनेस के लिए अनुमान, मेडिकल सलाह नहीं।"
+          }
+        }
+      }
+    },
+    "Evening reminder" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recordatorio por la tarde"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "शाम का रिमाइंडर"
+          }
+        }
+      }
+    },
+    "Every kilo counts. Start gently, walk a little more each week, and check with your doctor for a plan." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cada kilo cuenta. Empieza con suavidad, camina un poco más cada semana y consulta a tu médico para tener un plan."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "हर किलो मायने रखता है। धीरे से शुरू करें, हर हफ़्ते थोड़ा ज़्यादा चलें, और प्लान के लिए अपने डॉक्टर से सलाह लें।"
+          }
+        }
+      }
+    },
+    "Faster" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Más rápido"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "तेज़"
+          }
+        }
+      }
+    },
+    "Fifteen seconds." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quince segundos."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "पंद्रह सेकंड।"
+          }
+        }
+      }
+    },
+    "Find your Floor Age" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Descubre tu Floor Age"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अपनी Floor Age जानें"
+          }
+        }
+      }
+    },
+    "Find your Floor Age with 4 simple tests, then train with a coach who shows every move and talks you through it." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Descubre tu Floor Age con 4 pruebas sencillas y luego entrena con un coach que te muestra cada movimiento y te guía con su voz."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "4 आसान टेस्ट से अपनी Floor Age जानें, फिर ऐसे कोच के साथ ट्रेनिंग करें जो हर मूव करके दिखाए और बोलकर समझाए।"
+          }
+        }
+      }
+    },
+    "Fingertips touch the floor" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toco el suelo con la punta de los dedos"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "उंगलियां ज़मीन छूती हैं"
+          }
+        }
+      }
+    },
+    "Finish" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terminar"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "पूरा करें"
+          }
+        }
+      }
+    },
+    "First name (optional)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre (opcional)"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "पहला नाम (ज़रूरी नहीं)"
+          }
+        }
+      }
+    },
+    "Five, four, three, two, one." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cinco, cuatro, tres, dos, uno."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "पांच, चार, तीन, दो, एक।"
+          }
+        }
+      }
+    },
+    "Flexibility" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flexibilidad"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "लचीलापन"
+          }
+        }
+      }
+    },
+    "Floor Age" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Floor Age"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Floor Age"
+          }
+        }
+      }
+    },
+    "Floor Age %lld" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Floor Age %lld"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Floor Age %lld"
+          }
+        }
+      }
+    },
+    "Floor Age is a fitness estimate from simple movement tests, not a medical diagnosis." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Floor Age es una estimación de tu forma física basada en pruebas sencillas de movimiento, no un diagnóstico médico."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Floor Age आसान मूवमेंट टेस्ट पर आधारित फ़िटनेस का एक अनुमान है, कोई मेडिकल डायग्नोसिस नहीं।"
+          }
+        }
+      }
+    },
+    "Floor Age over time" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Evolución de tu Floor Age"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "समय के साथ Floor Age"
+          }
+        }
+      }
+    },
+    "Focus" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enfoque"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "फ़ोकस"
+          }
+        }
+      }
+    },
+    "Food" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comida"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "खाना"
+          }
+        }
+      }
+    },
+    "Food name" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre del alimento"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "खाने का नाम"
+          }
+        }
+      }
+    },
+    "For a more natural voice, download an Enhanced or Premium voice in iPhone Settings › Accessibility › Spoken Content › Voices." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Para una voz más natural, descarga una voz Mejorada o Premium en Ajustes del iPhone › Accesibilidad › Contenido leído › Voces."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ज़्यादा स्वाभाविक आवाज़ के लिए, iPhone सेटिंग्स › ऐक्सेसिबिलिटी › बोली गई सामग्री › आवाज़ें में जाकर “उन्नत” (Enhanced) या “प्रीमियम” (Premium) आवाज़ डाउनलोड करें।"
+          }
+        }
+      }
+    },
+    "Four short tests, about 10 minutes. The coach shows each one first. Your result is an estimate of how old your body moves, not a medical test." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cuatro pruebas cortas, unos 10 minutos. Tu coach te muestra cada una primero. El resultado es una estimación de qué edad tiene tu cuerpo al moverse, no una prueba médica."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "चार छोटे टेस्ट, लगभग 10 मिनट। कोच हर टेस्ट पहले करके दिखाते हैं। आपका नतीजा इस बात का अनुमान है कि आपका शरीर किस उम्र जैसा चलता है, यह कोई मेडिकल टेस्ट नहीं है।"
+          }
+        }
+      }
+    },
+    "From" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desde"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "से"
+          }
+        }
+      }
+    },
+    "ft / in" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ft / in"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "फ़ुट / इंच"
+          }
+        }
+      }
+    },
+    "Full stands: %lld" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Repeticiones completas: %lld"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "पूरी तरह खड़े होना: %lld बार"
+          }
+        }
+      }
+    },
+    "Gentle walking plan" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plan de caminata suave"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "हल्का वॉकिंग प्लान"
+          }
+        }
+      }
+    },
+    "Get started" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Empezar"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "शुरू करें"
+          }
+        }
+      }
+    },
+    "Getting up from the floor" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Levantarse del suelo"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ज़मीन से उठना"
+          }
+        }
+      }
+    },
+    "Goal" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Objetivo"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "लक्ष्य"
+          }
+        }
+      }
+    },
+    "Goal %@ a night" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Objetivo: %@ por noche"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "लक्ष्य: हर रात %@"
+          }
+        }
+      }
+    },
+    "goal %lld+" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "objetivo %lld+"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "लक्ष्य %lld+"
+          }
+        }
+      }
+    },
+    "Good afternoon" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buenas tardes"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "शुभ दोपहर"
+          }
+        }
+      }
+    },
+    "Good evening" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buenas noches"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "शुभ संध्या"
+          }
+        }
+      }
+    },
+    "Good light and the whole plate in view work best." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Funciona mejor con buena luz y el plato completo a la vista."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अच्छी रोशनी हो और पूरी प्लेट फ़्रेम में दिखे, तो सबसे अच्छा रहता है।"
+          }
+        }
+      }
+    },
+    "Good morning" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buenos días"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "सुप्रभात"
+          }
+        }
+      }
+    },
+    "Great work. Cool down with a %@ easy walk." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buen trabajo. Ahora vuelve a la calma con una caminata suave de %@."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "बहुत बढ़िया। अब %@ आराम से वॉक करके कूल-डाउन करें।"
+          }
+        }
+      }
+    },
+    "Healthy" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peso saludable"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "स्वस्थ"
+          }
+        }
+      }
+    },
+    "Hear again" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Escuchar de nuevo"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "फिर से सुनें"
+          }
+        }
+      }
+    },
+    "Height" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estatura"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "लंबाई"
+          }
+        }
+      }
+    },
+    "Hello!" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Hola!"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "नमस्ते!"
+          }
+        }
+      }
+    },
+    "Hello! Let's get moving today." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Hola! Hoy vamos a movernos."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "नमस्ते! आइए, आज थोड़ी कसरत हो जाए।"
+          }
+        }
+      }
+    },
+    "hip" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "cadera"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कूल्हा"
+          }
+        }
+      }
+    },
+    "Hip pain or hip replacement" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dolor de cadera o prótesis de cadera"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कूल्हे में दर्द या हिप रिप्लेसमेंट"
+          }
+        }
+      }
+    },
+    "Hours" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Horas"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "घंटे"
+          }
+        }
+      }
+    },
+    "How did you sleep?" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Cómo dormiste?"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आपकी नींद कैसी रही?"
+          }
+        }
+      }
+    },
+    "How old does your body move?" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Qué edad tiene tu cuerpo al moverse?"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आपका शरीर किस उम्र जैसा चलता है?"
+          }
+        }
+      }
+    },
+    "I am" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Soy"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "मैं"
+          }
+        }
+      }
+    },
+    "I wobbled or lost balance" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Me tambaleé o perdí el equilibrio"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "लड़खड़ाहट हुई या संतुलन बिगड़ा"
+          }
+        }
+      }
+    },
+    "I'm ready" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Empecemos!"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "मैं तैयार हूं"
+          }
+        }
+      }
+    },
+    "International (WHO)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Internacional (OMS)"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अंतरराष्ट्रीय (WHO)"
+          }
+        }
+      }
+    },
+    "Interval %lld of %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Interval %1$lld of %2$lld"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Intervalo %1$lld de %2$lld"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "इंटरवल %1$lld / %2$lld"
+          }
+        }
+      }
+    },
+    "iPhone Settings › Privacy & Security" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajustes del iPhone › Privacidad y seguridad"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iPhone सेटिंग्स › गोपनीयता और सुरक्षा"
+          }
+        }
+      }
+    },
+    "kcal" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "kcal"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "kcal"
+          }
+        }
+      }
+    },
+    "kcal burned" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "kcal quemadas"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "kcal बर्न"
+          }
+        }
+      }
+    },
+    "kcal eaten today" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "kcal consumidas hoy"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आज खाई गई kcal"
+          }
+        }
+      }
+    },
+    "Keep the same bedtime and wake time, even at weekends." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acuéstate y levántate a la misma hora, incluso los fines de semana."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "सोने और जागने का समय रोज़ एक जैसा रखें, वीकेंड पर भी।"
+          }
+        }
+      }
+    },
+    "kg" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "kg"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "kg"
+          }
+        }
+      }
+    },
+    "knee" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "rodilla"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "घुटना"
+          }
+        }
+      }
+    },
+    "Knee pain or knee surgery" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dolor o cirugía de rodilla"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "घुटने में दर्द या घुटने की सर्जरी"
+          }
+        }
+      }
+    },
+    "Last 2 weeks" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Últimas 2 semanas"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "पिछले 2 हफ़्ते"
+          }
+        }
+      }
+    },
+    "Last 7 days" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Últimos 7 días"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "पिछले 7 दिन"
+          }
+        }
+      }
+    },
+    "Last night" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anoche"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कल रात"
+          }
+        }
+      }
+    },
+    "lb" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "lb"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "lb"
+          }
+        }
+      }
+    },
+    "left" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "restante"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "बाकी"
+          }
+        }
+      }
+    },
+    "Leg strength" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fuerza de piernas"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "पैरों की ताकत"
+          }
+        }
+      }
+    },
+    "Let's continue." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sigamos."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "चलिए, आगे बढ़ते हैं।"
+          }
+        }
+      }
+    },
+    "Let's find your Floor Age. Four short tests. I'll show you each one first." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vamos a descubrir tu Floor Age. Son cuatro pruebas cortas. Primero te muestro cada una."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "चलिए, आपकी Floor Age पता करते हैं। चार छोटे टेस्ट हैं। हर टेस्ट पहले मुझे करते हुए देखिए।"
+          }
+        }
+      }
+    },
+    "Let's go" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Vamos!"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "चलिए शुरू करें"
+          }
+        }
+      }
+    },
+    "Let's go." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Vamos!"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "चलिए, शुरू करते हैं।"
+          }
+        }
+      }
+    },
+    "Let's start your week" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Empecemos tu semana"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "चलिए, अपना हफ़्ता शुरू करें"
+          }
+        }
+      }
+    },
+    "Lift your foot. Go." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Levanta el pie. ¡Ya!"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "पैर उठाएं। शुरू।"
+          }
+        }
+      }
+    },
+    "Log a night" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Registrar una noche"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "एक रात दर्ज करें"
+          }
+        }
+      }
+    },
+    "Log how you slept to see your nights here." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Registra cómo dormiste para ver tus noches aquí."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अपनी नींद दर्ज करें, ताकि आपकी रातें यहां दिखें।"
+          }
+        }
+      }
+    },
+    "Logged" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Registrada"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "दर्ज किया"
+          }
+        }
+      }
+    },
+    "Longer than usual. If you often need this much, it's worth mentioning to your doctor." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Más de lo habitual. Si a menudo necesitas dormir tanto, conviene comentárselo a tu médico."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "सामान्य से ज़्यादा। अगर आपको अक्सर इतनी नींद चाहिए, तो अपने डॉक्टर को यह बताना अच्छा रहेगा।"
+          }
+        }
+      }
+    },
+    "Looking at your plate…" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analizando tu plato…"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आपकी प्लेट देख रहे हैं…"
+          }
+        }
+      }
+    },
+    "Looks like" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parece que hay"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "शायद ये हैं"
+          }
+        }
+      }
+    },
+    "Man" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hombre"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "पुरुष"
+          }
+        }
+      }
+    },
+    "Mark done" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Marcar como hecho"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "पूरा मार्क करें"
+          }
+        }
+      }
+    },
+    "Missed a day? No problem. Consistency beats perfection." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Te saltaste un día? No pasa nada. La constancia vale más que la perfección."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "एक दिन छूट गया? कोई बात नहीं। हर बार एकदम सही करने से ज़्यादा ज़रूरी है लगातार करते रहना।"
+          }
+        }
+      }
+    },
+    "More than 250 min a week for weight loss; beginners train strength 2–3 days, 8–12 reps, 1–3 sets." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Más de 250 min a la semana para perder peso; quienes empiezan entrenan fuerza 2–3 días, 8–12 rep., 1–3 series."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "वज़न घटाने के लिए हफ़्ते में 250 मिनट से ज़्यादा; शुरुआत करने वाले 2–3 दिन स्ट्रेंथ ट्रेनिंग करें, 8–12 रेप्स, 1–3 सेट।"
+          }
+        }
+      }
+    },
+    "moves like %lld" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "se mueve como a los %lld"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld साल जैसी चाल"
+          }
+        }
+      }
+    },
+    "Moves that could hurt are skipped or made gentler." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los movimientos que podrían hacerte daño se omiten o se suavizan."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "जिन मूव्स से तकलीफ़ हो सकती है, उन्हें छोड़ दिया जाता है या हल्का कर दिया जाता है।"
+          }
+        }
+      }
+    },
+    "Music" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Música"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "म्यूज़िक"
+          }
+        }
+      }
+    },
+    "My Floor Age" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mi Floor Age"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "मेरी Floor Age"
+          }
+        }
+      }
+    },
+    "MY FLOOR AGE" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MI FLOOR AGE"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "मेरी FLOOR AGE"
+          }
+        }
+      }
+    },
+    "Namaste!" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Namaste!"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "नमस्ते!"
+          }
+        }
+      }
+    },
+    "Next" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Siguiente"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आगे"
+          }
+        }
+      }
+    },
+    "Next: %@ · %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Next: %1$@ · %2$@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Siguiente: %1$@ · %2$@"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अगला: %1$@ · %2$@"
+          }
+        }
+      }
+    },
+    "Next: %@ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Next: %1$@ %2$@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Siguiente: %1$@ %2$@"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अगला: %1$@ %2$@"
+          }
+        }
+      }
+    },
+    "NHS Couch to 5K" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NHS Couch to 5K"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NHS Couch to 5K"
+          }
+        }
+      }
+    },
+    "Nice work. Rest. Next up, %@." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buen trabajo. Descansa. Lo siguiente: %@."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "बहुत बढ़िया। अब आराम करें। अगली एक्सरसाइज़ है %@।"
+          }
+        }
+      }
+    },
+    "Night" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noche"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "रात"
+          }
+        }
+      }
+    },
+    "Nights" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noches"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "रातें"
+          }
+        }
+      }
+    },
+    "No caffeine after mid-afternoon." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nada de cafeína a partir de media tarde."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "दोपहर ढलने के बाद कैफ़ीन (चाय, कॉफ़ी) न लें।"
+          }
+        }
+      }
+    },
+    "No daily target yet" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aún no hay objetivo diario"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अभी रोज़ का कोई लक्ष्य नहीं"
+          }
+        }
+      }
+    },
+    "No limitations" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sin limitaciones"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कोई शारीरिक दिक्कत नहीं"
+          }
+        }
+      }
+    },
+    "No music app found" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se encontró ninguna app de música"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कोई म्यूज़िक ऐप नहीं मिला"
+          }
+        }
+      }
+    },
+    "Normal" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Normal"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "सामान्य"
+          }
+        }
+      }
+    },
+    "Not available on this device" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No disponible en este dispositivo"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "इस डिवाइस पर उपलब्ध नहीं"
+          }
+        }
+      }
+    },
+    "Not now" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ahora no"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अभी नहीं"
+          }
+        }
+      }
+    },
+    "Nothing logged yet." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aún no has registrado nada."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अभी तक कुछ दर्ज नहीं किया गया।"
+          }
+        }
+      }
+    },
+    "Notifications are off for Floor Age. Turn them on in iPhone Settings › Notifications." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Las notificaciones de Floor Age están desactivadas. Actívalas en Ajustes del iPhone › Notificaciones."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Floor Age के लिए सूचनाएं बंद हैं। इन्हें iPhone सेटिंग्स › सूचनाएं में जाकर चालू करें।"
+          }
+        }
+      }
+    },
+    "Now walk briskly for %@. You should be able to talk, but not sing." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ahora camina a paso rápido durante %@. Deberías poder hablar, pero no cantar."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अब %@ तक तेज़ चलें। इतना तेज़ कि आप बात कर सकें, पर गा न सकें।"
+          }
+        }
+      }
+    },
+    "Obese" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obesidad"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "मोटापा"
+          }
+        }
+      }
+    },
+    "of %@ · %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "of %1$@ · %2$@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "de %1$@ · %2$@"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "लक्ष्य %1$@ · %2$@"
+          }
+        }
+      }
+    },
+    "OK" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regular"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ठीक है"
+          }
+        }
+      }
+    },
+    "One notification a day, only if you haven't done that day's training yet. You can change the time in Settings." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Una notificación al día, solo si aún no has hecho el entrenamiento de ese día. Puedes cambiar la hora en Ajustes."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "दिन में एक सूचना, सिर्फ़ तब जब आपने उस दिन की ट्रेनिंग अभी तक न की हो। समय आप सेटिंग्स में बदल सकते हैं।"
+          }
+        }
+      }
+    },
+    "One reminder a day, only if you haven't done today's training yet. None on rest days." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un recordatorio al día, solo si aún no has hecho el entrenamiento de hoy. Ninguno en los días de descanso."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "दिन में एक रिमाइंडर, सिर्फ़ तब जब आपने आज की ट्रेनिंग अभी तक न की हो। आराम के दिनों में कोई रिमाइंडर नहीं।"
+          }
+        }
+      }
+    },
+    "One-Leg Balance" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Equilibrio sobre una pierna"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "एक पैर पर संतुलन"
+          }
+        }
+      }
+    },
+    "Only to my knees" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Solo llego a las rodillas"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "सिर्फ़ घुटनों तक"
+          }
+        }
+      }
+    },
+    "Overweight" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sobrepeso"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ज़्यादा वज़न"
+          }
+        }
+      }
+    },
+    "Palms flat on the floor" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apoyo las palmas en el suelo"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "हथेलियां ज़मीन पर पूरी टिकती हैं"
+          }
+        }
+      }
+    },
+    "Paluch et al., Lancet Public Health (2022)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paluch et al., Lancet Public Health (2022)"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paluch et al., Lancet Public Health (2022)"
+          }
+        }
+      }
+    },
+    "Pause" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pausar"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "रोकें"
+          }
+        }
+      }
+    },
+    "Paused." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En pausa."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "रोक दिया गया।"
+          }
+        }
+      }
+    },
+    "Pelvic floor" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suelo pélvico"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "पेल्विक फ़्लोर"
+          }
+        }
+      }
+    },
+    "Pelvic floor (Kegel) exercises" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ejercicios de suelo pélvico (Kegel)"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "पेल्विक फ़्लोर (कीगल) एक्सरसाइज़"
+          }
+        }
+      }
+    },
+    "Photos" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fotos"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "फ़ोटो"
+          }
+        }
+      }
+    },
+    "Plan" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plan"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "प्लान"
+          }
+        }
+      }
+    },
+    "Plan complete: keep repeating the final week" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plan completado: sigue repitiendo la última semana"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "प्लान पूरा हुआ: आख़िरी हफ़्ता दोहराते रहें"
+          }
+        }
+      }
+    },
+    "Play your music" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pon tu música"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अपना म्यूज़िक चलाएं"
+          }
+        }
+      }
+    },
+    "Please check with your doctor before starting. We'll keep sessions gentle." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Consulta a tu médico antes de empezar. Mantendremos las sesiones suaves."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कृपया शुरू करने से पहले अपने डॉक्टर से सलाह लें। हम सेशन हल्के रखेंगे।"
+          }
+        }
+      }
+    },
+    "Poorly" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mal"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ख़राब"
+          }
+        }
+      }
+    },
+    "Prefer not to say" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prefiero no decirlo"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "नहीं बताना चाहते"
+          }
+        }
+      }
+    },
+    "Profile" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Perfil"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "प्रोफ़ाइल"
+          }
+        }
+      }
+    },
+    "Progress" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Progreso"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "प्रगति"
+          }
+        }
+      }
+    },
+    "Put screens away an hour before bed." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deja las pantallas una hora antes de acostarte."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "सोने से एक घंटा पहले स्क्रीन (फ़ोन, टीवी) से दूर हो जाएं।"
+          }
+        }
+      }
+    },
+    "Reach my ankles" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Llego a los tobillos"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "टखनों तक"
+          }
+        }
+      }
+    },
+    "Reach my shins" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Llego a las espinillas"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "पिंडलियों तक"
+          }
+        }
+      }
+    },
+    "Read sleep from Apple Health" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leer el sueño de Apple Health"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Health से नींद का डेटा लें"
+          }
+        }
+      }
+    },
+    "Ready. Go!" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Empezamos!"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "तैयार। शुरू!"
+          }
+        }
+      }
+    },
+    "Recovery is part of training. A gentle stroll or stretching is fine." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La recuperación es parte del entrenamiento. Un paseo tranquilo o unos estiramientos están bien."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आराम भी ट्रेनिंग का हिस्सा है। हल्की सैर या स्ट्रेचिंग कर सकते हैं।"
+          }
+        }
+      }
+    },
+    "Remind you in the evening?" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Te lo recordamos por la tarde?"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "शाम को याद दिलाएं?"
+          }
+        }
+      }
+    },
+    "Reminder" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recordatorio"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "रिमाइंडर"
+          }
+        }
+      }
+    },
+    "reps" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "rep."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "रेप्स"
+          }
+        }
+      }
+    },
+    "Rest" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Descanso"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आराम"
+          }
+        }
+      }
+    },
+    "Rest day" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Día de descanso"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आराम का दिन"
+          }
+        }
+      }
+    },
+    "Restart" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reiniciar"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "फिर से शुरू करें"
+          }
+        }
+      }
+    },
+    "Restart your plan? Your progress in this plan will be cleared." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Reiniciar tu plan? Se borrará tu progreso en este plan."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "प्लान फिर से शुरू करें? इस प्लान में आपकी प्रगति मिट जाएगी।"
+          }
+        }
+      }
+    },
+    "Resume" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reanudar"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "जारी रखें"
+          }
+        }
+      }
+    },
+    "Retake" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Repetir"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "फिर से लें"
+          }
+        }
+      }
+    },
+    "Retest my Floor Age" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volver a medir mi Floor Age"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "मेरी Floor Age फिर से जांचें"
+          }
+        }
+      }
+    },
+    "Right in the recommended %@. Well done." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Justo dentro de las %@ recomendadas. ¡Bien hecho!"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "बिल्कुल सुझाए गए %@ के अंदर। बहुत बढ़िया।"
+          }
+        }
+      }
+    },
+    "Right on my age (%lld)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Igual que mi edad (%lld)"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "बिल्कुल मेरी उम्र जितनी (%lld)"
+          }
+        }
+      }
+    },
+    "Run" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Correr"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "दौड़"
+          }
+        }
+      }
+    },
+    "Run for %@. Keep it slow enough to talk." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Corre durante %@. Ve lo bastante despacio para poder hablar."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ तक दौड़ें। इतना धीरे दौड़ें कि बात कर सकें।"
+          }
+        }
+      }
+    },
+    "Run/walk" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Correr/caminar"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "दौड़/वॉक"
+          }
+        }
+      }
+    },
+    "Save" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guardar"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "सेव करें"
+          }
+        }
+      }
+    },
+    "Save this night" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guardar esta noche"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "यह रात सेव करें"
+          }
+        }
+      }
+    },
+    "Save to my profile" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guardar en mi perfil"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "मेरी प्रोफ़ाइल में सेव करें"
+          }
+        }
+      }
+    },
+    "Saved" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guardado"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "सेव हो गया"
+          }
+        }
+      }
+    },
+    "Saved to your profile" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guardado en tu perfil"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आपकी प्रोफ़ाइल में सेव हो गया"
+          }
+        }
+      }
+    },
+    "Score: %.1f / 10" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Puntuación: %.1f / 10"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "स्कोर: %.1f / 10"
+          }
+        }
+      }
+    },
+    "Search roti, dal, idli…" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Busca roti, dal, idli…"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "रोटी, दाल, इडली खोजें…"
+          }
+        }
+      }
+    },
+    "sec" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "seg"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "सेकंड"
+          }
+        }
+      }
+    },
+    "See my Floor Age" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ver mi Floor Age"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "मेरी Floor Age देखें"
+          }
+        }
+      }
+    },
+    "Servings: %@ × %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Servings: %1$@ × %2$@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Porciones: %1$@ × %2$@"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "मात्रा: %1$@ × %2$@"
+          }
+        }
+      }
+    },
+    "Session complete" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sesión completada"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "सेशन पूरा हुआ"
+          }
+        }
+      }
+    },
+    "Sessions" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sesiones"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "सेशन"
+          }
+        }
+      }
+    },
+    "sets × reps" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "series × rep."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "सेट × रेप्स"
+          }
+        }
+      }
+    },
+    "Settings" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajustes"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "सेटिंग्स"
+          }
+        }
+      }
+    },
+    "Share my Floor Age" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartir mi Floor Age"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "मेरी Floor Age शेयर करें"
+          }
+        }
+      }
+    },
+    "Sit in the middle of a sturdy chair, arms crossed on your chest. When I say go, stand up fully and sit down as many times as you can in 30 seconds. Count out loud." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Siéntate en el centro de una silla firme, con los brazos cruzados sobre el pecho. Cuando te diga «ya», ponte de pie por completo y vuelve a sentarte tantas veces como puedas en 30 segundos. Cuenta en voz alta."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "एक मज़बूत कुर्सी के बीच में बैठें, हाथ सीने पर क्रॉस करके। जब मैं “शुरू” कहूं, तो 30 सेकंड में जितनी बार हो सके, पूरा खड़े होकर वापस बैठें। ज़ोर से गिनती बोलें।"
+          }
+        }
+      }
+    },
+    "Sit to Rise" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sentarse y levantarse del suelo"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "बैठकर उठना"
+          }
+        }
+      }
+    },
+    "Skip" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saltar"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "छोड़ें"
+          }
+        }
+      }
+    },
+    "Skip interval" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saltar intervalo"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "इंटरवल छोड़ें"
+          }
+        }
+      }
+    },
+    "Skip rest" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saltar descanso"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आराम छोड़ें"
+          }
+        }
+      }
+    },
+    "Skip test" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saltar prueba"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "टेस्ट छोड़ें"
+          }
+        }
+      }
+    },
+    "skipped" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "omitida"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "छोड़ा गया"
+          }
+        }
+      }
+    },
+    "Sleep" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sueño"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "नींद"
+          }
+        }
+      }
+    },
+    "Sleeping better" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dormir mejor"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "बेहतर नींद के लिए"
+          }
+        }
+      }
+    },
+    "Slept OK" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dormí regular"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ठीक-ठाक नींद"
+          }
+        }
+      }
+    },
+    "Slept poorly" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dormí mal"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ख़राब नींद"
+          }
+        }
+      }
+    },
+    "Slept well" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dormí bien"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अच्छी नींद"
+          }
+        }
+      }
+    },
+    "Slower" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Más lento"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "धीमा"
+          }
+        }
+      }
+    },
+    "Small steps add up: daily walks and your 10-minute sessions make a real difference." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los pequeños pasos suman: las caminatas diarias y tus sesiones de 10 minutos marcan una diferencia real."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "छोटी-छोटी कोशिशें जुड़ती जाती हैं: रोज़ की वॉक और आपके 10 मिनट के सेशन से सच में फ़र्क पड़ता है।"
+          }
+        }
+      }
+    },
+    "Snap your plate" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Foto de tu plato"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अपनी प्लेट की फ़ोटो लें"
+          }
+        }
+      }
+    },
+    "Something else" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Otro alimento"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कुछ और"
+          }
+        }
+      }
+    },
+    "Speed" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Velocidad"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "रफ़्तार"
+          }
+        }
+      }
+    },
+    "Spoken coaching" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Indicaciones por voz"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "बोलकर कोचिंग"
+          }
+        }
+      }
+    },
+    "Stand near a wall. Lift one foot and balance for as long as you can, up to 45 seconds. Tap Stop the moment your foot touches down or you grab the wall." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Colócate cerca de una pared. Levanta un pie y mantén el equilibrio todo lo que puedas, hasta 45 segundos. Toca Detener en cuanto el pie toque el suelo o te apoyes en la pared."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "दीवार के पास खड़े हों। एक पैर उठाएं और जितनी देर हो सके संतुलन बनाए रखें, ज़्यादा से ज़्यादा 45 सेकंड। जैसे ही पैर नीचे छुए या आप दीवार पकड़ें, “रोकें” पर टैप करें।"
+          }
+        }
+      }
+    },
+    "Stand on a mat. Cross your legs and sit down on the floor, then stand back up. Try not to use your hands, knees or forearms. Afterwards, tell me how many times you needed support." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Colócate sobre una colchoneta. Cruza las piernas y siéntate en el suelo; luego vuelve a ponerte de pie. Intenta no usar las manos, las rodillas ni los antebrazos. Después, dime cuántas veces necesitaste apoyarte."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "मैट पर खड़े हों। पैर क्रॉस करके ज़मीन पर बैठें, फिर वापस खड़े हो जाएं। कोशिश करें कि हाथ, घुटनों या बांहों का सहारा न लें। इसके बाद मुझे बताएं कि आपको कितनी बार सहारा लेना पड़ा।"
+          }
+        }
+      }
+    },
+    "Stand with your feet together and knees straight but not locked. Slowly fold forward and reach down. Don't bounce. Pick how far you reached." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ponte de pie con los pies juntos y las rodillas estiradas, pero sin bloquearlas. Inclínate despacio hacia adelante y baja las manos. No rebotes. Elige hasta dónde llegaste."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "पैर साथ रखकर खड़े हों, घुटने सीधे रखें पर कसकर नहीं। धीरे-धीरे आगे झुकें और हाथ नीचे ले जाएं। झटका न दें। चुनें कि आपके हाथ कहां तक पहुंचे।"
+          }
+        }
+      }
+    },
+    "Start" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Empezar"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "शुरू करें"
+          }
+        }
+      }
+    },
+    "Start %@ today" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Empezar hoy: %@"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आज से %@ शुरू करें"
+          }
+        }
+      }
+    },
+    "Start 30-second timer" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iniciar temporizador de 30 segundos"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "30 सेकंड का टाइमर शुरू करें"
+          }
+        }
+      }
+    },
+    "Start timer" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iniciar temporizador"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "टाइमर शुरू करें"
+          }
+        }
+      }
+    },
+    "Start with coach" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Empezar con tu coach"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कोच के साथ शुरू करें"
+          }
+        }
+      }
+    },
+    "Step counting is off. Turn on Motion & Fitness for Floor Age in iPhone Settings › Privacy & Security." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El conteo de pasos está desactivado. Activa Movimiento y forma física para Floor Age en Ajustes del iPhone › Privacidad y seguridad."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कदम गिनना बंद है। iPhone सेटिंग्स › गोपनीयता और सुरक्षा में जाकर Floor Age के लिए गति और फ़िटनेस चालू करें।"
+          }
+        }
+      }
+    },
+    "Steps" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pasos"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कदम"
+          }
+        }
+      }
+    },
+    "steps a day" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "pasos al día"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कदम रोज़"
+          }
+        }
+      }
+    },
+    "steps today" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "pasos hoy"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आज के कदम"
+          }
+        }
+      }
+    },
+    "Still time for today's training" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aún estás a tiempo de entrenar hoy"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आज की ट्रेनिंग के लिए अभी भी समय है"
+          }
+        }
+      }
+    },
+    "Stop" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detener"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "रोकें"
+          }
+        }
+      }
+    },
+    "Stop! How many full stands did you do?" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Tiempo! ¿Cuántas veces te levantaste por completo?"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "रुकिए! आपने कितनी बार पूरा उठना-बैठना किया?"
+          }
+        }
+      }
+    },
+    "Strength · %lld sets" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fuerza · %lld series"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "स्ट्रेंथ · %lld सेट"
+          }
+        }
+      }
+    },
+    "Strength · 1 set" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fuerza · 1 serie"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "स्ट्रेंथ · 1 सेट"
+          }
+        }
+      }
+    },
+    "strength %lld sets" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "fuerza %lld series"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "स्ट्रेंथ %lld सेट"
+          }
+        }
+      }
+    },
+    "strength 1 set" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "fuerza 1 serie"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "स्ट्रेंथ 1 सेट"
+          }
+        }
+      }
+    },
+    "Supports getting up: %lld" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apoyos al levantarte: %lld"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "उठते समय सहारा: %lld"
+          }
+        }
+      }
+    },
+    "Supports going down: %lld" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apoyos al bajar: %lld"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "बैठते समय सहारा: %lld"
+          }
+        }
+      }
+    },
+    "Switch sides." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cambia de lado."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अब दूसरी तरफ़।"
+          }
+        }
+      }
+    },
+    "Take a photo of your plate from above" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toma una foto de tu plato desde arriba"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ऊपर से अपनी प्लेट की फ़ोटो लें"
+          }
+        }
+      }
+    },
+    "Take photo" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tomar foto"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "फ़ोटो लें"
+          }
+        }
+      }
+    },
+    "Take the Floor Age check" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Haz la prueba Floor Age"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Floor Age जांच करें"
+          }
+        }
+      }
+    },
+    "Tap an exercise to see the coach demonstrate it, or %@ for a video." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toca un ejercicio para que tu coach te lo muestre, o %@ para ver un video."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "किसी एक्सरसाइज़ पर टैप करें, कोच उसे करके दिखाएंगे। वीडियो के लिए %@ पर टैप करें।"
+          }
+        }
+      }
+    },
+    "Tap an exercise to see the coach demonstrate it." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toca un ejercicio para que tu coach te lo muestre."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "किसी एक्सरसाइज़ पर टैप करें, कोच उसे करके दिखाएंगे।"
+          }
+        }
+      }
+    },
+    "Target %@ kcal" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Objetivo: %@ kcal"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "लक्ष्य %@ kcal"
+          }
+        }
+      }
+    },
+    "Ten seconds left." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quedan diez segundos."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "दस सेकंड बाकी।"
+          }
+        }
+      }
+    },
+    "Test %lld of %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Test %1$lld of %2$lld"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prueba %1$lld de %2$lld"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "टेस्ट %1$lld / %2$lld"
+          }
+        }
+      }
+    },
+    "Test voice" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Probar voz"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आवाज़ सुनें"
+          }
+        }
+      }
+    },
+    "That's it, well done! Walking and running like this is how fitness builds." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Eso es, bien hecho! Caminando y corriendo así es como se gana forma física."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "बस, बहुत बढ़िया! ऐसे ही चलने और दौड़ने से फ़िटनेस बनती है।"
+          }
+        }
+      }
+    },
+    "That's the session done. Great job showing up today!" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sesión terminada. ¡Muy bien por entrenar hoy!"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आज का सेशन पूरा हुआ। आज आपने समय निकाला, बहुत बढ़िया!"
+          }
+        }
+      }
+    },
+    "The green band is the recommended %@ for your age (National Sleep Foundation)." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La franja verde marca las %@ recomendadas para tu edad (National Sleep Foundation)."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "हरी पट्टी आपकी उम्र के लिए सुझाए गए %@ दिखाती है (National Sleep Foundation)।"
+          }
+        }
+      }
+    },
+    "This app gives general fitness guidance, not medical advice. Stop if anything hurts." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta app ofrece orientación general sobre actividad física, no consejo médico. Detente si algo te duele."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "यह ऐप सामान्य फ़िटनेस मार्गदर्शन देता है, मेडिकल सलाह नहीं। कहीं भी दर्द हो तो रुक जाएं।"
+          }
+        }
+      }
+    },
+    "This device can't count steps." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este dispositivo no puede contar pasos."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "यह डिवाइस कदम नहीं गिन सकता।"
+          }
+        }
+      }
+    },
+    "Tick what's on your plate" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Marca lo que hay en tu plato"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आपकी प्लेट में जो है, उस पर टिक करें"
+          }
+        }
+      }
+    },
+    "Time" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hora"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "समय"
+          }
+        }
+      }
+    },
+    "To" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hasta"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "तक"
+          }
+        }
+      }
+    },
+    "to your goal" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "para tu objetivo"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "लक्ष्य तक बाकी"
+          }
+        }
+      }
+    },
+    "Today" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hoy"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आज"
+          }
+        }
+      }
+    },
+    "today %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "hoy %@"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आज %@"
+          }
+        }
+      }
+    },
+    "Today at a glance" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu día de un vistazo"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आज एक नज़र में"
+          }
+        }
+      }
+    },
+    "Today: %@. A little now keeps your streak going." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hoy: %@. Un poco ahora y mantienes tu racha."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आज: %@। अभी थोड़ा सा करने से आपका सिलसिला बना रहेगा।"
+          }
+        }
+      }
+    },
+    "Today's session" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sesión de hoy"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आज का सेशन"
+          }
+        }
+      }
+    },
+    "Toe Reach" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tocar los pies"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "पंजे छूना"
+          }
+        }
+      }
+    },
+    "Total sessions" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sesiones totales"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कुल सेशन"
+          }
+        }
+      }
+    },
+    "Touch my toes" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toco los dedos de los pies"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "पैर की उंगलियों तक"
+          }
+        }
+      }
+    },
+    "Track" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Registro"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ट्रैक"
+          }
+        }
+      }
+    },
+    "Training plan" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plan de entrenamiento"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ट्रेनिंग प्लान"
+          }
+        }
+      }
+    },
+    "Try again" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Intentar de nuevo"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "फिर कोशिश करें"
+          }
+        }
+      }
+    },
+    "Two more!" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Dos más!"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "बस दो और!"
+          }
+        }
+      }
+    },
+    "Underweight" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bajo peso"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कम वज़न"
+          }
+        }
+      }
+    },
+    "Units" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unidades"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "इकाई"
+          }
+        }
+      }
+    },
+    "Uses the sleep your iPhone's Sleep schedule or an Apple Watch records. Floor Age only reads it, and it stays on your phone. Nights you log yourself are kept." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usa el sueño que registran el horario de sueño de tu iPhone o un Apple Watch. Floor Age solo lo lee, y se queda en tu teléfono. Las noches que registres tú se conservan."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आपके iPhone का नींद शेड्यूल या Apple Watch जो नींद रिकॉर्ड करती है, उसका इस्तेमाल होता है। Floor Age उसे सिर्फ़ पढ़ता है, और वह आपके फ़ोन पर ही रहती है। जो रातें आपने खुद दर्ज की हैं, वे बनी रहती हैं।"
+          }
+        }
+      }
+    },
+    "Voice" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voz"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आवाज़"
+          }
+        }
+      }
+    },
+    "Voice coach" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Coach de voz"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "वॉइस कोच"
+          }
+        }
+      }
+    },
+    "Walk" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Caminar"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "वॉक"
+          }
+        }
+      }
+    },
+    "Walk for %@." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Camina durante %@."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ तक वॉक करें।"
+          }
+        }
+      }
+    },
+    "Walking or running, strength sets and daily steps, built for your weight and age." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Caminar o correr, series de fuerza y pasos diarios, adaptados a tu peso y a tu edad."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "वॉक या दौड़, स्ट्रेंथ सेट और रोज़ के कदम, आपके वज़न और उम्र के हिसाब से।"
+          }
+        }
+      }
+    },
+    "Warm up with a %@ walk at an easy pace." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calienta con una caminata de %@ a ritmo suave."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ आराम से वॉक करके वार्म-अप करें।"
+          }
+        }
+      }
+    },
+    "Warm-up walk" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Caminata de calentamiento"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "वार्म-अप वॉक"
+          }
+        }
+      }
+    },
+    "Watch a demo video of %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ver un video de demostración de %@"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ का डेमो वीडियो देखें"
+          }
+        }
+      }
+    },
+    "Watch a real demo" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ver una demostración real"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "असली डेमो देखें"
+          }
+        }
+      }
+    },
+    "We'll skip or adapt moves that could hurt. Select all that apply." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Omitiremos o adaptaremos los movimientos que puedan hacerte daño. Selecciona todas las opciones que correspondan."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "जिन मूव्स से तकलीफ़ हो सकती है, उन्हें हम छोड़ देंगे या आसान कर देंगे। जो भी लागू हो, सब चुनें।"
+          }
+        }
+      }
+    },
+    "Week %lld of %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Week %1$lld of %2$lld"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Semana %1$lld de %2$lld"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "हफ़्ता %1$lld / %2$lld"
+          }
+        }
+      }
+    },
+    "Weight" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peso"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "वज़न"
+          }
+        }
+      }
+    },
+    "Weight over time" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Evolución del peso"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "समय के साथ वज़न"
+          }
+        }
+      }
+    },
+    "Well" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bien"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अच्छी"
+          }
+        }
+      }
+    },
+    "Well done!" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Bien hecho!"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "शाबाश!"
+          }
+        }
+      }
+    },
+    "Well short of the %@ most adults need. Try an earlier, regular bedtime." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Muy por debajo de las %@ que necesita la mayoría de los adultos. Intenta acostarte más temprano y siempre a la misma hora."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ज़्यादातर वयस्कों को ज़रूरी %@ से काफ़ी कम। रोज़ एक तय समय पर, थोड़ा जल्दी सोने की कोशिश करें।"
+          }
+        }
+      }
+    },
+    "Went to bed" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Me acosté"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "सोने का समय"
+          }
+        }
+      }
+    },
+    "Where these numbers come from" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De dónde salen estas cifras"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ये आंकड़े कहां से आए हैं"
+          }
+        }
+      }
+    },
+    "WHO guidelines on physical activity (2020)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Directrices de la OMS sobre actividad física (2020)"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "शारीरिक गतिविधि पर WHO के दिशानिर्देश (2020)"
+          }
+        }
+      }
+    },
+    "WHO international ranges: healthy 18.5–24.9. If you're of South Asian, Chinese or other Asian descent, the Asian ranges fit better." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rangos internacionales de la OMS: saludable 18,5–24,9. Si tu origen es del sur de Asia, de China o de otra parte de Asia, los rangos asiáticos se ajustan mejor."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WHO की अंतरराष्ट्रीय रेंज: स्वस्थ 18.5–24.9। अगर आप दक्षिण एशियाई, चीनी या किसी और एशियाई मूल के हैं, तो एशियाई रेंज ज़्यादा सही बैठती है।"
+          }
+        }
+      }
+    },
+    "Woke up" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Me desperté"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "जागने का समय"
+          }
+        }
+      }
+    },
+    "Woman" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mujer"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "महिला"
+          }
+        }
+      }
+    },
+    "Yes, at %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sí, a las %@"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "हां, %@ पर"
+          }
+        }
+      }
+    },
+    "Yesterday" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ayer"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कल"
+          }
+        }
+      }
+    },
+    "you can build up to running safely" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "puedes llegar a correr de forma segura"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आप धीरे-धीरे सुरक्षित रूप से दौड़ने तक पहुंच सकते हैं"
+          }
+        }
+      }
+    },
+    "You moved today. That's what counts." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hoy te has movido. Eso es lo que cuenta."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आज आपने कसरत की। यही सबसे ज़रूरी है।"
+          }
+        }
+      }
+    },
+    "You'll need: a mat or carpet, a sturdy chair, a wall nearby." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Necesitarás: una colchoneta o alfombra, una silla firme y una pared cerca."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आपको चाहिए: एक मैट या दरी, एक मज़बूत कुर्सी, और पास में एक दीवार।"
+          }
+        }
+      }
+    },
+    "You're in the healthy range. Keep moving every day to stay here." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estás en el rango saludable. Sigue moviéndote cada día para mantenerte así."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आप स्वस्थ रेंज में हैं। यहीं बने रहने के लिए रोज़ सक्रिय रहें।"
+          }
+        }
+      }
+    },
+    "your %@ notes" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "lo que nos contaste (%@)"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ से जुड़ी आपकी जानकारी"
+          }
+        }
+      }
+    },
+    "Your 10-minute session with Coach is ready. Missing a day never resets your progress." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu sesión de 10 minutos con tu coach está lista. Saltarte un día nunca reinicia tu progreso."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कोच के साथ आपका 10 मिनट का सेशन तैयार है। एक दिन छूटने से आपकी प्रगति कभी शून्य नहीं होती।"
+          }
+        }
+      }
+    },
+    "Your age" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu edad"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आपकी उम्र"
+          }
+        }
+      }
+    },
+    "Your age is used to compare your Floor Age, and your coach matches you. It all stays on this phone." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu edad sirve para comparar tu Floor Age, y tu coach se adapta a ti. Todo se queda en este teléfono."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आपकी उम्र से आपकी Floor Age की तुलना की जाती है, और कोच भी आपके हिसाब से चुना जाता है। यह सब इसी फ़ोन पर रहता है।"
+          }
+        }
+      }
+    },
+    "Your coach is a woman or a man to match your profile." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu coach es mujer u hombre según tu perfil."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आपकी प्रोफ़ाइल के हिसाब से आपका कोच महिला या पुरुष होगा।"
+          }
+        }
+      }
+    },
+    "Your coach matches you. Past Floor Age checks keep the age you had when you took them." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu coach se adapta a ti. Las pruebas Floor Age anteriores conservan la edad que tenías al hacerlas."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कोच आपके हिसाब से चुना जाता है। पुरानी Floor Age जांचों में वही उम्र रहती है जो जांच के समय थी।"
+          }
+        }
+      }
+    },
+    "Your data is stored only on this iPhone. Floor Age is a fitness estimate, not medical advice." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tus datos se guardan solo en este iPhone. Floor Age es una estimación de tu forma física, no un consejo médico."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आपका डेटा सिर्फ़ इसी iPhone पर रहता है। Floor Age फ़िटनेस का एक अनुमान है, मेडिकल सलाह नहीं।"
+          }
+        }
+      }
+    },
+    "Your Floor Age" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu Floor Age"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आपकी Floor Age"
+          }
+        }
+      }
+    },
+    "Your Floor Age check" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu prueba Floor Age"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आपकी Floor Age जांच"
+          }
+        }
+      }
+    },
+    "Your Floor Age is %lld. Brilliant, your body moves younger than your age!" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu Floor Age es %lld. ¡Genial, tu cuerpo se mueve como si tuvieras menos edad!"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आपकी Floor Age %lld है। शानदार, आपके शरीर की चाल आपकी उम्र से ज़्यादा जवान है!"
+          }
+        }
+      }
+    },
+    "Your Floor Age is %lld. That's %lld years above your age, and we'll work on it together." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Your Floor Age is %1$lld. That's %2$lld years above your age, and we'll work on it together."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu Floor Age es %1$lld. Son %2$lld años más que tu edad, y vamos a trabajarlo en equipo."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आपकी Floor Age %1$lld है। यह आपकी उम्र से %2$lld साल ज़्यादा है, और हम मिलकर इस पर काम करेंगे।"
+          }
+        }
+      }
+    },
+    "Your photo" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu foto"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आपकी फ़ोटो"
+          }
+        }
+      }
+    },
+    "Your photo is checked on this iPhone and never saved or sent. Photos can't show portion size, so set the servings yourself." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu foto se analiza en este iPhone y nunca se guarda ni se envía. Una foto no muestra el tamaño de la porción, así que indica tú las porciones."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आपकी फ़ोटो की जांच इसी iPhone पर होती है, और वह कभी सेव नहीं होती, न कहीं भेजी जाती है। फ़ोटो से मात्रा का पता नहीं चलता, इसलिए मात्रा खुद चुनें।"
+          }
+        }
+      }
+    },
+    "Your plan" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu plan"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आपका प्लान"
+          }
+        }
+      }
+    },
+    "Your plan now focuses on %@. Retest in about 4 weeks to see your Floor Age drop." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ahora tu plan se centra en %@. Repite la prueba en unas 4 semanas para ver cómo baja tu Floor Age."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अब आपका प्लान %@ पर ध्यान देगा। लगभग 4 हफ़्ते बाद फिर से जांच करें और देखें कि आपकी Floor Age कितनी घटी।"
+          }
+        }
+      }
+    },
+    "Your training plan" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu plan de entrenamiento"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आपका ट्रेनिंग प्लान"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

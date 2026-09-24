@@ -600,6 +600,21 @@ final class ReminderTextTests: XCTestCase {
     }
 }
 
+final class LocalizationTests: XCTestCase {
+    /// Hindi and Spanish are bundled for screens, exercise instructions and food names.
+    func testHindiAndSpanishShipInTheApp() throws {
+        try XCTSkipUnless(Bundle.main.path(forResource: "hi", ofType: "lproj") != nil, "needs the app bundle")
+        for language in ["hi", "es"] {
+            let path = try XCTUnwrap(Bundle.main.path(forResource: language, ofType: "lproj"), language)
+            let bundle = try XCTUnwrap(Bundle(path: path))
+            XCTAssertNotEqual(bundle.localizedString(forKey: "Today", value: nil, table: nil), "Today", language)
+            XCTAssertNotEqual(ExerciseLibrary.shared["squat"].localized(bundle: bundle).intro,
+                              ExerciseLibrary.shared["squat"].intro, "\(language) exercise instructions")
+            XCTAssertNotEqual(bundle.localizedString(forKey: "Scrambled eggs", value: nil, table: "Foods"), "Scrambled eggs", language)
+        }
+    }
+}
+
 @MainActor
 final class RealisticCoachTests: XCTestCase {
     let library = ExerciseLibrary.shared

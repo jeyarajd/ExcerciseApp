@@ -7,11 +7,24 @@ enum Limitation: String, Codable, CaseIterable, Identifiable {
 
     var label: String {
         switch self {
-        case .knee: "Knee pain or knee surgery"
-        case .hip: "Hip pain or hip replacement"
-        case .back: "Back pain"
-        case .dizziness: "Dizziness or balance problems"
-        case .medical: "A doctor has told me to limit exercise"
+        case .knee: String(localized: "Knee pain or knee surgery")
+        case .hip: String(localized: "Hip pain or hip replacement")
+        case .back: String(localized: "Back pain")
+        case .dizziness: String(localized: "Dizziness or balance problems")
+        case .medical: String(localized: "A doctor has told me to limit exercise")
+        }
+    }
+}
+
+extension Limitation {
+    /// "knee", "hip"… for short lists.
+    var shortLabel: String {
+        switch self {
+        case .knee: String(localized: "knee")
+        case .hip: String(localized: "hip")
+        case .back: String(localized: "back")
+        case .dizziness: String(localized: "dizziness")
+        case .medical: String(localized: "doctor's advice")
         }
     }
 }
@@ -20,7 +33,7 @@ enum Gender: String, Codable, CaseIterable, Identifiable {
     case female, male
 
     var id: String { rawValue }
-    var label: String { self == .female ? "Woman" : "Man" }
+    var label: String { self == .female ? String(localized: "Woman") : String(localized: "Man") }
 }
 
 struct Profile: Codable, Equatable {
@@ -173,11 +186,11 @@ final class AppModel: ObservableObject {
     /// no plan, or nothing on a plan rest day.
     func reminderText(on date: Date) -> String? {
         guard let profile, let program = planProgram, let position = planPosition(on: date) else {
-            return "Your 10-minute session with Coach is ready. Missing a day never resets your progress."
+            return String(localized: "Your 10-minute session with Coach is ready. Missing a day never resets your progress.")
         }
         let day = TrainingPlan.week(position.week, program: program, profile: profile, averageSteps: planBaseSteps).days[position.day]
         guard day.activities != [.rest] else { return nil }
-        return "Today: \(TrainingPlan.headline(day)). A little now keeps your streak going."
+        return String(localized: "Today: \(TrainingPlan.headline(day)). A little now keeps your streak going.")
     }
 
     func startPlan(_ program: TrainingPlan.Program, averageSteps: Int?, on date: Date = Date()) {
@@ -294,8 +307,8 @@ struct PlanItem: Identifiable, Hashable {
     }
 
     var amountLabel: String {
-        if let reps { return "\(reps) reps" }
-        return "\(seconds ?? 0) sec"
+        if let reps { return String(localized: "\(reps) reps") }
+        return String(localized: "\(seconds ?? 0) sec")
     }
 
     /// Rough duration, for the plan summary.

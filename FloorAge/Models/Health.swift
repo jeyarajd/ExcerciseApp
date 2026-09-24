@@ -8,7 +8,7 @@ enum BMIScale: String, CaseIterable, Identifiable {
     case international, asian
 
     var id: String { rawValue }
-    var label: String { self == .international ? "International (WHO)" : "Asian" }
+    var label: String { self == .international ? String(localized: "International (WHO)") : String(localized: "Asian") }
     var overweight: Double { self == .international ? 25 : 23 }
     var obese: Double { self == .international ? 30 : 25 }
 
@@ -25,29 +25,30 @@ enum BMI {
 
         var label: String {
             switch self {
-            case .underweight: "Underweight"
-            case .healthy: "Healthy"
-            case .overweight: "Overweight"
-            case .obese: "Obese"
+            case .underweight: String(localized: "Underweight")
+            case .healthy: String(localized: "Healthy")
+            case .overweight: String(localized: "Overweight")
+            case .obese: String(localized: "Obese")
             }
         }
 
         /// Encouragement, never shaming.
         var message: String {
             switch self {
-            case .underweight: "Build strength with your daily sessions and eat regular, balanced meals."
-            case .healthy: "You're in the healthy range. Keep moving every day to stay here."
-            case .overweight: "Small steps add up: daily walks and your 10-minute sessions make a real difference."
-            case .obese: "Every kilo counts. Start gently, walk a little more each week, and check with your doctor for a plan."
+            case .underweight: String(localized: "Build strength with your daily sessions and eat regular, balanced meals.")
+            case .healthy: String(localized: "You're in the healthy range. Keep moving every day to stay here.")
+            case .overweight: String(localized: "Small steps add up: daily walks and your 10-minute sessions make a real difference.")
+            case .obese: String(localized: "Every kilo counts. Start gently, walk a little more each week, and check with your doctor for a plan.")
             }
         }
 
         func range(_ scale: BMIScale) -> String {
             switch self {
-            case .underweight: "below 18.5"
-            case .healthy: "18.5 – \(scale.overweight - 0.1)"
-            case .overweight: "\(scale.overweight.formatted()) – \(scale.obese - 0.1)"
-            case .obese: "\(scale.obese.formatted()) and above"
+            case .underweight: String(localized: "below \(BMI.underweightBelow.formatted())")
+            // Numbers are formatted first: a Double inside String(localized:) would print "24.900000".
+            case .healthy: String(localized: "\(BMI.underweightBelow.formatted()) – \((scale.overweight - 0.1).formatted())")
+            case .overweight: String(localized: "\(scale.overweight.formatted()) – \((scale.obese - 0.1).formatted())")
+            case .obese: String(localized: "\(scale.obese.formatted()) and above")
             }
         }
     }
@@ -127,6 +128,9 @@ struct FoodEntry: Codable, Identifiable, Equatable {
     var servings: Double = 1
 
     var total: Int { Int((Double(kcal) * servings).rounded()) }
+
+    /// Built-in foods in the person's language; names people typed stay as they are.
+    var displayName: String { FoodLibrary.localized(name) }
 }
 
 /// A food in the built-in list, with calories for a typical serving.
@@ -138,6 +142,11 @@ struct FoodItem: Identifiable, Hashable {
     let kcal: Int
     var cuisine: Cuisine = .indian
     var id: String { name }
+
+    /// Name and serving in the person's language, from the "Foods" string table. The English
+    /// name stays the key, so saved logs work in any language.
+    var displayName: String { FoodLibrary.localized(name) }
+    var displayServing: String { FoodLibrary.localized(serving) }
 }
 
 /// Common foods with typical portions: Indian dishes (around the averages in the Indian Food
@@ -302,6 +311,10 @@ enum FoodLibrary {
     static func search(_ text: String) -> [FoodItem] {
         let query = text.trimmingCharacters(in: .whitespaces).lowercased()
         guard !query.isEmpty else { return items }
-        return items.filter { $0.name.lowercased().contains(query) }
+        return items.filter { $0.name.lowercased().contains(query) || $0.displayName.lowercased().contains(query) }
+    }
+
+    static func localized(_ english: String) -> String {
+        Bundle.main.localizedString(forKey: english, value: english, table: "Foods")
     }
 }

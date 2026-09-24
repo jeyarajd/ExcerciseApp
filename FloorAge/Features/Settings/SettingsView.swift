@@ -25,13 +25,17 @@ struct SettingsView: View {
 
                 Section("Voice coach") {
                     Toggle("Spoken coaching", isOn: $voice.enabled)
-                    Picker("Accent", selection: $voice.accent) {
-                        ForEach(VoiceCoach.accents) { accent in
-                            Text(accent.label).tag(accent.code)
+                    if VoiceCoach.appLanguage == "en" {
+                        Picker("Accent", selection: $voice.accent) {
+                            ForEach(VoiceCoach.accents) { accent in
+                                Text(accent.label).tag(accent.code)
+                            }
                         }
+                    } else {
+                        LabeledContent("Voice", value: Locale.current.localizedString(forIdentifier: voice.voiceLanguage) ?? voice.voiceLanguage)
                     }
                     Button("Test voice") {
-                        voice.say("Hello! Let's get moving today.", interrupt: true)
+                        voice.say(String(localized: "Hello! Let's get moving today."), interrupt: true)
                     }
                     Text("For a more natural voice, download an Enhanced or Premium voice in iPhone Settings › Accessibility › Spoken Content › Voices.")
                         .font(.footnote)
@@ -83,8 +87,8 @@ struct SettingsView: View {
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(profile.name.isEmpty ? "Age \(profile.age)" : "\(profile.name), \(profile.age)")
                                 Text(profile.limitations.isEmpty
-                                     ? "No limitations"
-                                     : "Adapted for " + profile.limitations.map(\.rawValue).sorted().joined(separator: ", "))
+                                     ? String(localized: "No limitations")
+                                     : String(localized: "Adapted for \(profile.limitations.map(\.shortLabel).sorted().joined(separator: ", "))"))
                                     .font(.caption)
                                     .foregroundStyle(.secondary)
                             }

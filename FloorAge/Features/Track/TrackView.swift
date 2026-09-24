@@ -1,7 +1,7 @@
 import Charts
 import SwiftUI
 
-/// Everyday tracking: steps, food calories and BMI. Everything stays on the phone.
+/// Everyday tracking: steps, food calories, BMI and sleep. Everything stays on the phone.
 struct TrackView: View {
     @EnvironmentObject private var model: AppModel
     @EnvironmentObject private var steps: StepCounter
@@ -9,7 +9,8 @@ struct TrackView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(spacing: 16) {
+                VStack(spacing: 18) {
+                    glance
                     TrainingPlanCard()
                     NavigationLink { StepsView() } label: { stepsCard }
                     NavigationLink { FoodLogView() } label: { caloriesCard }
@@ -28,82 +29,114 @@ struct TrackView: View {
         }
     }
 
-    private var stepsCard: some View {
-        HStack(spacing: 16) {
-            ProgressRing(progress: steps.progress, color: .accentColor) {
-                Image(systemName: "figure.walk").font(.title2.bold()).foregroundStyle(Color.accentColor)
+    /// Steps, calories and last night's sleep in one colourful strip.
+    private var glance: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            HStack {
+                Text("Today at a glance").font(.display(.title3))
+                Spacer()
+                Text(Date().formatted(.dateTime.weekday(.wide).day().month())).font(.subheadline).opacity(0.85)
             }
-            .frame(width: 72, height: 72)
-            VStack(alignment: .leading, spacing: 4) {
-                Text("Steps").font(.subheadline).foregroundStyle(.secondary)
-                switch steps.status {
-                case .unavailable:
-                    Text("Not available on this device").font(.headline)
-                case .denied:
-                    Text("Allow Motion & Fitness").font(.headline)
-                    Text("iPhone Settings › Privacy & Security").font(.caption).foregroundStyle(.secondary)
-                default:
-                    Text(steps.today.formatted()).font(.system(.title, design: .rounded, weight: .bold))
-                    Text("of \(steps.goal.formatted()) · \(Steps.distance(steps.today))")
-                        .font(.caption).foregroundStyle(.secondary)
+            HStack(spacing: 0) {
+                glanceItem(steps.today.formatted(), "Steps", symbol: "figure.walk")
+                Rectangle().fill(.white.opacity(0.3)).frame(width: 1, height: 44)
+                glanceItem(model.caloriesEaten().formatted(), "kcal", symbol: "flame.fill")
+                Rectangle().fill(.white.opacity(0.3)).frame(width: 1, height: 44)
+                glanceItem(model.sleepLog.last.map { SleepGuide.duration($0.hours) } ?? "–", "Sleep", symbol: "moon.fill")
+            }
+        }
+        .heroCard(.glance)
+    }
+
+    private func glanceItem(_ value: String, _ label: LocalizedStringKey, symbol: String) -> some View {
+        VStack(spacing: 4) {
+            Image(systemName: symbol).font(.subheadline).opacity(0.9)
+            Text(value).font(.metric(20)).minimumScaleFactor(0.6).lineLimit(1)
+            Text(label).font(.caption).opacity(0.85)
+        }
+        .frame(maxWidth: .infinity)
+    }
+
+    private var stepsCard: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Label("Steps", systemImage: "figure.walk").font(.headline)
+                Spacer()
+                Image(systemName: "chevron.right").opacity(0.7)
+            }
+            switch steps.status {
+            case .unavailable:
+                Text("Not available on this device").font(.headline)
+            case .denied:
+                Text("Allow Motion & Fitness").font(.headline)
+                Text("iPhone Settings › Privacy & Security").font(.caption).opacity(0.85)
+            default:
+                HStack(alignment: .bottom, spacing: 12) {
+                    ArcGauge(progress: steps.progress) {
+                        VStack(spacing: 0) {
+                            Text(steps.today.formatted()).font(.metric(30))
+                            Text("of \(steps.goal.formatted()) · \(Steps.distance(steps.today))").font(.caption2).opacity(0.9)
+                        }
+                    }
+                    .frame(width: 180)
+                    Spacer(minLength: 0)
+                    WeekBars(days: steps.week, goal: steps.goal, color: .white)
+                        .frame(width: 96, height: 58)
                 }
             }
-            Spacer(minLength: 0)
-            WeekBars(days: steps.week, goal: steps.goal)
-                .frame(width: 88, height: 48)
-            Image(systemName: "chevron.right").foregroundStyle(.tertiary)
         }
-        .card()
+        .heroCard(.steps)
     }
 
     private var caloriesCard: some View {
         let eaten = model.caloriesEaten()
         let target = model.profile?.calorieTarget
-        return VStack(alignment: .leading, spacing: 10) {
-            HStack {
-                Label("Calories", systemImage: "fork.knife").font(.subheadline).foregroundStyle(.secondary)
+        return VStack(alignment: .leading, spacing: 12) {
+            HStack(spacing: 12) {
+                FeatureBadge(feature: .calories)
+                VStack(alignment: .leading, spacing: 0) {
+                    Text("Calories").font(.subheadline).foregroundStyle(.secondary)
+                    HStack(alignment: .firstTextBaseline, spacing: 6) {
+                        Text(eaten.formatted()).font(.metric(28))
+                        Text("kcal eaten today").font(.subheadline).foregroundStyle(.secondary)
+                    }
+                }
                 Spacer()
                 Image(systemName: "chevron.right").foregroundStyle(.tertiary)
             }
-            HStack(alignment: .firstTextBaseline) {
-                Text(eaten.formatted()).font(.system(.title, design: .rounded, weight: .bold))
-                Text("kcal eaten today").foregroundStyle(.secondary)
-                Spacer()
-                if let target {
+            if let target {
+                GradientBar(progress: Double(eaten) / Double(max(target, 1)), colors: eaten > target ? Feature.steps.colors : Feature.calories.colors)
+                HStack {
+                    Text("Daily target about \(target.formatted()) kcal").font(.caption).foregroundStyle(.secondary)
+                    Spacer()
                     let left = target - eaten
                     Text(left >= 0 ? "\(left.formatted()) left" : "\((-left).formatted()) over")
-                        .font(.headline)
-                        .foregroundStyle(left >= 0 ? Color.green : Color.orange)
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundStyle(left >= 0 ? Feature.calories.colors[1] : Color.orange)
                 }
-            }
-            if let target {
-                ProgressView(value: min(Double(eaten), Double(target)), total: Double(target))
-                    .tint(eaten > target ? .orange : .accentColor)
-                Text("Daily target about \(target.formatted()) kcal").font(.caption).foregroundStyle(.secondary)
             } else {
                 Text("Add your height and weight under BMI to get a daily target.")
                     .font(.caption).foregroundStyle(.secondary)
             }
         }
-        .card()
+        .tintedCard(.calories)
     }
 
     private var bmiCard: some View {
-        HStack(spacing: 16) {
+        HStack(spacing: 12) {
+            FeatureBadge(feature: .bmi)
             if let bmi = model.profile?.bmi {
                 let category = BMI.category(bmi)
-                VStack(alignment: .leading, spacing: 4) {
+                VStack(alignment: .leading, spacing: 0) {
                     Text("BMI").font(.subheadline).foregroundStyle(.secondary)
-                    Text(bmi, format: .number.precision(.fractionLength(1)))
-                        .font(.system(.title, design: .rounded, weight: .bold))
+                    Text(bmi, format: .number.precision(.fractionLength(1))).font(.metric(28))
                 }
                 Text(category.label)
                     .font(.subheadline.weight(.semibold))
-                    .padding(.horizontal, 10).padding(.vertical, 4)
-                    .background(category.color.opacity(0.18), in: Capsule())
-                    .foregroundStyle(category.color)
+                    .padding(.horizontal, 12).padding(.vertical, 5)
+                    .background(category.color.gradient, in: Capsule())
+                    .foregroundStyle(.white)
             } else {
-                Image(systemName: "scalemass.fill").font(.title).foregroundStyle(Color.accentColor)
                 VStack(alignment: .leading, spacing: 2) {
                     Text("BMI calculator").font(.headline)
                     Text("Enter your height and weight").font(.subheadline).foregroundStyle(.secondary)
@@ -112,7 +145,27 @@ struct TrackView: View {
             Spacer(minLength: 0)
             Image(systemName: "chevron.right").foregroundStyle(.tertiary)
         }
-        .card()
+        .tintedCard(.bmi)
+    }
+}
+
+/// A rounded progress bar filled with a gradient.
+struct GradientBar: View {
+    var progress: Double
+    var colors: [Color]
+    var height: CGFloat = 10
+
+    var body: some View {
+        GeometryReader { geo in
+            Capsule().fill(colors[0].opacity(0.15))
+                .overlay(alignment: .leading) {
+                    Capsule().fill(LinearGradient(colors: colors, startPoint: .leading, endPoint: .trailing))
+                        .frame(width: geo.size.width * min(max(progress, 0), 1))
+                        .shadow(color: colors.last!.opacity(0.4), radius: 4)
+                }
+        }
+        .frame(height: height)
+        .animation(.easeOut(duration: 0.6), value: progress)
     }
 }
 
@@ -152,11 +205,12 @@ struct ProgressRing<Label: View>: View {
 struct WeekBars: View {
     let days: [StepCounter.Day]
     let goal: Int
+    var color: Color = .accentColor
 
     var body: some View {
         Chart(days) { day in
             BarMark(x: .value("Day", day.date, unit: .day), y: .value("Steps", day.steps))
-                .foregroundStyle(Calendar.current.isDateInToday(day.date) ? Color.accentColor : Color.accentColor.opacity(day.steps >= goal ? 0.6 : 0.3))
+                .foregroundStyle(Calendar.current.isDateInToday(day.date) ? color : color.opacity(day.steps >= goal ? 0.65 : 0.35))
                 .clipShape(Capsule())
         }
         .chartXAxis(.hidden)
@@ -172,30 +226,30 @@ struct StepsView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 16) {
-                VStack(spacing: 12) {
-                    ProgressRing(progress: steps.progress, color: .accentColor, lineWidth: 16) {
-                        VStack(spacing: 2) {
-                            Text(steps.today.formatted()).font(.system(size: 40, weight: .bold, design: .rounded))
-                            Text("steps today").font(.subheadline).foregroundStyle(.secondary)
+                VStack(spacing: 14) {
+                    ArcGauge(progress: steps.progress, lineWidth: 20) {
+                        VStack(spacing: 0) {
+                            Text(steps.today.formatted()).font(.metric(46))
+                            Text("steps today").font(.subheadline).opacity(0.9)
                         }
                     }
-                    .frame(width: 210, height: 210)
-                    HStack(spacing: 28) {
+                    .frame(maxWidth: 280)
+                    HStack(spacing: 10) {
                         stat(Steps.distance(steps.today), "distance")
                         stat("\(max(steps.goal - steps.today, 0).formatted())", "to your goal")
                         stat("\(Int(Double(steps.today) * 0.04).formatted())", "kcal burned")
                     }
                 }
                 .frame(maxWidth: .infinity)
-                .card()
+                .heroCard(.steps, padding: 20)
 
                 VStack(alignment: .leading, spacing: 10) {
-                    Text("Last 7 days").font(.headline)
+                    Text("Last 7 days").font(.display(.title3))
                     Chart {
                         ForEach(steps.week) { day in
                             BarMark(x: .value("Day", day.date, unit: .day), y: .value("Steps", day.steps))
-                                .foregroundStyle(day.steps >= steps.goal ? Color.green.gradient : Color.accentColor.gradient)
-                                .clipShape(RoundedRectangle(cornerRadius: 6))
+                                .foregroundStyle(day.steps >= steps.goal ? Feature.calories.gradient : Feature.steps.gradient)
+                                .clipShape(RoundedRectangle(cornerRadius: 8))
                         }
                         RuleMark(y: .value("Goal", steps.goal))
                             .lineStyle(StrokeStyle(lineWidth: 1, dash: [4, 4]))
@@ -211,7 +265,7 @@ struct StepsView: View {
                     }
                     .frame(height: 180)
                 }
-                .card()
+                .tintedCard(.steps)
 
                 VStack(alignment: .leading, spacing: 10) {
                     Stepper("Daily goal: \(steps.goal.formatted())", value: $steps.goal, in: 2000...20000, step: 500)
@@ -228,7 +282,7 @@ struct StepsView: View {
                             .font(.footnote).foregroundStyle(.orange)
                     }
                 }
-                .card()
+                .tintedCard(.steps)
             }
             .padding()
         }
@@ -237,11 +291,14 @@ struct StepsView: View {
         .onAppear { steps.start() }
     }
 
-    private func stat(_ value: String, _ label: String) -> some View {
+    private func stat(_ value: String, _ label: LocalizedStringKey) -> some View {
         VStack(spacing: 2) {
-            Text(value).font(.headline)
-            Text(label).font(.caption).foregroundStyle(.secondary)
+            Text(value).font(.metric(17)).lineLimit(1).minimumScaleFactor(0.7)
+            Text(label).font(.caption).opacity(0.85)
         }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 8)
+        .background(.white.opacity(0.16), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
     }
 }
 
@@ -259,29 +316,34 @@ struct FoodLogView: View {
         let target = model.profile?.calorieTarget
         List {
             Section {
-                HStack(spacing: 18) {
-                    ProgressRing(progress: target.map { min(Double(eaten) / Double($0), 1) } ?? 0,
-                                 color: target.map { eaten > $0 ? Color.orange : Color.accentColor } ?? .accentColor, lineWidth: 12) {
+                HStack(spacing: 16) {
+                    ArcGauge(progress: target.map { Double(eaten) / Double($0) } ?? 0, lineWidth: 14) {
                         VStack(spacing: 0) {
-                            Text(eaten.formatted()).font(.system(.title2, design: .rounded, weight: .bold))
-                            Text("kcal").font(.caption).foregroundStyle(.secondary)
+                            Text(eaten.formatted()).font(.metric(28))
+                            Text("kcal").font(.caption).opacity(0.9)
                         }
                     }
-                    .frame(width: 110, height: 110)
+                    .frame(width: 150)
                     VStack(alignment: .leading, spacing: 6) {
                         if let target {
                             Text("Target \(target.formatted()) kcal").font(.headline)
                             let left = target - eaten
                             Text(left >= 0 ? "\(left.formatted()) kcal left" : "\((-left).formatted()) kcal over")
-                                .foregroundStyle(left >= 0 ? Color.green : Color.orange)
+                                .font(.subheadline.weight(.semibold))
+                                .padding(.horizontal, 10).padding(.vertical, 4)
+                                .background(.white.opacity(left >= 0 ? 0.22 : 0.35), in: Capsule())
                         } else {
                             Text("No daily target yet").font(.headline)
                             NavigationLink("Add height and weight") { BMIView() }
-                                .font(.subheadline)
+                                .font(.subheadline.weight(.semibold))
+                                .underline()
                         }
                     }
+                    Spacer(minLength: 0)
                 }
-                .padding(.vertical, 6)
+                .heroCard(eaten > (target ?? .max) ? .steps : .calories)
+                .listRowBackground(Color.clear)
+                .listRowInsets(EdgeInsets(top: 6, leading: 0, bottom: 10, trailing: 0))
             } header: {
                 HStack {
                     Button { shift(-1) } label: { Image(systemName: "chevron.left") }
@@ -300,7 +362,7 @@ struct FoodLogView: View {
                 ForEach(entries) { entry in
                     HStack {
                         VStack(alignment: .leading) {
-                            Text(entry.name)
+                            Text(entry.displayName)
                             Text(servingsLabel(entry)).font(.caption).foregroundStyle(.secondary)
                         }
                         Spacer()
@@ -339,8 +401,8 @@ struct FoodLogView: View {
 
     private var dayTitle: String {
         let cal = Calendar.current
-        if cal.isDateInToday(day) { return "Today" }
-        if cal.isDateInYesterday(day) { return "Yesterday" }
+        if cal.isDateInToday(day) { return String(localized: "Today") }
+        if cal.isDateInYesterday(day) { return String(localized: "Yesterday") }
         return day.formatted(date: .abbreviated, time: .omitted)
     }
 
@@ -349,8 +411,8 @@ struct FoodLogView: View {
     }
 
     private func servingsLabel(_ entry: FoodEntry) -> String {
-        let count = entry.servings == entry.servings.rounded() ? "\(Int(entry.servings))" : String(format: "%.1f", entry.servings)
-        return "\(count) × \(entry.kcal) kcal"
+        let count = entry.servings == entry.servings.rounded() ? String(localized: "\(Int(entry.servings))") : String(format: "%.1f", entry.servings)
+        return String(localized: "\(count) × \(entry.kcal) kcal")
     }
 }
 
@@ -368,8 +430,8 @@ struct AddFoodView: View {
         NavigationStack {
             List {
                 if let picked {
-                    Section("Add \(picked.name)") {
-                        Stepper("Servings: \(servings.formatted()) × \(picked.serving)", value: $servings, in: 0.5...10, step: 0.5)
+                    Section("Add \(picked.displayName)") {
+                        Stepper("Servings: \(servings.formatted()) × \(picked.displayServing)", value: $servings, in: 0.5...10, step: 0.5)
                         LabeledContent("Calories", value: "\(Int((Double(picked.kcal) * servings).rounded())) kcal")
                         Button("Add to log") {
                             add(FoodEntry(date: timestamp, name: picked.name, kcal: picked.kcal, servings: servings))
@@ -385,8 +447,8 @@ struct AddFoodView: View {
                         } label: {
                             HStack {
                                 VStack(alignment: .leading) {
-                                    Text(item.name).foregroundStyle(Color.primary)
-                                    Text(item.serving).font(.caption).foregroundStyle(.secondary)
+                                    Text(item.displayName).foregroundStyle(Color.primary)
+                                    Text(item.displayServing).font(.caption).foregroundStyle(.secondary)
                                 }
                                 Spacer()
                                 Text("\(item.kcal) kcal").monospacedDigit().foregroundStyle(.secondary)
@@ -447,13 +509,13 @@ struct BMIView: View {
             Section {
                 VStack(spacing: 14) {
                     Text(bmi, format: .number.precision(.fractionLength(1)))
-                        .font(.system(size: 56, weight: .bold, design: .rounded))
+                        .font(.metric(60))
                         .contentTransition(.numericText())
                     Text(category.label)
                         .font(.headline)
-                        .padding(.horizontal, 14).padding(.vertical, 5)
-                        .background(category.color.opacity(0.18), in: Capsule())
-                        .foregroundStyle(category.color)
+                        .padding(.horizontal, 16).padding(.vertical, 6)
+                        .background(category.color.gradient, in: Capsule())
+                        .overlay(Capsule().strokeBorder(.white.opacity(0.6), lineWidth: 1))
                     BMIGauge(bmi: bmi, scale: scale)
                         .frame(height: 34)
                     Text(category.message)
@@ -462,12 +524,14 @@ struct BMIView: View {
                     let range = BMI.healthyWeight(heightCm: height, scale: scale)
                     Text("A healthy weight for your height is about \(weightText(range.lowerBound, decimals: false))–\(weightText(range.upperBound, decimals: false)).")
                         .font(.footnote)
-                        .foregroundStyle(.secondary)
+                        .opacity(0.85)
                         .multilineTextAlignment(.center)
                 }
                 .frame(maxWidth: .infinity)
-                .padding(.vertical, 8)
+                .heroCard(.bmi, padding: 20)
                 .animation(.snappy, value: bmi)
+                .listRowBackground(Color.clear)
+                .listRowInsets(EdgeInsets(top: 6, leading: 0, bottom: 10, trailing: 0))
             }
 
             Section("Height") {
@@ -570,7 +634,8 @@ struct BMIGauge: View {
                 HStack(spacing: 3) {
                     ForEach(bands, id: \.0) { category, range in
                         Capsule()
-                            .fill(category.color.opacity(0.75))
+                            .fill(category.color.gradient)
+                            .overlay(Capsule().strokeBorder(.white.opacity(0.5), lineWidth: 1))
                             .frame(width: max(0, geo.size.width * CGFloat((range.upperBound - range.lowerBound) / (hi - lo)) - 3))
                     }
                 }
@@ -578,6 +643,7 @@ struct BMIGauge: View {
                 .padding(.top, 14)
                 Image(systemName: "arrowtriangle.down.fill")
                     .font(.caption)
+                    .shadow(radius: 2)
                     .offset(x: x - 6)
             }
         }

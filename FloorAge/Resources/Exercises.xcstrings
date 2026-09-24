@@ -1,0 +1,1593 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "arm_raise.cue.0": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shoulders relaxed."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "कंधे ढीले रखें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hombros relajados."
+          }
+        }
+      }
+    },
+    "arm_raise.cue.1": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Breathe in as you lift."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "उठाते समय सांस लें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inhala al subir."
+          }
+        }
+      }
+    },
+    "arm_raise.cue.2": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Breathe out as you lower."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "नीचे लाते समय सांस छोड़ें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Exhala al bajar."
+          }
+        }
+      }
+    },
+    "arm_raise.intro": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Side arm raises. Lift your arms out to the side up to shoulder height, then lower."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "हाथ बगल में उठाना। दोनों हाथ बगल से कंधों की ऊंचाई तक उठाएं, फिर नीचे लाएं।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elevación lateral de brazos. Sube los brazos hacia los lados hasta la altura de los hombros y luego bájalos."
+          }
+        }
+      }
+    },
+    "arm_raise.name": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Side Arm Raise"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "हाथ बगल में उठाना"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elevación lateral de brazos"
+          }
+        }
+      }
+    },
+    "calf_raise.cue.0": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rise straight up."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "सीधे ऊपर उठें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sube en línea recta."
+          }
+        }
+      }
+    },
+    "calf_raise.cue.1": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pause at the top."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ऊपर थोड़ा रुकें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pausa arriba."
+          }
+        }
+      }
+    },
+    "calf_raise.cue.2": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lower slowly."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "धीरे से नीचे आएं।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Baja despacio."
+          }
+        }
+      }
+    },
+    "calf_raise.intro": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calf raises. Rise up onto your toes, pause, then lower slowly."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "पंजों पर उठना। पंजों के बल ऊपर उठें, थोड़ा रुकें, फिर धीरे से नीचे आएं।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elevación de talones. Sube sobre las puntas de los pies, haz una pausa y baja despacio."
+          }
+        }
+      }
+    },
+    "calf_raise.name": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calf Raise"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "पंजों पर उठना"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elevación de talones"
+          }
+        }
+      }
+    },
+    "calf_raise.safety": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hold a wall or chair for support if you need it."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ज़रूरत हो तो सहारे के लिए दीवार या कुर्सी पकड़ लें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apóyate en una pared o una silla si lo necesitas."
+          }
+        }
+      }
+    },
+    "chair_stand.cue.0": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lean forward slightly to stand."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "खड़े होने के लिए थोड़ा आगे झुकें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inclínate un poco hacia adelante para levantarte."
+          }
+        }
+      }
+    },
+    "chair_stand.cue.1": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stand all the way up."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "पूरा सीधा खड़े हों।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Levántate del todo."
+          }
+        }
+      }
+    },
+    "chair_stand.cue.2": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sit down with control."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "संभलकर, धीरे से बैठें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Siéntate con control."
+          }
+        }
+      }
+    },
+    "chair_stand.intro": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chair stands. Sit in the middle of a chair, arms crossed on your chest. Stand up fully, then sit back down."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "कुर्सी से उठना। कुर्सी के बीच में बैठें, हाथ सीने पर क्रॉस करके। पूरी तरह खड़े हों, फिर वापस बैठ जाएं।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Levantarse de la silla. Siéntate en el centro de una silla, con los brazos cruzados sobre el pecho. Ponte de pie por completo y luego vuelve a sentarte."
+          }
+        }
+      }
+    },
+    "chair_stand.name": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chair Stand"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "कुर्सी से उठना"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Levantarse de la silla"
+          }
+        }
+      }
+    },
+    "chair_stand.safety": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Use a sturdy chair against a wall so it can't slide."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "मज़बूत कुर्सी दीवार से सटाकर रखें, ताकि वह खिसके नहीं।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usa una silla firme apoyada contra la pared para que no se deslice."
+          }
+        }
+      }
+    },
+    "deep_squat_hold.cue.0": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heels down if you can."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "हो सके तो एड़ियां नीचे रखें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Talones en el suelo, si puedes."
+          }
+        }
+      }
+    },
+    "deep_squat_hold.cue.1": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elbows gently press knees out."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "कोहनियों से घुटनों को हल्के से बाहर दबाएं।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los codos empujan suavemente las rodillas hacia afuera."
+          }
+        }
+      }
+    },
+    "deep_squat_hold.cue.2": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Breathe into your hips."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "कूल्हों तक गहरी सांस लें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lleva la respiración a las caderas."
+          }
+        }
+      }
+    },
+    "deep_squat_hold.intro": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deep squat, like Malasana. Feet a little wider, toes turned out, sink down and rest with palms together."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "डीप स्क्वाट, मलासन की तरह। पैर थोड़े ज़्यादा खोलें, पंजे बाहर की ओर, नीचे बैठ जाएं और हथेलियां जोड़कर रुकें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sentadilla profunda, como en la postura Malasana. Pies un poco más separados y puntas hacia afuera; baja y quédate ahí con las palmas juntas."
+          }
+        }
+      }
+    },
+    "deep_squat_hold.name": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deep Squat Hold"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "डीप स्क्वाट होल्ड"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sentadilla profunda sostenida"
+          }
+        }
+      }
+    },
+    "deep_squat_hold.safety": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hold a door frame or put a folded towel under your heels if that helps."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "अगर मदद मिले, तो दरवाज़े की चौखट पकड़ें या एड़ियों के नीचे मुड़ा हुआ तौलिया रखें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sujétate al marco de una puerta o pon una toalla doblada bajo los talones si te ayuda."
+          }
+        }
+      }
+    },
+    "kegel.And relax": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "And relax"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "और ढीला छोड़ें"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Y relaja"
+          }
+        }
+      }
+    },
+    "kegel.Squeeze and lift": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Squeeze and lift"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "सिकोड़ें और ऊपर खींचें"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aprieta y eleva"
+          }
+        }
+      }
+    },
+    "kegel.cue.0": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep breathing normally."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "सामान्य रूप से सांस लेते रहें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sigue respirando con normalidad."
+          }
+        }
+      }
+    },
+    "kegel.cue.1": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep your belly, buttocks and thighs relaxed."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "पेट, नितंब और जांघें ढीली रखें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mantén relajados el abdomen, los glúteos y los muslos."
+          }
+        }
+      }
+    },
+    "kegel.cue.2": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Relax completely between squeezes."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "हर बार सिकोड़ने के बीच पूरी तरह ढीला छोड़ें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Relaja por completo entre contracciones."
+          }
+        }
+      }
+    },
+    "kegel.intro": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pelvic floor squeezes, also called Kegels. Sit tall. Squeeze the muscles you use to hold in urine and wind, lift them up and in, hold while I count, then relax fully."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "पेल्विक फ़्लोर स्क्वीज़, जिन्हें कीगल भी कहते हैं। सीधे बैठें। वे मांसपेशियां सिकोड़ें जिनसे आप पेशाब और गैस रोकते हैं, उन्हें ऊपर और अंदर की ओर खींचें, जब तक मैं गिनूं रोककर रखें, फिर पूरी तरह ढीला छोड़ दें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Contracciones del suelo pélvico, también llamadas ejercicios de Kegel. Siéntate con la espalda recta. Aprieta los músculos que usas para retener la orina y los gases, elévalos hacia arriba y hacia dentro, mantén mientras cuento y luego relaja por completo."
+          }
+        }
+      }
+    },
+    "kegel.name": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pelvic Floor Squeeze"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "पेल्विक फ़्लोर स्क्वीज़"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Contracción del suelo pélvico"
+          }
+        }
+      }
+    },
+    "kegel.safety": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Don't practise while you're actually passing urine. If you have pelvic pain, or leaking that doesn't get better, see a doctor or a pelvic health physiotherapist."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "पेशाब करते समय यह अभ्यास न करें। अगर पेल्विक हिस्से में दर्द हो, या पेशाब का रिसाव ठीक न हो रहा हो, तो डॉक्टर या पेल्विक हेल्थ फ़िज़ियोथेरेपिस्ट से मिलें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No lo practiques mientras estés orinando. Si tienes dolor pélvico o pérdidas de orina que no mejoran, consulta a un médico o a un fisioterapeuta especializado en suelo pélvico."
+          }
+        }
+      }
+    },
+    "march.cue.0": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lift those knees."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "घुटने ऊपर उठाएं।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¡Arriba esas rodillas!"
+          }
+        }
+      }
+    },
+    "march.cue.1": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Swing your arms."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "हाथ आगे-पीछे हिलाएं।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Balancea los brazos."
+          }
+        }
+      }
+    },
+    "march.cue.2": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nice and steady."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "आराम से, एक लय में।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ritmo suave y constante."
+          }
+        }
+      }
+    },
+    "march.cue.3": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep breathing."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "सांस लेते रहें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sigue respirando."
+          }
+        }
+      }
+    },
+    "march.intro": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Let's warm up. March in place, lift your knees and swing your arms."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "चलिए, वार्म-अप करें। एक जगह पर कदमताल करें, घुटने उठाएं और हाथ हिलाएं।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vamos a calentar. Marcha en el lugar, levanta las rodillas y balancea los brazos."
+          }
+        }
+      }
+    },
+    "march.name": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "March in Place"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "एक जगह कदमताल"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marcha en el lugar"
+          }
+        }
+      }
+    },
+    "side_leg_raise.cue.0": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toes point forward."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "पंजे सामने की ओर रहें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La punta del pie mira hacia adelante."
+          }
+        }
+      }
+    },
+    "side_leg_raise.cue.1": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Don't lean too far."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ज़्यादा न झुकें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No te inclines demasiado."
+          }
+        }
+      }
+    },
+    "side_leg_raise.cue.2": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Slow and controlled."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "धीरे और संभलकर।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lento y controlado."
+          }
+        }
+      }
+    },
+    "side_leg_raise.intro": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Side leg raises. Stand tall and lift one leg out to the side, then bring it back. We'll switch sides halfway."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "पैर बगल में उठाना। सीधे खड़े हों और एक पैर बगल की ओर उठाएं, फिर वापस लाएं। आधे समय पर हम पैर बदलेंगे।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elevación lateral de pierna. Con el cuerpo erguido, levanta una pierna hacia el lado y vuelve a bajarla. A mitad cambiaremos de lado."
+          }
+        }
+      }
+    },
+    "side_leg_raise.name": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Side Leg Raise"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "पैर बगल में उठाना"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elevación lateral de pierna"
+          }
+        }
+      }
+    },
+    "side_leg_raise.safety": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hold a chair for balance if you need it."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ज़रूरत हो तो संतुलन के लिए कुर्सी पकड़ लें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apóyate en una silla para mantener el equilibrio si lo necesitas."
+          }
+        }
+      }
+    },
+    "single_leg_balance.cue.0": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stand tall."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "सीधे खड़े रहें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mantén el cuerpo erguido."
+          }
+        }
+      }
+    },
+    "single_leg_balance.cue.1": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Soft knee on the standing leg."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "जिस पैर पर खड़े हैं, उसका घुटना हल्का ढीला रखें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rodilla de apoyo ligeramente flexionada."
+          }
+        }
+      }
+    },
+    "single_leg_balance.cue.2": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Breathe slowly."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "धीरे-धीरे सांस लें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Respira despacio."
+          }
+        }
+      }
+    },
+    "single_leg_balance.cue.3": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eyes on one spot."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "नज़र एक जगह पर।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mirada fija en un punto."
+          }
+        }
+      }
+    },
+    "single_leg_balance.intro": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "One leg balance. Lift one knee and hold. Keep your eyes on a spot in front of you."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "एक पैर पर संतुलन। एक घुटना ऊपर उठाएं और रोककर रखें। नज़र सामने किसी एक जगह पर टिकाएं।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Equilibrio sobre una pierna. Levanta una rodilla y mantén la posición. Fija la mirada en un punto frente a ti."
+          }
+        }
+      }
+    },
+    "single_leg_balance.name": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "One-Leg Balance"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "एक पैर पर संतुलन"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Equilibrio sobre una pierna"
+          }
+        }
+      }
+    },
+    "single_leg_balance.safety": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stand near a wall or chair you can hold if you wobble."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "दीवार या कुर्सी के पास खड़े हों, ताकि लड़खड़ाने पर उसे पकड़ सकें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ponte cerca de una pared o de una silla en la que puedas apoyarte si te tambaleas."
+          }
+        }
+      }
+    },
+    "sit_rise.cue.0": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arms forward for balance."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "संतुलन के लिए हाथ आगे रखें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brazos al frente para mantener el equilibrio."
+          }
+        }
+      }
+    },
+    "sit_rise.cue.1": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Go slow and controlled."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "धीरे और संभलकर।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Despacio y con control."
+          }
+        }
+      }
+    },
+    "sit_rise.cue.2": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lean forward to rise."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "उठने के लिए आगे झुकें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inclínate hacia adelante para subir."
+          }
+        }
+      }
+    },
+    "sit_rise.intro": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sit to rise. Cross your legs and lower yourself to the floor, then stand back up. Try not to use your hands or knees."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "बैठकर उठना। पैर क्रॉस करें और धीरे-धीरे ज़मीन पर बैठें, फिर वापस खड़े हो जाएं। कोशिश करें कि हाथ या घुटनों का सहारा न लें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sentarse y levantarse del suelo. Cruza las piernas y baja hasta el suelo; luego vuelve a ponerte de pie. Intenta no usar las manos ni las rodillas."
+          }
+        }
+      }
+    },
+    "sit_rise.name": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sit to Rise"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "बैठकर उठना"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sentarse y levantarse del suelo"
+          }
+        }
+      }
+    },
+    "sit_rise.safety": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Skip this if you have knee or hip pain. Practise on a soft mat."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "अगर घुटने या कूल्हे में दर्द हो, तो इसे छोड़ दें। नरम मैट पर अभ्यास करें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sáltate este ejercicio si tienes dolor de rodilla o de cadera. Practica sobre una colchoneta blanda."
+          }
+        }
+      }
+    },
+    "squat.cue.0": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Push your hips back."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "कूल्हे पीछे ले जाएं।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lleva la cadera hacia atrás."
+          }
+        }
+      }
+    },
+    "squat.cue.1": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep your chest up."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "सीना ऊपर रखें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mantén el pecho arriba."
+          }
+        }
+      }
+    },
+    "squat.cue.2": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Knees follow your toes."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "घुटने पंजों की सीध में रहें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Las rodillas apuntan hacia los dedos de los pies."
+          }
+        }
+      }
+    },
+    "squat.cue.3": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heels stay on the floor."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "एड़ियां ज़मीन पर टिकी रहें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los talones se quedan en el suelo."
+          }
+        }
+      }
+    },
+    "squat.intro": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Squats. Feet shoulder width apart, arms forward. Sit back like there is a chair behind you, then stand tall."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "स्क्वाट। पैर कंधों जितने खुले, हाथ सामने। ऐसे पीछे बैठें जैसे पीछे कुर्सी रखी हो, फिर सीधे खड़े हो जाएं।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sentadillas. Pies separados al ancho de los hombros y brazos al frente. Baja hacia atrás como si tuvieras una silla detrás, y luego sube con el cuerpo bien erguido."
+          }
+        }
+      }
+    },
+    "squat.name": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Squat"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "स्क्वाट"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sentadilla"
+          }
+        }
+      }
+    },
+    "squat.safety": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Only go as low as feels comfortable. Put a chair behind you if you're unsure."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "उतना ही नीचे जाएं जितना आरामदायक लगे। पक्का न हो तो पीछे एक कुर्सी रख लें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Baja solo hasta donde te resulte cómodo. Si tienes dudas, pon una silla detrás de ti."
+          }
+        }
+      }
+    },
+    "toe_reach.cue.0": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Let your head hang."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "सिर को ढीला लटकने दें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deja caer la cabeza."
+          }
+        }
+      }
+    },
+    "toe_reach.cue.1": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Breathe out as you reach."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "नीचे जाते हुए सांस छोड़ें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suelta el aire al bajar."
+          }
+        }
+      }
+    },
+    "toe_reach.cue.2": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Roll up slowly."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "धीरे-धीरे ऊपर आएं।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sube despacio, enrollando la espalda."
+          }
+        }
+      }
+    },
+    "toe_reach.intro": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toe reach. Knees soft, fold forward from your hips and let your hands reach toward your toes."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "पंजे छूना। घुटने हल्के ढीले, कूल्हों से आगे झुकें और हाथों को पंजों की ओर जाने दें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tocar los pies. Con las rodillas ligeramente flexionadas, inclínate hacia adelante desde la cadera y deja que las manos bajen hacia los dedos de los pies."
+          }
+        }
+      }
+    },
+    "toe_reach.name": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toe Reach"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "पंजे छूना"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tocar los pies"
+          }
+        }
+      }
+    },
+    "toe_reach.safety": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Never bounce. Stop at a gentle stretch, not pain."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "कभी झटका न दें। हल्का खिंचाव महसूस होते ही रुक जाएं, दर्द तक न जाएं।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nunca rebotes. Detente al notar un estiramiento suave, no dolor."
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

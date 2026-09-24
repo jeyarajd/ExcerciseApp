@@ -5,9 +5,13 @@ options:
   deploymentTarget:
     iOS: "18.0"
   createIntermediateGroups: true
+  # English is the default language; Hindi and Spanish come from the String Catalogs in Resources.
+  developmentLanguage: en
 settings:
   base:
     SWIFT_VERSION: "5.0"
+    SWIFT_EMIT_LOC_STRINGS: YES
+    LOCALIZATION_PREFERS_STRING_CATALOGS: YES
     MARKETING_VERSION: "0.1.0"
     CURRENT_PROJECT_VERSION: "1"
     DEVELOPMENT_TEAM: ""
@@ -31,6 +35,7 @@ targets:
         ITSAppUsesNonExemptEncryption: false
         NSMotionUsageDescription: Floor Age counts your daily steps on this iPhone. Your steps never leave your phone.
         NSCameraUsageDescription: Take a photo of your meal to get calorie suggestions. The photo is checked on your iPhone and is never saved or sent.
+        LSApplicationQueriesSchemes: [music, spotify, youtubemusic, jiosaavn, gaana]
         NSHealthShareUsageDescription: Floor Age reads your sleep from Apple Health to show how long you sleep. It never changes your Health data or sends it anywhere.
     entitlements:
       path: FloorAge/FloorAge.entitlements

@@ -7,6 +7,10 @@ struct FloorAgeApp: App {
     @StateObject private var steps = DemoScreen.current == nil ? StepCounter() : StepCounter.sample()
     @Environment(\.scenePhase) private var scenePhase
 
+    init() {
+        Appearance.apply()
+    }
+
     var body: some Scene {
         WindowGroup {
             RootView()

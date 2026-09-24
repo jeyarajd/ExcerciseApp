@@ -70,13 +70,16 @@ struct PlanView: View {
         let recommended = TrainingPlan.recommendedProgram(for: profile)
         let selected = choice ?? recommended
         return VStack(alignment: .leading, spacing: 14) {
-            Label("Your plan", systemImage: "calendar.badge.checkmark").font(.title2.bold())
+            HStack(spacing: 12) {
+                FeatureBadge(feature: .plan)
+                Text("Your plan").font(.display(.title2))
+            }
             Text(reason(for: recommended, profile: profile))
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
             Picker("Plan", selection: Binding(get: { selected }, set: { choice = $0 })) {
                 ForEach(TrainingPlan.Program.allCases) { program in
-                    Text(program == recommended ? "\(program.title) (recommended)" : program.title).tag(program)
+                    Text(program == recommended ? String(localized: "\(program.title) (recommended)") : program.title).tag(program)
                 }
             }
             .pickerStyle(.inline)
@@ -93,7 +96,7 @@ struct PlanView: View {
                 if !Reminders.isOn { offeringReminder = true }
                 Task { await model.refreshReminders() }
             } label: {
-                Text("Start \(selected.title.lowercased()) today").frame(maxWidth: .infinity)
+                Text("Start \(selected.title) today").frame(maxWidth: .infinity)
             }
             .buttonStyle(.borderedProminent)
             .controlSize(.large)
@@ -105,28 +108,30 @@ struct PlanView: View {
     }
 
     private func reason(for program: TrainingPlan.Program, profile: Profile) -> String {
-        var facts = ["age \(profile.age)"]
+        var facts = [String(localized: "age \(profile.age)")]
         if let bmi = profile.bmi {
-            facts.insert("BMI \(bmi.formatted(.number.precision(.fractionLength(1)))) (\(BMI.category(bmi).label.lowercased()))", at: 0)
+            facts.insert(String(localized: "BMI \(bmi.formatted(.number.precision(.fractionLength(1)))) (\(BMI.category(bmi).label.lowercased()))"), at: 0)
         }
-        if !profile.limitations.isEmpty { facts.append("your \(profile.limitations.map(\.rawValue).sorted().joined(separator: " and ")) notes") }
+        if !profile.limitations.isEmpty {
+            facts.append(String(localized: "your \(profile.limitations.map(\.shortLabel).sorted().joined(separator: ", ")) notes"))
+        }
         let why: String = switch program {
-        case .runWalk: "you can build up to running safely"
-        case .briskWalk: "brisk walking burns fat while being kind to your joints"
-        case .gentleWalk: "a gentle start builds fitness safely"
+        case .runWalk: String(localized: "you can build up to running safely")
+        case .briskWalk: String(localized: "brisk walking burns fat while being kind to your joints")
+        case .gentleWalk: String(localized: "a gentle start builds fitness safely")
         }
-        return "Based on your \(facts.joined(separator: ", ")), we recommend this plan: \(why)."
+        return String(localized: "Based on your \(facts.joined(separator: ", ")), we recommend this plan: \(why).")
     }
 
     private func summary(of program: TrainingPlan.Program, profile: Profile) -> String {
         let loss = TrainingPlan.aimsForWeightLoss(profile)
         switch program {
         case .runWalk:
-            return "9 weeks, 3 run/walk sessions a week (about 30 min), building from 1-minute runs to 30 minutes of running, plus 2 strength days."
+            return String(localized: "9 weeks, 3 run/walk sessions a week (about 30 min), building from 1-minute runs to 30 minutes of running, plus 2 strength days.")
         case .briskWalk:
-            return "12 weeks of brisk walking on 5 days, from 20 minutes up to \(loss ? "50" : "30") a day (\(loss ? "250" : "150") min a week), plus 2 strength days."
+            return String(localized: "12 weeks of brisk walking on 5 days, from 20 minutes up to \(loss ? "50" : "30") a day (\(loss ? "250" : "150") min a week), plus 2 strength days.")
         case .gentleWalk:
-            return "12 weeks of easy walking on 5 days, from 10 minutes up to \(loss ? "50" : "30") a day, plus 2 gentle strength days with a chair."
+            return String(localized: "12 weeks of easy walking on 5 days, from 10 minutes up to \(loss ? "50" : "30") a day, plus 2 gentle strength days with a chair.")
         }
     }
 
@@ -137,15 +142,15 @@ struct PlanView: View {
         return VStack(alignment: .leading, spacing: 12) {
             HStack {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(week.program.title).font(.headline)
+                    Text(week.program.title).font(.display(.title3))
                     Text(finished ? "Plan complete: keep repeating the final week" : "Week \(week.number) of \(week.program.weeks)")
-                        .font(.subheadline).foregroundStyle(.secondary)
+                        .font(.subheadline).opacity(0.9)
                 }
                 Spacer()
-                ProgressRing(progress: Double(doneDays) / 7, color: .accentColor, lineWidth: 7) {
-                    Text("\(doneDays)/7").font(.caption.bold())
+                ArcGauge(progress: Double(doneDays) / 7, lineWidth: 8) {
+                    Text("\(doneDays)/7").font(.metric(15))
                 }
-                .frame(width: 52, height: 52)
+                .frame(width: 70)
             }
             HStack(spacing: 10) {
                 goal("\(week.aerobicMinutes)", "active min", sub: "goal \(week.targetMinutes)+")
@@ -153,18 +158,18 @@ struct PlanView: View {
                 goal("\(week.sets) × \(week.reps)", "sets × reps", sub: "2 days")
             }
         }
-        .card()
+        .heroCard(.plan)
     }
 
-    private func goal(_ value: String, _ label: String, sub: String) -> some View {
+    private func goal(_ value: String, _ label: LocalizedStringKey, sub: LocalizedStringKey) -> some View {
         VStack(spacing: 2) {
-            Text(value).font(.system(.title3, design: .rounded, weight: .bold))
+            Text(value).font(.metric(20))
             Text(label).font(.caption)
-            Text(sub).font(.caption2).foregroundStyle(.secondary)
+            Text(sub).font(.caption2).opacity(0.8)
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 8)
-        .background(Color.accentColor.opacity(0.08), in: RoundedRectangle(cornerRadius: 12))
+        .background(.white.opacity(0.16), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
     }
 
     private func dayCard(_ day: TrainingPlan.Day, week: TrainingPlan.Week, date: Date, isToday: Bool) -> some View {
@@ -172,8 +177,8 @@ struct PlanView: View {
         let canTick = date <= Date()
         return VStack(alignment: .leading, spacing: 10) {
             HStack {
-                Text(isToday ? "Today" : date.formatted(.dateTime.weekday(.wide)))
-                    .font(.headline)
+                Text(isToday ? String(localized: "Today") : date.formatted(.dateTime.weekday(.wide)))
+                    .font(.display(.headline))
                     .foregroundStyle(isToday ? Color.accentColor : Color.primary)
                 Text(date.formatted(.dateTime.day().month())).font(.subheadline).foregroundStyle(.secondary)
                 Spacer()
@@ -197,38 +202,41 @@ struct PlanView: View {
                     .font(.caption).foregroundStyle(.secondary)
             }
         }
-        .card()
-        .overlay(RoundedRectangle(cornerRadius: 20, style: .continuous).strokeBorder(Color.accentColor, lineWidth: isToday ? 2 : 0))
+        .tintedCard(isToday ? .plan : .glance)
+        .overlay(RoundedRectangle(cornerRadius: 22, style: .continuous).strokeBorder(Feature.plan.gradient, lineWidth: isToday ? 2.5 : 0))
     }
 
     @ViewBuilder
     private func activityRow(_ activity: TrainingPlan.Activity, week: TrainingPlan.Week, isToday: Bool) -> some View {
         switch activity {
         case .cardio(let program, let intervals):
-            let title = program == .runWalk ? "Run/walk" : intervals.contains { $0.kind == .brisk } ? "Brisk walk" : "Walk"
-            row(icon: program == .runWalk ? "figure.run" : "figure.walk", title: "\(title) · \(activity.minutes) min",
-                detail: TrainingPlan.describe(intervals) + " · ≈ \(activity.steps.formatted()) steps",
-                start: isToday ? { cardio = CardioWorkout(title: "\(title), week \(week.number)", intervals: intervals) } : nil)
+            let title = TrainingPlan.cardioName(program, intervals)
+            row(icon: program == .runWalk ? "figure.run" : "figure.walk", title: String(localized: "\(title) · \(activity.minutes) min"),
+                detail: String(localized: "\(TrainingPlan.describe(intervals)) · ≈ \(activity.steps.formatted()) steps"),
+                start: isToday ? { cardio = CardioWorkout(title: String(localized: "\(title), week \(week.number)"), intervals: intervals) } : nil)
         case .strength(let sets, let moves):
-            row(icon: "dumbbell.fill", title: "Strength · \(sets) \(sets == 1 ? "set" : "sets")",
-                detail: describe(moves) + ". Rest 1 minute between sets.",
+            row(icon: "dumbbell.fill", title: sets == 1 ? String(localized: "Strength · 1 set") : String(localized: "Strength · \(sets) sets"),
+                detail: String(localized: "\(describe(moves)). Rest 1 minute between sets."),
                 start: isToday ? { session = StrengthSession(items: TrainingPlan.sessionItems(sets: sets, moves: moves)) } : nil)
         case .balance(let sets, let moves):
-            row(icon: "figure.stand", title: "Balance · \(sets) \(sets == 1 ? "set" : "sets")",
-                detail: describe(moves) + ". Hold a wall or chair if you need to.",
+            row(icon: "figure.stand", title: sets == 1 ? String(localized: "Balance · 1 set") : String(localized: "Balance · \(sets) sets"),
+                detail: String(localized: "\(describe(moves)). Hold a wall or chair if you need to."),
                 start: isToday ? { session = StrengthSession(items: TrainingPlan.sessionItems(sets: sets, moves: moves)) } : nil)
         case .rest:
-            row(icon: "bed.double.fill", title: "Rest day", detail: "Recovery is part of training. A gentle stroll or stretching is fine.", start: nil)
+            row(icon: "bed.double.fill", title: String(localized: "Rest day"),
+                detail: String(localized: "Recovery is part of training. A gentle stroll or stretching is fine."), start: nil)
         }
     }
 
     private func row(icon: String, title: String, detail: String, start: (() -> Void)?) -> some View {
-        HStack(alignment: .top, spacing: 12) {
-            Image(systemName: icon)
-                .font(.title3)
-                .frame(width: 36, height: 36)
-                .background(Color.accentColor.opacity(0.14), in: RoundedRectangle(cornerRadius: 10))
-                .foregroundStyle(Color.accentColor)
+        let feature: Feature = switch icon {
+        case "dumbbell.fill": .plan
+        case "figure.stand": .bmi
+        case "bed.double.fill": .sleep
+        default: .steps
+        }
+        return HStack(alignment: .top, spacing: 12) {
+            FeatureBadge(feature: feature, symbol: icon, size: 38)
             VStack(alignment: .leading, spacing: 2) {
                 Text(title).font(.subheadline.weight(.semibold))
                 Text(detail).font(.caption).foregroundStyle(.secondary)
@@ -245,8 +253,8 @@ struct PlanView: View {
     private func describe(_ moves: [TrainingPlan.StrengthMove]) -> String {
         moves.map { move in
             let name = ExerciseLibrary.shared[move.exerciseID].name
-            if let reps = move.reps { return "\(name) × \(reps)" }
-            return "\(name) \(move.seconds ?? 30) s"
+            if let reps = move.reps { return String(localized: "\(name) × \(reps)") }
+            return String(localized: "\(name) \(move.seconds ?? 30) s")
         }
         .joined(separator: ", ")
     }
@@ -255,7 +263,7 @@ struct PlanView: View {
 
     private var sources: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Label("Where these numbers come from", systemImage: "books.vertical").font(.headline)
+            Label("Where these numbers come from", systemImage: "books.vertical").font(.display(.headline))
             source("WHO guidelines on physical activity (2020)", "150–300 active minutes a week, strength on 2+ days, balance on 3+ days from 65.",
                    "https://www.who.int/publications/i/item/9789240015128")
             source("NHS Couch to 5K", "9 weeks, 3 run/walk sessions a week building to 30 minutes of running.",
@@ -271,7 +279,7 @@ struct PlanView: View {
         .card()
     }
 
-    private func source(_ title: String, _ detail: String, _ url: String) -> some View {
+    private func source(_ title: LocalizedStringKey, _ detail: LocalizedStringKey, _ url: String) -> some View {
         VStack(alignment: .leading, spacing: 1) {
             if let link = URL(string: url) {
                 Link(title, destination: link).font(.subheadline.weight(.semibold))
@@ -343,9 +351,10 @@ struct IntervalWorkoutView: View {
                 Button { stop() } label: { Image(systemName: "xmark").font(.headline).frame(width: 44, height: 44) }
                 Text(title).font(.headline)
                 Spacer()
+                MusicButton()
             }
             Spacer()
-            Text(finished ? "Well done!" : current.kind.rawValue)
+            Text(finished ? String(localized: "Well done!") : current.title)
                 .font(.system(size: 40, weight: .heavy, design: .rounded))
                 .foregroundStyle(color(current.kind))
             ProgressRing(progress: finished ? 1 : 1 - left / TimeInterval(current.seconds), color: color(current.kind), lineWidth: 18) {
@@ -356,7 +365,7 @@ struct IntervalWorkoutView: View {
             }
             .frame(width: 250, height: 250)
             if !finished, index + 1 < intervals.count {
-                Text("Next: \(intervals[index + 1].kind.rawValue) \(clock(TimeInterval(intervals[index + 1].seconds)))")
+                Text("Next: \(intervals[index + 1].title) \(clock(TimeInterval(intervals[index + 1].seconds)))")
                     .font(.headline).foregroundStyle(.secondary)
             }
             ProgressView(value: min(elapsed, total), total: total).tint(.accentColor).padding(.horizontal)
@@ -390,7 +399,7 @@ struct IntervalWorkoutView: View {
             HStack(spacing: 12) {
                 Button(running ? "Pause" : "Resume") {
                     running.toggle()
-                    voice.say(running ? "Let's go." : "Paused.", interrupt: true)
+                    voice.say(running ? String(localized: "Let's go.") : String(localized: "Paused."), interrupt: true)
                 }
                 .buttonStyle(.borderedProminent)
                 .frame(maxWidth: .infinity)
@@ -412,7 +421,7 @@ struct IntervalWorkoutView: View {
         if elapsed >= total {
             finished = true
             running = false
-            voice.say("That's it, well done! Walking and running like this is how fitness builds.", interrupt: true)
+            voice.say(String(localized: "That's it, well done! Walking and running like this is how fitness builds."), interrupt: true)
             onFinish()
         }
     }
@@ -432,24 +441,24 @@ struct IntervalWorkoutView: View {
     static func announcement(_ interval: TrainingPlan.Interval, isFirst: Bool) -> String {
         let length = spoken(interval.seconds)
         switch interval.kind {
-        case .warmUp: return "Warm up with a \(length) walk at an easy pace."
-        case .coolDown: return "Great work. Cool down with a \(length) easy walk."
-        case .run: return "Run for \(length). Keep it slow enough to talk."
-        case .walk: return "Walk for \(length)."
-        case .brisk: return "Now walk briskly for \(length). You should be able to talk, but not sing."
-        case .easy: return "Easy walk for \(length)."
+        case .warmUp: return String(localized: "Warm up with a \(length) walk at an easy pace.")
+        case .coolDown: return String(localized: "Great work. Cool down with a \(length) easy walk.")
+        case .run: return String(localized: "Run for \(length). Keep it slow enough to talk.")
+        case .walk: return String(localized: "Walk for \(length).")
+        case .brisk: return String(localized: "Now walk briskly for \(length). You should be able to talk, but not sing.")
+        case .easy: return String(localized: "Easy walk for \(length).")
         }
     }
 
     static func spoken(_ seconds: Int) -> String {
         let minutes = seconds / 60, rest = seconds % 60
         switch (minutes, rest) {
-        case (0, _): return "\(rest) seconds"
-        case (1, 0): return "1 minute"
-        case (1, 30): return "a minute and a half"
-        case (_, 0): return "\(minutes) minutes"
-        case (_, 30): return "\(minutes) and a half minutes"
-        default: return "\(minutes) minutes \(rest) seconds"
+        case (0, _): return String(localized: "\(rest) seconds")
+        case (1, 0): return String(localized: "1 minute")
+        case (1, 30): return String(localized: "a minute and a half")
+        case (_, 0): return String(localized: "\(minutes) minutes")
+        case (_, 30): return String(localized: "\(minutes) and a half minutes")
+        default: return String(localized: "\(minutes) minutes \(rest) seconds")
         }
     }
 
@@ -462,7 +471,7 @@ struct IntervalWorkoutView: View {
         return String(format: "%d:%02d", s / 60, s % 60)
     }
 
-    private func stat(_ value: String, _ label: String) -> some View {
+    private func stat(_ value: String, _ label: LocalizedStringKey) -> some View {
         VStack(spacing: 2) {
             Text(value).font(.headline).monospacedDigit()
             Text(label).font(.caption).foregroundStyle(.secondary)
@@ -479,32 +488,27 @@ struct TrainingPlanCard: View {
     var body: some View {
         NavigationLink { PlanView() } label: {
             HStack(spacing: 14) {
-                Image(systemName: "calendar.badge.checkmark")
-                    .font(.title2)
-                    .frame(width: 48, height: 48)
-                    .background(Color.accentColor.opacity(0.15), in: RoundedRectangle(cornerRadius: 12))
-                    .foregroundStyle(Color.accentColor)
                 VStack(alignment: .leading, spacing: 3) {
                     if let profile = model.profile, let program = model.planProgram, let position = model.planPosition() {
                         let week = TrainingPlan.week(position.week, program: program, profile: profile, averageSteps: model.planBaseSteps)
                         let today = week.days[position.day]
-                        Text("\(program.title) · week \(min(position.week, program.weeks))").font(.caption).foregroundStyle(.secondary)
-                        Text(TrainingPlan.headline(today)).font(.headline).multilineTextAlignment(.leading)
+                        Text("\(program.title) · week \(min(position.week, program.weeks))").font(.caption).opacity(0.85)
+                        Text(TrainingPlan.headline(today)).font(.display(.title3)).multilineTextAlignment(.leading)
                         if model.isPlanDayDone(Date()) {
-                            Label("Done for today", systemImage: "checkmark.circle.fill").font(.caption).foregroundStyle(.green)
+                            Label("Done for today", systemImage: "checkmark.circle.fill").font(.caption.weight(.semibold))
                         } else if today.activities != [.rest] {
-                            Text("Aim for \(today.stepGoal.formatted()) steps").font(.caption).foregroundStyle(.secondary)
+                            Text("Aim for \(today.stepGoal.formatted()) steps").font(.caption).opacity(0.85)
                         }
                     } else {
-                        Text("Your training plan").font(.headline)
+                        Text("Your training plan").font(.display(.title3))
                         Text("Walking or running, strength sets and daily steps, built for your weight and age.")
-                            .font(.subheadline).foregroundStyle(.secondary).multilineTextAlignment(.leading)
+                            .font(.subheadline).opacity(0.9).multilineTextAlignment(.leading)
                     }
                 }
                 Spacer(minLength: 0)
-                Image(systemName: "chevron.right").foregroundStyle(.tertiary)
+                Image(systemName: "chevron.right").opacity(0.7)
             }
-            .card()
+            .heroCard(.plan)
         }
         .buttonStyle(.plain)
     }

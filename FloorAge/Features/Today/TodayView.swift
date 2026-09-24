@@ -16,7 +16,7 @@ struct TodayView: View {
                         .frame(height: 300)
                         .overlay(alignment: .bottomLeading) {
                             Text(greeting)
-                                .font(.headline)
+                                .font(.display(.headline))
                                 .padding(10)
                                 .background(.ultraThinMaterial, in: Capsule())
                                 .padding(12)
@@ -58,8 +58,8 @@ struct TodayView: View {
     private var greeting: String {
         let name = model.profile?.name ?? ""
         let hour = Calendar.current.component(.hour, from: Date())
-        let part = hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening"
-        return name.isEmpty ? part : "\(part), \(name)"
+        let part = hour < 12 ? String(localized: "Good morning") : hour < 17 ? String(localized: "Good afternoon") : String(localized: "Good evening")
+        return name.isEmpty ? part : String(localized: "\(part), \(name)")
     }
 
     private var weekStrip: some View {
@@ -67,12 +67,13 @@ struct TodayView: View {
         let count = days.filter { $0 }.count
         return VStack(alignment: .leading, spacing: 8) {
             Text(count == 0 ? "Let's start your week" : "\(count) of the last 7 days")
-                .font(.headline)
+                .font(.display(.headline))
             HStack(spacing: 8) {
                 ForEach(Array(days.enumerated()), id: \.offset) { _, done in
                     Circle()
-                        .fill(done ? Color.accentColor : Color(.tertiarySystemFill))
-                        .frame(width: 28, height: 28)
+                        .fill(done ? AnyShapeStyle(Feature.floorAge.gradient) : AnyShapeStyle(Color(.tertiarySystemFill)))
+                        .frame(width: 30, height: 30)
+                        .shadow(color: done ? Feature.floorAge.tint.opacity(0.4) : .clear, radius: 4, y: 2)
                         .overlay {
                             if done { Image(systemName: "checkmark").font(.caption.bold()).foregroundStyle(.white) }
                         }
@@ -82,6 +83,8 @@ struct TodayView: View {
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .tintedCard(.floorAge)
     }
 
     private var testPrompt: some View {
@@ -92,36 +95,34 @@ struct TodayView: View {
                 Image(systemName: "figure.cross.training")
                     .font(.largeTitle)
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("Find your Floor Age").font(.headline)
+                    Text("Find your Floor Age").font(.display(.title3))
                     Text("4 quick tests show how old your body moves. Your plan adapts to the result.")
                         .font(.subheadline)
                         .multilineTextAlignment(.leading)
                 }
                 Spacer()
-                Image(systemName: "chevron.right")
+                Image(systemName: "chevron.right").opacity(0.7)
             }
-            .padding()
-            .foregroundStyle(.white)
-            .background(Color.accentColor, in: RoundedRectangle(cornerRadius: 16))
+            .heroCard(.floorAge)
         }
         .buttonStyle(.plain)
     }
 
     private func floorAgeSummary(_ result: FloorAgeResult) -> some View {
-        HStack {
-            VStack(alignment: .leading) {
-                Text("Floor Age").font(.subheadline).foregroundStyle(.secondary)
-                Text("\(result.floorAge)").font(.system(size: 40, weight: .bold, design: .rounded))
+        HStack(alignment: .center) {
+            VStack(alignment: .leading, spacing: 0) {
+                Text("Floor Age").font(.subheadline).opacity(0.9)
+                Text("\(result.floorAge)").font(.metric(52))
             }
             Spacer()
             if let weakest = result.weakest {
-                VStack(alignment: .trailing) {
-                    Text("Focus").font(.subheadline).foregroundStyle(.secondary)
-                    Text(weakest.area).font(.headline)
+                VStack(alignment: .trailing, spacing: 2) {
+                    Text("Focus").font(.subheadline).opacity(0.9)
+                    Text(weakest.area).font(.display(.headline)).multilineTextAlignment(.trailing)
                 }
             }
         }
-        .card()
+        .heroCard(.floorAge)
     }
 
     private var planCard: some View {
@@ -129,7 +130,7 @@ struct TodayView: View {
         let minutes = Int((plan.reduce(0) { $0 + $1.estimatedSeconds } / 60).rounded())
         return VStack(alignment: .leading, spacing: 12) {
             HStack {
-                Text("Today's session").font(.title2.bold())
+                Text("Today's session").font(.display(.title2))
                 Spacer()
                 Text("~\(max(minutes, 1)) min").foregroundStyle(.secondary)
             }
@@ -157,7 +158,7 @@ struct TodayView: View {
             .buttonStyle(.borderedProminent)
             .controlSize(.large)
         }
-        .card()
+        .tintedCard(.glance)
     }
 }
 
@@ -168,13 +169,9 @@ extension TodayView {
             session = SessionItems(items: PlanBuilder.pelvicFloor)
         } label: {
             HStack(spacing: 14) {
-                Image(systemName: "figure.mind.and.body")
-                    .font(.title)
-                    .frame(width: 48, height: 48)
-                    .background(Color.accentColor.opacity(0.15), in: RoundedRectangle(cornerRadius: 12))
-                    .foregroundStyle(Color.accentColor)
+                FeatureBadge(feature: .plan, symbol: "figure.mind.and.body", size: 48)
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("Pelvic floor").font(.headline)
+                    Text("Pelvic floor").font(.display(.headline))
                     Text("12 guided Kegel squeezes · about 2 min. Do them sitting, anywhere.")
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
@@ -185,7 +182,7 @@ extension TodayView {
                     .font(.title)
                     .foregroundStyle(Color.accentColor)
             }
-            .card()
+            .tintedCard(.plan)
         }
         .buttonStyle(.plain)
     }

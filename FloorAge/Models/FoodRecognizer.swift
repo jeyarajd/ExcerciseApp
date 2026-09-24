@@ -15,7 +15,7 @@ enum FoodRecognizer {
         let items: [FoodItem]
 
         var title: String {
-            label.replacingOccurrences(of: "_drink", with: "").replacingOccurrences(of: "_", with: " ").capitalized
+            FoodLibrary.localized(label.replacingOccurrences(of: "_drink", with: "").replacingOccurrences(of: "_", with: " ").capitalized)
         }
     }
 

@@ -22,9 +22,10 @@ Native iOS app (SwiftUI, RealityKit, iOS 18+). Fully offline: no server, no AI, 
 
 ## Conventions
 
+- Localisation: English default, Hindi and Spanish (see README "Translations"). User-facing text built in code must use `String(localized:)`, and so must every spoken line (`voice.say`). Never put a raw `Double` inside `String(localized:)` (it prints "24.900000"); format it first. Exercise and food text come from the `Exercises`/`Foods` tables (English stays the stored key). Run `python3 tools/check_translations.py` after adding strings.
 - Keep all personal data on the device (`AppModel` JSON file). The app makes no network requests.
 - New fields in `AppModel.Stored` and `Profile` must be optional (or have defaults), so files saved by older versions still decode. `TrackingStorageTests.testFilesFromTheOlderVersionStillLoad` guards this.
-- Screens use `AppBackground()` (or `.appBackground()` on List/Form) and `.card()` for content blocks (`App/Theme.swift`). The 3D view is transparent so the coach stands on that background.
+- Screens use `AppBackground()` (or `.appBackground()` on List/Form). Content blocks use `.heroCard(Feature)` for the headline figure (gradient, white text), `.tintedCard(Feature)` for supporting cards, and `.card()` for neutral ones. `FeatureBadge`, `ArcGauge`, `Font.display` and `Font.metric` complete the look (`App/Theme.swift`). Keep each feature on its own `Feature` colours. The 3D view is transparent so the coach stands on that background.
 - Food photos: `FoodRecognizer` maps Vision's built-in `VNClassifyImageRequest` labels to `FoodLibrary` names (`suggestions`); every mapped name must exist in `FoodLibrary` (tested). Photos are never stored.
 - `TrainingPlan` (Models) builds each week from the profile. Every number traces to a source listed in its header comment and in `PlanView`; keep them in step. `TrainingPlanTests` checks the Couch to 5K intervals against the NHS plan.
 - Reminders: call `model.refreshReminders()` after anything that changes what's done or planned (`App/ReminderSync.swift`). `AppModel.reminderText(on:)` decides each day's message (nil = no reminder).

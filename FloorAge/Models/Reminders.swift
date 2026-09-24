@@ -59,7 +59,7 @@ enum Reminders {
         for date in fireDates(minuteOfDay: minuteOfDay, trainedToday: trainedToday, now: now) {
             guard let body = text(date) else { continue }
             let content = UNMutableNotificationContent()
-            content.title = "Still time for today's training"
+            content.title = String(localized: "Still time for today's training")
             content.body = body
             content.sound = .default
             let parts = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: date)

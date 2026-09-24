@@ -63,6 +63,7 @@ struct SessionView: View {
                 Text(subtitle).font(.subheadline).foregroundStyle(.secondary)
             }
             Spacer()
+            MusicButton()
             Menu {
                 Picker("Speed", selection: $speed) {
                     Text("Slower").tag(0.75)
@@ -81,17 +82,17 @@ struct SessionView: View {
 
     private var title: String {
         switch engine.phase {
-        case .done: "Session complete"
-        case .rest: "Rest"
+        case .done: String(localized: "Session complete")
+        case .rest: String(localized: "Rest")
         default: engine.current?.exercise.name ?? ""
         }
     }
 
     private var subtitle: String {
-        guard engine.phase != .done else { return "\(engine.items.count) exercises" }
-        let position = "\(engine.index + 1) of \(engine.items.count)"
-        if engine.phase == .rest, let item = engine.current { return "Next: \(item.exercise.name) · \(item.amountLabel)" }
-        return "\(position) · \(engine.current?.amountLabel ?? "")"
+        guard engine.phase != .done else { return String(localized: "\(engine.items.count) exercises") }
+        let position = String(localized: "\(engine.index + 1) of \(engine.items.count)")
+        if engine.phase == .rest, let item = engine.current { return String(localized: "Next: \(item.exercise.name) · \(item.amountLabel)") }
+        return String(localized: "\(position) · \(engine.current?.amountLabel ?? "")")
     }
 
     private var counter: some View {
@@ -119,8 +120,8 @@ struct SessionView: View {
     }
 
     private var counterUnit: String {
-        if engine.phase == .active, engine.current?.reps != nil { return "reps" }
-        return "sec"
+        if engine.phase == .active, engine.current?.reps != nil { return String(localized: "reps") }
+        return String(localized: "sec")
     }
 
     @ViewBuilder
