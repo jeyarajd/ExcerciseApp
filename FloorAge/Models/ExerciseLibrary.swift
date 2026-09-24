@@ -70,6 +70,9 @@ struct Exercise: Decodable, Identifiable, Hashable {
     let safety: String?
     let props: [Prop]?
     let keyframes: [Keyframe]
+    /// The camera angle (degrees the coach is turned) that shows this move best, e.g. side-on for
+    /// the toe reach. The view eases there when the exercise starts.
+    let cameraYaw: Double?
 
     static func == (lhs: Exercise, rhs: Exercise) -> Bool { lhs.id == rhs.id }
 
@@ -83,7 +86,7 @@ struct Exercise: Decodable, Identifiable, Hashable {
                         repTime: repTime, mirrorHalfway: mirrorHalfway, focus: focus, intro: text("intro", intro),
                         cues: cues.enumerated().map { text("cue.\($0.offset)", $0.element) },
                         safety: safety.map { text("safety", $0) }, props: props,
-                        keyframes: keyframes.map { $0.localized(exercise: id, bundle: bundle) })
+                        keyframes: keyframes.map { $0.localized(exercise: id, bundle: bundle) }, cameraYaw: cameraYaw)
     }
     func hash(into hasher: inout Hasher) { hasher.combine(id) }
 }

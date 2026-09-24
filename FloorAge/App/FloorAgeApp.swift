@@ -115,6 +115,7 @@ struct DemoView: View {
     var body: some View {
         AvatarView(controller: avatar)
             .ignoresSafeArea()
+            .onAppear { DemoScreen.prepareForSnapshot() }
             .overlay(alignment: .top) {
                 Text(avatar.exercise?.name ?? "")
                     .font(.title2.bold())

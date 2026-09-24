@@ -68,6 +68,7 @@ final class SessionEngine: ObservableObject {
         lastCueAt = 0
         mirrored = false
         secondsLeft = Double(item.seconds ?? 0)
+        avatar.looksAtCamera = false
         avatar.play(item.exercise)
         avatar.isPlaying = true
         voice.say(String(localized: "Ready. Go!"), interrupt: true)
@@ -114,6 +115,7 @@ final class SessionEngine: ObservableObject {
         cueText = nil
         avatar.play(item.exercise)
         avatar.isPlaying = true
+        avatar.looksAtCamera = true
         let amount = item.reps.map { String(localized: "\($0) reps.") } ?? String(localized: "\(item.seconds ?? 0) seconds.")
         voice.say(String(localized: "\(item.exercise.intro) \(amount)"), interrupt: true)
     }
@@ -134,7 +136,9 @@ final class SessionEngine: ObservableObject {
         secondsLeft = restSeconds
         cueText = nil
         if let item = current {
-            avatar.play(item.exercise)
+            // The coach stands at ease and talks to you; the screen shows what's next.
+            avatar.play(id: "idle")
+            avatar.looksAtCamera = true
             voice.say(String(localized: "Nice work. Rest. Next up, \(item.exercise.name)."), interrupt: true)
         }
         startTimer()
@@ -144,6 +148,7 @@ final class SessionEngine: ObservableObject {
         timer?.invalidate()
         phase = .done
         avatar.play(id: "idle")
+        avatar.looksAtCamera = true
         cueText = nil
         voice.say(String(localized: "That's the session done. Great job showing up today!"), interrupt: true)
     }

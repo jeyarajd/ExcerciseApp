@@ -38,6 +38,17 @@ final class AvatarController: NSObject, ObservableObject {
     /// While set, the coach copies this pose (from the camera) instead of playing the exercise.
     private var live: Pose?
     private var yawBeforeLive: Float?
+    /// Turn the head towards the viewer (session intros and rests).
+    var looksAtCamera = false
+    private var lookAmount: Float = 0
+    private var relaxAmount: Float = 0
+    /// The camera easing to the current exercise's best angle.
+    private var yawAnimation: (from: Float, to: Float, t: Double)?
+    private var userTurned = false
+    /// Where the camera aims across the screen, following the middle of the body so a fold or a
+    /// lunge stays in frame.
+    private var framingX: Float = 0
+    private lazy var solver = PoseSolver(rig: library.rig)
 
     init(exerciseID: String? = nil) {
         super.init()
@@ -77,6 +88,22 @@ final class AvatarController: NSObject, ObservableObject {
         time = 0
         self.exercise = exercise
         rebuildProps()
+        turnToBestAngle(for: exercise)
+    }
+
+    /// Eases the view round to the angle that shows this exercise best, unless the person has
+    /// turned the coach themselves or the coach is copying the camera. Instant with Reduce Motion.
+    private func turnToBestAngle(for exercise: Exercise) {
+        guard live == nil, !userTurned, let degrees = exercise.cameraYaw else { return }
+        let target = Float(degrees * .pi / 180)
+        guard abs(target - yaw) > 0.01 else { return }
+        if UIAccessibility.isReduceMotionEnabled || view == nil {
+            yaw = target
+            yawAnimation = nil
+            updateCamera()
+        } else {
+            yawAnimation = (yaw, target, 0)
+        }
     }
 
     func play(id: String, mirrored: Bool = false) {
@@ -102,6 +129,7 @@ final class AvatarController: NSObject, ObservableObject {
             if live == nil {
                 yawBeforeLive = yaw
                 yaw = 0
+                yawAnimation = nil
                 updateCamera()
             }
             live = pose
@@ -129,7 +157,7 @@ final class AvatarController: NSObject, ObservableObject {
         view.isOpaque = false
         if let light = Self.studioLight {
             view.environment.lighting.resource = light
-            view.environment.lighting.intensityExponent = 0.6
+            view.environment.lighting.intensityExponent = dark ? 0.75 : 0.6
         }
 
         let world = AnchorEntity(world: .zero)
@@ -144,7 +172,8 @@ final class AvatarController: NSObject, ObservableObject {
 
         // Soft key light with a shadow, a gentle fill, and a rim light to lift the coach off the backdrop.
         let key = DirectionalLight()
-        key.light.intensity = 2200
+        // Softer key and a stronger rim keep darker skin tones shaped against the warm background.
+        key.light.intensity = 1800
         key.shadow = DirectionalLightComponent.Shadow(maximumDistance: 5, depthBias: 1.5)
         key.look(at: [0, 0.8, 0], from: [1.6, 3.4, 2.6], relativeTo: nil)
         world.addChild(key)
@@ -155,7 +184,7 @@ final class AvatarController: NSObject, ObservableObject {
         world.addChild(fill)
 
         let rim = DirectionalLight()
-        rim.light.intensity = 900
+        rim.light.intensity = 1200
         rim.look(at: [0, 1, 0], from: [-0.8, 2.2, -3], relativeTo: nil)
         world.addChild(rim)
 
@@ -197,6 +226,13 @@ final class AvatarController: NSObject, ObservableObject {
     }()
 
     private func tick(_ dt: TimeInterval) {
+        if var animation = yawAnimation {
+            animation.t += dt
+            let u = Float(min(animation.t / 0.6, 1))
+            yaw = animation.from + (animation.to - animation.from) * u * u * (3 - 2 * u)
+            yawAnimation = u < 1 ? animation : nil
+            updateCamera()
+        }
         if let live {
             // Ease towards each new camera pose so small jitters don't show.
             let pose = lastPose.map { $0.blended(to: live, by: Float(min(dt * 14, 1))) } ?? live
@@ -230,6 +266,7 @@ final class AvatarController: NSObject, ObservableObject {
         }
         lastPose = pose
         rig.apply(alive(pose, dt: dt))
+        frame(pose, dt: dt)
         // The contact shadow follows the body over the floor.
         contactShadow?.position = [pose.pelvis.x, 0.004, pose.pelvis.z + 0.04]
     }
@@ -244,6 +281,14 @@ final class AvatarController: NSObject, ObservableObject {
         pose.angles["neck", default: .zero].x += 0.7 * breath
         pose.angles["lShoulder", default: .zero].z += 0.8 * breath
         pose.angles["rShoulder", default: .zero].z -= 0.8 * breath
+
+        // Standing at ease: a slow weight shift. Talking to you: the head turns your way.
+        let ease = Float(min(dt * 3, 1))
+        let relaxed = live == nil && exercise?.id == "idle"
+        relaxAmount += ((relaxed ? 1 : 0) - relaxAmount) * ease
+        lookAmount += ((looksAtCamera && live == nil ? 1 : 0) - lookAmount) * ease
+        pose = pose.withWeightShift(time: lifeTime, amount: relaxAmount)
+            .lookingAtViewer(bodyYaw: yaw * 180 / .pi, amount: lookAmount)
 
         let sinceBlink = lifeTime - nextBlink
         if sinceBlink >= 0.16 {
@@ -272,9 +317,23 @@ final class AvatarController: NSObject, ObservableObject {
         }
     }
 
+    /// Keeps the whole body in view: the camera slides sideways to the middle of the head, hands
+    /// and feet as the coach sees them.
+    private func frame(_ pose: Pose, dt: TimeInterval) {
+        let world = solver.world(pose.angles, pelvis: pose.pelvis)
+        let xs = ["head", "lWrist", "rWrist", "lAnkle", "rAnkle", "pelvis"].compactMap { world[$0]?.p }
+            .map { $0.x * cos(yaw) + $0.z * sin(yaw) }
+        guard let low = xs.min(), let high = xs.max() else { return }
+        let target = (low + high) / 2
+        let step = (target - framingX) * Float(min(dt * 2.5, 1))
+        guard abs(step) > 0.0005 else { return }
+        framingX += step
+        updateCamera()
+    }
+
     private func updateCamera() {
         turntable.transform.rotation = simd_quatf(angle: yaw, axis: [0, 1, 0])
-        let target = SIMD3<Float>(0, cameraHeight, 0)
+        let target = SIMD3<Float>(framingX, cameraHeight, 0)
         camera.look(at: target, from: target + SIMD3(0, 0.35, distance), relativeTo: nil)
     }
 
@@ -282,6 +341,8 @@ final class AvatarController: NSObject, ObservableObject {
         let dx = Float(gesture.translation(in: gesture.view).x)
         gesture.setTranslation(.zero, in: gesture.view)
         yaw += dx * 0.01
+        yawAnimation = nil
+        userTurned = true
         updateCamera()
     }
 
@@ -292,7 +353,9 @@ final class AvatarController: NSObject, ObservableObject {
     }
 
     @objc private func handleReset() {
-        yaw = 0.45
+        userTurned = false
+        yawAnimation = nil
+        yaw = exercise?.cameraYaw.map { Float($0 * .pi / 180) } ?? 0.45
         distance = 3.4
         updateCamera()
     }

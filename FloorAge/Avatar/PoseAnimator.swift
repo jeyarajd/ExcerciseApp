@@ -15,6 +15,28 @@ struct Pose {
     }
 }
 
+extension Pose {
+    /// A slow shift of weight from foot to foot (±1.5° pelvis roll over 4 s), with the chest
+    /// countering most of it so the head stays level. `amount` 0–1 fades it in and out.
+    func withWeightShift(time: Double, amount: Float) -> Pose {
+        guard amount > 0 else { return self }
+        var pose = self
+        let roll = 1.5 * Float(sin(time * 2 * .pi / 4)) * amount
+        pose.angles["pelvis", default: .zero].z += roll
+        pose.angles["chest", default: .zero].z -= roll * 0.8
+        return pose
+    }
+
+    /// Turns the head towards the viewer when the body is turned `bodyYaw` degrees, by at most
+    /// `limit` degrees. `amount` 0–1 fades it in and out.
+    func lookingAtViewer(bodyYaw: Float, limit: Float = 20, amount: Float) -> Pose {
+        guard amount > 0 else { return self }
+        var pose = self
+        pose.angles["neck", default: .zero].y += max(-limit, min(limit, -bodyYaw)) * amount
+        return pose
+    }
+}
+
 /// Forward kinematics and ground contact for the rig. Must stay in step with `tools/pose_preview.py`.
 struct PoseSolver {
     struct Joint {

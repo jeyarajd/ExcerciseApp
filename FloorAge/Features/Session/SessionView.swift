@@ -6,6 +6,8 @@ struct SessionView: View {
     @StateObject private var engine: SessionEngine
     @State private var speed = 1.0
     @State private var startedAt = Date()
+    @State private var coachShown = false
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @ObservedObject private var watch = WatchLink.shared
     private let items: [PlanItem]
 
@@ -20,6 +22,9 @@ struct SessionView: View {
             ZStack(alignment: .topTrailing) {
                 AvatarView(controller: engine.avatar)
                     .ignoresSafeArea(edges: .horizontal)
+                    // The coach (with its shadow) steps in rather than popping up.
+                    .opacity(coachShown ? 1 : 0)
+                    .scaleEffect(coachShown || reduceMotion ? 1 : 0.96)
                     .overlay(alignment: .bottom) {
                         if let cue = engine.cueText, engine.phase == .intro || engine.phase == .active {
                             Text(cue)
@@ -45,6 +50,7 @@ struct SessionView: View {
         .onAppear {
             startedAt = Date()
             engine.start()
+            withAnimation(reduceMotion ? .easeOut(duration: 0.3) : .spring(duration: 0.4)) { coachShown = true }
         }
         // The Apple Watch remote: show what's playing, and take its pause and skip taps.
         .onReceive(engine.objectWillChange.receive(on: RunLoop.main)) { _ in watch.send(watchStatus) }

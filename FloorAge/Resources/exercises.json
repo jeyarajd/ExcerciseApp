@@ -89,6 +89,7 @@
   "exercises": [
     {
       "id": "idle",
+      "cameraYaw": 26,
       "name": "Ready",
       "kind": "timed",
       "defaultSeconds": 5,
@@ -103,6 +104,7 @@
     },
     {
       "id": "squat",
+      "cameraYaw": 35,
       "name": "Squat",
       "kind": "reps",
       "defaultReps": 10,
@@ -120,6 +122,7 @@
     },
     {
       "id": "chair_stand",
+      "cameraYaw": 45,
       "name": "Chair Stand",
       "kind": "reps",
       "defaultReps": 10,
@@ -139,6 +142,7 @@
     },
     {
       "id": "sit_rise",
+      "cameraYaw": 30,
       "name": "Sit to Rise",
       "kind": "reps",
       "defaultReps": 3,
@@ -160,6 +164,7 @@
     },
     {
       "id": "single_leg_balance",
+      "cameraYaw": 20,
       "name": "One-Leg Balance",
       "kind": "hold",
       "defaultSeconds": 30,
@@ -178,6 +183,7 @@
     },
     {
       "id": "toe_reach",
+      "cameraYaw": 35,
       "name": "Toe Reach",
       "kind": "reps",
       "defaultReps": 6,
@@ -195,6 +201,7 @@
     },
     {
       "id": "calf_raise",
+      "cameraYaw": 55,
       "name": "Calf Raise",
       "kind": "reps",
       "defaultReps": 12,
@@ -212,6 +219,7 @@
     },
     {
       "id": "march",
+      "cameraYaw": 30,
       "name": "March in Place",
       "kind": "timed",
       "defaultSeconds": 45,
@@ -228,6 +236,7 @@
     },
     {
       "id": "arm_raise",
+      "cameraYaw": 10,
       "name": "Side Arm Raise",
       "kind": "timed",
       "defaultSeconds": 30,
@@ -243,6 +252,7 @@
     },
     {
       "id": "side_leg_raise",
+      "cameraYaw": 5,
       "name": "Side Leg Raise",
       "kind": "reps",
       "defaultReps": 10,
@@ -261,6 +271,7 @@
     },
     {
       "id": "deep_squat_hold",
+      "cameraYaw": 30,
       "name": "Deep Squat Hold",
       "kind": "hold",
       "defaultSeconds": 20,
@@ -277,6 +288,7 @@
     },
     {
       "id": "kegel",
+      "cameraYaw": 20,
       "name": "Pelvic Floor Squeeze",
       "kind": "reps",
       "defaultReps": 10,

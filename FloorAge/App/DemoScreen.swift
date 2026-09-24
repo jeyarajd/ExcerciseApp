@@ -95,10 +95,7 @@ private struct DemoScreenHost: View {
 
     var body: some View {
         content.onAppear {
-            phoneSizedWindow()
-            if let path = UserDefaults.standard.string(forKey: "demoSnapshot") {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 6) { SelfSnapshot.save(to: path) }
-            }
+            DemoScreen.prepareForSnapshot()
         }
     }
 
@@ -195,18 +192,6 @@ private struct DemoScreenHost: View {
         }
     }
 
-    /// On a Mac (Catalyst), size the window like an iPhone so screenshots match the phone layout.
-    private func phoneSizedWindow() {
-        #if targetEnvironment(macCatalyst)
-        // `-demoHeight <points>` makes a taller window to capture a whole scrolling screen.
-        let height = UserDefaults.standard.double(forKey: "demoHeight")
-        let size = CGSize(width: 402, height: height > 0 ? height : 874)
-        for case let scene as UIWindowScene in UIApplication.shared.connectedScenes {
-            scene.sizeRestrictions?.minimumSize = size
-            scene.sizeRestrictions?.maximumSize = size
-        }
-        #endif
-    }
 }
 
 /// Renders the app's own window to a PNG, then quits. RealityKit draws with Metal, which a normal
@@ -303,5 +288,28 @@ private struct WidgetGallery: View {
             .background(background)
             .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
             .shadow(color: .black.opacity(0.25), radius: 10, y: 5)
+    }
+}
+
+extension DemoScreen {
+    /// Sizes the Mac window like a phone and, with `-demoSnapshot`, saves a picture after 6 s.
+    static func prepareForSnapshot() {
+        phoneSizedWindow()
+        if let path = UserDefaults.standard.string(forKey: "demoSnapshot") {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 6) { SelfSnapshot.save(to: path) }
+        }
+    }
+
+    /// On a Mac (Catalyst), size the window like an iPhone so screenshots match the phone layout.
+    private static func phoneSizedWindow() {
+        #if targetEnvironment(macCatalyst)
+        // `-demoHeight <points>` makes a taller window to capture a whole scrolling screen.
+        let height = UserDefaults.standard.double(forKey: "demoHeight")
+        let size = CGSize(width: 402, height: height > 0 ? height : 874)
+        for case let scene as UIWindowScene in UIApplication.shared.connectedScenes {
+            scene.sizeRestrictions?.minimumSize = size
+            scene.sizeRestrictions?.maximumSize = size
+        }
+        #endif
     }
 }

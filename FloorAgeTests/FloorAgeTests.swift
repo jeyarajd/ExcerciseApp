@@ -1016,3 +1016,26 @@ final class Tier2Tests: XCTestCase {
         XCTAssertEqual(WatchTestResult.fromWatch(result.watchData)?.value, 14)
     }
 }
+
+final class CoachPresentationTests: XCTestCase {
+    func testWeightShiftRollsThePelvisAndKeepsTheHeadLevel() {
+        let base = Pose(angles: [:], pelvis: .zero)
+        let shifted = base.withWeightShift(time: 1, amount: 1)  // a quarter of the 4 s cycle: full roll
+        XCTAssertEqual(shifted.angles["pelvis"]?.z ?? 0, 1.5, accuracy: 0.01)
+        XCTAssertEqual(shifted.angles["chest"]?.z ?? 0, -1.2, accuracy: 0.01)
+        XCTAssertEqual(base.withWeightShift(time: 1, amount: 0).angles["pelvis"], nil)
+    }
+
+    func testHeadTurnsTowardsTheViewerUpToTwentyDegrees() {
+        let base = Pose(angles: [:], pelvis: .zero)
+        XCTAssertEqual(base.lookingAtViewer(bodyYaw: 10, amount: 1).angles["neck"]?.y ?? 0, -10, accuracy: 0.01)
+        XCTAssertEqual(base.lookingAtViewer(bodyYaw: 80, amount: 1).angles["neck"]?.y ?? 0, -20, accuracy: 0.01)
+        XCTAssertEqual(base.lookingAtViewer(bodyYaw: 80, amount: 0.5).angles["neck"]?.y ?? 0, -10, accuracy: 0.01)
+    }
+
+    func testExercisesHaveABestCameraAngle() {
+        let library = ExerciseLibrary.shared
+        XCTAssertEqual(library.exercise("toe_reach")?.cameraYaw, 35, "turned more than the default, and the fold still fits a phone screen")
+        XCTAssertTrue(library.exercises.allSatisfy { $0.cameraYaw != nil })
+    }
+}
