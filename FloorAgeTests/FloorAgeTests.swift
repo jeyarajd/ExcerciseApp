@@ -143,6 +143,18 @@ final class AppModelTests: XCTestCase {
         XCTAssertEqual(model.lastSevenDays, [false, false, false, true, false, false, true])
     }
 
+    func testChosenCoachWinsOverGenderAndOldProfilesFollowGender() throws {
+        // Saved before the coach choice existed.
+        let old = try JSONDecoder().decode(Profile.self, from: Data(#"{"name":"Raj","age":70,"limitations":[],"gender":"male"}"#.utf8))
+        XCTAssertNil(old.coach)
+        XCTAssertEqual(old.coachLook, .male)
+        XCTAssertEqual(Profile(name: "", age: 40, limitations: []).coachLook, .female)
+
+        let model = AppModel(fileURL: url)
+        model.profile = Profile(name: "Raj", age: 70, limitations: [], gender: .male, coach: .female)
+        XCTAssertEqual(AppModel(fileURL: url).profile?.coachLook, .female)
+    }
+
     func testStreakCountsDaysInARowIncludingPlanDays() {
         let model = AppModel(fileURL: url)
         let cal = Calendar.current

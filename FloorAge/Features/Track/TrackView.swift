@@ -95,6 +95,8 @@ struct TrackView: View {
                     WeekBars(days: steps.week, goal: steps.goal, color: .white)
                         .frame(width: 96, height: 58)
                 }
+                // Grey placeholders until the first count arrives, so the numbers don't jump in.
+                .redacted(reason: steps.isLoading ? .placeholder : [])
             }
         }
         .heroCard(.steps)
@@ -220,13 +222,21 @@ struct WeekBars: View {
     var color: Color = .accentColor
 
     var body: some View {
-        Chart(days) { day in
-            BarMark(x: .value("Day", day.date, unit: .day), y: .value("Steps", day.steps))
-                .foregroundStyle(Calendar.current.isDateInToday(day.date) ? color : color.opacity(day.steps >= goal ? 0.65 : 0.35))
-                .clipShape(Capsule())
+        if days.isEmpty {
+            // Still loading: seven even bars hold the space.
+            HStack(alignment: .bottom, spacing: 4) {
+                ForEach(0..<7, id: \.self) { _ in Capsule().fill(color.opacity(0.25)) }
+            }
+            .padding(.top, 18)
+        } else {
+            Chart(days) { day in
+                BarMark(x: .value("Day", day.date, unit: .day), y: .value("Steps", day.steps))
+                    .foregroundStyle(Calendar.current.isDateInToday(day.date) ? color : color.opacity(day.steps >= goal ? 0.65 : 0.35))
+                    .clipShape(Capsule())
+            }
+            .chartXAxis(.hidden)
+            .chartYAxis(.hidden)
         }
-        .chartXAxis(.hidden)
-        .chartYAxis(.hidden)
     }
 }
 
@@ -253,6 +263,7 @@ struct StepsView: View {
                     }
                 }
                 .frame(maxWidth: .infinity)
+                .redacted(reason: steps.isLoading ? .placeholder : [])
                 .heroCard(.steps, padding: 20)
 
                 VStack(alignment: .leading, spacing: 10) {

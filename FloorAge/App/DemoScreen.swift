@@ -7,7 +7,7 @@ import SwiftUI
 /// `-demoSnapshot <path.png>` to have the app save a picture of itself and quit (no screen
 /// recording permission needed).
 enum DemoScreen: String, CaseIterable {
-    case onboarding, today, track, plan, planIntro, cardio, sleep, steps, food, foodPhoto, bmi, progress, settings, session, sessionRest, sessionDone, kegel, test, sitRise, balance, chairStand, reach, cameraChair, cameraBalance, cameraReach, result, share, plus, family, familyAdd, challenge, badge, drop, widgets, video, portrait
+    case onboarding, onboardingCoach, today, track, plan, planIntro, cardio, sleep, steps, food, foodPhoto, bmi, progress, settings, session, sessionRest, sessionDone, kegel, test, sitRise, balance, chairStand, reach, cameraChair, cameraBalance, cameraReach, result, share, plus, family, familyAdd, challenge, badge, drop, widgets, video, portrait
 
     /// Screens show Floor Age Plus unlocked unless launched with `-demoPlus NO`.
     static var hasPlus: Bool {
@@ -104,6 +104,8 @@ private struct DemoScreenHost: View {
         switch screen {
         case .onboarding:
             OnboardingView()
+        case .onboardingCoach:
+            OnboardingView(startPage: 2)
         case .today:
             MainTabs(initial: .today)
         case .track:

@@ -40,11 +40,17 @@ struct Profile: Codable, Equatable {
     var name: String
     var age: Int
     var limitations: Set<Limitation>
-    /// Picks the coach (and voice) who demonstrates. Optional: nil means "prefer not to say".
+    /// Used for calorie targets, and picks the coach unless one was chosen. Optional: nil means
+    /// "prefer not to say".
     var gender: Gender? = nil
+    /// The coach (and voice) chosen in onboarding or Settings; nil follows `gender`. Optional so
+    /// profiles saved before the choice existed still load.
+    var coach: CoachLook? = nil
     /// From the BMI screen. Optional so profiles saved before these existed still load.
     var heightCm: Double? = nil
     var weightKg: Double? = nil
+
+    var coachLook: CoachLook { coach ?? CoachLook(matching: gender) }
 
     var bmi: Double? {
         guard let heightCm, let weightKg else { return nil }
@@ -326,12 +332,9 @@ final class AppModel: ObservableObject {
         save()
     }
 
-    /// The coach matches the person's gender; the female coach is the default.
+    /// Shows the profile's coach (chosen, or matching their gender); the woman coach is the default.
     private func syncCoachLook() {
-        let look = profile?.gender == .male ? "male" : "female"
-        guard UserDefaults.standard.string(forKey: "coachLook") != look else { return }
-        UserDefaults.standard.set(look, forKey: "coachLook")
-        NotificationCenter.default.post(name: Notification.Name("CoachLookChanged"), object: nil)
+        CoachLook.preview(profile?.coachLook ?? .female)
     }
 
     private func load() {

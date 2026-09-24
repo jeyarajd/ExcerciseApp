@@ -40,11 +40,11 @@ A to-do list for giving Floor Age a premium feel. It follows the rules in `CLAUD
 - **Cue capsule:** a material background (`.ultraThinMaterial`) with a thin brand-gradient stroke looks more premium than a solid accent capsule. Keep the contrast at 4.5:1 or more.
 - **Session complete:** a full-screen summary with minutes, reps, the area improved, and a streak flame. Offer a "Share" button that reuses `ShareCard`.
 
-## 4. Today and onboarding
+## 4. Today and onboarding (done)
 
 - The Today hero shows a live, slowly idling coach (small `AvatarView`, no gestures) next to the Floor Age gauge, not a static card.
 - Onboarding: choose a coach (woman or man, realistic or cartoon) with a live preview that turns slowly, and hear a short spoken hello with `VoiceCoach`.
-- Skeleton loading states: use `.redacted(reason: .placeholder)` for cards while `AppModel` loads, so nothing jumps.
+- Skeleton loading states: use `.redacted(reason: .placeholder)` for cards while `AppModel` loads, so nothing jumps. `AppModel` loads synchronously, so this went where data really arrives late: the step gauges and week bars until CoreMotion or Health answers (`StepCounter.isLoading`).
 
 ## 5. Visual system (`App/Theme.swift`)
 

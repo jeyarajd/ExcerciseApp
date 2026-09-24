@@ -4,7 +4,12 @@ struct TodayView: View {
     @EnvironmentObject private var model: AppModel
     @EnvironmentObject private var voice: VoiceCoach
     @EnvironmentObject private var store: Store
-    @StateObject private var avatar = AvatarController(exerciseID: "idle")
+    /// Framed closer than usual: the hero has no mat, and arms overhead still fit.
+    @StateObject private var avatar: AvatarController = {
+        let coach = AvatarController(exerciseID: "idle")
+        coach.setCamera(distance: 3.0, height: 0.9)
+        return coach
+    }()
     @State private var session: SessionItems?
     /// The session zooms out of the card that started it.
     @Namespace private var sessionZoom
@@ -15,24 +20,13 @@ struct TodayView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
-                    AvatarView(controller: avatar)
-                        .frame(height: 300)
-                        .overlay(alignment: .bottomLeading) {
-                            Text(greeting)
-                                .font(.display(.headline))
-                                .padding(10)
-                                .background(.ultraThinMaterial, in: Capsule())
-                                .padding(12)
-                        }
+                    hero
+
+                    if let result = model.latestResult, Retest.isDue(lastCheck: result.date) {
+                        retestCard(result)
+                    }
 
                     weekStrip
-
-                    if model.latestResult == nil {
-                        testPrompt
-                    } else if let result = model.latestResult {
-                        floorAgeSummary(result)
-                        if Retest.isDue(lastCheck: result.date) { retestCard(result) }
-                    }
 
                     TrainingPlanCard()
                     ChallengeCard()
@@ -100,42 +94,63 @@ struct TodayView: View {
         .tintedCard(.floorAge)
     }
 
-    private var testPrompt: some View {
-        Button {
-            showingTest = true
-        } label: {
-            HStack(spacing: 12) {
-                Image(systemName: "figure.cross.training")
-                    .font(.largeTitle)
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Find your Floor Age").font(.display(.title3))
+    /// The coach idling beside your Floor Age (or the invitation to find it): the first thing
+    /// you see each day. Tapping an exercise in today's session makes this coach demonstrate it.
+    private var hero: some View {
+        HStack(alignment: .bottom, spacing: 4) {
+            AvatarView(controller: avatar, interactive: false, showsMat: false)
+                .frame(width: 128, height: 228)
+                // A soft spotlight lifts the coach off the gradient (the cartoon coach wears orange).
+                .background {
+                    RadialGradient(colors: [.white.opacity(0.4), .white.opacity(0)], center: .center, startRadius: 10, endRadius: 120)
+                        .frame(width: 260, height: 300)
+                }
+                .accessibilityHidden(true)
+            VStack(alignment: .leading, spacing: 10) {
+                Text(greeting).font(.display(.headline))
+                if let result = model.latestResult {
+                    floorAgeGauge(result)
+                } else {
+                    Text("Find your Floor Age").font(.display(.title2))
                     Text("4 quick tests show how old your body moves. Your plan adapts to the result.")
                         .font(.subheadline)
-                        .multilineTextAlignment(.leading)
-                }
-                Spacer()
-                Image(systemName: "chevron.right").opacity(0.7)
-            }
-            .heroCard(.floorAge)
-        }
-        .buttonStyle(.plain)
-    }
-
-    private func floorAgeSummary(_ result: FloorAgeResult) -> some View {
-        HStack(alignment: .center) {
-            VStack(alignment: .leading, spacing: 0) {
-                Text("Floor Age").font(.subheadline).opacity(0.9)
-                Text("\(result.floorAge)").font(.metric(52))
-            }
-            Spacer()
-            if let weakest = result.weakest {
-                VStack(alignment: .trailing, spacing: 2) {
-                    Text("Focus").font(.subheadline).opacity(0.9)
-                    Text(weakest.area).font(.display(.headline)).multilineTextAlignment(.trailing)
+                        .opacity(0.92)
+                    Button("Start the check") { showingTest = true }
+                        .buttonStyle(OnHeroButtonStyle(feature: .floorAge))
                 }
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.bottom, 4)
         }
         .heroCard(.floorAge)
+    }
+
+    /// Fuller the younger your body moves, across the 20 to 90 range of the test norms.
+    private func floorAgeGauge(_ result: FloorAgeResult) -> some View {
+        let difference = result.floorAge - result.age
+        return VStack(alignment: .leading, spacing: 8) {
+            ArcGauge(progress: Double(90 - result.floorAge) / 70, lineWidth: 12) {
+                VStack(spacing: 0) {
+                    Text(result.floorAge, format: .number).font(.metric(44))
+                    Text("Floor Age").font(.caption.weight(.semibold)).opacity(0.9)
+                }
+            }
+            .frame(maxWidth: 190)
+            .accessibilityElement(children: .combine)
+            Text(difference > 0 ? "\(difference) years older than my age (\(result.age))"
+                 : difference < 0 ? "\(-difference) years younger than my age (\(result.age))"
+                 : "Right on my age (\(result.age))")
+                .font(.footnote.weight(.semibold))
+                .opacity(0.92)
+            if let weakest = result.weakest {
+                Label(weakest.area, systemImage: weakest.symbol)
+                    .font(.subheadline.weight(.semibold))
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 5)
+                    .background(.white.opacity(0.2), in: Capsule())
+                    .accessibilityLabel(String(localized: "Focus: \(weakest.area)"))
+            }
+        }
     }
 
     /// Four weeks after the last check: time to see what the training has done.

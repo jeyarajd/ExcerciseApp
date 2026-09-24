@@ -9447,38 +9447,6 @@
         }
       }
     },
-    "Your age is used to compare your Floor Age, and your coach matches you. It all stays on this phone." : {
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tu edad sirve para comparar tu Floor Age, y tu coach se adapta a ti. Todo se queda en este teléfono."
-          }
-        },
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "आपकी उम्र से आपकी Floor Age की तुलना की जाती है, और कोच भी आपके हिसाब से चुना जाता है। यह सब इसी फ़ोन पर रहता है।"
-          }
-        }
-      }
-    },
-    "Your coach is a woman or a man to match your profile." : {
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tu coach es mujer u hombre según tu perfil."
-          }
-        },
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "आपकी प्रोफ़ाइल के हिसाब से आपका कोच महिला या पुरुष होगा।"
-          }
-        }
-      }
-    },
     "Your coach matches you. Past Floor Age checks keep the age you had when you took them." : {
       "localizations" : {
         "es" : {
@@ -9999,6 +9967,134 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "मिनट की कसरत"
+          }
+        }
+      }
+    },
+    "Choose your coach" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elige a tu coach"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अपना कोच चुनिए"
+          }
+        }
+      }
+    },
+    "Focus: %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enfoque: %@"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ध्यान: %@"
+          }
+        }
+      }
+    },
+    "Hi! I'm your coach. I'll show you every move and count with you." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Hola! Soy tu coach. Te enseñaré cada movimiento y contaré contigo."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "नमस्ते! मैं आपका कोच हूँ। हर मूवमेंट हम साथ में करेंगे और साथ में गिनेंगे।"
+          }
+        }
+      }
+    },
+    "Start the check" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Empezar la prueba"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "जाँच शुरू करें"
+          }
+        }
+      }
+    },
+    "Style" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estilo"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "शैली"
+          }
+        }
+      }
+    },
+    "The voice matches the coach you choose." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La voz coincide con el coach que elijas."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आवाज़ आपके चुने हुए कोच से मेल खाती है।"
+          }
+        }
+      }
+    },
+    "You can change your coach at any time in Settings." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Puedes cambiar de coach cuando quieras en Ajustes."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आप सेटिंग्स में कभी भी अपना कोच बदल सकते हैं।"
+          }
+        }
+      }
+    },
+    "Your age is used to compare your Floor Age. It all stays on this phone." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu edad se usa para comparar tu Floor Age. Todo se queda en este teléfono."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आपकी उम्र का इस्तेमाल आपकी Floor Age की तुलना के लिए होता है। सब कुछ इसी फ़ोन पर रहता है।"
           }
         }
       }

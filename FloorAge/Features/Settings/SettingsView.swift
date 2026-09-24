@@ -40,7 +40,12 @@ struct SettingsView: View {
                 }
 
                 Section {
-                    Picker("Coach", selection: Binding(get: { coachStyle }, set: { CoachStyle.current = $0; coachStyle = $0 })) {
+                    Picker("Coach", selection: Binding(get: { model.profile?.coachLook ?? .female }, set: { model.profile?.coach = $0 })) {
+                        ForEach(CoachLook.allCases) { Text($0.label).tag($0) }
+                    }
+                    .pickerStyle(.segmented)
+                    .sensoryFeedback(.selection, trigger: model.profile?.coachLook)
+                    Picker("Style", selection: Binding(get: { coachStyle }, set: { CoachStyle.current = $0; coachStyle = $0 })) {
                         ForEach(CoachStyle.allCases) { Text($0.label).tag($0) }
                     }
                     .pickerStyle(.segmented)
@@ -48,7 +53,7 @@ struct SettingsView: View {
                 } header: {
                     Text("Coach look")
                 } footer: {
-                    Text("Your coach is a woman or a man to match your profile.")
+                    Text("The voice matches the coach you choose.")
                 }
 
                 Section("Voice coach") {

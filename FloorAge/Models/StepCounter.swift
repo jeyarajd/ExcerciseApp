@@ -48,6 +48,9 @@ final class StepCounter: ObservableObject {
         StepCounter(sampleToday: 6240, week: [7120, 4380, 9810, 8350, 3920, 10240, 6240])
     }
 
+    /// Before the first count (or Health read) comes back.
+    var isLoading: Bool { status == .unknown }
+
     var progress: Double { goal > 0 ? min(Double(today) / Double(goal), 1) : 0 }
 
     /// Starts live counting for today and loads the week. Safe to call again (e.g. on foreground).

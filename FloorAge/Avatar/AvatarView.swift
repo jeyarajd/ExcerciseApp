@@ -40,6 +40,17 @@ final class AvatarController: NSObject, ObservableObject {
     private var yawBeforeLive: Float?
     /// Turn the head towards the viewer (session intros and rests).
     var looksAtCamera = false
+    /// Onboarding: the coach turns slowly on the spot so you see them from every side. When it
+    /// stops, the view eases back to the exercise's best angle.
+    var turnsSlowly = false {
+        didSet {
+            guard oldValue, !turnsSlowly, let exercise else { return }
+            // Take the short way back round.
+            yaw = yaw.truncatingRemainder(dividingBy: 2 * .pi)
+            if yaw > .pi { yaw -= 2 * .pi }
+            turnToBestAngle(for: exercise)
+        }
+    }
     private var lookAmount: Float = 0
     private var relaxAmount: Float = 0
     /// The camera easing to the current exercise's best angle.
@@ -149,7 +160,9 @@ final class AvatarController: NSObject, ObservableObject {
 
     // MARK: - View
 
-    func makeView(dark: Bool) -> ARView {
+    /// `interactive` false leaves out the turn, zoom and reset gestures and lets touches through
+    /// (small coaches inside cards). `showsMat` false leaves out the exercise mat.
+    func makeView(dark: Bool, interactive: Bool = true, showsMat: Bool = true) -> ARView {
         let view = ARView(frame: .zero, cameraMode: .nonAR, automaticallyConfigureSession: false)
         // Transparent, so the coach stands on the app's own background (AppBackground).
         view.environment.background = .color(.clear)
@@ -162,7 +175,7 @@ final class AvatarController: NSObject, ObservableObject {
 
         let world = AnchorEntity(world: .zero)
 
-        turntable.addChild(AvatarSet.mat())
+        if showsMat { turntable.addChild(AvatarSet.mat()) }
         if let contactShadow {
             turntable.addChild(contactShadow)
         }
@@ -193,14 +206,18 @@ final class AvatarController: NSObject, ObservableObject {
         view.scene.addAnchor(world)
         updateCamera()
 
-        let pan = UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:)))
-        pan.delegate = self
-        let pinch = UIPinchGestureRecognizer(target: self, action: #selector(handlePinch(_:)))
-        let reset = UITapGestureRecognizer(target: self, action: #selector(handleReset))
-        reset.numberOfTapsRequired = 2
-        view.addGestureRecognizer(pan)
-        view.addGestureRecognizer(pinch)
-        view.addGestureRecognizer(reset)
+        if interactive {
+            let pan = UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:)))
+            pan.delegate = self
+            let pinch = UIPinchGestureRecognizer(target: self, action: #selector(handlePinch(_:)))
+            let reset = UITapGestureRecognizer(target: self, action: #selector(handleReset))
+            reset.numberOfTapsRequired = 2
+            view.addGestureRecognizer(pan)
+            view.addGestureRecognizer(pinch)
+            view.addGestureRecognizer(reset)
+        } else {
+            view.isUserInteractionEnabled = false
+        }
 
         updateSubscription = view.scene.subscribe(to: SceneEvents.Update.self) { [weak self] event in
             self?.tick(event.deltaTime)
@@ -226,6 +243,10 @@ final class AvatarController: NSObject, ObservableObject {
     }()
 
     private func tick(_ dt: TimeInterval) {
+        if turnsSlowly, yawAnimation == nil {
+            yaw += Float(dt) * 0.3  // one turn in about 20 s
+            updateCamera()
+        }
         if var animation = yawAnimation {
             animation.t += dt
             let u = Float(min(animation.t / 0.6, 1))
@@ -370,13 +391,16 @@ extension AvatarController: UIGestureRecognizerDelegate {
     }
 }
 
-/// SwiftUI wrapper around the RealityKit view. Drag to turn the coach, pinch to zoom, double-tap to reset.
+/// SwiftUI wrapper around the RealityKit view. Drag to turn the coach, pinch to zoom, double-tap to
+/// reset, unless `interactive` is false.
 struct AvatarView: UIViewRepresentable {
     @ObservedObject var controller: AvatarController
+    var interactive = true
+    var showsMat = true
     @Environment(\.colorScheme) private var colorScheme
 
     func makeUIView(context: Context) -> ARView {
-        controller.makeView(dark: colorScheme == .dark)
+        controller.makeView(dark: colorScheme == .dark, interactive: interactive, showsMat: showsMat)
     }
 
     func updateUIView(_ uiView: ARView, context: Context) {}

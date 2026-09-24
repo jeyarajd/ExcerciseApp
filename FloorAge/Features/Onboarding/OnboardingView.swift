@@ -5,21 +5,30 @@ struct OnboardingView: View {
     @EnvironmentObject private var voice: VoiceCoach
     @StateObject private var avatar = AvatarController(exerciseID: "arm_raise")
 
-    @State private var page = 0
+    @State private var page: Int
     @State private var name = ""
     @State private var age = 40
     @State private var gender: Gender?
+    @State private var coach = CoachLook.current
+    @State private var style = CoachStyle.current
     @State private var limitations: Set<Limitation> = []
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    /// `startPage` 2 opens on the coach choice (screenshots).
+    init(startPage: Int = 0) {
+        _page = State(initialValue: startPage)
+    }
 
     var body: some View {
         VStack(spacing: 0) {
             AvatarView(controller: avatar)
-                .frame(maxHeight: page == 0 ? .infinity : 240)
+                .frame(maxHeight: page == 0 || page == 2 ? .infinity : 240)
                 .animation(.easeInOut, value: page)
             Group {
                 switch page {
                 case 0: welcome
                 case 1: aboutYou
+                case 2: coachChoice
                 default: safety
                 }
             }
@@ -37,6 +46,11 @@ struct OnboardingView: View {
             }
         }
         .onAppear {
+            if page == 2 {
+                avatar.play(id: "idle")
+                avatar.turnsSlowly = !reduceMotion
+                return
+            }
             voice.say(String(localized: "\(Region.greeting) I'm your coach. Let's find out how old your body moves, and make it younger."))
         }
     }
@@ -68,15 +82,51 @@ struct OnboardingView: View {
             Stepper("Age: \(age)", value: $age, in: 18...95)
                 .font(.headline)
             GenderPicker(gender: $gender)
-                .onChange(of: gender) { _, value in CoachLook.preview(value) }
-            Text("Your age is used to compare your Floor Age, and your coach matches you. It all stays on this phone.")
+                .onChange(of: gender) { _, value in coach = CoachLook(matching: value) }
+            Text("Your age is used to compare your Floor Age. It all stays on this phone.")
                 .font(.footnote)
                 .foregroundStyle(.secondary)
             primaryButton("Next") {
                 avatar.play(id: "idle")
+                avatar.turnsSlowly = !reduceMotion
                 page = 2
+                sayHello()
             }
         }
+        .onChange(of: coach) { _, value in CoachLook.preview(value) }
+    }
+
+    /// Who coaches you and how they look, with the coach turning slowly above and saying hello.
+    private var coachChoice: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Text("Choose your coach").font(.title.bold())
+            Picker("Coach", selection: $coach) {
+                ForEach(CoachLook.allCases) { Text($0.label).tag($0) }
+            }
+            .pickerStyle(.segmented)
+            Picker("Style", selection: $style) {
+                ForEach(CoachStyle.allCases) { Text($0.label).tag($0) }
+            }
+            .pickerStyle(.segmented)
+            Text("You can change your coach at any time in Settings.")
+                .font(.footnote)
+                .foregroundStyle(.secondary)
+            primaryButton("Next") {
+                avatar.turnsSlowly = false
+                page = 3
+            }
+        }
+        .sensoryFeedback(.selection, trigger: coach)
+        .sensoryFeedback(.selection, trigger: style)
+        .onChange(of: coach) { _, value in
+            CoachLook.preview(value)
+            sayHello()
+        }
+        .onChange(of: style) { _, value in CoachStyle.current = value }
+    }
+
+    private func sayHello() {
+        voice.say(String(localized: "Hi! I'm your coach. I'll show you every move and count with you."), interrupt: true)
     }
 
     private var safety: some View {
@@ -106,7 +156,8 @@ struct OnboardingView: View {
                         name: name.trimmingCharacters(in: .whitespaces),
                         age: age,
                         limitations: limitations,
-                        gender: gender
+                        gender: gender,
+                        coach: coach
                     )
                 }
             }

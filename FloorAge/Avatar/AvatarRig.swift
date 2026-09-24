@@ -2,8 +2,11 @@ import RealityKit
 import UIKit
 
 /// Which coach demonstrates: follows the person's gender from their profile (see `AppModel`).
-enum CoachLook: String {
+enum CoachLook: String, Codable, CaseIterable, Identifiable {
     case female, male
+
+    var id: String { rawValue }
+    var label: String { self == .female ? String(localized: "Woman") : String(localized: "Man") }
 
     /// Posted when the person changes the gender in their profile, so live coaches restyle.
     static let changed = Notification.Name("CoachLookChanged")
@@ -14,9 +17,13 @@ enum CoachLook: String {
         CoachLook(rawValue: UserDefaults.standard.string(forKey: "coachLook") ?? "") ?? .female
     }
 
+    /// The coach for a gender when no coach was chosen: a man for men, otherwise a woman.
+    init(matching gender: Gender?) {
+        self = gender == .male ? .male : .female
+    }
+
     /// Switches every coach on screen right away (onboarding previews the choice).
-    static func preview(_ gender: Gender?) {
-        let look: CoachLook = gender == .male ? .male : .female
+    static func preview(_ look: CoachLook) {
         guard look != current else { return }
         UserDefaults.standard.set(look.rawValue, forKey: "coachLook")
         NotificationCenter.default.post(name: changed, object: nil)
