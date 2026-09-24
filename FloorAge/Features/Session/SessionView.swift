@@ -71,8 +71,8 @@ struct SessionView: View {
                             Text(cue)
                                 .font(.title2.weight(.bold))
                                 .foregroundStyle(.primary)
-                                .padding(.horizontal, 22)
-                                .padding(.vertical, 12)
+                                .padding(.horizontal, Space.xl)
+                                .padding(.vertical, Space.m)
                                 // Glass with a thin brand edge. The tint under the material keeps the
                                 // text above 4.5:1 whatever is behind it.
                                 .background(.ultraThinMaterial, in: Capsule())
@@ -80,14 +80,14 @@ struct SessionView: View {
                                 .overlay(Capsule().strokeBorder(Feature.floorAge.gradient, lineWidth: 1.5))
                                 .shadow(color: .black.opacity(0.12), radius: 8, y: 4)
                                 .accessibilityAddTraits(.updatesFrequently)
-                                .padding(.bottom, 20)
+                                .padding(.bottom, Space.xl)
                                 .transition(.scale.combined(with: .opacity))
                                 .id(cue)
                         }
                     }
                     .animation(.spring(duration: 0.35), value: engine.cueText)
                 if engine.phase == .active || engine.phase == .rest {
-                    counter.padding(16)
+                    counter.padding(Space.l)
                 }
             }
             controls
@@ -140,7 +140,7 @@ struct SessionView: View {
             }
             .onChange(of: speed) { _, value in engine.setSpeed(value) }
         }
-        .padding(.horizontal, 8)
+        .padding(.horizontal, Space.s)
     }
 
     private var title: String {
@@ -207,7 +207,7 @@ struct SessionView: View {
 
     @ViewBuilder
     private var controls: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: Space.m) {
             switch engine.phase {
             case .intro:
                 if let safety = engine.current?.exercise.safety {
@@ -220,7 +220,7 @@ struct SessionView: View {
                     DemoVideoButton(exercise: exercise) { engine.stopTalking() }
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
-                HStack(spacing: 12) {
+                HStack(spacing: Space.m) {
                     Button("Skip") { engine.skip() }
                         .buttonStyle(.bordered)
                         .controlSize(.large)
@@ -233,7 +233,7 @@ struct SessionView: View {
                     .controlSize(.large)
                 }
             case .active:
-                HStack(spacing: 12) {
+                HStack(spacing: Space.m) {
                     Button(engine.isPaused ? "Resume" : "Pause") { engine.togglePause() }
                         .buttonStyle(.borderedProminent)
                         .controlSize(.large)
@@ -251,7 +251,7 @@ struct SessionView: View {
                 EmptyView()
             }
         }
-        .padding(16)
+        .padding(Space.l)
     }
 }
 

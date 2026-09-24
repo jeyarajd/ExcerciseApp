@@ -1,5 +1,6 @@
 import XCTest
 import simd
+import SwiftUI
 @testable import FloorAge
 
 final class FloorAgeScoringTests: XCTestCase {
@@ -1093,5 +1094,21 @@ final class CoachPresentationTests: XCTestCase {
         let library = ExerciseLibrary.shared
         XCTAssertEqual(library.exercise("toe_reach")?.cameraYaw, 35, "turned more than the default, and the fold still fits a phone screen")
         XCTAssertTrue(library.exercises.allSatisfy { $0.cameraYaw != nil })
+    }
+}
+
+final class ThemeTests: XCTestCase {
+    func testFeatureInkReadsOnCardsInLightAndDarkMode() {
+        let all: [Feature] = [.steps, .calories, .bmi, .sleep, .plan, .floorAge, .glance, .plus, .challenge]
+        for (style, card) in [(UIUserInterfaceStyle.light, (1.0, 0.99, 0.98)), (.dark, (0.02, 0.02, 0.026))] {
+            for feature in all {
+                for ink in feature.inkColors {
+                    var r: CGFloat = 0, g: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
+                    UIColor(ink).resolvedColor(with: UITraitCollection(userInterfaceStyle: style)).getRed(&r, green: &g, blue: &b, alpha: &a)
+                    let ratio = Color.contrast((r, g, b), (CGFloat(card.0), CGFloat(card.1), CGFloat(card.2)))
+                    XCTAssertGreaterThanOrEqual(ratio, 4.5, "\(feature) in \(style == .dark ? "dark" : "light") mode: \(ratio)")
+                }
+            }
+        }
     }
 }

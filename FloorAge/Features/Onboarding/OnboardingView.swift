@@ -39,8 +39,8 @@ struct OnboardingView: View {
             if model.canCancelNewMember {
                 Button("Cancel") { model.cancelNewMember() }
                     .font(.headline)
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 8)
+                    .padding(.horizontal, Space.l)
+                    .padding(.vertical, Space.s)
                     .background(.ultraThinMaterial, in: Capsule())
                     .padding()
             }
@@ -56,7 +56,7 @@ struct OnboardingView: View {
     }
 
     private var welcome: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: Space.m) {
             if model.isOwner {
                 Text("How old does your body move?")
                     .font(.display(.largeTitle))
@@ -74,7 +74,7 @@ struct OnboardingView: View {
     }
 
     private var aboutYou: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: Space.l) {
             Text("About you").font(.title.bold())
             TextField("First name (optional)", text: $name)
                 .textFieldStyle(.roundedBorder)
@@ -98,8 +98,8 @@ struct OnboardingView: View {
 
     /// Who coaches you and how they look, with the coach turning slowly above and saying hello.
     private var coachChoice: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            Text("Choose your coach").font(.title.bold())
+        VStack(alignment: .leading, spacing: Space.l) {
+            Text("Choose your coach").font(.title.bold()).fixedSize(horizontal: false, vertical: true)
             Picker("Coach", selection: $coach) {
                 ForEach(CoachLook.allCases) { Text($0.label).tag($0) }
             }
@@ -110,6 +110,7 @@ struct OnboardingView: View {
             .pickerStyle(.segmented)
             Text("You can change your coach at any time in Settings.")
                 .font(.footnote)
+                .fixedSize(horizontal: false, vertical: true)
                 .foregroundStyle(.secondary)
             primaryButton("Next") {
                 avatar.turnsSlowly = false
@@ -131,7 +132,7 @@ struct OnboardingView: View {
 
     private var safety: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 12) {
+            VStack(alignment: .leading, spacing: Space.m) {
                 Text("Anything we should know?").font(.title.bold())
                 Text("We'll skip or adapt moves that could hurt. Select all that apply.")
                     .foregroundStyle(.secondary)
@@ -170,6 +171,6 @@ struct OnboardingView: View {
         }
         .buttonStyle(.borderedProminent)
         .controlSize(.large)
-        .padding(.top, 8)
+        .padding(.top, Space.s)
     }
 }

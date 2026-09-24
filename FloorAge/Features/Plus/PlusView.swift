@@ -68,9 +68,9 @@ struct PlusView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(spacing: 18) {
+                VStack(spacing: Space.l) {
                     hero
-                    VStack(spacing: 10) {
+                    VStack(spacing: Space.m) {
                         ForEach(features) { row($0) }
                     }
                     purchaseArea
@@ -89,7 +89,7 @@ struct PlusView: View {
     }
 
     private var hero: some View {
-        VStack(spacing: 10) {
+        VStack(spacing: Space.m) {
             Image(systemName: "crown.fill")
                 .font(.system(size: 46))
                 .foregroundStyle(Feature.gold)
@@ -102,12 +102,12 @@ struct PlusView: View {
                 .multilineTextAlignment(.center)
         }
         .frame(maxWidth: .infinity)
-        .padding(.vertical, 12)
-        .heroCard(.plus, padding: 22, cornerRadius: 30)
+        .padding(.vertical, Space.m)
+        .heroCard(.plus, padding: Space.xl, cornerRadius: Radius.large)
     }
 
     private func row(_ item: PlusFeature) -> some View {
-        HStack(spacing: 14) {
+        HStack(spacing: Space.l) {
             FeatureBadge(feature: item.feature, symbol: item.symbol, size: 44)
             VStack(alignment: .leading, spacing: 2) {
                 Text(item.title).font(.display(.headline))
@@ -115,15 +115,15 @@ struct PlusView: View {
             }
             Spacer(minLength: 0)
             Image(systemName: store.hasPlus ? "checkmark.circle.fill" : "lock.fill")
-                .foregroundStyle(store.hasPlus ? AnyShapeStyle(Feature.calories.gradient) : AnyShapeStyle(Feature.plus.gradient))
+                .foregroundStyle(store.hasPlus ? AnyShapeStyle(Feature.calories.gradient) : AnyShapeStyle(Feature.plus.ink))
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .tintedCard(item == highlight ? item.feature : .plus, padding: 14)
+        .tintedCard(item == highlight ? item.feature : .plus, padding: Space.l)
     }
 
     @ViewBuilder
     private var purchaseArea: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: Space.m) {
             if store.hasPlus {
                 Button("Done") { dismiss() }
                     .buttonStyle(GradientButtonStyle(feature: .plus))
@@ -148,7 +148,7 @@ struct PlusView: View {
                     Task { alert = await store.restore() }
                 }
                 .font(.subheadline.weight(.semibold))
-                .foregroundStyle(Feature.plus.tint)
+                .foregroundStyle(Feature.plus.inkColors[0])
                 .disabled(store.busy)
             }
             Text("A one-time purchase, charged to your Apple Account. Your data stays on your iPhone either way. The Floor Age check, daily sessions with the coach, steps, calories, BMI and all safety guidance stay free.")
@@ -156,7 +156,7 @@ struct PlusView: View {
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
         }
-        .padding(.top, 4)
+        .padding(.top, Space.xs)
     }
 }
 
@@ -168,9 +168,9 @@ struct PlusLockedCard: View {
 
     var body: some View {
         Button { showingPlus = true } label: {
-            HStack(spacing: 14) {
+            HStack(spacing: Space.l) {
                 FeatureBadge(feature: feature.feature, symbol: feature.symbol, size: 46)
-                VStack(alignment: .leading, spacing: 4) {
+                VStack(alignment: .leading, spacing: Space.xs) {
                     PlusBadge()
                     Text(feature.title).font(.display(.headline))
                     Text(feature.detail)
@@ -179,7 +179,7 @@ struct PlusLockedCard: View {
                         .multilineTextAlignment(.leading)
                 }
                 Spacer(minLength: 0)
-                Image(systemName: "lock.fill").foregroundStyle(Feature.plus.gradient)
+                Image(systemName: "lock.fill").foregroundStyle(Feature.plus.ink)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .tintedCard(.plus)
@@ -197,7 +197,7 @@ struct PlusBadge: View {
         Label("Plus", systemImage: "crown.fill")
             .font(.caption2.weight(.heavy))
             .foregroundStyle(.white)
-            .padding(.horizontal, 7)
+            .padding(.horizontal, Space.s)
             .padding(.vertical, 3)
             .background(Feature.plus.gradient, in: Capsule())
     }

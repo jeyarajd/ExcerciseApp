@@ -34,7 +34,7 @@ struct FloorAgeWidgetView: View {
                   systemImage: "figure.cross.training")
                 .containerBackground(.clear, for: .widget)
         case .systemMedium:
-            HStack(spacing: 16) {
+            HStack(spacing: Space.l) {
                 summary
                 Divider().overlay(.white.opacity(0.4))
                 details
@@ -73,7 +73,7 @@ struct FloorAgeWidgetView: View {
                         .opacity(0.95)
                 }
             } else {
-                Text("Take the check").font(.system(size: 20, weight: .bold, design: .serif)).padding(.vertical, 6)
+                Text("Take the check").font(.system(size: 20, weight: .bold, design: .serif)).padding(.vertical, Space.s)
             }
             Spacer(minLength: 4)
             WeekDots(week: snapshot.week)
@@ -82,7 +82,7 @@ struct FloorAgeWidgetView: View {
     }
 
     private var details: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: Space.s) {
             VStack(alignment: .leading, spacing: 3) {
                 Label("\(snapshot.stepsToday.formatted()) steps", systemImage: "figure.walk").font(.caption.weight(.bold))
                 ProgressBar(progress: snapshot.stepProgress)
@@ -107,7 +107,7 @@ private struct WeekDots: View {
     let week: [Bool]
 
     var body: some View {
-        HStack(spacing: 4) {
+        HStack(spacing: Space.xs) {
             ForEach(Array(week.enumerated()), id: \.offset) { _, done in
                 Circle()
                     .fill(done ? .white : .white.opacity(0.3))
@@ -150,7 +150,7 @@ struct StepsWidgetView: View {
             .gaugeStyle(.accessoryCircular)
             .containerBackground(.clear, for: .widget)
         default:
-            VStack(spacing: 6) {
+            VStack(spacing: Space.s) {
                 ZStack {
                     Circle().stroke(.white.opacity(0.3), lineWidth: 10)
                     Circle()
@@ -164,7 +164,7 @@ struct StepsWidgetView: View {
                             .minimumScaleFactor(0.6)
                             .lineLimit(1)
                     }
-                    .padding(.horizontal, 8)
+                    .padding(.horizontal, Space.s)
                 }
                 Text("of \(snapshot.stepGoal.formatted())").font(.caption2.weight(.semibold)).opacity(0.9)
             }

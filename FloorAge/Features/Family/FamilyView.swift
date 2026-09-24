@@ -31,7 +31,7 @@ struct FamilyView: View {
 
                 Section {
                     Button(action: add) {
-                        HStack(spacing: 12) {
+                        HStack(spacing: Space.m) {
                             FeatureBadge(feature: .glance, symbol: "person.badge.plus", size: 38)
                             Text("Add a family member").font(.headline)
                             Spacer(minLength: 0)
@@ -91,7 +91,7 @@ private struct MemberRow: View {
     let locked: Bool
 
     var body: some View {
-        HStack(spacing: 14) {
+        HStack(spacing: Space.l) {
             MemberAvatar(member: member, size: 46)
             VStack(alignment: .leading, spacing: 2) {
                 Text(member.name.isEmpty && isOwner ? String(localized: "You") : member.displayName).font(.display(.headline))
@@ -100,17 +100,17 @@ private struct MemberRow: View {
             Spacer(minLength: 0)
             if let floorAge = member.floorAge {
                 VStack(spacing: 0) {
-                    Text("\(floorAge)").font(.metric(22)).foregroundStyle(Feature.floorAge.gradient)
+                    Text("\(floorAge)").font(.metric(22)).foregroundStyle(Feature.floorAge.ink)
                     Text("Floor Age").font(.caption2).foregroundStyle(.secondary)
                 }
             }
             if isActive {
                 Image(systemName: "checkmark.circle.fill").font(.title3).foregroundStyle(Feature.calories.gradient)
             } else if locked {
-                Image(systemName: "lock.fill").foregroundStyle(Feature.plus.gradient)
+                Image(systemName: "lock.fill").foregroundStyle(Feature.plus.ink)
             }
         }
-        .padding(.vertical, 4)
+        .padding(.vertical, Space.xs)
     }
 
     private var subtitle: String {

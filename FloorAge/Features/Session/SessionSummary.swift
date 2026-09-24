@@ -93,14 +93,14 @@ struct NextUpCard: View {
 
     var body: some View {
         let feature = item.exercise.feature
-        VStack(spacing: 14) {
-            HStack(spacing: 14) {
+        VStack(spacing: Space.l) {
+            HStack(spacing: Space.l) {
                 PoseThumbnailView(exercise: item.exercise)
-                    .padding(4)
-                    .background(feature.tint.opacity(0.1), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-                VStack(alignment: .leading, spacing: 4) {
+                    .padding(Space.xs)
+                    .background(feature.tint.opacity(0.1), in: RoundedRectangle(cornerRadius: Radius.medium, style: .continuous))
+                VStack(alignment: .leading, spacing: Space.xs) {
                     Eyebrow("Next up", feature: feature)
-                    Text(item.exercise.name).font(.display(.title3))
+                    Text(item.exercise.name).font(.display(.title3)).fixedSize(horizontal: false, vertical: true)
                     Text(item.amountLabel).font(.subheadline).foregroundStyle(.secondary)
                 }
                 Spacer(minLength: 0)
@@ -125,6 +125,7 @@ struct SessionSummaryView: View {
     @State private var shareImage: UIImage?
     @State private var shown = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.dynamicTypeSize) private var typeSize
 
     private var areas: [TrainingArea] {
         var seen: [TrainingArea] = []
@@ -134,8 +135,8 @@ struct SessionSummaryView: View {
 
     var body: some View {
         ScrollView {
-            VStack(spacing: 16) {
-                VStack(spacing: 8) {
+            VStack(spacing: Space.l) {
+                VStack(spacing: Space.s) {
                     Image(systemName: "checkmark.seal.fill")
                         .font(.system(size: 52))
                         .symbolEffect(.bounce, value: shown && !reduceMotion)
@@ -147,19 +148,21 @@ struct SessionSummaryView: View {
                         .multilineTextAlignment(.center)
                 }
                 .frame(maxWidth: .infinity)
-                .heroCard(.calories, symbol: "checkmark.seal.fill", padding: 24)
+                .heroCard(.calories, symbol: "checkmark.seal.fill", padding: Space.xl)
 
-                HStack(spacing: 12) {
+                // Side by side, or one under another at accessibility text sizes.
+                let stats = typeSize.isAccessibilitySize ? AnyLayout(VStackLayout(spacing: Space.m)) : AnyLayout(HStackLayout(spacing: Space.m))
+                stats {
                     stat(minutes, "min", symbol: "clock.fill", feature: .plan)
                     stat(reps, "reps", symbol: "repeat", feature: .calories)
                     stat(practised.count, "exercises", symbol: "figure.strengthtraining.functional", feature: .bmi)
                 }
 
                 if !areas.isEmpty {
-                    VStack(alignment: .leading, spacing: 12) {
+                    VStack(alignment: .leading, spacing: Space.m) {
                         Eyebrow("Areas you worked", feature: .plan)
                         ForEach(areas) { area in
-                            HStack(spacing: 12) {
+                            HStack(spacing: Space.m) {
                                 FeatureBadge(feature: area.feature, symbol: area.symbol, size: 36)
                                 Text(area.name).font(.body.weight(.semibold))
                                 Spacer()
@@ -172,7 +175,7 @@ struct SessionSummaryView: View {
 
                 streakCard
 
-                VStack(spacing: 10) {
+                VStack(spacing: Space.m) {
                     Button(action: onFinish) {
                         Text("Finish")
                     }
@@ -188,7 +191,7 @@ struct SessionSummaryView: View {
                         .tint(Feature.floorAge.colors[1])
                     }
                 }
-                .padding(.top, 4)
+                .padding(.top, Space.xs)
             }
             .padding()
         }
@@ -201,7 +204,7 @@ struct SessionSummaryView: View {
     }
 
     private var streakCard: some View {
-        HStack(spacing: 14) {
+        HStack(spacing: Space.l) {
             Image(systemName: "flame.fill")
                 .font(.system(size: 30))
                 .foregroundStyle(Feature.steps.gradient)
@@ -222,13 +225,13 @@ struct SessionSummaryView: View {
     }
 
     private func stat(_ value: Int, _ unit: LocalizedStringKey, symbol: String, feature: Feature) -> some View {
-        VStack(spacing: 6) {
+        VStack(spacing: Space.s) {
             Image(systemName: symbol).font(.headline).foregroundStyle(feature.gradient)
             Text(value, format: .number).font(.metric(30)).lineLimit(1).minimumScaleFactor(0.6)
             Text(unit).font(.caption.weight(.semibold)).foregroundStyle(.secondary).lineLimit(1).minimumScaleFactor(0.7)
         }
         .frame(maxWidth: .infinity)
-        .tintedCard(feature, padding: 12)
+        .tintedCard(feature, padding: Space.m)
         .accessibilityElement(children: .combine)
     }
 

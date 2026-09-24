@@ -182,14 +182,14 @@ struct CameraStage: View {
                 Text(reading)
                     .font(.subheadline.weight(.bold))
                     .foregroundStyle(.white)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 6)
+                    .padding(.horizontal, Space.m)
+                    .padding(.vertical, Space.s)
                     .background(feature.gradient, in: Capsule())
                     .overlay(Capsule().strokeBorder(.white.opacity(0.4), lineWidth: 1))
                     .shadow(color: feature.colors.last!.opacity(0.5), radius: 8)
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
                     .padding(.top, 44)
-                    .padding(.trailing, 14)
+                    .padding(.trailing, Space.l)
                     .animation(.snappy, value: reading)
             }
         }

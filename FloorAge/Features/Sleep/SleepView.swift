@@ -52,7 +52,7 @@ struct SleepView: View {
         let nights = model.recentSleep(days: 14)
         List {
             Section {
-                VStack(spacing: 10) {
+                VStack(spacing: Space.m) {
                     if let last = model.sleepLog.last {
                         Text(Calendar.current.isDateInToday(last.day) ? String(localized: "Last night") : last.day.formatted(date: .abbreviated, time: .omitted))
                             .font(.subheadline).opacity(0.85)
@@ -68,7 +68,7 @@ struct SleepView: View {
                     }
                 }
                 .frame(maxWidth: .infinity)
-                .heroCard(.sleep, padding: 20)
+                .heroCard(.sleep, padding: Space.xl)
                 .listRowBackground(Color.clear)
                 .listRowInsets(EdgeInsets(top: 6, leading: 0, bottom: 10, trailing: 0))
             }
@@ -184,7 +184,7 @@ struct SleepCard: View {
     var body: some View {
         let age = model.profile?.age ?? 40
         let range = SleepGuide.recommended(age: age)
-        HStack(spacing: 16) {
+        HStack(spacing: Space.l) {
             VStack(alignment: .leading, spacing: 3) {
                 Label("Sleep", systemImage: "moon.stars.fill").font(.headline)
                 if let last = model.sleepLog.last, Calendar.current.isDateInToday(last.day) || Calendar.current.isDateInYesterday(last.day) {

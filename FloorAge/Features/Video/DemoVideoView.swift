@@ -53,10 +53,10 @@ struct DemoVideoSheet: View {
 
     var body: some View {
         NavigationStack {
-            VStack(alignment: .leading, spacing: 16) {
+            VStack(alignment: .leading, spacing: Space.l) {
                 VideoPlayer(player: player)
                     .aspectRatio(aspect, contentMode: .fit)
-                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                    .clipShape(RoundedRectangle(cornerRadius: Radius.medium))
                     .frame(maxWidth: .infinity)
                 Text(exercise.intro)
                 if let safety = exercise.safety {

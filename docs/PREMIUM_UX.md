@@ -46,12 +46,13 @@ A to-do list for giving Floor Age a premium feel. It follows the rules in `CLAUD
 - Onboarding: choose a coach (woman or man, realistic or cartoon) with a live preview that turns slowly, and hear a short spoken hello with `VoiceCoach`.
 - Skeleton loading states: use `.redacted(reason: .placeholder)` for cards while `AppModel` loads, so nothing jumps. `AppModel` loads synchronously, so this went where data really arrives late: the step gauges and week bars until CoreMotion or Health answers (`StepCounter.isLoading`).
 
-## 5. Visual system (`App/Theme.swift`)
+## 5. Visual system (`App/Theme.swift`) (done)
 
 - Add a spacing and radius scale (4, 8, 12, 16, 24, 32 and radii 12, 20, 28) and use it everywhere instead of hard-coded numbers.
 - Typography: `Font.display` (serif) for headings, and `Font.metric` (rounded) only for numbers. Make sure everything works with Dynamic Type up to `.accessibility3`.
 - Hero cards: add a faint noise or grain overlay (2 to 3% opacity) and an inner highlight on the top edge for a richer gradient.
-- Dark mode: check each `Feature` gradient for contrast on the night mesh.
+- Dark mode: check each `Feature` gradient for contrast on the night mesh. Measured: the sleep and Plus purples were about 1.2:1 as text on dark cards, and in light mode the oranges and greens were about 2:1 on cream. Text now uses `Feature.ink` (tested at 4.5:1 in both modes).
+- Still open: white text on several hero gradients is only about 1.6 to 2.3:1 at their light end (steps, calories, challenge, plan, Floor Age). Needs a brand decision: deepen the light stops, or add a soft scrim behind hero text.
 
 ## 6. Plus paywall (`Features/Plus/PlusView.swift`)
 

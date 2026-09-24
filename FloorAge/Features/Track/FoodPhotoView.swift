@@ -25,7 +25,7 @@ struct FoodPhotoView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(spacing: 16) {
+                VStack(spacing: Space.l) {
                     photoArea
                     captureButtons
                     if analyzing {
@@ -74,7 +74,7 @@ struct FoodPhotoView: View {
 
     @ViewBuilder
     private var photoArea: some View {
-        let shape = RoundedRectangle(cornerRadius: 20, style: .continuous)
+        let shape = RoundedRectangle(cornerRadius: Radius.medium, style: .continuous)
         if let image {
             Image(uiImage: image)
                 .resizable()
@@ -83,7 +83,7 @@ struct FoodPhotoView: View {
                 .frame(maxWidth: .infinity)
                 .clipShape(shape)
         } else {
-            VStack(spacing: 10) {
+            VStack(spacing: Space.m) {
                 Image(systemName: "camera.viewfinder")
                     .font(.system(size: 44))
                     .foregroundStyle(Color.accentColor)
@@ -100,7 +100,7 @@ struct FoodPhotoView: View {
     }
 
     private var captureButtons: some View {
-        HStack(spacing: 12) {
+        HStack(spacing: Space.m) {
             if cameraAvailable {
                 Button {
                     showingCamera = true
@@ -118,7 +118,7 @@ struct FoodPhotoView: View {
     }
 
     private var results: some View {
-        VStack(alignment: .leading, spacing: 14) {
+        VStack(alignment: .leading, spacing: Space.l) {
             Text("Looks like").font(.headline)
             FlowChips(labels: guesses.map { "\($0.title) \(Int(($0.confidence * 100).rounded()))%" })
             Divider()
@@ -134,7 +134,7 @@ struct FoodPhotoView: View {
 
     private func row(_ item: FoodItem) -> some View {
         let servings = picked[item.name]
-        return VStack(alignment: .leading, spacing: 6) {
+        return VStack(alignment: .leading, spacing: Space.s) {
             Button {
                 picked[item.name] = servings == nil ? 1 : nil
             } label: {
@@ -220,11 +220,11 @@ private struct FlowChips: View {
     let labels: [String]
 
     var body: some View {
-        FlowLayout(spacing: 8) {
+        FlowLayout(spacing: Space.s) {
             ForEach(labels, id: \.self) { label in
                 Text(label)
                     .font(.subheadline.weight(.medium))
-                    .padding(.horizontal, 12).padding(.vertical, 6)
+                    .padding(.horizontal, Space.m).padding(.vertical, Space.s)
                     .background(Color.accentColor.opacity(0.14), in: Capsule())
                     .foregroundStyle(Color.accentColor)
             }

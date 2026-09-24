@@ -9,6 +9,15 @@ import SwiftUI
 enum DemoScreen: String, CaseIterable {
     case onboarding, onboardingCoach, today, track, plan, planIntro, cardio, sleep, steps, food, foodPhoto, bmi, progress, settings, session, sessionRest, sessionDone, kegel, test, sitRise, balance, chairStand, reach, cameraChair, cameraBalance, cameraReach, result, share, plus, family, familyAdd, challenge, badge, drop, widgets, video, portrait
 
+    /// `-demoDark YES` shows the app in dark mode whatever the device is set to (screenshots).
+    static var forcesDark: Bool {
+        #if DEBUG
+        UserDefaults.standard.bool(forKey: "demoDark")
+        #else
+        false
+        #endif
+    }
+
     /// Screens show Floor Age Plus unlocked unless launched with `-demoPlus NO`.
     static var hasPlus: Bool {
         UserDefaults.standard.object(forKey: "demoPlus") == nil || UserDefaults.standard.bool(forKey: "demoPlus")
@@ -255,18 +264,18 @@ private struct WidgetGallery: View {
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 18) {
+            VStack(alignment: .leading, spacing: Space.l) {
                 Text("Home Screen").font(.display(.headline)).foregroundStyle(.white)
-                HStack(spacing: 16) {
+                HStack(spacing: Space.l) {
                     tile(FloorAgeWidgetView(snapshot: snapshot, familyOverride: .systemSmall), background: Feature.floorAge.gradient)
                     tile(StepsWidgetView(snapshot: snapshot, familyOverride: .systemSmall), background: Feature.steps.gradient)
                 }
                 tile(FloorAgeWidgetView(snapshot: snapshot, familyOverride: .systemMedium), background: Feature.floorAge.gradient, wide: true)
-                Text("Lock Screen").font(.display(.headline)).foregroundStyle(.white).padding(.top, 8)
-                VStack(spacing: 14) {
+                Text("Lock Screen").font(.display(.headline)).foregroundStyle(.white).padding(.top, Space.s)
+                VStack(spacing: Space.l) {
                     FloorAgeWidgetView(snapshot: snapshot, familyOverride: .accessoryInline)
                         .font(.subheadline.weight(.semibold))
-                    HStack(spacing: 18) {
+                    HStack(spacing: Space.l) {
                         FloorAgeWidgetView(snapshot: snapshot, familyOverride: .accessoryCircular)
                             .frame(width: 64, height: 64)
                         StepsWidgetView(snapshot: snapshot, familyOverride: .accessoryCircular)
@@ -277,11 +286,11 @@ private struct WidgetGallery: View {
                     }
                 }
                 .foregroundStyle(.white)
-                .padding(16)
+                .padding(Space.l)
                 .frame(maxWidth: .infinity)
-                .background(.white.opacity(0.14), in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+                .background(.white.opacity(0.14), in: RoundedRectangle(cornerRadius: Radius.large, style: .continuous))
             }
-            .padding(20)
+            .padding(Space.xl)
         }
         .background(LinearGradient(colors: [Color(red: 0.12, green: 0.2, blue: 0.4), Color(red: 0.45, green: 0.25, blue: 0.55)],
                                    startPoint: .top, endPoint: .bottom).ignoresSafeArea())
@@ -289,10 +298,10 @@ private struct WidgetGallery: View {
 
     private func tile<V: View>(_ view: V, background: LinearGradient, wide: Bool = false) -> some View {
         view
-            .padding(16)
+            .padding(Space.l)
             .frame(width: wide ? 346 : 165, height: 165)
             .background(background)
-            .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
+            .clipShape(RoundedRectangle(cornerRadius: Radius.large, style: .continuous))
             .shadow(color: .black.opacity(0.25), radius: 10, y: 5)
     }
 }

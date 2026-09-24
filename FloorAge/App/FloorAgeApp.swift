@@ -21,6 +21,7 @@ struct FloorAgeApp: App {
                 .environmentObject(steps)
                 .environmentObject(store)
                 .tint(Color("AccentColor"))
+                .preferredColorScheme(DemoScreen.forcesDark ? .dark : nil)
                 .onAppear {
                     guard DemoScreen.current == nil else { return }
                     snapshots.attach(model: model, steps: steps)
@@ -119,7 +120,7 @@ struct DemoView: View {
             .overlay(alignment: .top) {
                 Text(avatar.exercise?.name ?? "")
                     .font(.title2.bold())
-                    .padding(10)
+                    .padding(Space.m)
                     .background(.ultraThinMaterial, in: Capsule())
                     .padding(.top, 60)
             }

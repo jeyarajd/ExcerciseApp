@@ -16,7 +16,7 @@ struct PlanView: View {
 
     var body: some View {
         ScrollView {
-            VStack(spacing: 16) {
+            VStack(spacing: Space.l) {
                 if let profile = model.profile {
                     if let program = model.planProgram, let position = model.planPosition() {
                         let week = TrainingPlan.week(position.week, program: program, profile: profile, averageSteps: model.planBaseSteps)
@@ -71,8 +71,8 @@ struct PlanView: View {
     private func intro(_ profile: Profile) -> some View {
         let recommended = TrainingPlan.recommendedProgram(for: profile)
         let selected = choice ?? recommended
-        return VStack(alignment: .leading, spacing: 14) {
-            HStack(spacing: 12) {
+        return VStack(alignment: .leading, spacing: Space.l) {
+            HStack(spacing: Space.m) {
                 FeatureBadge(feature: .plan)
                 Text("Your plan").font(.display(.title2))
             }
@@ -141,7 +141,7 @@ struct PlanView: View {
 
     private func weekHeader(_ week: TrainingPlan.Week, finished: Bool) -> some View {
         let doneDays = week.days.filter { model.isPlanDayDone(date(ofDay: $0.index, week: model.planPosition()?.week ?? 1)) }.count
-        return VStack(alignment: .leading, spacing: 12) {
+        return VStack(alignment: .leading, spacing: Space.m) {
             HStack {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(week.program.title).font(.display(.title3))
@@ -154,7 +154,7 @@ struct PlanView: View {
                 }
                 .frame(width: 70)
             }
-            HStack(spacing: 10) {
+            HStack(spacing: Space.m) {
                 goal("\(week.aerobicMinutes)", "active min", sub: "goal \(week.targetMinutes)+")
                 goal(week.stepGoal.formatted(), "steps a day", sub: "today \(steps.today.formatted())")
                 goal("\(week.sets) × \(week.reps)", "sets × reps", sub: "2 days")
@@ -170,14 +170,14 @@ struct PlanView: View {
             Text(sub).font(.caption2).opacity(0.8)
         }
         .frame(maxWidth: .infinity)
-        .padding(.vertical, 8)
-        .background(.white.opacity(0.16), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+        .padding(.vertical, Space.s)
+        .background(.white.opacity(0.16), in: RoundedRectangle(cornerRadius: Radius.small, style: .continuous))
     }
 
     private func dayCard(_ day: TrainingPlan.Day, week: TrainingPlan.Week, date: Date, isToday: Bool) -> some View {
         let done = model.isPlanDayDone(date)
         let canTick = date <= Date()
-        return VStack(alignment: .leading, spacing: 10) {
+        return VStack(alignment: .leading, spacing: Space.m) {
             HStack {
                 Text(isToday ? String(localized: "Today") : date.formatted(.dateTime.weekday(.wide)))
                     .font(.display(.headline))
@@ -205,7 +205,7 @@ struct PlanView: View {
             }
         }
         .tintedCard(isToday ? .plan : .glance)
-        .overlay(RoundedRectangle(cornerRadius: 22, style: .continuous).strokeBorder(Feature.plan.gradient, lineWidth: isToday ? 2.5 : 0))
+        .overlay(RoundedRectangle(cornerRadius: Radius.medium, style: .continuous).strokeBorder(Feature.plan.gradient, lineWidth: isToday ? 2.5 : 0))
     }
 
     @ViewBuilder
@@ -237,7 +237,7 @@ struct PlanView: View {
         case "bed.double.fill": .sleep
         default: .steps
         }
-        return HStack(alignment: .top, spacing: 12) {
+        return HStack(alignment: .top, spacing: Space.m) {
             FeatureBadge(feature: feature, symbol: icon, size: 38)
             VStack(alignment: .leading, spacing: 2) {
                 Text(title).font(.subheadline.weight(.semibold))
@@ -264,7 +264,7 @@ struct PlanView: View {
     // MARK: - Sources
 
     private var sources: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: Space.s) {
             Label("Where these numbers come from", systemImage: "books.vertical").font(.display(.headline))
             source("WHO guidelines on physical activity (2020)", "150–300 active minutes a week, strength on 2+ days, balance on 3+ days from 65.",
                    "https://www.who.int/publications/i/item/9789240015128")
@@ -361,7 +361,7 @@ struct IntervalWorkoutView: View {
     var body: some View {
         let (index, left) = position
         let current = intervals[index]
-        VStack(spacing: 22) {
+        VStack(spacing: Space.xl) {
             HStack {
                 Button { stop() } label: { Image(systemName: "xmark").font(.headline).frame(width: 44, height: 44) }
                 Text(title).font(.headline)
@@ -373,7 +373,7 @@ struct IntervalWorkoutView: View {
                 .font(.system(size: 40, weight: .heavy, design: .rounded))
                 .foregroundStyle(color(current.kind))
             ProgressRing(progress: finished ? 1 : 1 - left / TimeInterval(current.seconds), color: color(current.kind), lineWidth: 18) {
-                VStack(spacing: 4) {
+                VStack(spacing: Space.xs) {
                     Text(clock(finished ? 0 : left)).font(.system(size: 54, weight: .bold, design: .rounded)).monospacedDigit()
                     Text("Interval \(index + 1) of \(intervals.count)").font(.caption).foregroundStyle(.secondary)
                 }
@@ -384,7 +384,7 @@ struct IntervalWorkoutView: View {
                     .font(.headline).foregroundStyle(.secondary)
             }
             ProgressView(value: min(elapsed, total), total: total).tint(.accentColor).padding(.horizontal)
-            HStack(spacing: 28) {
+            HStack(spacing: Space.xxl) {
                 stat(clock(elapsed), "elapsed")
                 stat(clock(max(total - elapsed, 0)), "left")
                 stat(steps.today.formatted(), "steps today")
@@ -411,7 +411,7 @@ struct IntervalWorkoutView: View {
             } label: { Text("Start").frame(maxWidth: .infinity) }
                 .buttonStyle(.borderedProminent).controlSize(.large)
         } else {
-            HStack(spacing: 12) {
+            HStack(spacing: Space.m) {
                 Button(running ? "Pause" : "Resume") {
                     running.toggle()
                     voice.say(running ? String(localized: "Let's go.") : String(localized: "Paused."), interrupt: true)
@@ -511,7 +511,7 @@ struct TrainingPlanCard: View {
 
     private var card: some View {
         NavigationLink { PlanView() } label: {
-            HStack(spacing: 14) {
+            HStack(spacing: Space.l) {
                 VStack(alignment: .leading, spacing: 3) {
                     if let profile = model.profile, let program = model.planProgram, let position = model.planPosition() {
                         let week = TrainingPlan.week(position.week, program: program, profile: profile, averageSteps: model.planBaseSteps)

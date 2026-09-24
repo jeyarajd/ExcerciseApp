@@ -14,13 +14,13 @@ struct ChallengeCard: View {
     }
 
     private var invitation: some View {
-        VStack(alignment: .leading, spacing: 10) {
+        VStack(alignment: .leading, spacing: Space.m) {
             Text("30-day challenge").font(.caption.weight(.heavy)).tracking(1.6).textCase(.uppercase).opacity(0.9)
             Text("Get off the floor").font(.display(.title2))
             Text("Train on 30 days, any session counts, and collect 5 badges along the way.")
                 .font(.subheadline)
                 .opacity(0.9)
-            HStack(spacing: 6) {
+            HStack(spacing: Space.s) {
                 ForEach(Challenge.Badge.allCases) { badge in
                     Image(systemName: badge.symbol)
                         .font(.caption.weight(.bold))
@@ -34,7 +34,7 @@ struct ChallengeCard: View {
                 Label("Start the challenge", systemImage: "flag.checkered")
             }
             .buttonStyle(OnHeroButtonStyle(feature: .challenge))
-            .padding(.top, 4)
+            .padding(.top, Space.xs)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .heroCard(.challenge)
@@ -42,8 +42,8 @@ struct ChallengeCard: View {
 
     private func progress(_ challenge: Challenge) -> some View {
         let over = challenge.isOver()
-        return HStack(spacing: 16) {
-            VStack(alignment: .leading, spacing: 6) {
+        return HStack(spacing: Space.l) {
+            VStack(alignment: .leading, spacing: Space.s) {
                 Text(over ? "Challenge complete" : "Day \(challenge.dayNumber()) of \(Challenge.length)")
                     .font(.caption.weight(.heavy)).tracking(1.4).textCase(.uppercase).opacity(0.9)
                 Text("Get off the floor").font(.display(.title3))
@@ -96,7 +96,7 @@ struct ChallengeView: View {
     var body: some View {
         ScrollView {
             if let challenge = model.challenge {
-                VStack(spacing: 18) {
+                VStack(spacing: Space.l) {
                     header(challenge)
                     calendar(challenge)
                     badges(challenge)
@@ -105,7 +105,7 @@ struct ChallengeView: View {
                     }
                     .font(.headline)
                     .foregroundStyle(challenge.isOver() ? Feature.challenge.colors[1] : .secondary)
-                    .padding(.top, 4)
+                    .padding(.top, Space.xs)
                 }
                 .padding()
             }
@@ -120,7 +120,7 @@ struct ChallengeView: View {
     }
 
     private func header(_ challenge: Challenge) -> some View {
-        VStack(spacing: 8) {
+        VStack(spacing: Space.s) {
             Image(systemName: "trophy.fill").font(.system(size: 40)).shadow(color: .white.opacity(0.5), radius: 10)
             Text("Get off the floor").font(.display(.title))
             Text(challenge.isOver()
@@ -130,16 +130,16 @@ struct ChallengeView: View {
                 .opacity(0.9)
         }
         .frame(maxWidth: .infinity)
-        .padding(.vertical, 6)
-        .heroCard(.challenge, padding: 20)
+        .padding(.vertical, Space.s)
+        .heroCard(.challenge, padding: Space.xl)
     }
 
     private func calendar(_ challenge: Challenge) -> some View {
-        let columns = Array(repeating: GridItem(.flexible(), spacing: 8), count: 6)
+        let columns = Array(repeating: GridItem(.flexible(), spacing: Space.s), count: 6)
         let today = Calendar.current.startOfDay(for: Date())
-        return VStack(alignment: .leading, spacing: 12) {
+        return VStack(alignment: .leading, spacing: Space.m) {
             Text("Your 30 days").font(.display(.headline))
-            LazyVGrid(columns: columns, spacing: 8) {
+            LazyVGrid(columns: columns, spacing: Space.s) {
                 ForEach(Array(challenge.days.enumerated()), id: \.offset) { index, day in
                     let done = challenge.trained(day)
                     let isMilestone = Challenge.Badge(rawValue: index + 1) != nil
@@ -153,11 +153,11 @@ struct ChallengeView: View {
                     .frame(maxWidth: .infinity, minHeight: 40)
                     .foregroundStyle(done ? .white : day > today ? Color.secondary.opacity(0.6) : .secondary)
                     .background {
-                        RoundedRectangle(cornerRadius: 12, style: .continuous)
+                        RoundedRectangle(cornerRadius: Radius.small, style: .continuous)
                             .fill(done ? AnyShapeStyle(Feature.challenge.gradient) : AnyShapeStyle(Color(.systemBackground).opacity(0.7)))
                     }
                     .overlay {
-                        RoundedRectangle(cornerRadius: 12, style: .continuous)
+                        RoundedRectangle(cornerRadius: Radius.small, style: .continuous)
                             .strokeBorder(day == today ? Feature.challenge.colors[1] : isMilestone ? Feature.challenge.tint.opacity(0.6) : .clear,
                                           lineWidth: day == today ? 2 : 1)
                     }
@@ -174,11 +174,11 @@ struct ChallengeView: View {
     }
 
     private func badges(_ challenge: Challenge) -> some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: Space.m) {
             Text("Badges").font(.display(.headline))
             ForEach(Challenge.Badge.allCases) { badge in
                 let earned = challenge.earned.contains(badge)
-                HStack(spacing: 14) {
+                HStack(spacing: Space.l) {
                     BadgeMedal(badge: badge, earned: earned, size: 48)
                     VStack(alignment: .leading, spacing: 2) {
                         Text(badge.title).font(.headline)
@@ -238,20 +238,20 @@ struct BadgeCelebration: View {
             ConfettiView(colors: Feature.challenge.colors + [.white, Feature.plan.tint, Feature.calories.tint])
                 .ignoresSafeArea()
                 .allowsHitTesting(false)
-            VStack(spacing: 14) {
+            VStack(spacing: Space.l) {
                 BadgeMedal(badge: badge, earned: true, size: 120)
                     .scaleEffect(shown || reduceMotion ? 1 : 0.4)
                     .rotationEffect(.degrees(shown || reduceMotion ? 0 : -30))
-                Text("New badge").font(.caption.weight(.heavy)).tracking(2).textCase(.uppercase).foregroundStyle(Feature.challenge.colors[1])
+                Text("New badge").font(.caption.weight(.heavy)).tracking(2).textCase(.uppercase).foregroundStyle(Feature.challenge.inkColors[1])
                 Text(badge.title).font(.display(.largeTitle)).multilineTextAlignment(.center)
                 Text(badge.detail).font(.subheadline).foregroundStyle(.secondary).multilineTextAlignment(.center)
                 Button("Keep going", action: onDone)
                     .buttonStyle(GradientButtonStyle(feature: .challenge))
-                    .padding(.top, 6)
+                    .padding(.top, Space.s)
             }
-            .padding(24)
+            .padding(Space.xl)
             .frame(maxWidth: 340)
-            .background(Color(.systemBackground), in: RoundedRectangle(cornerRadius: 32, style: .continuous))
+            .background(Color(.systemBackground), in: RoundedRectangle(cornerRadius: Radius.large, style: .continuous))
             .shadow(color: .black.opacity(0.25), radius: 30, y: 12)
             .padding()
             .scaleEffect(shown ? 1 : 0.9)

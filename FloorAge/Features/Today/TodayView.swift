@@ -15,11 +15,12 @@ struct TodayView: View {
     @Namespace private var sessionZoom
     @State private var showingTest = false
     @AppStorage("pelvicFloor") private var pelvicFloor = true
+    @Environment(\.dynamicTypeSize) private var typeSize
 
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(alignment: .leading, spacing: 16) {
+                VStack(alignment: .leading, spacing: Space.l) {
                     hero
 
                     if let result = model.latestResult, Retest.isDue(lastCheck: result.date) {
@@ -72,10 +73,10 @@ struct TodayView: View {
     private var weekStrip: some View {
         let days = model.lastSevenDays
         let count = days.filter { $0 }.count
-        return VStack(alignment: .leading, spacing: 8) {
+        return VStack(alignment: .leading, spacing: Space.s) {
             Text(count == 0 ? "Let's start your week" : "\(count) of the last 7 days")
                 .font(.display(.headline))
-            HStack(spacing: 8) {
+            HStack(spacing: Space.s) {
                 ForEach(Array(days.enumerated()), id: \.offset) { _, done in
                     Circle()
                         .fill(done ? AnyShapeStyle(Feature.floorAge.gradient) : AnyShapeStyle(Color(.tertiarySystemFill)))
@@ -96,59 +97,78 @@ struct TodayView: View {
 
     /// The coach idling beside your Floor Age (or the invitation to find it): the first thing
     /// you see each day. Tapping an exercise in today's session makes this coach demonstrate it.
+    /// At accessibility text sizes the greeting and the details take the full width, above and
+    /// below the coach and gauge, so nothing overlaps.
     private var hero: some View {
-        HStack(alignment: .bottom, spacing: 4) {
-            AvatarView(controller: avatar, interactive: false, showsMat: false)
-                .frame(width: 128, height: 228)
-                // A soft spotlight lifts the coach off the gradient (the cartoon coach wears orange).
-                .background {
-                    RadialGradient(colors: [.white.opacity(0.4), .white.opacity(0)], center: .center, startRadius: 10, endRadius: 120)
-                        .frame(width: 260, height: 300)
+        let large = typeSize.isAccessibilitySize
+        let result = model.latestResult
+        return VStack(alignment: .leading, spacing: Space.m) {
+            if large { Text(greeting).font(.display(.headline)) }
+            HStack(alignment: .bottom, spacing: Space.xs) {
+                AvatarView(controller: avatar, interactive: false, showsMat: false)
+                    .frame(width: large ? 96 : 128, height: large ? 180 : 228)
+                    // A soft spotlight lifts the coach off the gradient (the cartoon coach wears orange).
+                    .background {
+                        RadialGradient(colors: [.white.opacity(0.4), .white.opacity(0)], center: .center, startRadius: 10, endRadius: 120)
+                            .frame(width: 260, height: 300)
+                    }
+                    .accessibilityHidden(true)
+                VStack(alignment: .leading, spacing: Space.m) {
+                    if !large { Text(greeting).font(.display(.headline)) }
+                    if let result {
+                        floorAgeGauge(result)
+                    } else {
+                        Text("Find your Floor Age").font(.display(.title2))
+                    }
+                    if !large { heroDetails(result) }
                 }
-                .accessibilityHidden(true)
-            VStack(alignment: .leading, spacing: 10) {
-                Text(greeting).font(.display(.headline))
-                if let result = model.latestResult {
-                    floorAgeGauge(result)
-                } else {
-                    Text("Find your Floor Age").font(.display(.title2))
-                    Text("4 quick tests show how old your body moves. Your plan adapts to the result.")
-                        .font(.subheadline)
-                        .opacity(0.92)
-                    Button("Start the check") { showingTest = true }
-                        .buttonStyle(OnHeroButtonStyle(feature: .floorAge))
-                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.bottom, Space.xs)
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.bottom, 4)
+            if large { heroDetails(result) }
         }
         .heroCard(.floorAge)
     }
 
     /// Fuller the younger your body moves, across the 20 to 90 range of the test norms.
     private func floorAgeGauge(_ result: FloorAgeResult) -> some View {
-        let difference = result.floorAge - result.age
-        return VStack(alignment: .leading, spacing: 8) {
-            ArcGauge(progress: Double(90 - result.floorAge) / 70, lineWidth: 12) {
-                VStack(spacing: 0) {
-                    Text(result.floorAge, format: .number).font(.metric(44))
-                    Text("Floor Age").font(.caption.weight(.semibold)).opacity(0.9)
+        ArcGauge(progress: Double(90 - result.floorAge) / 70, lineWidth: 12) {
+            VStack(spacing: 0) {
+                Text(result.floorAge, format: .number).font(.metric(44))
+                Text("Floor Age").font(.caption.weight(.semibold)).opacity(0.9)
+            }
+        }
+        .frame(maxWidth: 190)
+        .accessibilityElement(children: .combine)
+    }
+
+    /// How the Floor Age compares and the area to focus on, or what the check is and a way in.
+    @ViewBuilder
+    private func heroDetails(_ result: FloorAgeResult?) -> some View {
+        if let result {
+            let difference = result.floorAge - result.age
+            VStack(alignment: .leading, spacing: Space.s) {
+                Text(difference > 0 ? "\(difference) years older than my age (\(result.age))"
+                     : difference < 0 ? "\(-difference) years younger than my age (\(result.age))"
+                     : "Right on my age (\(result.age))")
+                    .font(.footnote.weight(.semibold))
+                    .opacity(0.92)
+                if let weakest = result.weakest {
+                    Label(weakest.area, systemImage: weakest.symbol)
+                        .font(.subheadline.weight(.semibold))
+                        .padding(.horizontal, Space.m)
+                        .padding(.vertical, Space.xs)
+                        .background(.white.opacity(0.2), in: Capsule())
+                        .accessibilityLabel(String(localized: "Focus: \(weakest.area)"))
                 }
             }
-            .frame(maxWidth: 190)
-            .accessibilityElement(children: .combine)
-            Text(difference > 0 ? "\(difference) years older than my age (\(result.age))"
-                 : difference < 0 ? "\(-difference) years younger than my age (\(result.age))"
-                 : "Right on my age (\(result.age))")
-                .font(.footnote.weight(.semibold))
-                .opacity(0.92)
-            if let weakest = result.weakest {
-                Label(weakest.area, systemImage: weakest.symbol)
-                    .font(.subheadline.weight(.semibold))
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 5)
-                    .background(.white.opacity(0.2), in: Capsule())
-                    .accessibilityLabel(String(localized: "Focus: \(weakest.area)"))
+        } else {
+            VStack(alignment: .leading, spacing: Space.m) {
+                Text("4 quick tests show how old your body moves. Your plan adapts to the result.")
+                    .font(.subheadline)
+                    .opacity(0.92)
+                Button("Start the check") { showingTest = true }
+                    .buttonStyle(OnHeroButtonStyle(feature: .floorAge))
             }
         }
     }
@@ -156,7 +176,7 @@ struct TodayView: View {
     /// Four weeks after the last check: time to see what the training has done.
     private func retestCard(_ result: FloorAgeResult) -> some View {
         Button { showingTest = true } label: {
-            HStack(spacing: 14) {
+            HStack(spacing: Space.l) {
                 FeatureBadge(feature: .floorAge, symbol: "arrow.triangle.2.circlepath", size: 44)
                 VStack(alignment: .leading, spacing: 2) {
                     Text("Time to retest").font(.display(.headline))
@@ -176,7 +196,7 @@ struct TodayView: View {
     private var planCard: some View {
         let plan = self.plan
         let minutes = Int((plan.reduce(0) { $0 + $1.estimatedSeconds } / 60).rounded())
-        return VStack(alignment: .leading, spacing: 12) {
+        return VStack(alignment: .leading, spacing: Space.m) {
             HStack {
                 Text("Today's session").font(.display(.title2))
                 Spacer()
@@ -217,7 +237,7 @@ extension TodayView {
         Button {
             session = SessionItems(items: PlanBuilder.pelvicFloor, source: "pelvic")
         } label: {
-            HStack(spacing: 14) {
+            HStack(spacing: Space.l) {
                 FeatureBadge(feature: .plan, symbol: "figure.mind.and.body", size: 48)
                 VStack(alignment: .leading, spacing: 2) {
                     Text("Pelvic floor").font(.display(.headline))

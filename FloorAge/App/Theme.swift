@@ -44,10 +44,30 @@ struct AppBackground: View {
     ]
 }
 
+// MARK: - Spacing and radii
+
+/// The spacing scale for padding and stack spacing. Anything tighter (1–3 pt between lines of
+/// text) or larger (fixed layouts like the share card) stays a plain number.
+enum Space {
+    static let xs: CGFloat = 4
+    static let s: CGFloat = 8
+    static let m: CGFloat = 12
+    static let l: CGFloat = 16
+    static let xl: CGFloat = 24
+    static let xxl: CGFloat = 32
+}
+
+/// Corner radii: small controls and tiles, cards, and hero cards.
+enum Radius {
+    static let small: CGFloat = 12
+    static let medium: CGFloat = 20
+    static let large: CGFloat = 28
+}
+
 extension View {
     /// Glassy card on top of `AppBackground`: translucent white (dark in dark mode), a hairline
     /// edge and a soft shadow.
-    func card(padding: CGFloat = 16, cornerRadius: CGFloat = 20) -> some View {
+    func card(padding: CGFloat = Space.l, cornerRadius: CGFloat = Radius.medium) -> some View {
         let shape = RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
         return self
             .padding(padding)
@@ -102,13 +122,21 @@ enum Feature {
     var gradient: LinearGradient { LinearGradient(colors: colors, startPoint: .topLeading, endPoint: .bottomTrailing) }
     var tint: Color { colors[0] }
 
+    /// The feature's colours for text and small icons on cards and screens (not on its own
+    /// gradient): darkened in light mode and lightened in dark mode just enough to read at 4.5:1.
+    /// Without this the oranges and greens wash out on cream, and the sleep and Plus purples
+    /// vanish on the night background.
+    var inkColors: [Color] { colors.map(\.readableInk) }
+    var ink: LinearGradient { LinearGradient(colors: inkColors, startPoint: .topLeading, endPoint: .bottomTrailing) }
+
     /// The warm gold used with Plus (crown, price) against its deep purple.
     static let gold = Color(red: 1.0, green: 0.8, blue: 0.38)
 }
 
 extension View {
-    /// Rich gradient card with white text, a soft light bloom and a large faded symbol.
-    func heroCard(_ feature: Feature, symbol: String? = nil, padding: CGFloat = 18, cornerRadius: CGFloat = 26) -> some View {
+    /// Rich gradient card with white text, a soft light bloom, a large faded symbol, a fine grain
+    /// and light catching the top edge.
+    func heroCard(_ feature: Feature, symbol: String? = nil, padding: CGFloat = Space.l, cornerRadius: CGFloat = Radius.large) -> some View {
         let shape = RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
         return self
             .padding(padding)
@@ -127,14 +155,24 @@ extension View {
                             .rotationEffect(.degrees(-12))
                             .offset(x: 28, y: 18)
                     }
+                    // Film grain, so the gradient looks printed rather than flat.
+                    .overlay {
+                        Image(uiImage: Grain.tile).resizable(resizingMode: .tile).opacity(0.025).blendMode(.overlay)
+                    }
+                    // Light from above along the top of the card.
+                    .overlay(alignment: .top) {
+                        LinearGradient(colors: [.white.opacity(0.22), .white.opacity(0)], startPoint: .top, endPoint: .bottom)
+                            .frame(height: 28)
+                    }
                     .clipShape(shape)
             }
-            .overlay(shape.strokeBorder(.white.opacity(0.28), lineWidth: 1))
+            .overlay(shape.strokeBorder(LinearGradient(colors: [.white.opacity(0.6), .white.opacity(0.18), .white.opacity(0.1)],
+                                                       startPoint: .top, endPoint: .bottom), lineWidth: 1))
             .shadow(color: feature.colors.last!.opacity(0.35), radius: 18, y: 10)
     }
 
     /// Light card with a gradient edge in the feature's colours, for supporting content.
-    func tintedCard(_ feature: Feature, padding: CGFloat = 16, cornerRadius: CGFloat = 22) -> some View {
+    func tintedCard(_ feature: Feature, padding: CGFloat = Space.l, cornerRadius: CGFloat = Radius.medium) -> some View {
         let shape = RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
         return self
             .padding(padding)
@@ -214,7 +252,7 @@ struct Eyebrow: View {
             .font(.caption.weight(.heavy))
             .tracking(1.8)
             .textCase(.uppercase)
-            .foregroundStyle(feature.gradient)
+            .foregroundStyle(feature.ink)
     }
 }
 
@@ -240,7 +278,13 @@ struct ArcGauge<Label: View>: View {
                 }
                 .frame(width: d - lineWidth, height: d - lineWidth)
                 .offset(y: (d - lineWidth) / 2)
-                label.padding(.bottom, 4)
+                // The label shrinks to fit inside the arc at large text sizes rather than
+                // being cut off at the top.
+                label
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.4)
+                    .padding(.bottom, 4)
+                    .frame(maxWidth: max(d - lineWidth * 3, 0), maxHeight: max(geo.size.height - lineWidth, 0), alignment: .bottom)
             }
             .frame(width: geo.size.width, height: geo.size.height, alignment: .bottom)
             .clipped()
@@ -252,8 +296,12 @@ struct ArcGauge<Label: View>: View {
 extension Font {
     /// Serif display type for headings: warmer and more editorial than the system default.
     static func display(_ style: Font.TextStyle = .title2) -> Font { .system(style, design: .serif, weight: .bold) }
-    /// Big rounded numbers.
-    static func metric(_ size: CGFloat) -> Font { .system(size: size, weight: .bold, design: .rounded) }
+    /// Big rounded numbers. They grow with Dynamic Type like the text around them, but only to
+    /// 1.5×, so a figure still fits its card at the largest accessibility sizes.
+    static func metric(_ size: CGFloat) -> Font {
+        let scaled = min(UIFontMetrics(forTextStyle: .body).scaledValue(for: size), size * 1.5)
+        return .system(size: scaled, weight: .bold, design: .rounded)
+    }
 }
 
 enum Appearance {
@@ -268,4 +316,50 @@ enum Appearance {
         appearance.largeTitleTextAttributes = [.font: serif(.largeTitle, bold: true)]
         appearance.titleTextAttributes = [.font: serif(.headline, bold: true)]
     }
+}
+
+// MARK: - Readable colours and grain
+
+extension Color {
+    /// This colour as text on the app's cards: mixed towards black (light mode) or white (dark
+    /// mode) in small steps until it reaches 4.5:1 against the card, and left alone if it already does.
+    var readableInk: Color {
+        let base = UIColor(self)
+        return Color(UIColor { traits in
+            let dark = traits.userInterfaceStyle == .dark
+            // The cards: nearly white over the peach mesh, nearly black over the night mesh.
+            let card: (CGFloat, CGFloat, CGFloat) = dark ? (0.02, 0.02, 0.026) : (1.0, 0.99, 0.98)
+            var r: CGFloat = 0, g: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
+            base.getRed(&r, green: &g, blue: &b, alpha: &a)
+            let target: CGFloat = dark ? 1 : 0
+            var t: CGFloat = 0
+            func mixed(_ c: CGFloat) -> CGFloat { c + (target - c) * t }
+            while t < 1, Self.contrast((mixed(r), mixed(g), mixed(b)), card) < 4.5 { t += 0.02 }
+            return UIColor(red: mixed(r), green: mixed(g), blue: mixed(b), alpha: a)
+        })
+    }
+
+    /// WCAG contrast ratio of two sRGB colours.
+    static func contrast(_ a: (CGFloat, CGFloat, CGFloat), _ b: (CGFloat, CGFloat, CGFloat)) -> CGFloat {
+        func channel(_ c: CGFloat) -> CGFloat { c <= 0.04045 ? c / 12.92 : pow((c + 0.055) / 1.055, 2.4) }
+        func luminance(_ c: (CGFloat, CGFloat, CGFloat)) -> CGFloat { 0.2126 * channel(c.0) + 0.7152 * channel(c.1) + 0.0722 * channel(c.2) }
+        let (x, y) = (luminance(a), luminance(b))
+        return (max(x, y) + 0.05) / (min(x, y) + 0.05)
+    }
+}
+
+/// A small tile of random grey noise for the hero cards' grain, made once.
+enum Grain {
+    static let tile: UIImage = {
+        let size = 96
+        var generator = SystemRandomNumberGenerator()
+        let pixels = (0..<size * size).map { _ in UInt8.random(in: 0...255, using: &generator) }
+        let image = pixels.withUnsafeBytes { bytes -> CGImage? in
+            guard let provider = CGDataProvider(data: Data(bytes) as CFData) else { return nil }
+            return CGImage(width: size, height: size, bitsPerComponent: 8, bitsPerPixel: 8, bytesPerRow: size,
+                           space: CGColorSpaceCreateDeviceGray(), bitmapInfo: CGBitmapInfo(rawValue: 0),
+                           provider: provider, decode: nil, shouldInterpolate: false, intent: .defaultIntent)
+        }
+        return image.map { UIImage(cgImage: $0) } ?? UIImage()
+    }()
 }

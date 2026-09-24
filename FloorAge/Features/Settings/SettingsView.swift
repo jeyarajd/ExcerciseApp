@@ -24,7 +24,7 @@ struct SettingsView: View {
 
                 Section {
                     Button { showingFamily = true } label: {
-                        HStack(spacing: 12) {
+                        HStack(spacing: Space.m) {
                             MemberAvatar(member: model.activeMember, size: 34)
                             VStack(alignment: .leading, spacing: 1) {
                                 Text("Family").font(.headline)
@@ -194,7 +194,7 @@ extension SettingsView {
     fileprivate var plusSection: some View {
         Section {
             if store.hasPlus {
-                HStack(spacing: 12) {
+                HStack(spacing: Space.m) {
                     FeatureBadge(feature: .plus, size: 34)
                     VStack(alignment: .leading, spacing: 1) {
                         Text("Floor Age Plus").font(.headline)
@@ -203,7 +203,7 @@ extension SettingsView {
                 }
             } else {
                 Button { showingPlus = true } label: {
-                    HStack(spacing: 12) {
+                    HStack(spacing: Space.m) {
                         FeatureBadge(feature: .plus, size: 34)
                         VStack(alignment: .leading, spacing: 1) {
                             Text("Floor Age Plus").font(.headline)
@@ -213,7 +213,7 @@ extension SettingsView {
                         }
                         Spacer(minLength: 0)
                         if let price = store.price {
-                            Text(price).font(.subheadline.weight(.semibold)).foregroundStyle(Feature.plus.tint)
+                            Text(price).font(.subheadline.weight(.semibold)).foregroundStyle(Feature.plus.inkColors[0])
                         }
                     }
                 }
@@ -306,7 +306,7 @@ struct GenderPicker: View {
     @Binding var gender: Gender?
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
+        VStack(alignment: .leading, spacing: Space.s) {
             Text("I am").font(.subheadline).foregroundStyle(.secondary)
             Picker("I am", selection: $gender) {
                 ForEach(Gender.allCases) { Text($0.label).tag(Gender?.some($0)) }

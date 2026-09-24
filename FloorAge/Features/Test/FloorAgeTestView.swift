@@ -126,18 +126,18 @@ struct FloorAgeTestView: View {
 
     private var intro: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 18) {
+            VStack(alignment: .leading, spacing: Space.l) {
                 AvatarView(controller: avatar)
                     .frame(height: 290)
                     .background(RadialGradient(colors: [Feature.floorAge.tint.opacity(0.28), .clear],
                                                center: .bottom, startRadius: 10, endRadius: 230))
-                    .clipShape(RoundedRectangle(cornerRadius: 28, style: .continuous))
+                    .clipShape(RoundedRectangle(cornerRadius: Radius.large, style: .continuous))
 
-                VStack(alignment: .leading, spacing: 8) {
+                VStack(alignment: .leading, spacing: Space.s) {
                     Eyebrow("Floor Age")
                     Text("Your Floor Age check")
                         .font(.display(.largeTitle))
-                    HStack(spacing: 8) {
+                    HStack(spacing: Space.s) {
                         chip("\(tests.count) tests", symbol: "list.number")
                         chip("About 10 min", symbol: "clock")
                     }
@@ -147,9 +147,9 @@ struct FloorAgeTestView: View {
                         .padding(.top, 2)
                 }
 
-                VStack(spacing: 10) {
+                VStack(spacing: Space.m) {
                     ForEach(Array(tests.enumerated()), id: \.element) { index, test in
-                        HStack(spacing: 14) {
+                        HStack(spacing: Space.l) {
                             FeatureBadge(feature: test.feature, symbol: test.symbol, size: 46)
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(test.title).font(.display(.headline))
@@ -161,11 +161,11 @@ struct FloorAgeTestView: View {
                                 .foregroundStyle(test.feature.gradient)
                                 .opacity(0.55)
                         }
-                        .tintedCard(test.feature, padding: 14)
+                        .tintedCard(test.feature, padding: Space.l)
                     }
                 }
 
-                HStack(alignment: .top, spacing: 12) {
+                HStack(alignment: .top, spacing: Space.m) {
                     Image(systemName: "checklist")
                         .font(.title3.weight(.semibold))
                         .foregroundStyle(Feature.glance.gradient)
@@ -173,7 +173,7 @@ struct FloorAgeTestView: View {
                         .font(.callout)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .tintedCard(.glance, padding: 14)
+                .tintedCard(.glance, padding: Space.l)
 
                 Button {
                     go(to: 1)
@@ -181,7 +181,7 @@ struct FloorAgeTestView: View {
                     Label("Start", systemImage: "play.fill")
                 }
                 .buttonStyle(GradientButtonStyle(feature: .floorAge))
-                .padding(.top, 4)
+                .padding(.top, Space.xs)
             }
             .padding()
         }
@@ -191,9 +191,9 @@ struct FloorAgeTestView: View {
     private func chip(_ text: LocalizedStringKey, symbol: String) -> some View {
         Label(text, systemImage: symbol)
             .font(.subheadline.weight(.semibold))
-            .padding(.horizontal, 12)
-            .padding(.vertical, 6)
-            .foregroundStyle(Feature.floorAge.colors[1])
+            .padding(.horizontal, Space.m)
+            .padding(.vertical, Space.s)
+            .foregroundStyle(Feature.floorAge.inkColors[1])
             .background(Feature.floorAge.tint.opacity(0.14), in: Capsule())
     }
 
@@ -202,7 +202,7 @@ struct FloorAgeTestView: View {
     private func testStep(_ test: FloorTest) -> some View {
         let unsafe = PlanBuilder.unsafe(for: model.profile?.limitations ?? []).contains(test.exerciseID)
         return ScrollView {
-            VStack(alignment: .leading, spacing: 18) {
+            VStack(alignment: .leading, spacing: Space.l) {
                 // One 3D view throughout: with the camera on, the realistic coach copies you and the
                 // camera itself becomes the small picture.
                 let mirroring = useCamera && test.usesCamera
@@ -212,40 +212,40 @@ struct FloorAgeTestView: View {
                         if mirroring {
                             CameraStage(camera: camera, feature: test.feature, focus: test.cameraFocus)
                                 .frame(width: 96, height: 150)
-                                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-                                .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).strokeBorder(.white.opacity(0.8), lineWidth: 2))
+                                .clipShape(RoundedRectangle(cornerRadius: Radius.medium, style: .continuous))
+                                .overlay(RoundedRectangle(cornerRadius: Radius.medium, style: .continuous).strokeBorder(.white.opacity(0.8), lineWidth: 2))
                                 .shadow(color: .black.opacity(0.25), radius: 8, y: 4)
                                 .padding(.top, 40)
-                                .padding(.trailing, 12)
+                                .padding(.trailing, Space.m)
                         }
                     }
                     .overlay(alignment: .topLeading) {
                         if mirroring {
-                            VStack(alignment: .leading, spacing: 6) {
+                            VStack(alignment: .leading, spacing: Space.s) {
                                 Label("Mirroring you", systemImage: "person.fill.viewfinder")
                                     .font(.caption.weight(.bold))
                                     .foregroundStyle(.white)
-                                    .padding(.horizontal, 10)
-                                    .padding(.vertical, 5)
+                                    .padding(.horizontal, Space.m)
+                                    .padding(.vertical, Space.xs)
                                     .background(.black.opacity(0.35), in: Capsule())
                                 if let reading = cameraReading(test), camera.pose?.legsVisible == true {
                                     Text(reading)
                                         .font(.subheadline.weight(.bold))
                                         .foregroundStyle(.white)
-                                        .padding(.horizontal, 12)
-                                        .padding(.vertical, 6)
+                                        .padding(.horizontal, Space.m)
+                                        .padding(.vertical, Space.s)
                                         .background(test.feature.gradient, in: Capsule())
                                         .shadow(color: test.feature.colors.last!.opacity(0.5), radius: 8)
                                 }
                             }
                             .padding(.top, 40)
-                            .padding(.leading, 12)
+                            .padding(.leading, Space.m)
                         }
                     }
                 .background(RadialGradient(colors: [test.feature.tint.opacity(0.28), .clear],
                                            center: .bottom, startRadius: 10, endRadius: 230))
-                .clipShape(RoundedRectangle(cornerRadius: 28, style: .continuous))
-                .overlay(alignment: .top) { progressBar.padding(14) }
+                .clipShape(RoundedRectangle(cornerRadius: Radius.large, style: .continuous))
+                .overlay(alignment: .top) { progressBar.padding(Space.l) }
 
                 if useCamera, test.usesCamera {
                     // Under the picture, so it never covers the feet.
@@ -256,7 +256,7 @@ struct FloorAgeTestView: View {
                         .padding(.top, -8)
                 }
 
-                VStack(alignment: .leading, spacing: 6) {
+                VStack(alignment: .leading, spacing: Space.s) {
                     Eyebrow("Test \(step) of \(tests.count)", feature: test.feature)
                     Text(test.title).font(.display(.largeTitle))
                     Label(test.area, systemImage: test.symbol)
@@ -264,20 +264,20 @@ struct FloorAgeTestView: View {
                         .foregroundStyle(.secondary)
                 }
 
-                VStack(alignment: .leading, spacing: 12) {
-                    HStack(alignment: .top, spacing: 12) {
+                VStack(alignment: .leading, spacing: Space.m) {
+                    HStack(alignment: .top, spacing: Space.m) {
                         Capsule().fill(test.feature.gradient).frame(width: 4)
                         Text(test.instructions).font(.body)
                     }
                     .fixedSize(horizontal: false, vertical: true)
-                    HStack(spacing: 10) {
+                    HStack(spacing: Space.m) {
                         Button {
                             voice.say(test.instructions, interrupt: true)
                         } label: {
                             Label("Hear again", systemImage: "speaker.wave.2.fill")
                                 .font(.subheadline.weight(.semibold))
-                                .padding(.horizontal, 12)
-                                .padding(.vertical, 7)
+                                .padding(.horizontal, Space.m)
+                                .padding(.vertical, Space.s)
                                 .foregroundStyle(test.feature.colors.last!)
                                 .background(test.feature.tint.opacity(0.14), in: Capsule())
                         }
@@ -294,8 +294,8 @@ struct FloorAgeTestView: View {
                                         .symbolEffect(.pulse, isActive: useCamera && camera.pose?.legsVisible == true && !reduceMotion)
                                 }
                                     .font(.subheadline.weight(.semibold))
-                                    .padding(.horizontal, 12)
-                                    .padding(.vertical, 7)
+                                    .padding(.horizontal, Space.m)
+                                    .padding(.vertical, Space.s)
                                     .foregroundStyle(useCamera ? .white : test.feature.colors.last!)
                                     .background(useCamera ? AnyShapeStyle(test.feature.gradient) : AnyShapeStyle(test.feature.tint.opacity(0.14)),
                                                 in: Capsule())
@@ -325,16 +325,16 @@ struct FloorAgeTestView: View {
                         .font(.callout.weight(.medium))
                         .foregroundStyle(Color(red: 0.8, green: 0.35, blue: 0.05))
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .tintedCard(.steps, padding: 14)
+                        .tintedCard(.steps, padding: Space.l)
                 }
 
                 input(for: test)
 
-                HStack(spacing: 12) {
+                HStack(spacing: Space.m) {
                     Button("Skip test") { advance(skipping: test) }
                         .font(.headline)
                         .foregroundStyle(.secondary)
-                        .padding(.horizontal, 8)
+                        .padding(.horizontal, Space.s)
                     Button {
                         save(test)
                     } label: {
@@ -344,7 +344,7 @@ struct FloorAgeTestView: View {
                     .buttonStyle(GradientButtonStyle(feature: test.feature))
                     .disabled(!canSave(test))
                 }
-                .padding(.top, 4)
+                .padding(.top, Space.xs)
             }
             .padding()
         }
@@ -352,14 +352,14 @@ struct FloorAgeTestView: View {
 
     /// One segment per test, filled up to the current one.
     private var progressBar: some View {
-        HStack(spacing: 6) {
+        HStack(spacing: Space.s) {
             ForEach(Array(tests.enumerated()), id: \.element) { index, test in
                 Capsule()
                     .fill(index < step ? AnyShapeStyle(test.feature.gradient) : AnyShapeStyle(.white.opacity(0.6)))
                     .frame(height: 6)
             }
         }
-        .padding(8)
+        .padding(Space.s)
         .background(.ultraThinMaterial, in: Capsule())
         .accessibilityHidden(true)
     }
@@ -368,8 +368,8 @@ struct FloorAgeTestView: View {
     private func input(for test: FloorTest) -> some View {
         switch test {
         case .sitRise:
-            VStack(spacing: 14) {
-                HStack(spacing: 12) {
+            VStack(spacing: Space.l) {
+                HStack(spacing: Space.m) {
                     CounterTile(title: "Going down", unit: "supports", value: $downSupports, range: 0...5, feature: test.feature)
                     CounterTile(title: "Getting up", unit: "supports", value: $upSupports, range: 0...5, feature: test.feature)
                 }
@@ -383,14 +383,14 @@ struct FloorAgeTestView: View {
                 Text("Score: \(FloorAgeCalculator.sitRiseScore(downSupports: downSupports, upSupports: upSupports, unsteady: unsteady), specifier: "%.1f") / 10")
                     .font(.metric(20))
                     .foregroundStyle(.white)
-                    .padding(.horizontal, 18)
-                    .padding(.vertical, 8)
+                    .padding(.horizontal, Space.l)
+                    .padding(.vertical, Space.s)
                     .background(test.feature.gradient, in: Capsule())
             }
             .tintedCard(test.feature)
         case .balance:
             let seconds = balanceStart == nil ? (balanceBest ?? 0) : balanceNow
-            VStack(spacing: 14) {
+            VStack(spacing: Space.l) {
                 ArcGauge(progress: seconds / 45, lineWidth: 16) {
                     VStack(spacing: 0) {
                         Text(String(format: "%.1f", seconds))
@@ -427,9 +427,9 @@ struct FloorAgeTestView: View {
                 }
             }
             .frame(maxWidth: .infinity)
-            .heroCard(test.feature, symbol: test.symbol, padding: 20)
+            .heroCard(test.feature, symbol: test.symbol, padding: Space.xl)
         case .chairStand:
-            VStack(spacing: 14) {
+            VStack(spacing: Space.l) {
                 if let countdown = chairCountdown {
                     ArcGauge(progress: chairGo ? Double(countdown) / 30 : 1, lineWidth: 16) {
                         VStack(spacing: 0) {
@@ -447,14 +447,14 @@ struct FloorAgeTestView: View {
                             .font(.metric(22))
                             .contentTransition(.numericText())
                             .animation(.snappy, value: chairCounter.count)
-                            .padding(.horizontal, 16)
-                            .padding(.vertical, 6)
+                            .padding(.horizontal, Space.l)
+                            .padding(.vertical, Space.s)
                             .background(.white.opacity(0.2), in: Capsule())
                     }
                 } else if !chairDone {
                     Image(systemName: "timer")
                         .font(.system(size: 54, weight: .semibold))
-                        .padding(.vertical, 8)
+                        .padding(.vertical, Space.s)
                     Button {
                         startChairStand()
                     } label: {
@@ -467,9 +467,9 @@ struct FloorAgeTestView: View {
                 }
             }
             .frame(maxWidth: .infinity)
-            .heroCard(test.feature, symbol: test.symbol, padding: 20)
+            .heroCard(test.feature, symbol: test.symbol, padding: Space.xl)
         case .reach:
-            VStack(spacing: 10) {
+            VStack(spacing: Space.m) {
                 if useCamera, !reachPickedByHand, reachEstimator.level != nil {
                     Label("Suggested by the camera. Tap another answer if it's not right.", systemImage: "camera.fill")
                         .font(.footnote.weight(.semibold))
@@ -482,7 +482,7 @@ struct FloorAgeTestView: View {
                         withAnimation(.snappy) { reach = level }
                         reachPickedByHand = true
                     } label: {
-                        HStack(spacing: 14) {
+                        HStack(spacing: Space.l) {
                             Image(systemName: selected ? "checkmark.circle.fill" : "circle")
                                 .font(.title3)
                                 .foregroundStyle(selected ? AnyShapeStyle(.white) : AnyShapeStyle(test.feature.gradient))
@@ -493,14 +493,14 @@ struct FloorAgeTestView: View {
                             ReachMeter(level: level.rawValue, selected: selected, feature: test.feature)
                         }
                         .foregroundStyle(selected ? .white : .primary)
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 14)
+                        .padding(.horizontal, Space.l)
+                        .padding(.vertical, Space.l)
                         .background {
-                            RoundedRectangle(cornerRadius: 18, style: .continuous)
+                            RoundedRectangle(cornerRadius: Radius.medium, style: .continuous)
                                 .fill(selected ? AnyShapeStyle(test.feature.gradient) : AnyShapeStyle(Color(.systemBackground).opacity(0.8)))
                         }
                         .overlay {
-                            RoundedRectangle(cornerRadius: 18, style: .continuous)
+                            RoundedRectangle(cornerRadius: Radius.medium, style: .continuous)
                                 .strokeBorder(test.feature.tint.opacity(selected ? 0 : 0.35), lineWidth: 1)
                         }
                         .shadow(color: test.feature.colors.last!.opacity(selected ? 0.35 : 0.08), radius: selected ? 10 : 6, y: 4)
@@ -742,9 +742,9 @@ struct CounterTile: View {
     var onHero = false
 
     var body: some View {
-        VStack(spacing: 6) {
+        VStack(spacing: Space.s) {
             Text(title).font(.subheadline.weight(.semibold)).opacity(onHero ? 0.9 : 0.75)
-            HStack(spacing: 14) {
+            HStack(spacing: Space.l) {
                 round("minus", enabled: value > range.lowerBound) { value -= 1 }
                 Text("\(value)")
                     .font(.metric(40))
@@ -759,9 +759,9 @@ struct CounterTile: View {
             }
         }
         .frame(maxWidth: .infinity)
-        .padding(.vertical, 12)
+        .padding(.vertical, Space.m)
         .background(onHero ? AnyShapeStyle(.white.opacity(0.16)) : AnyShapeStyle(feature.tint.opacity(0.1)),
-                    in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+                    in: RoundedRectangle(cornerRadius: Radius.medium, style: .continuous))
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(Text(title))
         .accessibilityValue(Text(value, format: .number))
