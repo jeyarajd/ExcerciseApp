@@ -2,15 +2,24 @@ import SwiftUI
 
 @main
 struct FloorAgeApp: App {
-    @StateObject private var model = AppModel()
+    @StateObject private var model = DemoScreen.current == nil ? AppModel() : DemoScreen.sampleModel()
     @StateObject private var voice = VoiceCoach()
+    @StateObject private var steps = DemoScreen.current == nil ? StepCounter() : StepCounter.sample()
+    @Environment(\.scenePhase) private var scenePhase
 
     var body: some Scene {
         WindowGroup {
             RootView()
                 .environmentObject(model)
                 .environmentObject(voice)
+                .environmentObject(steps)
                 .tint(Color("AccentColor"))
+        }
+        .onChange(of: scenePhase) { _, phase in
+            guard phase == .active else { return }
+            let trained = model.didSessionToday
+            Task { await Reminders.refresh(trainedToday: trained) }
+            if model.profile != nil { steps.start() }
         }
     }
 }
@@ -24,6 +33,8 @@ struct RootView: View {
     var body: some View {
         if let demoExercise {
             DemoView(exerciseID: demoExercise)
+        } else if let screen = DemoScreen.current {
+            DemoScreen.view(for: screen)
         } else if model.profile == nil {
             OnboardingView()
         } else {
@@ -33,16 +44,27 @@ struct RootView: View {
 }
 
 struct MainTabs: View {
+    enum Tab { case today, track, progress, settings }
+    @State private var tab: Tab
+
+    init(initial: Tab = .today) {
+        _tab = State(initialValue: initial)
+    }
+
     var body: some View {
-        TabView {
+        TabView(selection: $tab) {
             TodayView()
                 .tabItem { Label("Today", systemImage: "sun.max.fill") }
-            CoachChatView()
-                .tabItem { Label("Coach", systemImage: "bubble.left.and.bubble.right.fill") }
+                .tag(Tab.today)
+            TrackView()
+                .tabItem { Label("Track", systemImage: "heart.text.square.fill") }
+                .tag(Tab.track)
             HistoryView()
                 .tabItem { Label("Progress", systemImage: "chart.line.uptrend.xyaxis") }
+                .tag(Tab.progress)
             SettingsView()
                 .tabItem { Label("Settings", systemImage: "gearshape.fill") }
+                .tag(Tab.settings)
         }
     }
 }

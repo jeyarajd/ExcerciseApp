@@ -16,23 +16,55 @@ enum Limitation: String, Codable, CaseIterable, Identifiable {
     }
 }
 
+enum Gender: String, Codable, CaseIterable, Identifiable {
+    case female, male
+
+    var id: String { rawValue }
+    var label: String { self == .female ? "Woman" : "Man" }
+}
+
 struct Profile: Codable, Equatable {
     var name: String
     var age: Int
     var limitations: Set<Limitation>
+    /// Picks the coach (and voice) who demonstrates. Optional: nil means "prefer not to say".
+    var gender: Gender? = nil
+    /// From the BMI screen. Optional so profiles saved before these existed still load.
+    var heightCm: Double? = nil
+    var weightKg: Double? = nil
+
+    var bmi: Double? {
+        guard let heightCm, let weightKg else { return nil }
+        return BMI.value(weightKg: weightKg, heightCm: heightCm)
+    }
+
+    /// Calories a day to keep the current weight, once height and weight are known.
+    var calorieTarget: Int? {
+        guard let heightCm, let weightKg else { return nil }
+        return Calories.dailyTarget(age: age, gender: gender, heightCm: heightCm, weightKg: weightKg)
+    }
 }
 
-/// App state, stored as one JSON file on the device. Nothing leaves the phone except what the
-/// user sends to the coach chat.
+/// App state, stored as one JSON file on the device. Nothing leaves the phone.
 final class AppModel: ObservableObject {
-    @Published var profile: Profile? { didSet { save() } }
+    @Published var profile: Profile? {
+        didSet {
+            save()
+            syncCoachLook()
+        }
+    }
     @Published private(set) var results: [FloorAgeResult] = []
     @Published private(set) var sessionDays: [Date] = []
+    @Published private(set) var foodLog: [FoodEntry] = []
+    @Published private(set) var weights: [WeightEntry] = []
 
     private struct Stored: Codable {
         var profile: Profile?
         var results: [FloorAgeResult]
         var sessionDays: [Date]
+        // Optional: files saved by earlier versions don't have them.
+        var foodLog: [FoodEntry]?
+        var weights: [WeightEntry]?
     }
 
     private let fileURL: URL
@@ -78,7 +110,47 @@ final class AppModel: ObservableObject {
         profile = nil
         results = []
         sessionDays = []
+        foodLog = []
+        weights = []
         save()
+    }
+
+    // MARK: - Food and weight
+
+    func addFood(_ entry: FoodEntry) {
+        foodLog.append(entry)
+        save()
+    }
+
+    func removeFood(id: UUID) {
+        foodLog.removeAll { $0.id == id }
+        save()
+    }
+
+    func foods(on date: Date = Date()) -> [FoodEntry] {
+        foodLog.filter { Calendar.current.isDate($0.date, inSameDayAs: date) }.sorted { $0.date < $1.date }
+    }
+
+    func caloriesEaten(on date: Date = Date()) -> Int {
+        foods(on: date).reduce(0) { $0 + $1.total }
+    }
+
+    /// Saves height and weight on the profile and adds the weight to the history (one per day).
+    func updateBody(heightCm: Double, weightKg: Double, on date: Date = Date()) {
+        profile?.heightCm = heightCm
+        profile?.weightKg = weightKg
+        weights.removeAll { Calendar.current.isDate($0.date, inSameDayAs: date) }
+        weights.append(WeightEntry(date: date, kg: weightKg))
+        weights.sort { $0.date < $1.date }
+        save()
+    }
+
+    /// The coach matches the person's gender; the female coach is the default.
+    private func syncCoachLook() {
+        let look = profile?.gender == .male ? "male" : "female"
+        guard UserDefaults.standard.string(forKey: "coachLook") != look else { return }
+        UserDefaults.standard.set(look, forKey: "coachLook")
+        NotificationCenter.default.post(name: Notification.Name("CoachLookChanged"), object: nil)
     }
 
     private func load() {
@@ -89,11 +161,13 @@ final class AppModel: ObservableObject {
         profile = stored.profile
         results = stored.results
         sessionDays = stored.sessionDays
+        foodLog = stored.foodLog ?? []
+        weights = stored.weights ?? []
     }
 
     private func save() {
         guard !loading else { return }
-        let stored = Stored(profile: profile, results: results, sessionDays: sessionDays)
+        let stored = Stored(profile: profile, results: results, sessionDays: sessionDays, foodLog: foodLog, weights: weights)
         guard let data = try? JSONEncoder().encode(stored) else { return }
         try? data.write(to: fileURL, options: [.atomic, .completeFileProtection])
     }
@@ -142,24 +216,30 @@ enum PlanBuilder {
         return ids
     }
 
-    /// Today's ~10 minute session: a warm-up, then work on the weakest areas from the last check.
-    static func today(profile: Profile, latest: FloorAgeResult?, date: Date = Date()) -> [PlanItem] {
+    /// Today's ~10 minute session: a warm-up, then work on the weakest areas from the last check,
+    /// finishing with pelvic floor squeezes unless they're switched off in Settings.
+    static func today(profile: Profile, latest: FloorAgeResult?, date: Date = Date(), pelvicFloor: Bool = true) -> [PlanItem] {
         let skip = unsafe(for: profile.limitations)
         let dayIndex = Calendar.current.ordinality(of: .day, in: .era, for: date) ?? 0
         let gentle = profile.limitations.contains(.medical) || profile.age >= 70
 
         var ids: [String] = []
-        let focus = latest?.rankedWeakest ?? [.chairStand, .balance, .reach]
-        // Three exercises for the weakest area, one each for the next two, rotated daily.
-        for (rank, test) in focus.prefix(3).enumerated() {
+        // Weakest tested areas first, then untested ones, so a partial check still gets a full plan.
+        let ranked = latest?.rankedWeakest ?? []
+        let focus = ranked + [FloorTest.chairStand, .balance, .reach, .sitRise].filter { !ranked.contains($0) }
+        // Two exercises for the weakest area, one each for the next two, rotated daily. Areas with
+        // nothing safe to offer are passed over rather than using up a slot.
+        var areas = 0
+        for test in focus where areas < 3 {
             let options = (trainers[test] ?? []).filter { !skip.contains($0) && !ids.contains($0) }
             guard !options.isEmpty else { continue }
-            let count = rank == 0 ? min(2, options.count) : 1
+            let count = areas == 0 ? min(2, options.count) : 1
             for i in 0..<count {
                 ids.append(options[(dayIndex + i) % options.count])
             }
+            areas += 1
         }
-        if ids.isEmpty { ids = ["calf_raise", "arm_raise"] }
+        if ids.isEmpty { ids = ["calf_raise", "chair_stand"] }
 
         var plan = [PlanItem("march", seconds: gentle ? 30 : 45), PlanItem("arm_raise", seconds: 30)]
         for id in ids {
@@ -167,6 +247,10 @@ enum PlanBuilder {
             let reps = exercise.defaultReps.map { gentle ? max(4, $0 * 2 / 3) : $0 }
             plan.append(PlanItem(id, reps: reps))
         }
+        if pelvicFloor { plan.append(PlanItem("kegel", reps: 8)) }
         return plan
     }
+
+    /// A standalone pelvic floor session: about 2 minutes of guided squeezes.
+    static let pelvicFloor = [PlanItem("kegel", reps: 12)]
 }

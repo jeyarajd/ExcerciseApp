@@ -84,6 +84,8 @@ struct Keyframe: Decodable {
     let ground: Ground?
     let seatZ: Float?
     let rootZ: Float?
+    /// Said and shown when the animation reaches this keyframe, e.g. "Squeeze and lift".
+    let cue: String?
 }
 
 struct Prop: Decodable, Hashable {

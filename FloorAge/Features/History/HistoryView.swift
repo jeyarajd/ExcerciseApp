@@ -6,6 +6,13 @@ struct HistoryView: View {
     @EnvironmentObject private var voice: VoiceCoach
     @State private var showingTest = false
 
+    /// Tight around the Floor Ages and the person's age, so real progress is visible.
+    private var chartRange: ClosedRange<Int> {
+        let values = model.results.map(\.floorAge) + [model.profile?.age].compactMap { $0 }
+        let low = (values.min() ?? 20) - 5, high = (values.max() ?? 80) + 5
+        return max(0, low / 5 * 5)...((high + 4) / 5 * 5)
+    }
+
     var body: some View {
         NavigationStack {
             List {
@@ -25,6 +32,7 @@ struct HistoryView: View {
                                     }
                             }
                         }
+                        .chartYScale(domain: chartRange)
                         .frame(height: 200)
                     }
                 }
@@ -60,6 +68,7 @@ struct HistoryView: View {
                     LabeledContent("Last 7 days", value: "\(model.lastSevenDays.filter { $0 }.count)")
                 }
             }
+            .appBackground()
             .navigationTitle("Progress")
             .fullScreenCover(isPresented: $showingTest) {
                 FloorAgeTestView()

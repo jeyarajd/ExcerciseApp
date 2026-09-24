@@ -16,8 +16,7 @@ struct FloorAgeResultView: View {
                         AreaRow(test: test, result: result)
                     }
                 }
-                .padding()
-                .background(Color(.secondarySystemBackground), in: RoundedRectangle(cornerRadius: 16))
+                .card()
 
                 if let weakest = result.weakest {
                     Label("Your plan now focuses on \(weakest.area.lowercased()). Retest in about 4 weeks to see your Floor Age drop.",
@@ -48,6 +47,7 @@ struct FloorAgeResultView: View {
             }
             .padding()
         }
+        .background(AppBackground())
         .onAppear { renderShareImage() }
     }
 

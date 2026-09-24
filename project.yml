@@ -29,21 +29,38 @@ targets:
           - UIInterfaceOrientationPortrait
         UIRequiresFullScreen: true
         ITSAppUsesNonExemptEncryption: false
-        CoachServerURL: $(COACH_SERVER_URL)
+        NSMotionUsageDescription: Floor Age counts your daily steps on this iPhone. Your steps never leave your phone.
+        NSCameraUsageDescription: Take a photo of your meal to get calorie suggestions. The photo is checked on your iPhone and is never saved or sent.
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.jeyaraj.floorage
         TARGETED_DEVICE_FAMILY: "1"
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
-        COACH_SERVER_URL: ""
         ENABLE_PREVIEWS: YES
+  FloorAgeTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: FloorAgeTests
+    dependencies:
+      - target: FloorAge
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_BUNDLE_IDENTIFIER: com.jeyaraj.floorage.tests
+        TARGETED_DEVICE_FAMILY: "1"
 schemes:
   FloorAge:
     build:
       targets:
         FloorAge: all
+        FloorAgeTests: [test]
     run:
       config: Debug
+    test:
+      config: Debug
+      targets:
+        - FloorAgeTests
     archive:
       config: Release

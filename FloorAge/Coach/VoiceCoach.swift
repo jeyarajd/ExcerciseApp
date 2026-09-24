@@ -56,10 +56,12 @@ final class VoiceCoach: NSObject, ObservableObject, AVSpeechSynthesizerDelegate 
         synthesizer.stopSpeaking(at: .immediate)
     }
 
+    /// The best-quality voice for the accent, preferring one that matches the coach on screen.
     private func bestVoice() -> AVSpeechSynthesisVoice? {
+        let wanted: AVSpeechSynthesisVoiceGender = CoachLook.current == .male ? .male : .female
         let matches = AVSpeechSynthesisVoice.speechVoices().filter { $0.language == accent }
-        return matches.max { $0.quality.rawValue < $1.quality.rawValue }
-            ?? AVSpeechSynthesisVoice(language: accent)
+        func rank(_ v: AVSpeechSynthesisVoice) -> Int { v.quality.rawValue * 2 + (v.gender == wanted ? 1 : 0) }
+        return matches.max { rank($0) < rank($1) } ?? AVSpeechSynthesisVoice(language: accent)
     }
 
     // MARK: AVSpeechSynthesizerDelegate

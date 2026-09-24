@@ -8,11 +8,6 @@ xcuserdata/
 *.xcarchive
 ExportOptions.plist
 
-# Coach server
-server/node_modules/
-server/dist/
-server/.env
-
 # Tools output
 tools/out/
 

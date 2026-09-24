@@ -1,7 +1,7 @@
 """Render stick-figure previews of every exercise in FloorAge/Resources/exercises.json.
 
 Uses the same skeleton, Euler order (R = Rx @ Rz @ Ry), ground solver and keyframe
-blending as the app's PoseAnimator, so poses can be tuned without a Mac.
+interpolation (monotone cubic) as the app's PoseAnimator, so poses can be tuned without a Mac.
 
     python tools/pose_preview.py            # all exercises -> tools/out/<id>.png
     python tools/pose_preview.py squat      # one exercise
@@ -110,18 +110,53 @@ def clamp_to_floor(rig, angles, pelvis):
     return pelvis
 
 
+def slopes(data, kfs):
+    """Monotone cubic slopes per keyframe (same as ExerciseClip.slopes in PoseAnimator.swift)."""
+    poses = [resolve(data, kf) for kf in kfs]
+    names = set().union(*poses)
+    out = []
+    for i in range(len(kfs)):
+        if i == 0 or i == len(kfs) - 1:
+            out.append({})
+            continue
+        h0, h1 = kfs[i]["t"] - kfs[i - 1]["t"], kfs[i + 1]["t"] - kfs[i]["t"]
+        if h0 <= 0 or h1 <= 0:
+            out.append({})
+            continue
+        m = {}
+        for n in names:
+            p0, p1, p2 = (poses[j].get(n, [0, 0, 0]) for j in (i - 1, i, i + 1))
+            row = []
+            for k in range(3):
+                d0, d1 = (p1[k] - p0[k]) / h0, (p2[k] - p1[k]) / h1
+                w0, w1 = 2 * h1 + h0, h1 + 2 * h0
+                row.append((w0 + w1) / (w0 / d0 + w1 / d1) if d0 * d1 > 0 else 0.0)
+            m[n] = row
+        out.append(m)
+    return out
+
+
 def sample(data, ex, t):
     rig = data["rig"]
     kfs = ex["keyframes"]
     if t <= kfs[0]["t"]:
         a = resolve(data, kfs[0])
         return a, clamp_to_floor(rig, a, solve_pelvis(rig, a, kfs[0]))
-    for ka, kb in zip(kfs, kfs[1:]):
+    ms = slopes(data, kfs)
+    for i, (ka, kb) in enumerate(zip(kfs, kfs[1:])):
         if ka["t"] <= t <= kb["t"]:
-            u = smoothstep((t - ka["t"]) / max(kb["t"] - ka["t"], 1e-6))
+            span = kb["t"] - ka["t"]
+            s = (t - ka["t"]) / max(span, 1e-6)
+            u = smoothstep(s)
+            h10, h11 = (s ** 3 - 2 * s * s + s) * span, (s ** 3 - s * s) * span
             aa, ab = resolve(data, ka), resolve(data, kb)
+            ma, mb = ms[i], ms[i + 1]
             names = set(aa) | set(ab)
-            ang = {n: [(1 - u) * x + u * y for x, y in zip(aa.get(n, [0, 0, 0]), ab.get(n, [0, 0, 0]))] for n in names}
+            ang = {
+                n: [(1 - u) * x + u * y + h10 * p + h11 * q
+                    for x, y, p, q in zip(aa.get(n, [0, 0, 0]), ab.get(n, [0, 0, 0]), ma.get(n, [0, 0, 0]), mb.get(n, [0, 0, 0]))]
+                for n in names
+            }
             pa = solve_pelvis(rig, ang, ka)
             pb = solve_pelvis(rig, ang, kb)
             return ang, clamp_to_floor(rig, ang, (1 - u) * pa + u * pb)

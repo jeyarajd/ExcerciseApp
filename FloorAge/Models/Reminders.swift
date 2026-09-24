@@ -1,0 +1,86 @@
+import Foundation
+import UserNotifications
+
+/// Daily "time to move" reminder, scheduled on the device. Instead of one repeating notification,
+/// the coming days are scheduled one by one so a day you already trained is skipped.
+enum Reminders {
+    /// How far ahead to schedule. Refreshed on every launch, and well under iOS's 64 pending limit,
+    /// so someone who stays away for weeks still gets nudged.
+    static let days = 30
+    private static let prefix = "daily-session-"
+    private static let defaults = UserDefaults.standard
+    /// Refreshes run one after another so two overlapping ones can't leave both sets scheduled.
+    @MainActor private static var lastRefresh: Task<Void, Never>?
+
+    static var isOn: Bool {
+        get { defaults.bool(forKey: "reminderOn") }
+        set { defaults.set(newValue, forKey: "reminderOn") }
+    }
+
+    /// Minutes after midnight. Defaults to 7:00, before the day heats up.
+    static var minuteOfDay: Int {
+        get { defaults.object(forKey: "reminderMinute") as? Int ?? 7 * 60 }
+        set { defaults.set(newValue, forKey: "reminderMinute") }
+    }
+
+    /// Asks for permission if needed and turns reminders on. Returns false if notifications are denied.
+    @MainActor static func enable(trainedToday: Bool) async -> Bool {
+        let center = UNUserNotificationCenter.current()
+        let granted = (try? await center.requestAuthorization(options: [.alert, .sound])) ?? false
+        isOn = granted
+        if granted { await refresh(trainedToday: trainedToday) }
+        return granted
+    }
+
+    @MainActor static func disable() async {
+        isOn = false
+        await refresh(trainedToday: false)
+    }
+
+    /// Reschedules the coming reminders. Call on launch, after a session and when settings change.
+    @MainActor static func refresh(trainedToday: Bool, now: Date = Date()) async {
+        let previous = lastRefresh
+        let task = Task { @MainActor in
+            await previous?.value
+            await reschedule(trainedToday: trainedToday, now: now)
+        }
+        lastRefresh = task
+        await task.value
+    }
+
+    @MainActor private static func reschedule(trainedToday: Bool, now: Date) async {
+        let center = UNUserNotificationCenter.current()
+        let pending = await center.pendingNotificationRequests().map(\.identifier).filter { $0.hasPrefix(prefix) }
+        center.removePendingNotificationRequests(withIdentifiers: pending)
+        guard isOn else { return }
+
+        for date in fireDates(minuteOfDay: minuteOfDay, trainedToday: trainedToday, now: now) {
+            let content = UNMutableNotificationContent()
+            content.title = "Time to move"
+            content.body = "Your 10-minute session with Coach is ready. Missing a day never resets your progress."
+            content.sound = .default
+            let parts = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: date)
+            // One ID per day, so adding a day again replaces it rather than duplicating it.
+            let request = UNNotificationRequest(
+                identifier: prefix + "\(parts.year ?? 0)-\(parts.month ?? 0)-\(parts.day ?? 0)",
+                content: content,
+                trigger: UNCalendarNotificationTrigger(dateMatching: parts, repeats: false)
+            )
+            try? await center.add(request)
+        }
+    }
+
+    /// The reminder times for the coming `days` days, skipping today if it's past or already done.
+    static func fireDates(minuteOfDay: Int, trainedToday: Bool, now: Date, calendar: Calendar = .current) -> [Date] {
+        let today = calendar.startOfDay(for: now)
+        return (0...days).compactMap { offset -> Date? in
+            guard let day = calendar.date(byAdding: .day, value: offset, to: today),
+                  let date = calendar.date(bySettingHour: minuteOfDay / 60, minute: minuteOfDay % 60, second: 0, of: day)
+            else { return nil }
+            if offset == 0 && (trainedToday || date <= now) { return nil }
+            return date
+        }
+        .prefix(days)
+        .map { $0 }
+    }
+}

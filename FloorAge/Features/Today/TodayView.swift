@@ -6,14 +6,14 @@ struct TodayView: View {
     @StateObject private var avatar = AvatarController(exerciseID: "idle")
     @State private var session: SessionItems?
     @State private var showingTest = false
+    @AppStorage("pelvicFloor") private var pelvicFloor = true
 
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
                     AvatarView(controller: avatar)
-                        .frame(height: 260)
-                        .clipShape(RoundedRectangle(cornerRadius: 20))
+                        .frame(height: 300)
                         .overlay(alignment: .bottomLeading) {
                             Text(greeting)
                                 .font(.headline)
@@ -31,9 +31,11 @@ struct TodayView: View {
                     }
 
                     planCard
+                    pelvicFloorCard
                 }
                 .padding()
             }
+            .background(AppBackground())
             .navigationTitle("Today")
             .fullScreenCover(item: $session) { wrapper in
                 SessionView(items: wrapper.items, voice: voice)
@@ -49,7 +51,7 @@ struct TodayView: View {
 
     private var plan: [PlanItem] {
         guard let profile = model.profile else { return [] }
-        return PlanBuilder.today(profile: profile, latest: model.latestResult)
+        return PlanBuilder.today(profile: profile, latest: model.latestResult, pelvicFloor: pelvicFloor)
     }
 
     private var greeting: String {
@@ -118,8 +120,7 @@ struct TodayView: View {
                 }
             }
         }
-        .padding()
-        .background(Color(.secondarySystemBackground), in: RoundedRectangle(cornerRadius: 16))
+        .card()
     }
 
     private var planCard: some View {
@@ -136,11 +137,14 @@ struct TodayView: View {
                     Text(item.exercise.name)
                     Spacer()
                     Text(item.amountLabel).foregroundStyle(.secondary)
+                    DemoVideoButton(exercise: item.exercise, compact: true) { voice.stop() }
                 }
                 .contentShape(Rectangle())
                 .onTapGesture { avatar.play(item.exercise) }
             }
-            Text("Tap an exercise to see the coach demonstrate it.")
+            Text(plan.contains { DemoVideo.url(for: $0.exercise.id) != nil }
+                 ? "Tap an exercise to see the coach demonstrate it, or \(Image(systemName: "play.rectangle.fill")) for a video."
+                 : "Tap an exercise to see the coach demonstrate it.")
                 .font(.caption)
                 .foregroundStyle(.secondary)
             Button {
@@ -152,8 +156,37 @@ struct TodayView: View {
             .buttonStyle(.borderedProminent)
             .controlSize(.large)
         }
-        .padding()
-        .background(Color(.secondarySystemBackground), in: RoundedRectangle(cornerRadius: 16))
+        .card()
+    }
+}
+
+extension TodayView {
+    /// One tap into a guided pelvic floor (Kegel) session, for any time of day.
+    fileprivate var pelvicFloorCard: some View {
+        Button {
+            session = SessionItems(items: PlanBuilder.pelvicFloor)
+        } label: {
+            HStack(spacing: 14) {
+                Image(systemName: "figure.mind.and.body")
+                    .font(.title)
+                    .frame(width: 48, height: 48)
+                    .background(Color.accentColor.opacity(0.15), in: RoundedRectangle(cornerRadius: 12))
+                    .foregroundStyle(Color.accentColor)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Pelvic floor").font(.headline)
+                    Text("12 guided Kegel squeezes · about 2 min. Do them sitting, anywhere.")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.leading)
+                }
+                Spacer(minLength: 0)
+                Image(systemName: "play.circle.fill")
+                    .font(.title)
+                    .foregroundStyle(Color.accentColor)
+            }
+            .card()
+        }
+        .buttonStyle(.plain)
     }
 }
 

@@ -8,7 +8,7 @@ struct FloorAgeTestView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var avatar = AvatarController(exerciseID: FloorTest.sitRise.exerciseID)
 
-    @State private var step = 0
+    @State private var step: Int
     @State private var scores: [String: Double] = [:]
     @State private var result: FloorAgeResult?
 
@@ -22,12 +22,18 @@ struct FloorAgeTestView: View {
     @State private var balanceNow: Double = 0
     // Chair stand
     @State private var chairCountdown: Int?
+    @State private var chairTask: Task<Void, Never>?
     @State private var chairReps = 12
     @State private var chairDone = false
     // Reach
     @State private var reach: ReachLevel?
 
     private let tests = FloorTest.allCases
+
+    /// `startStep` 1–4 opens straight at a test (used for screenshots); 0 is the intro.
+    init(startStep: Int = 0) {
+        _step = State(initialValue: startStep)
+    }
     private let tick = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
 
     var body: some View {
@@ -41,12 +47,17 @@ struct FloorAgeTestView: View {
                     testStep(tests[step - 1])
                 }
             }
+            .background(AppBackground())
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    if result == nil { Button("Close") { voice.stop(); dismiss() } }
+                    if result == nil { Button("Close") { stopTimers(); voice.stop(); dismiss() } }
                 }
             }
         }
+        .onAppear {
+            if tests.indices.contains(step - 1) { avatar.play(id: tests[step - 1].exerciseID) }
+        }
+        .onDisappear { stopTimers() }
         .onReceive(tick) { _ in
             if let start = balanceStart {
                 balanceNow = min(Date().timeIntervalSince(start), 45)
@@ -100,6 +111,9 @@ struct FloorAgeTestView: View {
                 HStack {
                     Text("Test \(step) of \(tests.count)").font(.subheadline).foregroundStyle(.secondary)
                     Spacer()
+                    if let exercise = ExerciseLibrary.shared.exercise(test.exerciseID) {
+                        DemoVideoButton(exercise: exercise, compact: true) { voice.stop() }
+                    }
                     Button {
                         voice.say(test.instructions, interrupt: true)
                     } label: {
@@ -209,7 +223,7 @@ struct FloorAgeTestView: View {
                             if reach == level { Image(systemName: "checkmark.circle.fill") }
                         }
                         .padding(12)
-                        .background(reach == level ? Color.accentColor.opacity(0.15) : Color(.secondarySystemBackground),
+                        .background(reach == level ? AnyShapeStyle(Color.accentColor.opacity(0.18)) : AnyShapeStyle(.regularMaterial),
                                     in: RoundedRectangle(cornerRadius: 12))
                     }
                     .buttonStyle(.plain)
@@ -221,6 +235,7 @@ struct FloorAgeTestView: View {
     // MARK: - Actions
 
     private func go(to newStep: Int) {
+        stopTimers()
         step = newStep
         guard newStep >= 1, newStep <= tests.count else { return }
         let test = tests[newStep - 1]
@@ -289,21 +304,32 @@ struct FloorAgeTestView: View {
         voice.say(String(format: "%.0f seconds.", held), interrupt: true)
     }
 
+    /// Stops a running balance timer or chair-stand countdown without recording anything.
+    private func stopTimers() {
+        balanceStart = nil
+        chairTask?.cancel()
+        chairTask = nil
+        if !chairDone { chairCountdown = nil }
+    }
+
     private func startChairStand() {
         chairCountdown = 3
         voice.say("Arms crossed. Three. Two. One. Go!", interrupt: true)
-        Task { @MainActor in
+        chairTask = Task { @MainActor in
             for n in stride(from: 2, through: 1, by: -1) {
                 try? await Task.sleep(for: .seconds(1))
+                guard !Task.isCancelled else { return }
                 chairCountdown = n
             }
             try? await Task.sleep(for: .seconds(1))
+            guard !Task.isCancelled else { return }
             avatar.play(id: FloorTest.chairStand.exerciseID)
             for remaining in stride(from: 30, through: 1, by: -1) {
                 chairCountdown = remaining
                 if remaining == 15 { voice.say("Fifteen seconds.") }
                 if remaining == 5 { voice.say("Five, four, three, two, one.") }
                 try? await Task.sleep(for: .seconds(1))
+                guard !Task.isCancelled else { return }
             }
             chairCountdown = nil
             chairDone = true

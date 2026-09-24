@@ -43,12 +43,28 @@ jobs:
             2>&1 | tee build.log | grep -E "error:|warning: .*FloorAge/|BUILD (SUCCEEDED|FAILED)" || true
           grep -q "BUILD SUCCEEDED" build.log
 
-      - name: Screenshots in the Simulator
+      - name: Pick a simulator
         run: |
           UDID=$(xcrun simctl list devices available -j \
             | jq -r '[.devices[][] | select(.name | test("^iPhone [0-9]+( Pro)?$"))] | last | .udid')
           echo "Simulator: $UDID"
-          xcrun simctl boot "$UDID"
+          echo "UDID=$UDID" >> "$GITHUB_ENV"
+
+      - name: Unit tests
+        run: |
+          set -o pipefail
+          xcodebuild test \
+            -project FloorAge.xcodeproj \
+            -scheme FloorAge \
+            -destination "platform=iOS Simulator,id=$UDID" \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO \
+            2>&1 | tee test.log | grep -E "error:|Test Case .* failed|Executed [0-9]+ tests|TEST (SUCCEEDED|FAILED)" || true
+          grep -q "TEST SUCCEEDED" test.log
+
+      - name: Screenshots in the Simulator
+        run: |
+          xcrun simctl boot "$UDID" 2>/dev/null || true
           xcrun simctl bootstatus "$UDID" -b
           xcrun simctl install "$UDID" build/Build/Products/Debug-iphonesimulator/FloorAge.app
           mkdir -p screenshots
@@ -75,4 +91,5 @@ jobs:
           path: |
             screenshots/
             build.log
+            test.log
           if-no-files-found: ignore

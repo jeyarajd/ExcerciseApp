@@ -7,8 +7,6 @@ name: TestFlight
 #   ASC_KEY_ID       App Store Connect API key ID
 #   ASC_ISSUER_ID    App Store Connect API issuer ID
 #   ASC_KEY_P8       Contents of the downloaded AuthKey_XXXX.p8 file
-# Optional repository variable:
-#   COACH_SERVER_URL Address of the deployed coach server, baked into the build
 on:
   workflow_dispatch:
 
@@ -54,7 +52,6 @@ jobs:
             DEVELOPMENT_TEAM="$TEAM_ID" \
             CODE_SIGN_STYLE=Automatic \
             CURRENT_PROJECT_VERSION="${{ github.run_number }}" \
-            COACH_SERVER_URL="${{ vars.COACH_SERVER_URL }}" \
             2>&1 | tee archive.log | grep -E "error:|ARCHIVE (SUCCEEDED|FAILED)" || true
           grep -q "ARCHIVE SUCCEEDED" archive.log
 

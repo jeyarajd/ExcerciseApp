@@ -274,6 +274,25 @@
         { "t": 7.0, "pose": "malasana" },
         { "t": 9.0, "pose": "stand" }
       ]
+    },
+    {
+      "id": "kegel",
+      "name": "Pelvic Floor Squeeze",
+      "kind": "reps",
+      "defaultReps": 10,
+      "repTime": 7.9,
+      "focus": ["pelvic floor"],
+      "intro": "Pelvic floor squeezes, also called Kegels. Sit tall. Squeeze the muscles you use to hold in urine and wind, lift them up and in, hold while I count, then relax fully.",
+      "cues": ["Keep breathing normally.", "Keep your belly, buttocks and thighs relaxed.", "Relax completely between squeezes."],
+      "safety": "Don't practise while you're actually passing urine. If you have pelvic pain, or leaking that doesn't get better, see a doctor or a pelvic health physiotherapist.",
+      "props": [{ "type": "chair", "position": [0, 0.425, -0.46] }],
+      "keyframes": [
+        { "t": 0, "pose": "chairSeated", "cue": "Squeeze and lift", "joints": { "spine": [5, 0, 0], "lShoulder": [-28, 0, 8], "rShoulder": [-28, 0, -8], "lElbow": [-50, 0, 0], "rElbow": [-50, 0, 0] } },
+        { "t": 1.0, "pose": "chairSeated", "joints": { "spine": [1, 0, 0], "chest": [-3, 0, 0], "neck": [2, 0, 0], "lShoulder": [-28, 0, 8], "rShoulder": [-28, 0, -8], "lElbow": [-50, 0, 0], "rElbow": [-50, 0, 0] } },
+        { "t": 3.6, "pose": "chairSeated", "joints": { "spine": [1, 0, 0], "chest": [-3, 0, 0], "neck": [2, 0, 0], "lShoulder": [-28, 0, 8], "rShoulder": [-28, 0, -8], "lElbow": [-50, 0, 0], "rElbow": [-50, 0, 0] } },
+        { "t": 4.0, "pose": "chairSeated", "cue": "And relax", "joints": { "spine": [5, 0, 0], "lShoulder": [-28, 0, 8], "rShoulder": [-28, 0, -8], "lElbow": [-50, 0, 0], "rElbow": [-50, 0, 0] } },
+        { "t": 8.0, "pose": "chairSeated", "joints": { "spine": [5, 0, 0], "lShoulder": [-28, 0, 8], "rShoulder": [-28, 0, -8], "lElbow": [-50, 0, 0], "rElbow": [-50, 0, 0] } }
+      ]
     }
   ]
 }

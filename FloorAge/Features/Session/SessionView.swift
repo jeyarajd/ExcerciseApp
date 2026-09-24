@@ -16,17 +16,34 @@ struct SessionView: View {
             ZStack(alignment: .topTrailing) {
                 AvatarView(controller: engine.avatar)
                     .ignoresSafeArea(edges: .horizontal)
+                    .overlay(alignment: .bottom) {
+                        if let cue = engine.cueText, engine.phase == .intro || engine.phase == .active {
+                            Text(cue)
+                                .font(.title2.weight(.bold))
+                                .foregroundStyle(.white)
+                                .padding(.horizontal, 22)
+                                .padding(.vertical, 12)
+                                .background(Color.accentColor.gradient, in: Capsule())
+                                .shadow(color: .black.opacity(0.15), radius: 8, y: 4)
+                                .padding(.bottom, 20)
+                                .transition(.scale.combined(with: .opacity))
+                                .id(cue)
+                        }
+                    }
+                    .animation(.spring(duration: 0.35), value: engine.cueText)
                 if engine.phase == .active || engine.phase == .rest {
                     counter.padding(16)
                 }
             }
             controls
         }
-        .background(Color(.systemBackground))
+        .background(AppBackground())
         .onAppear { engine.start() }
         .onDisappear { engine.end() }
         .onChange(of: engine.phase) { _, phase in
-            if phase == .done { model.completeSession() }
+            guard phase == .done else { return }
+            model.completeSession()
+            Task { await Reminders.refresh(trainedToday: true) }
         }
     }
 
@@ -81,7 +98,7 @@ struct SessionView: View {
         ZStack {
             Circle().stroke(Color.accentColor.opacity(0.2), lineWidth: 8)
             Circle()
-                .trim(from: 0, to: engine.phase == .rest ? engine.secondsLeft / 15 : engine.progress)
+                .trim(from: 0, to: engine.phase == .rest ? engine.secondsLeft / engine.restSeconds : engine.progress)
                 .stroke(Color.accentColor, style: StrokeStyle(lineWidth: 8, lineCap: .round))
                 .rotationEffect(.degrees(-90))
                 .animation(.linear(duration: 0.1), value: engine.progress)
@@ -115,6 +132,10 @@ struct SessionView: View {
                     Label(safety, systemImage: "exclamationmark.shield")
                         .font(.callout)
                         .foregroundStyle(.secondary)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                if let exercise = engine.current?.exercise {
+                    DemoVideoButton(exercise: exercise) { engine.stopTalking() }
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 HStack(spacing: 12) {

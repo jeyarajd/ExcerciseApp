@@ -8,6 +8,7 @@ struct OnboardingView: View {
     @State private var page = 0
     @State private var name = ""
     @State private var age = 40
+    @State private var gender: Gender?
     @State private var limitations: Set<Limitation> = []
 
     var body: some View {
@@ -24,6 +25,7 @@ struct OnboardingView: View {
             }
             .padding()
         }
+        .background(AppBackground())
         .onAppear {
             voice.say("Namaste! I'm your coach. Let's find out how old your body moves, and make it younger.")
         }
@@ -47,7 +49,9 @@ struct OnboardingView: View {
                 .textContentType(.givenName)
             Stepper("Age: \(age)", value: $age, in: 18...95)
                 .font(.headline)
-            Text("Your age is used to compare your Floor Age. It stays on this phone.")
+            GenderPicker(gender: $gender)
+                .onChange(of: gender) { _, value in CoachLook.preview(value) }
+            Text("Your age is used to compare your Floor Age, and your coach matches you. It all stays on this phone.")
                 .font(.footnote)
                 .foregroundStyle(.secondary)
             primaryButton("Next") {
@@ -83,7 +87,8 @@ struct OnboardingView: View {
                     model.profile = Profile(
                         name: name.trimmingCharacters(in: .whitespaces),
                         age: age,
-                        limitations: limitations
+                        limitations: limitations,
+                        gender: gender
                     )
                 }
             }
