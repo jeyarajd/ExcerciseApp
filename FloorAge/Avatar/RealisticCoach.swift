@@ -59,6 +59,9 @@ final class RealisticCoach: CoachBody {
     var scale: Float { legRatio }
     var headHeight: Float { 0.28 }
     private var ourRestPelvis: SIMD3<Float> = .zero
+    /// Where the "EyesClosed" weight sits in the model's blend shape weights, and its current value.
+    private var eyelids: (set: Int, weight: Int)?
+    private var shownClosed: Float = -1
 
     init?(look: CoachLook, rig: Rig) {
         solver = PoseSolver(rig: rig)
@@ -81,7 +84,14 @@ final class RealisticCoach: CoachBody {
         _ = prepare()
     }
 
-    func blink(_ closed: Float) {}
+    func blink(_ closed: Float) {
+        // Called every frame, so only touch the component when the eyelids actually move.
+        guard let eyelids, abs(closed - shownClosed) > 0.01,
+              var component = model.components[BlendShapeWeightsComponent.self] else { return }
+        shownClosed = closed
+        component.weightSet[eyelids.set].weights[eyelids.weight] = closed
+        model.components.set(component)
+    }
 
     // MARK: - Loading
 
@@ -190,7 +200,24 @@ final class RealisticCoach: CoachBody {
         let zero: [String: SIMD3<Float>] = [:]
         ourRestPelvis = solver.solvePelvis(zero, ground: .feet, seatZ: 0, rootZ: 0)
         legRatio = max(0.5, restPosition[pelvis].y / max(ourRestPelvis.y, 0.1))
+        prepareEyelids()
         return true
+    }
+
+    /// Finds the "EyesClosed" blend shape that tools/build_coach.py bakes from the MakeHuman
+    /// eyelid bones (older models without it just don't blink).
+    private func prepareEyelids() {
+        eyelids = nil
+        shownClosed = -1
+        guard let mesh = model.model?.mesh else { return }
+        let component = BlendShapeWeightsComponent(weightsMapping: BlendShapeWeightsMapping(meshResource: mesh))
+        for (set, data) in component.weightSet.enumerated() {
+            if let weight = data.weightNames.firstIndex(where: { $0.hasSuffix("EyesClosed") }) {
+                model.components.set(component)
+                eyelids = (set, weight)
+                return
+            }
+        }
     }
 
     // MARK: - Posing

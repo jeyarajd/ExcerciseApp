@@ -7,7 +7,9 @@ makehuman_system_assets, skins01, skins02, hair01, shirts01, pants01, shoes01
     blender -b --python tools/build_coach.py -- <output dir> [female|male]
 
 The app drives the exported skeleton (MPFB "game_engine" rig) from exercises.json poses; see
-FloorAge/Avatar/RealisticCoach.swift for the bone mapping. Blender's Z-up axes are kept in the file
+FloorAge/Avatar/RealisticCoach.swift for the bone mapping. That rig has no eyelids, so each coach is
+also built once on MPFB's "default" rig with its eyelid bones closed, and the result is exported as
+the "EyesClosed" blend shape, which RealisticCoach.blink drives. Blender's Z-up axes are kept in the file
 and converted to the app's Y-up on the skeleton root at runtime.
 """
 
@@ -48,6 +50,8 @@ COACHES = {
         "clothes": ["clothes/female_sportsuit01/female_sportsuit01.mhclo",
                     "clothes/joepal_crude_t-shirt_female/joepal_crude_t-shirt_female.mhclo", "clothes/shoes05/shoes05.mhclo"],
         "trim_above_waist": ["female_sportsuit01"],
+        # A slightly looser tee, so the tights' waistband never pokes through its hem when seated.
+        "inflate": {"joepal_crude_t-shirt_female": 0.008},
         "recolor": {"joepal_crude_t-shirt_female": ("tint", TEAL), "female_sportsuit01": ("blue_to", TEAL),
                     "shoes05": ("green_to", ORANGE)},
         "hair_color": (0.035, 0.025, 0.02),
@@ -65,7 +69,7 @@ COACHES = {
         "clothes": ["clothes/female_sportsuit01/female_sportsuit01.mhclo", "clothes/cortu_jeans_shorts/cortu_jeans_shorts.mhclo",
                     "clothes/elvs_crude_t-shirt_male/elvs_crude_t-shirt_male.mhclo", "clothes/shoes05/shoes05.mhclo"],
         "trim_above_waist": ["female_sportsuit01"],
-        "inflate": {"cortu_jeans_shorts": 0.012},
+        "inflate": {"cortu_jeans_shorts": 0.012, "elvs_crude_t-shirt_male": 0.008},
         "no_normal_map": ["cortu_jeans_shorts"],
         "recolor": {"elvs_crude_t-shirt_male": ("tint", TEAL), "cortu_jeans_shorts": ("charcoal", None),
                     "female_sportsuit01": ("blue_to", TEAL), "shoes05": ("green_to", ORANGE)},
@@ -100,13 +104,20 @@ def recolor_pixels(px, mode, color):
     return px
 
 
+# Waist height per clothing mesh, measured on the game_engine rig and reused on the "default" rig
+# (whose bones are named differently), so both builds trim exactly the same vertices.
+WAIST = {}
+
+
 def trim_above_waist(obj, armature):
     """Delete the part of a clothing mesh above the waist (keeps just the tights of the sports suit)."""
     import bmesh
-    thigh = armature.data.bones.get("thigh_l")
     spine = armature.data.bones.get("spine_01")
-    waist = (armature.matrix_world @ spine.head_local).z if spine else None
+    if spine:
+        WAIST[obj.name] = (armature.matrix_world @ spine.head_local).z
+    waist = WAIST.get(obj.name)
     if waist is None:
+        print("NOT TRIMMED", obj.name, "(no waist measured)")
         return
     waist -= 0.02
     bm = bmesh.new()
@@ -243,13 +254,19 @@ def tune_materials(mesh, spec):
                     mat.node_tree.links.remove(link)
 
 
-def build(name, spec):
+# Upper and lower eyelid bones of MPFB's "default" rig, and the X rotation (degrees) that closes
+# them: -22/+8 shuts the eyes with a clean lash line (further and the lashes crumple).
+EYELIDS = {"orbicularis03": -22, "orbicularis04": 8}
+
+
+def assemble(spec, rig):
+    """The coach as one skinned mesh: body, eyes, brows, lashes, hair and clothes on `rig`."""
     clear_scene()
     # Keep the helper and joint vertex groups: the rig uses them to place its bones.
     body = HumanService.create_human(mask_helpers=True, detailed_helpers=True, extra_vertex_groups=True,
                                      feet_on_ground=True, scale=0.1, macro_detail_dict=spec["macro"])
     TargetService.bake_targets(body)
-    HumanService.add_builtin_rig(body, "game_engine", import_weights=True)
+    HumanService.add_builtin_rig(body, rig, import_weights=True)
     HumanService.set_character_skin(find(spec["skin"]), body, skin_type="GAMEENGINE", material_instances=False)
     HumanService.add_mhclo_asset(find("eyes/high-poly/high-poly.mhclo"), body, asset_type="Eyes", subdiv_levels=0)
     for kind in ("eyebrows", "eyelashes"):
@@ -285,6 +302,40 @@ def build(name, spec):
         obj.select_set(True)
     bpy.context.view_layer.objects.active = body
     bpy.ops.object.join()
+    return body, armature
+
+
+def eyes_closed(spec):
+    """The coach's vertices with the eyelids shut, and at rest, from the "default" rig."""
+    body, armature = assemble(spec, "default")
+    rest = [v.co.copy() for v in body.data.vertices]
+    for bone, degrees in EYELIDS.items():
+        for side in ("L", "R"):
+            pose = armature.pose.bones[f"{bone}.{side}"]
+            pose.rotation_mode = "XYZ"
+            pose.rotation_euler = (np.radians(degrees), 0, 0)
+    bpy.context.view_layer.update()
+    evaluated = body.evaluated_get(bpy.context.evaluated_depsgraph_get())
+    closed = [v.co.copy() for v in evaluated.data.vertices]
+    return rest, closed
+
+
+def build(name, spec):
+    assemble(spec, "game_engine")  # measures the waist for trimming
+    rest, closed = eyes_closed(spec)
+    body, armature = assemble(spec, "game_engine")
+    # Same mesh on both rigs, so the closed eyelids carry over vertex for vertex.
+    ours = [v.co for v in body.data.vertices]
+    if len(ours) == len(rest) and max((a - b).length for a, b in zip(ours, rest)) < 1e-4:
+        body.shape_key_add(name="Basis")
+        key = body.shape_key_add(name="EyesClosed")
+        moved = 0
+        for i, co in enumerate(closed):
+            key.data[i].co = co
+            moved += (co - rest[i]).length > 1e-5
+        print("EYES CLOSED", moved, "verts move")
+    else:
+        print("EYES CLOSED skipped: the two builds differ", len(ours), len(rest))
     body.name = armature.name = f"coach_{name}"
     fix_materials(body, spec.get("recolor", {}))
     tune_materials(body, spec)
@@ -292,7 +343,7 @@ def build(name, spec):
     path = os.path.join(OUT, f"coach_{name}.usdz")
     bpy.ops.object.select_all(action="SELECT")
     options = dict(filepath=path, selected_objects_only=True, export_animation=False,
-                   export_armatures=True, export_materials=True, generate_preview_surface=True,
+                   export_armatures=True, export_shapekeys=True, export_materials=True, generate_preview_surface=True,
                    overwrite_textures=True, convert_orientation=False, evaluation_mode="RENDER")
     try:
         bpy.ops.wm.usd_export(export_textures_mode="NEW", **options)
