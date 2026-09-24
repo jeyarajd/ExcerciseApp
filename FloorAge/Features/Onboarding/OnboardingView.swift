@@ -8,6 +8,7 @@ struct OnboardingView: View {
     @State private var page = 0
     @State private var name = ""
     @State private var age = 40
+    @State private var gender: Gender?
     @State private var limitations: Set<Limitation> = []
 
     var body: some View {
@@ -24,17 +25,36 @@ struct OnboardingView: View {
             }
             .padding()
         }
+        .background(AppBackground())
+        .overlay(alignment: .topLeading) {
+            if model.canCancelNewMember {
+                Button("Cancel") { model.cancelNewMember() }
+                    .font(.headline)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 8)
+                    .background(.ultraThinMaterial, in: Capsule())
+                    .padding()
+            }
+        }
         .onAppear {
-            voice.say("Namaste! I'm your coach. Let's find out how old your body moves, and make it younger.")
+            voice.say(String(localized: "\(Region.greeting) I'm your coach. Let's find out how old your body moves, and make it younger."))
         }
     }
 
     private var welcome: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("How old does your body move?")
-                .font(.largeTitle.bold())
-            Text("Find your Floor Age with 4 simple tests, then train with a coach who shows every move and talks you through it.")
-                .foregroundStyle(.secondary)
+            if model.isOwner {
+                Text("How old does your body move?")
+                    .font(.display(.largeTitle))
+                Text("Find your Floor Age with 4 simple tests, then train with a coach who shows every move and talks you through it.")
+                    .foregroundStyle(.secondary)
+            } else {
+                Eyebrow("Family", feature: .plus)
+                Text("Add a family member")
+                    .font(.display(.largeTitle))
+                Text("They get their own Floor Age, plan and history on this iPhone. Hand them the phone, or fill it in together.")
+                    .foregroundStyle(.secondary)
+            }
             primaryButton("Get started") { page = 1 }
         }
     }
@@ -47,7 +67,9 @@ struct OnboardingView: View {
                 .textContentType(.givenName)
             Stepper("Age: \(age)", value: $age, in: 18...95)
                 .font(.headline)
-            Text("Your age is used to compare your Floor Age. It stays on this phone.")
+            GenderPicker(gender: $gender)
+                .onChange(of: gender) { _, value in CoachLook.preview(value) }
+            Text("Your age is used to compare your Floor Age, and your coach matches you. It all stays on this phone.")
                 .font(.footnote)
                 .foregroundStyle(.secondary)
             primaryButton("Next") {
@@ -83,14 +105,15 @@ struct OnboardingView: View {
                     model.profile = Profile(
                         name: name.trimmingCharacters(in: .whitespaces),
                         age: age,
-                        limitations: limitations
+                        limitations: limitations,
+                        gender: gender
                     )
                 }
             }
         }
     }
 
-    private func primaryButton(_ title: String, action: @escaping () -> Void) -> some View {
+    private func primaryButton(_ title: LocalizedStringKey, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             Text(title).frame(maxWidth: .infinity)
         }

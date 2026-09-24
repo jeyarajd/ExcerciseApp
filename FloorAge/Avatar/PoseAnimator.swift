@@ -125,6 +125,8 @@ struct ExerciseClip {
     let frames: [Frame]
     let props: [Prop]
     let solver: PoseSolver
+    /// Joint angle speed (degrees per second) at each keyframe, for smooth motion through keys.
+    let slopes: [[String: SIMD3<Float>]]
 
     var duration: Double { frames.last?.t ?? 0 }
 
@@ -150,9 +152,34 @@ struct ExerciseClip {
             }
             return Frame(t: kf.t, angles: angles, ground: ground, seatZ: kf.seatZ ?? 0, rootZ: kf.rootZ ?? 0)
         }
+        slopes = Self.slopes(for: frames)
         props = (exercise.props ?? []).map { prop in
             guard mirrored, prop.position.count == 3 else { return prop }
             return Prop(type: prop.type, position: [-prop.position[0], prop.position[1], prop.position[2]])
+        }
+    }
+
+    /// Monotone cubic slopes: motion flows through a keyframe when both sides move the same way,
+    /// and eases to a stop where it turns round or holds, so it never overshoots a pose. The first
+    /// and last keyframes ease in and out. With every slope zero this is plain smoothstep.
+    static func slopes(for frames: [Frame]) -> [[String: SIMD3<Float>]] {
+        let names = Set(frames.flatMap { $0.angles.keys })
+        return frames.indices.map { i in
+            guard i > 0, i < frames.count - 1 else { return [:] }
+            let h0 = Float(frames[i].t - frames[i - 1].t), h1 = Float(frames[i + 1].t - frames[i].t)
+            guard h0 > 0, h1 > 0 else { return [:] }
+            var slopes: [String: SIMD3<Float>] = [:]
+            for name in names {
+                let p0 = frames[i - 1].angles[name] ?? .zero, p1 = frames[i].angles[name] ?? .zero, p2 = frames[i + 1].angles[name] ?? .zero
+                let d0 = (p1 - p0) / h0, d1 = (p2 - p1) / h1
+                var m = SIMD3<Float>.zero
+                for k in 0..<3 where d0[k] * d1[k] > 0 {
+                    let w0 = 2 * h1 + h0, w1 = h1 + 2 * h0
+                    m[k] = (w0 + w1) / (w0 / d0[k] + w1 / d1[k])
+                }
+                slopes[name] = m
+            }
+            return slopes
         }
     }
 
@@ -167,22 +194,27 @@ struct ExerciseClip {
 
     /// Pose at time `t` (seconds), looping over the clip.
     func sample(at t: Double) -> Pose {
-        guard let first = frames.first else { return Pose(angles: [:], pelvis: .zero) }
+        guard !frames.isEmpty else { return Pose(angles: [:], pelvis: .zero) }
         let local = duration > 0 ? t.truncatingRemainder(dividingBy: duration) : 0
-        var a = first
-        var b = first
-        for (fa, fb) in zip(frames, frames.dropFirst()) where fa.t <= local && local <= fb.t {
-            a = fa
-            b = fb
+        var ia = 0
+        for i in 0..<(frames.count - 1) where frames[i].t <= local && local <= frames[i + 1].t {
+            ia = i
             break
         }
-        let span = b.t - a.t
-        let raw = span > 0 ? Float((local - a.t) / span) : 0
+        let ib = min(ia + 1, frames.count - 1)
+        let a = frames[ia], b = frames[ib]
+        let span = Float(b.t - a.t)
+        let raw = span > 0 ? Float(local - a.t) / span : 0
         let u = raw * raw * (3 - 2 * raw)
 
+        // Cubic Hermite: smoothstep between the two poses plus the keyframe slopes.
+        let s2 = raw * raw, s3 = s2 * raw
+        let h10 = (s3 - 2 * s2 + raw) * span, h11 = (s3 - s2) * span
         var angles: [String: SIMD3<Float>] = [:]
         for name in Set(a.angles.keys).union(b.angles.keys) {
-            angles[name] = simd_mix(a.angles[name] ?? .zero, b.angles[name] ?? .zero, SIMD3(repeating: u))
+            let pa = a.angles[name] ?? .zero, pb = b.angles[name] ?? .zero
+            let ma = slopes[ia][name] ?? .zero, mb = slopes[ib][name] ?? .zero
+            angles[name] = simd_mix(pa, pb, SIMD3(repeating: u)) + h10 * ma + h11 * mb
         }
         let pa = solver.solvePelvis(angles, ground: a.ground, seatZ: a.seatZ, rootZ: a.rootZ)
         let pb = solver.solvePelvis(angles, ground: b.ground, seatZ: b.seatZ, rootZ: b.rootZ)

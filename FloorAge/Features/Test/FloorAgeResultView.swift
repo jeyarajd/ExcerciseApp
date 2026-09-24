@@ -2,96 +2,120 @@ import SwiftUI
 
 struct FloorAgeResultView: View {
     let result: FloorAgeResult
+    /// The Floor Age from the check before this one, to celebrate a drop.
+    var previous: Int?
     var onDone: (() -> Void)?
 
-    @State private var shareImage: Image?
+    @State private var sharing = false
+
+    private var drop: Int? {
+        guard let previous, previous > result.floorAge else { return nil }
+        return previous - result.floorAge
+    }
 
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
+                if let drop {
+                    HStack(spacing: 14) {
+                        Image(systemName: "arrow.down.circle.fill").font(.system(size: 38))
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("Your Floor Age dropped").font(.caption.weight(.heavy)).tracking(1.4).textCase(.uppercase).opacity(0.9)
+                            Text(drop == 1 ? String(localized: "1 year younger") : String(localized: "\(drop) years younger")).font(.display(.title2))
+                            Text("From \(previous ?? 0) to \(result.floorAge). Your training is working.").font(.subheadline).opacity(0.9)
+                        }
+                        Spacer(minLength: 0)
+                    }
+                    .heroCard(.calories, symbol: "chart.line.downtrend.xyaxis")
+                }
                 FloorAgeCard(result: result)
-                VStack(alignment: .leading, spacing: 12) {
-                    Text("By area").font(.headline)
+                VStack(alignment: .leading, spacing: 14) {
+                    Text("By area").font(.display(.title3))
                     ForEach(FloorTest.allCases) { test in
                         AreaRow(test: test, result: result)
                     }
                 }
-                .padding()
-                .background(Color(.secondarySystemBackground), in: RoundedRectangle(cornerRadius: 16))
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .tintedCard(.floorAge)
 
                 if let weakest = result.weakest {
-                    Label("Your plan now focuses on \(weakest.area.lowercased()). Retest in about 4 weeks to see your Floor Age drop.",
-                          systemImage: "target")
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                    HStack(alignment: .top, spacing: 14) {
+                        FeatureBadge(feature: weakest.feature, symbol: "target", size: 42)
+                        VStack(alignment: .leading, spacing: 4) {
+                            Eyebrow("Focus", feature: weakest.feature)
+                            Text("Your plan now focuses on \(weakest.area.lowercased()). Retest in about 4 weeks to see your Floor Age drop.")
+                                .font(.callout)
+                        }
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .tintedCard(weakest.feature)
                 }
                 Text("Floor Age is a fitness estimate from simple movement tests, not a medical diagnosis.")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
 
-                if let shareImage {
-                    ShareLink(item: shareImage, preview: SharePreview("My Floor Age", image: shareImage)) {
-                        Label("Share my Floor Age", systemImage: "square.and.arrow.up")
-                            .frame(maxWidth: .infinity)
-                    }
-                    .buttonStyle(.bordered)
-                    .controlSize(.large)
+                Button { sharing = true } label: {
+                    Label("Share my Floor Age", systemImage: "square.and.arrow.up")
+                        .font(.headline)
+                        .foregroundStyle(Feature.floorAge.colors[1])
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 15)
+                        .background(Feature.floorAge.tint.opacity(0.14), in: Capsule())
                 }
+                .buttonStyle(.plain)
                 if let onDone {
                     Button {
                         onDone()
                     } label: {
-                        Text("Done").frame(maxWidth: .infinity)
+                        Text("Done")
                     }
-                    .buttonStyle(.borderedProminent)
-                    .controlSize(.large)
+                    .buttonStyle(GradientButtonStyle(feature: .floorAge))
                 }
             }
             .padding()
         }
-        .onAppear { renderShareImage() }
-    }
-
-    @MainActor
-    private func renderShareImage() {
-        let renderer = ImageRenderer(content: FloorAgeCard(result: result).frame(width: 360).padding(20).background(Color.white))
-        renderer.scale = 3
-        if let uiImage = renderer.uiImage {
-            shareImage = Image(uiImage: uiImage)
+        .background(AppBackground())
+        .overlay {
+            if drop != nil {
+                ConfettiView(colors: Feature.calories.colors + Feature.challenge.colors + [.white])
+                    .ignoresSafeArea()
+                    .allowsHitTesting(false)
+            }
         }
+        .sheet(isPresented: $sharing) { ShareCardView(result: result) }
     }
 }
 
-/// The big number. Also rendered to an image for sharing.
+/// The big number at the top of the result.
 struct FloorAgeCard: View {
     let result: FloorAgeResult
 
     var body: some View {
         let difference = result.floorAge - result.age
-        VStack(spacing: 8) {
+        VStack(spacing: 6) {
             Text("MY FLOOR AGE")
-                .font(.caption.weight(.bold))
-                .tracking(2)
-                .foregroundStyle(.white.opacity(0.85))
+                .font(.caption.weight(.heavy))
+                .tracking(3)
+                .opacity(0.9)
             Text("\(result.floorAge)")
-                .font(.system(size: 88, weight: .heavy, design: .rounded))
-                .foregroundStyle(.white)
-            Text(difference > 0 ? "\(difference) years older than my age (\(result.age))"
-                 : difference < 0 ? "\(-difference) years younger than my age (\(result.age))"
-                 : "Right on my age (\(result.age))")
-                .font(.headline)
-                .foregroundStyle(.white)
+                .font(.system(size: 108, weight: .heavy, design: .rounded))
+                .shadow(color: .black.opacity(0.15), radius: 10, y: 6)
+            Label(difference > 0 ? "\(difference) years older than my age (\(result.age))"
+                  : difference < 0 ? "\(-difference) years younger than my age (\(result.age))"
+                  : "Right on my age (\(result.age))",
+                  systemImage: difference > 0 ? "arrow.up.right" : difference < 0 ? "arrow.down.right" : "equal")
+                .font(.display(.headline))
+                .padding(.horizontal, 16)
+                .padding(.vertical, 8)
+                .background(.white.opacity(0.2), in: Capsule())
             Text("How old does your body move?")
-                .font(.footnote)
-                .foregroundStyle(.white.opacity(0.8))
-                .padding(.top, 4)
+                .font(.footnote.italic())
+                .opacity(0.85)
+                .padding(.top, 8)
         }
-        .padding(.vertical, 28)
         .frame(maxWidth: .infinity)
-        .background(
-            LinearGradient(colors: [Color(red: 0.95, green: 0.5, blue: 0.16), Color(red: 0.8, green: 0.25, blue: 0.2)],
-                           startPoint: .topLeading, endPoint: .bottomTrailing),
-            in: RoundedRectangle(cornerRadius: 24)
-        )
+        .padding(.vertical, 14)
+        .heroCard(.floorAge, padding: 20, cornerRadius: 30)
     }
 }
 
@@ -100,21 +124,26 @@ private struct AreaRow: View {
     let result: FloorAgeResult
 
     var body: some View {
-        HStack {
-            Image(systemName: test.symbol)
-                .frame(width: 28)
-                .foregroundStyle(Color.accentColor)
-            VStack(alignment: .leading) {
-                Text(test.area)
+        HStack(spacing: 12) {
+            FeatureBadge(feature: test.feature, symbol: test.symbol, size: 40)
+            VStack(alignment: .leading, spacing: 1) {
+                Text(test.area).font(.subheadline.weight(.semibold))
                 Text(test.title).font(.caption).foregroundStyle(.secondary)
             }
-            Spacer()
+            Spacer(minLength: 0)
             if let age = result.equivalentAge(test) {
+                let older = age > Double(result.age) + 2
                 Text("moves like \(Int(age.rounded()))")
-                    .font(.subheadline.weight(.semibold))
-                    .foregroundStyle(age > Double(result.age) + 2 ? Color.orange : Color.green)
+                    .font(.caption.weight(.bold))
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 5)
+                    .background(older ? Feature.steps.gradient : Feature.calories.gradient, in: Capsule())
             } else {
-                Text("skipped").font(.subheadline).foregroundStyle(.secondary)
+                Text("skipped").font(.caption.weight(.semibold)).foregroundStyle(.secondary)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 5)
+                    .background(Color.secondary.opacity(0.12), in: Capsule())
             }
         }
     }

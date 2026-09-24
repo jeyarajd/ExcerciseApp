@@ -1,0 +1,33 @@
+{
+  "identifier" : "4F1C2A7E",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "4.99",
+      "familyShareable" : true,
+      "internalID" : "6739200001",
+      "localizations" : [
+        {
+          "description" : "Training plan, food photos, sleep, pelvic floor and progress history.",
+          "displayName" : "Floor Age Plus",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.jeyaraj.floorage.plus",
+      "referenceName" : "Floor Age Plus",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_failTransactionsEnabled" : false
+  },
+  "subscriptionGroups" : [
+
+  ],
+  "version" : {
+    "major" : 4,
+    "minor" : 0
+  }
+}

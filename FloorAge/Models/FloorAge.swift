@@ -11,19 +11,19 @@ enum FloorTest: String, Codable, CaseIterable, Identifiable {
 
     var title: String {
         switch self {
-        case .sitRise: "Sit to Rise"
-        case .balance: "One-Leg Balance"
-        case .chairStand: "30-Second Chair Stand"
-        case .reach: "Toe Reach"
+        case .sitRise: String(localized: "Sit to Rise")
+        case .balance: String(localized: "One-Leg Balance")
+        case .chairStand: String(localized: "30-Second Chair Stand")
+        case .reach: String(localized: "Toe Reach")
         }
     }
 
     var area: String {
         switch self {
-        case .sitRise: "Getting up from the floor"
-        case .balance: "Balance"
-        case .chairStand: "Leg strength"
-        case .reach: "Flexibility"
+        case .sitRise: String(localized: "Getting up from the floor")
+        case .balance: String(localized: "Balance")
+        case .chairStand: String(localized: "Leg strength")
+        case .reach: String(localized: "Flexibility")
         }
     }
 
@@ -49,13 +49,13 @@ enum FloorTest: String, Codable, CaseIterable, Identifiable {
     var instructions: String {
         switch self {
         case .sitRise:
-            "Stand on a mat. Cross your legs and sit down on the floor, then stand back up. Try not to use your hands, knees or forearms. Afterwards, tell me how many times you needed support."
+            String(localized: "Stand on a mat. Cross your legs and sit down on the floor, then stand back up. Try not to use your hands, knees or forearms. Afterwards, tell me how many times you needed support.")
         case .balance:
-            "Stand near a wall. Lift one foot and balance for as long as you can, up to 45 seconds. Tap Stop the moment your foot touches down or you grab the wall."
+            String(localized: "Stand near a wall. Lift one foot and balance for as long as you can, up to 45 seconds. Tap Stop the moment your foot touches down or you grab the wall.")
         case .chairStand:
-            "Sit in the middle of a sturdy chair, arms crossed on your chest. When I say go, stand up fully and sit down as many times as you can in 30 seconds. Count out loud."
+            String(localized: "Sit in the middle of a sturdy chair, arms crossed on your chest. When I say go, stand up fully and sit down as many times as you can in 30 seconds. Count out loud.")
         case .reach:
-            "Stand with your feet together and knees straight but not locked. Slowly fold forward and reach down. Don't bounce. Pick how far you reached."
+            String(localized: "Stand with your feet together and knees straight but not locked. Slowly fold forward and reach down. Don't bounce. Pick how far you reached.")
         }
     }
 
@@ -110,12 +110,12 @@ enum ReachLevel: Int, CaseIterable, Identifiable {
 
     var label: String {
         switch self {
-        case .palmsFlat: "Palms flat on the floor"
-        case .fingersToFloor: "Fingertips touch the floor"
-        case .toes: "Touch my toes"
-        case .ankles: "Reach my ankles"
-        case .shins: "Reach my shins"
-        case .knees: "Only to my knees"
+        case .palmsFlat: String(localized: "Palms flat on the floor")
+        case .fingersToFloor: String(localized: "Fingertips touch the floor")
+        case .toes: String(localized: "Touch my toes")
+        case .ankles: String(localized: "Reach my ankles")
+        case .shins: String(localized: "Reach my shins")
+        case .knees: String(localized: "Only to my knees")
         }
     }
 }

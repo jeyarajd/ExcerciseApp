@@ -11,10 +11,10 @@ final class VoiceCoach: NSObject, ObservableObject, AVSpeechSynthesizerDelegate 
     }
 
     static let accents = [
-        Accent(code: "en-IN", label: "English (India)"),
-        Accent(code: "en-GB", label: "English (UK)"),
-        Accent(code: "en-US", label: "English (US)"),
-        Accent(code: "en-AU", label: "English (Australia)"),
+        Accent(code: String(localized: "en-IN"), label: String(localized: "English (India)")),
+        Accent(code: String(localized: "en-GB"), label: String(localized: "English (UK)")),
+        Accent(code: String(localized: "en-US"), label: String(localized: "English (US)")),
+        Accent(code: String(localized: "en-AU"), label: String(localized: "English (Australia)")),
     ]
 
     @Published private(set) var isSpeaking = false
@@ -32,7 +32,7 @@ final class VoiceCoach: NSObject, ObservableObject, AVSpeechSynthesizerDelegate 
 
     override init() {
         enabled = UserDefaults.standard.object(forKey: "voiceEnabled") as? Bool ?? true
-        accent = UserDefaults.standard.string(forKey: "voiceAccent") ?? "en-IN"
+        accent = UserDefaults.standard.string(forKey: "voiceAccent") ?? Region.defaultAccent
         super.init()
         synthesizer.delegate = self
         try? AVAudioSession.sharedInstance().setCategory(
@@ -56,10 +56,28 @@ final class VoiceCoach: NSObject, ObservableObject, AVSpeechSynthesizerDelegate 
         synthesizer.stopSpeaking(at: .immediate)
     }
 
+    /// The app's language: "en", "hi" or "es".
+    static var appLanguage: String { Bundle.main.preferredLocalizations.first ?? "en" }
+
+    /// The voice language: the chosen English accent, or Hindi or Spanish when the app is in them.
+    var voiceLanguage: String {
+        switch Self.appLanguage {
+        case "hi": return "hi-IN"
+        case "es":
+            let latinAmerica: Set<String> = ["MX", "AR", "CO", "CL", "PE", "VE", "EC", "GT", "CU", "BO", "DO", "HN", "PY", "SV", "NI", "CR", "PA", "UY", "PR"]
+            if Region.code == "US" { return "es-US" }
+            return latinAmerica.contains(Region.code) ? "es-MX" : "es-ES"
+        default: return accent
+        }
+    }
+
+    /// The best-quality voice for the language, preferring one that matches the coach on screen.
     private func bestVoice() -> AVSpeechSynthesisVoice? {
-        let matches = AVSpeechSynthesisVoice.speechVoices().filter { $0.language == accent }
-        return matches.max { $0.quality.rawValue < $1.quality.rawValue }
-            ?? AVSpeechSynthesisVoice(language: accent)
+        let wanted: AVSpeechSynthesisVoiceGender = CoachLook.current == .male ? .male : .female
+        let language = voiceLanguage
+        let matches = AVSpeechSynthesisVoice.speechVoices().filter { $0.language == language }
+        func rank(_ v: AVSpeechSynthesisVoice) -> Int { v.quality.rawValue * 2 + (v.gender == wanted ? 1 : 0) }
+        return matches.max { rank($0) < rank($1) } ?? AVSpeechSynthesisVoice(language: language)
     }
 
     // MARK: AVSpeechSynthesizerDelegate

@@ -4,11 +4,16 @@ options:
   bundleIdPrefix: com.jeyaraj
   deploymentTarget:
     iOS: "18.0"
+    watchOS: "11.0"
   createIntermediateGroups: true
+  # English is the default language; Hindi and Spanish come from the String Catalogs in Resources.
+  developmentLanguage: en
 settings:
   base:
     SWIFT_VERSION: "5.0"
-    MARKETING_VERSION: "0.1.0"
+    SWIFT_EMIT_LOC_STRINGS: YES
+    LOCALIZATION_PREFERS_STRING_CATALOGS: YES
+    MARKETING_VERSION: "1.0"
     CURRENT_PROJECT_VERSION: "1"
     DEVELOPMENT_TEAM: ""
     CODE_SIGN_STYLE: Automatic
@@ -18,6 +23,8 @@ targets:
     platform: iOS
     sources:
       - path: FloorAge
+      # The widgets' views, so the Debug demo screen can show them.
+      - path: FloorAgeWidgets/WidgetViews.swift
     info:
       path: FloorAge/Info.plist
       properties:
@@ -29,21 +36,114 @@ targets:
           - UIInterfaceOrientationPortrait
         UIRequiresFullScreen: true
         ITSAppUsesNonExemptEncryption: false
-        CoachServerURL: $(COACH_SERVER_URL)
+        NSMotionUsageDescription: Floor Age counts your daily steps on this iPhone. Your steps never leave your phone.
+        NSCameraUsageDescription: Point the camera at your meal for calorie suggestions, or let it follow your movements to score the Floor Age check. Everything is checked on your iPhone and never saved or sent.
+        LSApplicationQueriesSchemes: [music, spotify, youtubemusic, jiosaavn, gaana]
+        # floorage://today and floorage://steps, opened from the widgets.
+        CFBundleURLTypes:
+          - CFBundleURLName: com.jeyaraj.floorage
+            CFBundleURLSchemes: [floorage]
+        NSHealthShareUsageDescription: Floor Age reads your sleep and, if you choose, your steps from Apple Health to show them in the app. It never sends your Health data anywhere.
+        NSHealthUpdateUsageDescription: Floor Age saves your finished sessions to Apple Health as workouts, if you switch this on, so they count towards your Activity rings.
+    entitlements:
+      path: FloorAge/FloorAge.entitlements
+      properties:
+        com.apple.developer.healthkit: true
+        com.apple.developer.healthkit.access: []
+        # Shared with the widgets (the summary they show).
+        com.apple.security.application-groups: [group.com.jeyaraj.floorage]
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.jeyaraj.floorage
         TARGETED_DEVICE_FAMILY: "1"
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
-        COACH_SERVER_URL: ""
         ENABLE_PREVIEWS: YES
+    dependencies:
+      - target: FloorAgeWidgets
+      - target: FloorAgeWatch
+  # Home Screen and Lock Screen widgets.
+  FloorAgeWidgets:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: FloorAgeWidgets
+      - path: FloorAge/Models/SharedSnapshot.swift
+      - path: FloorAge/App/Theme.swift
+      - path: FloorAge/Resources/Localizable.xcstrings
+    info:
+      path: FloorAgeWidgets/Info.plist
+      properties:
+        CFBundleDisplayName: Floor Age
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        NSMotionUsageDescription: The Floor Age widgets show today's steps from this iPhone. Your steps never leave your phone.
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+    entitlements:
+      path: FloorAgeWidgets/FloorAgeWidgets.entitlements
+      properties:
+        com.apple.security.application-groups: [group.com.jeyaraj.floorage]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jeyaraj.floorage.widgets
+        TARGETED_DEVICE_FAMILY: "1"
+        SKIP_INSTALL: YES
+  # Apple Watch companion: summary, wrist tests and the session remote.
+  FloorAgeWatch:
+    type: application
+    platform: watchOS
+    sources:
+      - path: FloorAgeWatch
+      - path: FloorAge/Models/SharedSnapshot.swift
+      - path: FloorAge/Models/WatchMessages.swift
+      - path: FloorAge/Models/WristMotion.swift
+      - path: FloorAge/Resources/Localizable.xcstrings
+    info:
+      path: FloorAgeWatch/Info.plist
+      properties:
+        CFBundleDisplayName: Floor Age
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        WKApplication: true
+        WKCompanionAppBundleIdentifier: com.jeyaraj.floorage
+        # Keeps counting chair stands with the wrist lowered (arms crossed).
+        WKBackgroundModes: [physical-therapy]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jeyaraj.floorage.watchkitapp
+        TARGETED_DEVICE_FAMILY: "4"
+        SKIP_INSTALL: YES
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        # Simulator builds skip the icon: compiling it needs a watchOS simulator runtime, which
+        # CI and shared Macs may not have. Device and TestFlight builds include it.
+        "EXCLUDED_SOURCE_FILE_NAMES[sdk=watchsimulator*]": Assets.xcassets
+        "ASSETCATALOG_COMPILER_APPICON_NAME[sdk=watchsimulator*]": ""
+  FloorAgeTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: FloorAgeTests
+    dependencies:
+      - target: FloorAge
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_BUNDLE_IDENTIFIER: com.jeyaraj.floorage.tests
+        TARGETED_DEVICE_FAMILY: "1"
 schemes:
   FloorAge:
     build:
       targets:
         FloorAge: all
+        FloorAgeTests: [test]
     run:
       config: Debug
+      # Test the Floor Age Plus purchase in Xcode without the App Store or real money.
+      storeKitConfiguration: FloorAge.storekit
+    test:
+      config: Debug
+      targets:
+        - FloorAgeTests
     archive:
       config: Release

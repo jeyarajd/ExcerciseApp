@@ -6,14 +6,16 @@ struct ExerciseLibrary: Decodable {
     let version: Int
     let rig: Rig
     let poses: [String: [String: [Double]]]
-    let exercises: [Exercise]
+    private(set) var exercises: [Exercise]
 
     static let shared: ExerciseLibrary = {
         guard let url = Bundle.main.url(forResource: "exercises", withExtension: "json") else {
             fatalError("exercises.json missing from the app bundle")
         }
         do {
-            return try JSONDecoder().decode(ExerciseLibrary.self, from: Data(contentsOf: url))
+            var library = try JSONDecoder().decode(ExerciseLibrary.self, from: Data(contentsOf: url))
+            library.exercises = library.exercises.map { $0.localized() }
+            return library
         } catch {
             fatalError("exercises.json is invalid: \(error)")
         }
@@ -70,6 +72,19 @@ struct Exercise: Decodable, Identifiable, Hashable {
     let keyframes: [Keyframe]
 
     static func == (lhs: Exercise, rhs: Exercise) -> Bool { lhs.id == rhs.id }
+
+    /// Name, instructions, cues and safety note in the person's language, from the "Exercises"
+    /// string table (keys like "squat.intro", "squat.cue.0"); English from exercises.json otherwise.
+    func localized(bundle: Bundle = .main) -> Exercise {
+        func text(_ key: String, _ english: String) -> String {
+            bundle.localizedString(forKey: "\(id).\(key)", value: english, table: "Exercises")
+        }
+        return Exercise(id: id, name: text("name", name), kind: kind, defaultReps: defaultReps, defaultSeconds: defaultSeconds,
+                        repTime: repTime, mirrorHalfway: mirrorHalfway, focus: focus, intro: text("intro", intro),
+                        cues: cues.enumerated().map { text("cue.\($0.offset)", $0.element) },
+                        safety: safety.map { text("safety", $0) }, props: props,
+                        keyframes: keyframes.map { $0.localized(exercise: id, bundle: bundle) })
+    }
     func hash(into hasher: inout Hasher) { hasher.combine(id) }
 }
 
@@ -84,6 +99,15 @@ struct Keyframe: Decodable {
     let ground: Ground?
     let seatZ: Float?
     let rootZ: Float?
+    /// Said and shown when the animation reaches this keyframe, e.g. "Squeeze and lift".
+    let cue: String?
+
+    /// The cue in the person's language (key "kegel.Squeeze and lift" in the "Exercises" table).
+    func localized(exercise: String, bundle: Bundle) -> Keyframe {
+        guard let cue else { return self }
+        return Keyframe(t: t, pose: pose, joints: joints, ground: ground, seatZ: seatZ, rootZ: rootZ,
+                        cue: bundle.localizedString(forKey: "\(exercise).\(cue)", value: cue, table: "Exercises"))
+    }
 }
 
 struct Prop: Decodable, Hashable {

@@ -1,0 +1,150 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "CFBundleDisplayName" : {
+      "comment" : "Bundle display name",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Floor Age"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Floor Age"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Floor Age"
+          }
+        }
+      }
+    },
+    "CFBundleName" : {
+      "comment" : "Bundle name",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "FloorAge"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "FloorAge"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "FloorAge"
+          }
+        }
+      }
+    },
+    "NSCameraUsageDescription" : {
+      "comment" : "Privacy - Camera Usage Description",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Point the camera at your meal for calorie suggestions, or let it follow your movements to score the Floor Age check. Everything is checked on your iPhone and never saved or sent."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apunta la cámara a tu comida para recibir sugerencias de calorías, o deja que siga tus movimientos para puntuar la prueba Floor Age. Todo se analiza en tu iPhone y nunca se guarda ni se envía."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कैलोरी के सुझाव के लिए कैमरा अपने खाने की ओर करें, या Floor Age चेक में कैमरे को अपनी हरकतें गिनने दें। सब कुछ आपके iPhone पर ही जांचा जाता है, और कभी सेव नहीं होता, न कहीं भेजा जाता है।"
+          }
+        }
+      }
+    },
+    "NSHealthShareUsageDescription" : {
+      "comment" : "Privacy - Health Share Usage Description",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Floor Age reads your sleep and, if you choose, your steps from Apple Health to show them in the app. It never sends your Health data anywhere."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Floor Age lee tu sueño y, si lo eliges, tus pasos de Apple Health para mostrarlos en la app. Nunca envía tus datos de Salud a ningún sitio."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Floor Age ऐप में दिखाने के लिए Apple Health से आपकी नींद और, अगर आप चाहें तो, आपके कदम पढ़ता है। यह आपका Health डेटा कभी कहीं नहीं भेजता।"
+          }
+        }
+      }
+    },
+    "NSMotionUsageDescription" : {
+      "comment" : "Privacy - Motion Usage Description",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Floor Age counts your daily steps on this iPhone. Your steps never leave your phone."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Floor Age cuenta tus pasos diarios en este iPhone. Tus pasos nunca salen de tu teléfono."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Floor Age इस iPhone पर आपके रोज़ के कदम गिनता है। आपके कदमों का डेटा कभी आपके फ़ोन से बाहर नहीं जाता।"
+          }
+        }
+      }
+    },
+    "NSHealthUpdateUsageDescription" : {
+      "comment" : "Privacy - Health Update Usage Description",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Floor Age saves your finished sessions to Apple Health as workouts, if you switch this on, so they count towards your Activity rings."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अगर आप यह चालू करते हैं, तो Floor Age आपके पूरे हुए सेशन Apple Health में वर्कआउट के रूप में सेव करता है, ताकि वे आपकी Activity रिंग्स में गिने जाएं।"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Si lo activas, Floor Age guarda tus sesiones terminadas en Apple Health como entrenamientos, para que cuenten en tus anillos de Actividad."
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.2"
+}

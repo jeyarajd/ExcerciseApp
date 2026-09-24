@@ -2,16 +2,15 @@
 *.xcodeproj/
 *.xcworkspace/
 FloorAge/Info.plist
+FloorAge/FloorAge.entitlements
+FloorAgeWidgets/Info.plist
+FloorAgeWidgets/FloorAgeWidgets.entitlements
+FloorAgeWatch/Info.plist
 build/
 DerivedData/
 xcuserdata/
 *.xcarchive
 ExportOptions.plist
-
-# Coach server
-server/node_modules/
-server/dist/
-server/.env
 
 # Tools output
 tools/out/

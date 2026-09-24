@@ -4,12 +4,26 @@ import SwiftUI
 struct HistoryView: View {
     @EnvironmentObject private var model: AppModel
     @EnvironmentObject private var voice: VoiceCoach
+    @EnvironmentObject private var store: Store
     @State private var showingTest = false
+
+    /// Tight around the Floor Ages and the person's age, so real progress is visible.
+    private var chartRange: ClosedRange<Int> {
+        let values = model.results.map(\.floorAge) + [model.profile?.age].compactMap { $0 }
+        let low = (values.min() ?? 20) - 5, high = (values.max() ?? 80) + 5
+        return max(0, low / 5 * 5)...((high + 4) / 5 * 5)
+    }
 
     var body: some View {
         NavigationStack {
             List {
-                if model.results.count >= 2 {
+                if model.results.count >= 2, !store.hasPlus {
+                    Section {
+                        PlusLockedCard(feature: .history)
+                            .listRowBackground(Color.clear)
+                            .listRowInsets(EdgeInsets(top: 6, leading: 0, bottom: 6, trailing: 0))
+                    }
+                } else if model.results.count >= 2 {
                     Section("Floor Age over time") {
                         Chart {
                             ForEach(model.results) { result in
@@ -25,6 +39,7 @@ struct HistoryView: View {
                                     }
                             }
                         }
+                        .chartYScale(domain: chartRange)
                         .frame(height: 200)
                     }
                 }
@@ -40,7 +55,8 @@ struct HistoryView: View {
 
                 if !model.results.isEmpty {
                     Section("Checks") {
-                        ForEach(model.results.reversed()) { result in
+                        // Without Plus, only the latest check is kept on view.
+                        ForEach(Array(model.results.reversed().prefix(store.hasPlus ? .max : 1))) { result in
                             NavigationLink {
                                 FloorAgeResultView(result: result)
                                     .navigationTitle(result.date.formatted(date: .abbreviated, time: .omitted))
@@ -60,6 +76,7 @@ struct HistoryView: View {
                     LabeledContent("Last 7 days", value: "\(model.lastSevenDays.filter { $0 }.count)")
                 }
             }
+            .appBackground()
             .navigationTitle("Progress")
             .fullScreenCover(isPresented: $showingTest) {
                 FloorAgeTestView()

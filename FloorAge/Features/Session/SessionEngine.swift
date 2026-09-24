@@ -16,18 +16,25 @@ final class SessionEngine: ObservableObject {
     @Published private(set) var secondsLeft: Double = 0
     @Published private(set) var isPaused = false
     @Published private(set) var mirrored = false
+    /// The current timed prompt for exercises with keyframe cues ("Squeeze and lift").
+    @Published private(set) var cueText: String?
 
     private let voice: VoiceCoach
     private var timer: Timer?
+    /// Set when the person leaves early. Only reaching the end marks the day as trained.
+    private var stopped = false
     private var lastCueAt: Double = 0
     private var cueIndex = 0
-    private let restSeconds: Double = 15
+    let restSeconds: Double = 15
 
     init(items: [PlanItem], voice: VoiceCoach) {
         self.items = items
         self.voice = voice
         avatar.onRep = { [weak self] in
             DispatchQueue.main.async { self?.handleRep() }
+        }
+        avatar.onCue = { [weak self] cue in
+            DispatchQueue.main.async { self?.handleCue(cue) }
         }
     }
 
@@ -56,20 +63,21 @@ final class SessionEngine: ObservableObject {
         guard let item = current else { return }
         phase = .active
         repsDone = 0
+        cueText = nil
         cueIndex = 0
         lastCueAt = 0
         mirrored = false
         secondsLeft = Double(item.seconds ?? 0)
         avatar.play(item.exercise)
         avatar.isPlaying = true
-        voice.say("Ready. Go!", interrupt: true)
+        voice.say(String(localized: "Ready. Go!"), interrupt: true)
         startTimer()
     }
 
     func togglePause() {
         isPaused.toggle()
         avatar.isPlaying = !isPaused
-        voice.say(isPaused ? "Paused." : "Let's continue.", interrupt: true)
+        voice.say(isPaused ? String(localized: "Paused.") : String(localized: "Let's continue."), interrupt: true)
     }
 
     /// During rest the next exercise is already current, so skipping rest just starts its intro.
@@ -82,10 +90,17 @@ final class SessionEngine: ObservableObject {
         }
     }
 
+    /// Stops everything without completing the session (the close button).
     func end() {
+        stopped = true
         timer?.invalidate()
+        avatar.isPlaying = false
         voice.stop()
-        phase = .done
+    }
+
+    /// Quiets the coach, e.g. while a demo video plays.
+    func stopTalking() {
+        voice.stop()
     }
 
     func setSpeed(_ speed: Double) {
@@ -96,10 +111,11 @@ final class SessionEngine: ObservableObject {
         guard let item = current else { return finish() }
         phase = .intro
         timer?.invalidate()
+        cueText = nil
         avatar.play(item.exercise)
         avatar.isPlaying = true
-        let amount = item.reps.map { "\($0) reps." } ?? "\(item.seconds ?? 0) seconds."
-        voice.say("\(item.exercise.intro) \(amount)", interrupt: true)
+        let amount = item.reps.map { String(localized: "\($0) reps.") } ?? String(localized: "\(item.seconds ?? 0) seconds.")
+        voice.say(String(localized: "\(item.exercise.intro) \(amount)"), interrupt: true)
     }
 
     private func advance() {
@@ -116,9 +132,10 @@ final class SessionEngine: ObservableObject {
     private func startRest() {
         phase = .rest
         secondsLeft = restSeconds
+        cueText = nil
         if let item = current {
             avatar.play(item.exercise)
-            voice.say("Nice work. Rest. Next up, \(item.exercise.name).", interrupt: true)
+            voice.say(String(localized: "Nice work. Rest. Next up, \(item.exercise.name)."), interrupt: true)
         }
         startTimer()
     }
@@ -127,7 +144,8 @@ final class SessionEngine: ObservableObject {
         timer?.invalidate()
         phase = .done
         avatar.play(id: "idle")
-        voice.say("That's the session done. Great job showing up today!", interrupt: true)
+        cueText = nil
+        voice.say(String(localized: "That's the session done. Great job showing up today!"), interrupt: true)
     }
 
     // MARK: - Ticking
@@ -140,7 +158,7 @@ final class SessionEngine: ObservableObject {
     }
 
     private func tick(_ dt: Double) {
-        guard !isPaused, let item = current else { return }
+        guard !isPaused, !stopped, let item = current else { return }
         switch phase {
         case .rest:
             secondsLeft -= dt
@@ -153,17 +171,17 @@ final class SessionEngine: ObservableObject {
             if item.exercise.mirrorHalfway == true, !mirrored, secondsLeft <= total / 2 {
                 mirrored = true
                 avatar.play(item.exercise, mirrored: true)
-                voice.say("Switch sides.", interrupt: true)
+                voice.say(String(localized: "Switch sides."), interrupt: true)
             } else if before > 10, secondsLeft <= 10, total > 20 {
-                voice.say("Ten seconds left.")
+                voice.say(String(localized: "Ten seconds left."))
             } else if Int(before.rounded(.up)) != Int(secondsLeft.rounded(.up)), (1...3).contains(Int(secondsLeft.rounded(.up))) {
-                voice.say("\(Int(secondsLeft.rounded(.up)))", interrupt: true)
+                voice.say(String(localized: "\(Int(secondsLeft.rounded(.up)))"), interrupt: true)
             } else if elapsed - lastCueAt >= 9, secondsLeft > 12 {
                 sayNextCue(item)
                 lastCueAt = elapsed
             }
             if secondsLeft <= 0 {
-                voice.say("And rest.", interrupt: true)
+                voice.say(String(localized: "And rest."), interrupt: true)
                 advance()
             }
         default:
@@ -172,25 +190,34 @@ final class SessionEngine: ObservableObject {
     }
 
     private func handleRep() {
-        guard phase == .active, !isPaused, let item = current, let target = item.reps else { return }
+        guard phase == .active, !isPaused, !stopped, let item = current, let target = item.reps else { return }
         repsDone += 1
         if repsDone >= target {
-            voice.say("\(repsDone). Done!", interrupt: true)
+            voice.say(String(localized: "\(repsDone). Done!"), interrupt: true)
             advance()
             return
         }
         if item.exercise.mirrorHalfway == true, !mirrored, repsDone == target / 2 {
             mirrored = true
             avatar.play(item.exercise, mirrored: true)
-            voice.say("\(repsDone). Switch sides.", interrupt: true)
+            voice.say(String(localized: "\(repsDone). Switch sides."), interrupt: true)
             return
         }
-        voice.say("\(repsDone)", interrupt: true)
+        voice.say(String(localized: "\(repsDone)"), interrupt: true)
+        let timedCues = item.exercise.keyframes.contains { $0.cue != nil }
         if target - repsDone == 2 {
-            voice.say("Two more!")
-        } else if repsDone % 4 == 2 {
+            voice.say(String(localized: "Two more!"))
+        } else if repsDone % 4 == 2, !timedCues {
             sayNextCue(item)
         }
+    }
+
+    /// Keyframe cues show on screen whenever the coach plays; they're spoken during the exercise.
+    private func handleCue(_ cue: String) {
+        guard !stopped, phase == .intro || phase == .active else { return }
+        cueText = cue
+        guard phase == .active, !isPaused else { return }
+        voice.say(cue)
     }
 
     private func sayNextCue(_ item: PlanItem) {
