@@ -3,6 +3,9 @@
 *.xcworkspace/
 FloorAge/Info.plist
 FloorAge/FloorAge.entitlements
+FloorAgeWidgets/Info.plist
+FloorAgeWidgets/FloorAgeWidgets.entitlements
+FloorAgeWatch/Info.plist
 build/
 DerivedData/
 xcuserdata/

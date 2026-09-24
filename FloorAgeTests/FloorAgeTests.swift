@@ -896,3 +896,123 @@ final class PoseMirrorTests: XCTestCase {
         XCTAssertLessThan(thigh.act(SIMD3(0, -1, 0)).y, -0.9)
     }
 }
+
+final class ChallengeTests: XCTestCase {
+    private let cal = Calendar.current
+    private func day(_ offset: Int, from start: Date) -> Date { cal.date(byAdding: .day, value: offset, to: start)! }
+
+    func testCountsOnlyDaysInsideTheThirty() {
+        let start = cal.startOfDay(for: Date(timeIntervalSince1970: 1_780_000_000))
+        let trained = Set([-1, 0, 1, 2, 5, 29, 30].map { day($0, from: start) })
+        let challenge = Challenge(start: start, trainedDays: trained)
+        XCTAssertEqual(challenge.completed, 5, "the day before and day 31 don't count")
+        XCTAssertEqual(challenge.earned, [.three])
+        XCTAssertEqual(challenge.nextBadge, .seven)
+        XCTAssertEqual(challenge.dayNumber(on: day(9, from: start)), 10)
+        XCTAssertEqual(challenge.dayNumber(on: day(45, from: start)), 30)
+        XCTAssertFalse(challenge.isOver(on: day(29, from: start)))
+        XCTAssertTrue(challenge.isOver(on: day(30, from: start)))
+    }
+
+    func testSessionsAndPlanDaysEarnBadgesOnce() throws {
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString + ".json")
+        defer { try? FileManager.default.removeItem(at: url) }
+        let model = AppModel(fileURL: url)
+        let start = cal.date(byAdding: .day, value: -5, to: Date())!
+        model.startChallenge(on: start)
+        model.completeSession(on: day(0, from: start))
+        model.setPlanDay(day(1, from: start), done: true)
+        XCTAssertNil(model.newBadge)
+        model.completeSession(on: day(2, from: start))
+        XCTAssertEqual(model.newBadge, .three)
+        model.newBadge = nil
+        model.completeSession(on: day(2, from: start))  // same day again
+        XCTAssertNil(model.newBadge)
+        XCTAssertEqual(AppModel(fileURL: url).challenge?.completed, 3, "the challenge is saved")
+    }
+
+    func testRetestIsFourWeeksAfterTheLastCheck() {
+        let check = cal.date(from: DateComponents(year: 2026, month: 3, day: 1, hour: 10))!
+        XCTAssertFalse(Retest.isDue(lastCheck: check, on: cal.date(byAdding: .day, value: 27, to: check)!))
+        XCTAssertTrue(Retest.isDue(lastCheck: check, on: cal.date(byAdding: .day, value: 28, to: check)!))
+        let reminder = Reminders.retestDate(lastCheck: check, minuteOfDay: 18 * 60, now: check)
+        XCTAssertEqual(cal.dateComponents([.month, .day, .hour], from: reminder), DateComponents(month: 3, day: 29, hour: 18))
+        // Overdue: the next evening instead.
+        let late = cal.date(from: DateComponents(year: 2026, month: 5, day: 10, hour: 19))!
+        let next = Reminders.retestDate(lastCheck: check, minuteOfDay: 18 * 60, now: late)
+        XCTAssertEqual(cal.dateComponents([.month, .day, .hour], from: next), DateComponents(month: 5, day: 11, hour: 18))
+    }
+}
+
+final class WristRepCounterTests: XCTestCase {
+    /// Vertical acceleration (g) for moving the wrist `height` metres up (or down) smoothly in `duration` s.
+    private func move(_ height: Double, over duration: Double, rate: Double = 50) -> [Double] {
+        let n = Int(duration * rate)
+        return (0..<n).map { i in
+            let t = Double(i) / rate
+            return height / 2 * pow(.pi / duration, 2) * cos(.pi * t / duration) / 9.81
+        }
+    }
+
+    private func hold(_ seconds: Double, rate: Double = 50) -> [Double] { Array(repeating: 0, count: Int(seconds * rate)) }
+
+    private func count(_ samples: [Double], noise: Double = 0.015) -> Int {
+        var counter = WristRepCounter()
+        var generator = SystemRandomNumberGenerator()
+        for (i, a) in samples.enumerated() {
+            _ = counter.add(verticalAcceleration: a + Double.random(in: -noise...noise, using: &generator), at: Double(i) / 50)
+        }
+        return counter.count
+    }
+
+    func testCountsEachStand() {
+        var samples = hold(0.5)
+        for _ in 0..<8 { samples += move(0.4, over: 0.8) + hold(0.3) + move(-0.4, over: 0.9) + hold(0.4) }
+        XCTAssertEqual(count(samples), 8)
+    }
+
+    func testFastStandsStillCount() {
+        var samples = hold(0.3)
+        for _ in 0..<12 { samples += move(0.4, over: 0.6) + move(-0.4, over: 0.6) + hold(0.1) }
+        XCTAssertEqual(count(samples), 12)
+    }
+
+    func testSittingDownAndFidgetingDontCount() {
+        let samples = hold(0.5) + move(-0.4, over: 0.9) + hold(1) + move(0.03, over: 0.4) + move(-0.03, over: 0.4) + hold(1)
+        XCTAssertEqual(count(samples), 0)
+    }
+}
+
+final class Tier2Tests: XCTestCase {
+    func testSnapshotRollsForwardToALaterDay() {
+        var snapshot = FloorAgeSnapshot.sample
+        snapshot.updated = Calendar.current.date(byAdding: .day, value: -2, to: Date())!
+        snapshot.week = [true, false, true, true, false, true, true]
+        let today = snapshot.rolledForward(to: Date())
+        XCTAssertEqual(today.week, [true, true, false, true, true, false, false])
+        XCTAssertEqual(today.stepsToday, 0)
+        XCTAssertFalse(today.trainedToday)
+        XCTAssertEqual(today.challengeDay, 14)
+        XCTAssertEqual(FloorAgeSnapshot.sample.rolledForward(to: Date()), FloorAgeSnapshot.sample.rolledForward(to: Date()))
+    }
+
+    func testSnapshotSavesAndLoads() throws {
+        let defaults = try XCTUnwrap(UserDefaults(suiteName: "floorage-tests-\(UUID().uuidString)"))
+        FloorAgeSnapshot.sample.save(to: defaults)
+        XCTAssertEqual(FloorAgeSnapshot.load(from: defaults)?.floorAge, 56)
+    }
+
+    func testWorkoutEnergyFromMETs() {
+        // 3.5 MET × 70 kg × 10 minutes ≈ 41 kcal.
+        XCTAssertEqual(Calories.burned(met: Calories.MET.session, weightKg: 70, minutes: 10), 41)
+        let run = TrainingPlan.Interval(kind: .run, seconds: 60)
+        XCTAssertGreaterThan(run.met, TrainingPlan.Interval(kind: .walk, seconds: 60).met)
+    }
+
+    func testWatchMessagesRoundTrip() {
+        let status = SessionStatus(exercise: "Squat", detail: "6/10 reps", progress: 0.6, step: "2 of 5", isPaused: false, isResting: false, isDone: false)
+        XCTAssertEqual(SessionStatus.fromWatch(status.watchData), status)
+        let result = WatchTestResult(test: .chairStand, value: 14)
+        XCTAssertEqual(WatchTestResult.fromWatch(result.watchData)?.value, 14)
+    }
+}

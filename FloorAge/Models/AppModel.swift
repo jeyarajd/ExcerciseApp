@@ -78,6 +78,10 @@ final class AppModel: ObservableObject {
     /// Average daily steps when the plan started; step goals build from here.
     @Published private(set) var planBaseSteps: Int?
     @Published private(set) var sleepLog: [SleepEntry] = []
+    /// When the 30-day challenge started, if one is running (or finished and not cleared).
+    @Published private(set) var challengeStart: Date?
+    /// A challenge badge just earned, for the app to celebrate once. Not saved.
+    @Published var newBadge: Challenge.Badge?
 
     private struct Stored: Codable {
         var profile: Profile?
@@ -91,6 +95,7 @@ final class AppModel: ObservableObject {
         var planDone: [Date]?
         var planBaseSteps: Int?
         var sleepLog: [SleepEntry]?
+        var challengeStart: Date?
     }
 
     /// Everyone who uses this iPhone. The first is the phone's owner, whose data lives in the
@@ -130,9 +135,32 @@ final class AppModel: ObservableObject {
     func completeSession(on date: Date = Date()) {
         let day = Calendar.current.startOfDay(for: date)
         if !sessionDays.contains(day) {
+            let before = challenge?.earned ?? []
             sessionDays.append(day)
             save()
+            noticeNewBadge(since: before)
         }
+    }
+
+    // MARK: - 30-day challenge
+
+    var challenge: Challenge? {
+        challengeStart.map { Challenge(start: $0, trainedDays: Set(sessionDays).union(planDone)) }
+    }
+
+    func startChallenge(on date: Date = Date()) {
+        challengeStart = Calendar.current.startOfDay(for: date)
+        save()
+    }
+
+    func endChallenge() {
+        challengeStart = nil
+        save()
+    }
+
+    private func noticeNewBadge(since before: [Challenge.Badge]) {
+        guard let challenge else { return }
+        if let badge = challenge.earned.last(where: { !before.contains($0) }) { newBadge = badge }
     }
 
     var didSessionToday: Bool {
@@ -164,6 +192,7 @@ final class AppModel: ObservableObject {
         planBaseSteps = nil
         planDone = []
         sleepLog = []
+        challengeStart = nil
         save()
     }
 
@@ -246,8 +275,10 @@ final class AppModel: ObservableObject {
     func setPlanDay(_ date: Date, done: Bool) {
         let day = Calendar.current.startOfDay(for: date)
         planDone.removeAll { Calendar.current.isDate($0, inSameDayAs: day) }
+        let before = challenge?.earned ?? []
         if done { planDone.append(day) }
         save()
+        if done { noticeNewBadge(since: before) }
     }
 
     // MARK: - Food and weight
@@ -301,6 +332,7 @@ final class AppModel: ObservableObject {
         planDone = []
         planBaseSteps = nil
         sleepLog = []
+        challengeStart = nil
         guard let data = try? Data(contentsOf: fileURL),
               let stored = try? JSONDecoder().decode(Stored.self, from: data) else { return }
         profile = stored.profile
@@ -313,13 +345,14 @@ final class AppModel: ObservableObject {
         planDone = stored.planDone ?? []
         planBaseSteps = stored.planBaseSteps
         sleepLog = stored.sleepLog ?? []
+        challengeStart = stored.challengeStart
     }
 
     private func save() {
         guard !loading else { return }
         let stored = Stored(profile: profile, results: results, sessionDays: sessionDays, foodLog: foodLog, weights: weights,
                             planStart: planStart, planProgram: planProgram?.rawValue, planDone: planDone,
-                            planBaseSteps: planBaseSteps, sleepLog: sleepLog)
+                            planBaseSteps: planBaseSteps, sleepLog: sleepLog, challengeStart: challengeStart)
         guard let data = try? JSONEncoder().encode(stored) else { return }
         try? data.write(to: fileURL, options: [.atomic, .completeFileProtection])
     }

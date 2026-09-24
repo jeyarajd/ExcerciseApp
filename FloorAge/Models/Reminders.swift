@@ -73,6 +73,34 @@ enum Reminders {
         }
     }
 
+    /// One reminder when the next Floor Age check is due, in the evening at the reminder time
+    /// (the next evening if it's already overdue). Replaces any earlier one.
+    @MainActor static func scheduleRetest(lastCheck: Date?, now: Date = Date()) async {
+        let center = UNUserNotificationCenter.current()
+        center.removePendingNotificationRequests(withIdentifiers: [retestID])
+        guard isOn, let lastCheck else { return }
+        let date = retestDate(lastCheck: lastCheck, minuteOfDay: minuteOfDay, now: now)
+        let content = UNMutableNotificationContent()
+        content.title = String(localized: "Time to retest your Floor Age")
+        content.body = String(localized: "It's been 4 weeks. Take the 10-minute check and see how far you've come.")
+        content.sound = .default
+        let parts = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: date)
+        try? await center.add(UNNotificationRequest(identifier: retestID, content: content,
+                                                    trigger: UNCalendarNotificationTrigger(dateMatching: parts, repeats: false)))
+    }
+
+    private static let retestID = "floor-age-retest"
+
+    static func retestDate(lastCheck: Date, minuteOfDay: Int, now: Date, calendar: Calendar = .current) -> Date {
+        func evening(_ day: Date) -> Date {
+            calendar.date(bySettingHour: minuteOfDay / 60, minute: minuteOfDay % 60, second: 0, of: day) ?? day
+        }
+        let due = evening(Retest.due(after: lastCheck, calendar: calendar))
+        guard due <= now else { return due }
+        let today = evening(now)
+        return today > now ? today : evening(calendar.date(byAdding: .day, value: 1, to: now) ?? now)
+    }
+
     /// The reminder times for the coming `days` days, skipping today if it's past or already done.
     static func fireDates(minuteOfDay: Int, trainedToday: Bool, now: Date, calendar: Calendar = .current) -> [Date] {
         let today = calendar.startOfDay(for: now)

@@ -8,5 +8,6 @@ extension AppModel {
         guard isOwner else { return }
         let trainedToday = didSessionToday || isPlanDayDone(Date())
         await Reminders.refresh(trainedToday: trainedToday) { [weak self] date in self?.reminderText(on: date) }
+        await Reminders.scheduleRetest(lastCheck: latestResult?.date)
     }
 }

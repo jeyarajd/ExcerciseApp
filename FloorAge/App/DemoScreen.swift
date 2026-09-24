@@ -7,7 +7,7 @@ import SwiftUI
 /// `-demoSnapshot <path.png>` to have the app save a picture of itself and quit (no screen
 /// recording permission needed).
 enum DemoScreen: String, CaseIterable {
-    case onboarding, today, track, plan, planIntro, cardio, sleep, steps, food, foodPhoto, bmi, progress, settings, session, kegel, test, sitRise, balance, chairStand, reach, cameraChair, cameraBalance, cameraReach, result, share, plus, family, familyAdd, video, portrait
+    case onboarding, today, track, plan, planIntro, cardio, sleep, steps, food, foodPhoto, bmi, progress, settings, session, kegel, test, sitRise, balance, chairStand, reach, cameraChair, cameraBalance, cameraReach, result, share, plus, family, familyAdd, challenge, badge, drop, widgets, video, portrait
 
     /// Screens show Floor Age Plus unlocked unless launched with `-demoPlus NO`.
     static var hasPlus: Bool {
@@ -63,6 +63,13 @@ enum DemoScreen: String, CaseIterable {
             let bed = cal.date(bySettingHour: bedHour, minute: bedMinute, second: 0, of: bedDay)!
             model.logSleep(SleepEntry(bedtime: bed, wake: bed.addingTimeInterval(hours * 3600), quality: hours >= 7 ? 3 : 2))
         }
+        // Twelve days into the 30-day challenge.
+        model.startChallenge(on: cal.date(byAdding: .day, value: -11, to: Date())!)
+        for daysAgo in [3, 6, 8, 9, 10, 11] {
+            model.setPlanDay(cal.date(byAdding: .day, value: -daysAgo, to: Date())!, done: true)
+        }
+        model.newBadge = nil
+
         // Priya's parents, tested on her phone (family profiles).
         let owner = model.activeMemberID
         for (name, age, gender, scores) in [("Raj", 78, Gender.male, ["sitRise": 4.5, "balance": 7.0, "chairStand": 10.0, "reach": 1.0]),
@@ -159,6 +166,17 @@ private struct DemoScreenHost: View {
             FamilyView()
         case .familyAdd:
             OnboardingView().onAppear { if model.isOwner { model.addMember() } }
+        case .challenge:
+            NavigationStack { ChallengeView() }
+        case .badge:
+            MainTabs(initial: .today).overlay { BadgeCelebration(badge: .seven) {} }
+        case .drop:
+            NavigationStack {
+                FloorAgeResultView(result: model.latestResult!, previous: model.results.dropLast().last?.floorAge)
+                    .navigationTitle("Your Floor Age")
+            }
+        case .widgets:
+            WidgetGallery()
         case .share:
             ShareCardView(result: model.latestResult!)
         case .result:
@@ -236,5 +254,54 @@ private struct PortraitView: View {
         AvatarView(controller: avatar)
             .ignoresSafeArea()
             .onAppear { avatar.setCamera(distance: 1.05, height: 1.6) }
+    }
+}
+
+/// The Home Screen and Lock Screen widgets drawn in the app, for screenshots (widgets themselves
+/// can't be captured on a Mac).
+private struct WidgetGallery: View {
+    private let snapshot = FloorAgeSnapshot.sample
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 18) {
+                Text("Home Screen").font(.display(.headline)).foregroundStyle(.white)
+                HStack(spacing: 16) {
+                    tile(FloorAgeWidgetView(snapshot: snapshot, familyOverride: .systemSmall), background: Feature.floorAge.gradient)
+                    tile(StepsWidgetView(snapshot: snapshot, familyOverride: .systemSmall), background: Feature.steps.gradient)
+                }
+                tile(FloorAgeWidgetView(snapshot: snapshot, familyOverride: .systemMedium), background: Feature.floorAge.gradient, wide: true)
+                Text("Lock Screen").font(.display(.headline)).foregroundStyle(.white).padding(.top, 8)
+                VStack(spacing: 14) {
+                    FloorAgeWidgetView(snapshot: snapshot, familyOverride: .accessoryInline)
+                        .font(.subheadline.weight(.semibold))
+                    HStack(spacing: 18) {
+                        FloorAgeWidgetView(snapshot: snapshot, familyOverride: .accessoryCircular)
+                            .frame(width: 64, height: 64)
+                        StepsWidgetView(snapshot: snapshot, familyOverride: .accessoryCircular)
+                            .frame(width: 64, height: 64)
+                        FloorAgeWidgetView(snapshot: snapshot, familyOverride: .accessoryRectangular)
+                            .font(.caption)
+                            .frame(width: 160, alignment: .leading)
+                    }
+                }
+                .foregroundStyle(.white)
+                .padding(16)
+                .frame(maxWidth: .infinity)
+                .background(.white.opacity(0.14), in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+            }
+            .padding(20)
+        }
+        .background(LinearGradient(colors: [Color(red: 0.12, green: 0.2, blue: 0.4), Color(red: 0.45, green: 0.25, blue: 0.55)],
+                                   startPoint: .top, endPoint: .bottom).ignoresSafeArea())
+    }
+
+    private func tile<V: View>(_ view: V, background: LinearGradient, wide: Bool = false) -> some View {
+        view
+            .padding(16)
+            .frame(width: wide ? 346 : 165, height: 165)
+            .background(background)
+            .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
+            .shadow(color: .black.opacity(0.25), radius: 10, y: 5)
     }
 }

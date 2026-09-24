@@ -7,6 +7,9 @@ struct SettingsView: View {
     @State private var confirmingReset = false
     @State private var showingPlus = false
     @State private var showingFamily = false
+    @State private var healthWorkouts = AppleHealth.savesWorkouts
+    @State private var healthSteps = AppleHealth.readsSteps
+    @EnvironmentObject private var steps: StepCounter
     @State private var storeMessage: String?
     @State private var reminderOn = Reminders.isOn
     @State private var reminderTime = ReminderTime.date(fromMinute: Reminders.minuteOfDay)
@@ -111,6 +114,28 @@ struct SettingsView: View {
                     Text(notificationsDenied
                          ? "Notifications are off for Floor Age. Turn them on in iPhone Settings › Notifications."
                          : "One reminder a day, only if you haven't done today's training yet. None on rest days.")
+                }
+
+                if AppleHealth.isAvailable, model.isOwner {
+                    Section {
+                        Toggle("Save workouts to Apple Health", isOn: $healthWorkouts)
+                            .onChange(of: healthWorkouts) { _, on in
+                                AppleHealth.savesWorkouts = on
+                                if on { Task { _ = await AppleHealth.requestWorkoutAccess() } }
+                            }
+                        Toggle("Read steps from Apple Health", isOn: $healthSteps)
+                            .onChange(of: healthSteps) { _, on in
+                                Task {
+                                    if on { _ = await AppleHealth.requestStepAccess() }
+                                    AppleHealth.readsSteps = on
+                                    steps.start()
+                                }
+                            }
+                    } header: {
+                        Text("Apple Health")
+                    } footer: {
+                        Text("Sessions and run/walk days count towards your Activity rings. Reading steps from Health adds the steps your Apple Watch counts. Floor Age only shares with Health on this iPhone.")
+                    }
                 }
 
                 if let profile = model.profile {

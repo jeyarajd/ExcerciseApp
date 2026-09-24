@@ -46,6 +46,13 @@ jobs:
             2>&1 | tee build.log | grep -E "error:|warning: .*FloorAge/|BUILD (SUCCEEDED|FAILED)" || true
           grep -q "BUILD SUCCEEDED" build.log
 
+      - name: Leave the Watch app out of the test build
+        # Testing a scheme that embeds a Watch app needs the watchOS platform installed. The build
+        # above already compiled the Watch app, so the tests and screenshots run without it.
+        run: |
+          sed -i '' '/      - target: FloorAgeWatch/d' project.yml
+          xcodegen generate
+
       - name: Pick a simulator
         run: |
           UDID=$(xcrun simctl list devices available -j \

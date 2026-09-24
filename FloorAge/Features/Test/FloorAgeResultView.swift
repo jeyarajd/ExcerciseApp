@@ -2,13 +2,32 @@ import SwiftUI
 
 struct FloorAgeResultView: View {
     let result: FloorAgeResult
+    /// The Floor Age from the check before this one, to celebrate a drop.
+    var previous: Int?
     var onDone: (() -> Void)?
 
     @State private var sharing = false
 
+    private var drop: Int? {
+        guard let previous, previous > result.floorAge else { return nil }
+        return previous - result.floorAge
+    }
+
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
+                if let drop {
+                    HStack(spacing: 14) {
+                        Image(systemName: "arrow.down.circle.fill").font(.system(size: 38))
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("Your Floor Age dropped").font(.caption.weight(.heavy)).tracking(1.4).textCase(.uppercase).opacity(0.9)
+                            Text(drop == 1 ? String(localized: "1 year younger") : String(localized: "\(drop) years younger")).font(.display(.title2))
+                            Text("From \(previous ?? 0) to \(result.floorAge). Your training is working.").font(.subheadline).opacity(0.9)
+                        }
+                        Spacer(minLength: 0)
+                    }
+                    .heroCard(.calories, symbol: "chart.line.downtrend.xyaxis")
+                }
                 FloorAgeCard(result: result)
                 VStack(alignment: .leading, spacing: 14) {
                     Text("By area").font(.display(.title3))
@@ -56,6 +75,13 @@ struct FloorAgeResultView: View {
             .padding()
         }
         .background(AppBackground())
+        .overlay {
+            if drop != nil {
+                ConfettiView(colors: Feature.calories.colors + Feature.challenge.colors + [.white])
+                    .ignoresSafeArea()
+                    .allowsHitTesting(false)
+            }
+        }
         .sheet(isPresented: $sharing) { ShareCardView(result: result) }
     }
 }

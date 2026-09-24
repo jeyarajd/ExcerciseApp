@@ -1,3 +1,4 @@
+import HealthKit
 import SwiftUI
 import UIKit
 
@@ -54,6 +55,7 @@ struct PlanView: View {
             IntervalWorkoutView(title: workout.title, intervals: workout.intervals) {
                 model.setPlanDay(Date(), done: true)
                 Task { await model.refreshReminders() }
+                saveToHealth(workout.intervals)
             }
             .environmentObject(voice)
             .environmentObject(steps)
@@ -289,6 +291,17 @@ struct PlanView: View {
     }
 
     // MARK: - Helpers
+
+    /// Records a finished run/walk in Apple Health, if that's switched on.
+    private func saveToHealth(_ intervals: [TrainingPlan.Interval]) {
+        guard model.isOwner else { return }
+        let weight = model.profile?.weightKg ?? 70
+        let kcal = intervals.reduce(0) { $0 + Calories.burned(met: $1.met, weightKg: weight, minutes: Double($1.seconds) / 60) }
+        let end = Date()
+        let start = end.addingTimeInterval(-TimeInterval(intervals.reduce(0) { $0 + $1.seconds }))
+        let activity: HKWorkoutActivityType = intervals.contains { $0.kind == .run } ? .running : .walking
+        Task { await AppleHealth.saveWorkout(activity, start: start, end: end, kcal: kcal) }
+    }
 
     private var averageSteps: Int? {
         // The iPhone counts its owner's steps; a family member's goals start from the defaults.

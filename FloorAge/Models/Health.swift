@@ -90,6 +90,20 @@ enum Calories {
     /// Light activity (walking, a short daily session).
     static let activity = 1.375
 
+    /// Energy used by an activity: MET × body weight (kg) × hours, the Compendium of Physical
+    /// Activities method (Ainsworth et al., 2011).
+    static func burned(met: Double, weightKg: Double, minutes: Double) -> Int {
+        Int((met * weightKg * minutes / 60).rounded())
+    }
+
+    /// MET values from the Compendium (2011).
+    enum MET {
+        /// Calisthenics, light to moderate effort (code 02030/02020).
+        static let session = 3.5
+        /// Pelvic floor squeezes, seated: about quiet sitting with light effort.
+        static let pelvicFloor = 1.3
+    }
+
     static func dailyTarget(age: Int, gender: Gender?, heightCm: Double, weightKg: Double) -> Int {
         // Mifflin-St Jeor: +5 for men, -161 for women; the midpoint when gender isn't given.
         let sexTerm: Double = switch gender {

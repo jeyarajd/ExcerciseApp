@@ -5,8 +5,12 @@ struct SessionView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var engine: SessionEngine
     @State private var speed = 1.0
+    @State private var startedAt = Date()
+    @ObservedObject private var watch = WatchLink.shared
+    private let items: [PlanItem]
 
     init(items: [PlanItem], voice: VoiceCoach) {
+        self.items = items
         _engine = StateObject(wrappedValue: SessionEngine(items: items, voice: voice))
     }
 
@@ -38,13 +42,38 @@ struct SessionView: View {
             controls
         }
         .background(AppBackground())
-        .onAppear { engine.start() }
+        .onAppear {
+            startedAt = Date()
+            engine.start()
+        }
+        // The Apple Watch remote: show what's playing, and take its pause and skip taps.
+        .onReceive(engine.objectWillChange.receive(on: RunLoop.main)) { _ in watch.send(watchStatus) }
+        .onDisappear { watch.send(nil as SessionStatus?) }
+        .onChange(of: watch.command?.1) {
+            switch watch.command?.0 {
+            case .pause: if engine.phase == .active || engine.phase == .rest { engine.togglePause() }
+            case .skip: if engine.phase == .intro { engine.beginActive() } else if engine.phase != .done { engine.skip() }
+            case nil: break
+            }
+        }
         .onDisappear { engine.end() }
         .onChange(of: engine.phase) { _, phase in
             guard phase == .done else { return }
             model.completeSession()
             Task { await model.refreshReminders() }
+            saveToHealth()
         }
+    }
+
+    /// Records the finished session as a workout in Apple Health, if that's switched on.
+    private func saveToHealth() {
+        guard model.isOwner else { return }
+        let end = Date()
+        let kegelsOnly = items.allSatisfy { $0.exercise.id == "kegel" }
+        let met = kegelsOnly ? Calories.MET.pelvicFloor : Calories.MET.session
+        let kcal = Calories.burned(met: met, weightKg: model.profile?.weightKg ?? 70, minutes: end.timeIntervalSince(startedAt) / 60)
+        let start = startedAt
+        Task { await AppleHealth.saveWorkout(kegelsOnly ? .mindAndBody : .functionalStrengthTraining, start: start, end: end, kcal: kcal) }
     }
 
     private var header: some View {
@@ -112,6 +141,16 @@ struct SessionView: View {
         }
         .frame(width: 104, height: 104)
         .background(.ultraThinMaterial, in: Circle())
+    }
+
+    private var watchStatus: SessionStatus {
+        SessionStatus(exercise: title,
+                      detail: engine.phase == .done ? String(localized: "Done") : "\(counterValue) \(counterUnit)",
+                      progress: engine.phase == .rest ? engine.secondsLeft / engine.restSeconds : engine.progress,
+                      step: subtitle,
+                      isPaused: engine.isPaused,
+                      isResting: engine.phase == .rest,
+                      isDone: engine.phase == .done)
     }
 
     private var counterValue: String {
