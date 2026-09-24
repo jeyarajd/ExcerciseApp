@@ -103,7 +103,9 @@ Each exercise can have a short real-person demo clip next to the 3D coach. Clips
 
 The realistic coaches (`FloorAge/Resources/coach_female.usdz`, `coach_male.usdz`) are made with [MakeHuman](http://www.makehumancommunity.org) via its Blender add-on MPFB. Everything exported comes from CC0 asset packs, so it's free to ship. The app poses their skeleton from the same `exercises.json` keyframes as the cartoon coach (`FloorAge/Avatar/RealisticCoach.swift`).
 
-To change a coach's look (body shape, skin, hair, clothes), edit `COACHES` in `tools/build_coach.py` and rebuild on a Mac:
+![Realistic coaches v2](docs/coach_previews/coaches_v2.jpg)
+
+The v2 coaches are South Asian adults in their early 30s wearing the app's teal training kit: a tee over black running tights, and the man also wears charcoal shorts. To change a coach's look (body shape, skin, hair, clothes, brand recolouring), edit `COACHES` in `tools/build_coach.py` and rebuild (Blender 4.2+ on macOS or Linux). Set `PREVIEW=<dir>` to also render studio previews:
 
 1. Install Blender 4.2+ and the MPFB extension (extensions.blender.org/add-ons/mpfb).
 2. Load the CC0 packs `makehuman_system_assets`, `skins01`, `skins02`, `hair01`, `shirts01`, `pants01` and `shoes01` from the [asset packs page](https://static.makehumancommunity.org/assets/assetpacks/index.html) into MPFB.
