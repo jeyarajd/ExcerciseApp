@@ -229,6 +229,7 @@ struct BadgeCelebration: View {
     let badge: Challenge.Badge
     let onDone: () -> Void
     @State private var shown = false
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         ZStack {
@@ -239,8 +240,8 @@ struct BadgeCelebration: View {
                 .allowsHitTesting(false)
             VStack(spacing: 14) {
                 BadgeMedal(badge: badge, earned: true, size: 120)
-                    .scaleEffect(shown ? 1 : 0.4)
-                    .rotationEffect(.degrees(shown ? 0 : -30))
+                    .scaleEffect(shown || reduceMotion ? 1 : 0.4)
+                    .rotationEffect(.degrees(shown || reduceMotion ? 0 : -30))
                 Text("New badge").font(.caption.weight(.heavy)).tracking(2).textCase(.uppercase).foregroundStyle(Feature.challenge.colors[1])
                 Text(badge.title).font(.display(.largeTitle)).multilineTextAlignment(.center)
                 Text(badge.detail).font(.subheadline).foregroundStyle(.secondary).multilineTextAlignment(.center)
@@ -257,7 +258,7 @@ struct BadgeCelebration: View {
             .opacity(shown ? 1 : 0)
         }
         .onAppear {
-            withAnimation(.spring(duration: 0.6, bounce: 0.45)) { shown = true }
+            withAnimation(reduceMotion ? .easeOut(duration: 0.25) : .spring(duration: 0.45, bounce: 0.45)) { shown = true }
         }
         .accessibilityAddTraits(.isModal)
     }
@@ -267,6 +268,7 @@ struct BadgeCelebration: View {
 struct ConfettiView: View {
     let colors: [Color]
     @State private var start = Date()
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     private let pieces: [Piece] = (0..<90).map { _ in Piece() }
 
     private struct Piece {
@@ -281,6 +283,11 @@ struct ConfettiView: View {
     }
 
     var body: some View {
+        // Decorative, so none at all with Reduce Motion.
+        if !reduceMotion { confetti }
+    }
+
+    private var confetti: some View {
         TimelineView(.animation) { timeline in
             let t = timeline.date.timeIntervalSince(start)
             Canvas { context, size in

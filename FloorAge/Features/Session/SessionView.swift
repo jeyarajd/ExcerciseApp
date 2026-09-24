@@ -7,6 +7,7 @@ struct SessionView: View {
     @State private var speed = 1.0
     @State private var startedAt = Date()
     @State private var coachShown = false
+    @State private var repPulse = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @ObservedObject private var watch = WatchLink.shared
     private let items: [PlanItem]
@@ -17,6 +18,24 @@ struct SessionView: View {
     }
 
     var body: some View {
+        screen
+            .modifier(SessionFeedback(engine: engine, speed: speed, repPulse: $repPulse, reduceMotion: reduceMotion))
+            .onAppear {
+                startedAt = Date()
+                engine.start()
+                withAnimation(reduceMotion ? .easeOut(duration: 0.3) : .spring(duration: 0.4)) { coachShown = true }
+            }
+            .modifier(WatchRemote(engine: engine, watch: watch, status: { watchStatus }))
+            .onDisappear { engine.end() }
+            .onChange(of: engine.phase) { _, phase in
+                guard phase == .done else { return }
+                model.completeSession()
+                Task { await model.refreshReminders() }
+                saveToHealth()
+            }
+    }
+
+    private var screen: some View {
         VStack(spacing: 0) {
             header
             ZStack(alignment: .topTrailing) {
@@ -47,28 +66,6 @@ struct SessionView: View {
             controls
         }
         .background(AppBackground())
-        .onAppear {
-            startedAt = Date()
-            engine.start()
-            withAnimation(reduceMotion ? .easeOut(duration: 0.3) : .spring(duration: 0.4)) { coachShown = true }
-        }
-        // The Apple Watch remote: show what's playing, and take its pause and skip taps.
-        .onReceive(engine.objectWillChange.receive(on: RunLoop.main)) { _ in watch.send(watchStatus) }
-        .onDisappear { watch.send(nil as SessionStatus?) }
-        .onChange(of: watch.command?.1) {
-            switch watch.command?.0 {
-            case .pause: if engine.phase == .active || engine.phase == .rest { engine.togglePause() }
-            case .skip: if engine.phase == .intro { engine.beginActive() } else if engine.phase != .done { engine.skip() }
-            case nil: break
-            }
-        }
-        .onDisappear { engine.end() }
-        .onChange(of: engine.phase) { _, phase in
-            guard phase == .done else { return }
-            model.completeSession()
-            Task { await model.refreshReminders() }
-            saveToHealth()
-        }
     }
 
     /// Records the finished session as a workout in Apple Health, if that's switched on.
@@ -142,6 +139,9 @@ struct SessionView: View {
                 Text(counterValue)
                     .font(.system(size: 34, weight: .bold, design: .rounded))
                     .monospacedDigit()
+                    .contentTransition(.numericText())
+                    .animation(.snappy(duration: 0.25), value: counterValue)
+                    .scaleEffect(repPulse ? 1.14 : 1)
                 Text(counterUnit).font(.caption).foregroundStyle(.secondary)
             }
         }
@@ -215,6 +215,11 @@ struct SessionView: View {
                 .buttonStyle(.bordered)
                 .controlSize(.large)
             case .done:
+                Image(systemName: "checkmark.seal.fill")
+                    .font(.system(size: 44))
+                    .foregroundStyle(Feature.calories.gradient)
+                    .symbolEffect(.bounce, value: engine.phase == .done)
+                    .accessibilityHidden(true)
                 Text("You moved today. That's what counts.")
                     .font(.title3.weight(.semibold))
                     .multilineTextAlignment(.center)
@@ -228,5 +233,48 @@ struct SessionView: View {
             }
         }
         .padding(16)
+    }
+}
+
+/// Haptics and the rep counter's pulse.
+private struct SessionFeedback: ViewModifier {
+    @ObservedObject var engine: SessionEngine
+    let speed: Double
+    @Binding var repPulse: Bool
+    let reduceMotion: Bool
+
+    func body(content: Content) -> some View {
+        content
+            // A tap for every counted rep, success when an exercise or the session ends.
+            .sensoryFeedback(.increase, trigger: engine.repsDone) { (old: Int, new: Int) -> Bool in new > old }
+            .sensoryFeedback(.success, trigger: engine.phase) { (_: SessionEngine.Phase, new: SessionEngine.Phase) -> Bool in
+                new == .rest || new == .done
+            }
+            .sensoryFeedback(.selection, trigger: speed)
+            .onChange(of: engine.repsDone) { (old: Int, new: Int) in
+                guard new > old, !reduceMotion else { return }
+                withAnimation(.easeOut(duration: 0.1)) { repPulse = true }
+                withAnimation(.easeIn(duration: 0.2).delay(0.1)) { repPulse = false }
+            }
+    }
+}
+
+/// The Apple Watch remote: shows what's playing, and takes its pause and skip taps.
+private struct WatchRemote: ViewModifier {
+    @ObservedObject var engine: SessionEngine
+    @ObservedObject var watch: WatchLink
+    let status: () -> SessionStatus
+
+    func body(content: Content) -> some View {
+        content
+            .onReceive(engine.objectWillChange.receive(on: RunLoop.main)) { _ in watch.send(status()) }
+            .onDisappear { watch.send(nil as SessionStatus?) }
+            .onChange(of: watch.command?.1) {
+                switch watch.command?.0 {
+                case .pause: if engine.phase == .active || engine.phase == .rest { engine.togglePause() }
+                case .skip: if engine.phase == .intro { engine.beginActive() } else if engine.phase != .done { engine.skip() }
+                case nil: break
+                }
+            }
     }
 }

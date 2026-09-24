@@ -28,7 +28,7 @@ enum CoachStyle: String, CaseIterable, Identifiable {
     case realistic, friendly
 
     var id: String { rawValue }
-    var label: String { self == .realistic ? "Realistic" : "Friendly cartoon" }
+    var label: String { self == .realistic ? String(localized: "Realistic") : String(localized: "Friendly cartoon") }
 
     static let changed = Notification.Name("CoachStyleChanged")
 

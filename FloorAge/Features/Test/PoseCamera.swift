@@ -223,9 +223,10 @@ private struct BodyOverlay: View {
     let frameSize: CGSize
     let feature: Feature
     let focus: Set<BodyJoint>
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
-        TimelineView(.animation(paused: focus.isEmpty || pose == nil)) { timeline in
+        TimelineView(.animation(paused: focus.isEmpty || pose == nil || reduceMotion)) { timeline in
             let pulse = (sin(timeline.date.timeIntervalSinceReferenceDate * 4) + 1) / 2
             Canvas { context, size in
                 guard let pose else { return }

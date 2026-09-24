@@ -40,6 +40,10 @@ struct FloorAgeTestView: View {
     @State private var balanceDetector = BalanceDetector()
     @State private var reachEstimator = ReachEstimator()
     @ObservedObject private var watch = WatchLink.shared
+    /// True once the camera has lost the person's legs for a moment (not just one frame).
+    @State private var bodyLost = false
+    @State private var lostCheck: Task<Void, Never>?
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private let tests = FloorTest.allCases
 
@@ -81,6 +85,18 @@ struct FloorAgeTestView: View {
         .onDisappear {
             stopTimers()
             camera.stop()
+        }
+        .sensoryFeedback(.warning, trigger: bodyLost) { _, lost in lost }
+        .onChange(of: camera.pose?.legsVisible ?? false) { _, visible in
+            lostCheck?.cancel()
+            if visible {
+                bodyLost = false
+            } else if useCamera, camera.status == .running {
+                lostCheck = Task { @MainActor in
+                    try? await Task.sleep(for: .seconds(0.8))
+                    if !Task.isCancelled { bodyLost = true }
+                }
+            }
         }
         // Tests done on the Apple Watch fill in the matching test here.
         .onChange(of: watch.testResult) { _, result in
@@ -271,7 +287,12 @@ struct FloorAgeTestView: View {
                                 useCamera.toggle()
                                 updateCamera(for: test)
                             } label: {
-                                Label(useCamera ? "Camera on" : "Use camera", systemImage: useCamera ? "camera.fill" : "camera.viewfinder")
+                                Label {
+                                    Text(useCamera ? "Camera on" : "Use camera")
+                                } icon: {
+                                    Image(systemName: useCamera ? "camera.fill" : "camera.viewfinder")
+                                        .symbolEffect(.pulse, isActive: useCamera && camera.pose?.legsVisible == true && !reduceMotion)
+                                }
                                     .font(.subheadline.weight(.semibold))
                                     .padding(.horizontal, 12)
                                     .padding(.vertical, 7)

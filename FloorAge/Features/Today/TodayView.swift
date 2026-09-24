@@ -6,6 +6,8 @@ struct TodayView: View {
     @EnvironmentObject private var store: Store
     @StateObject private var avatar = AvatarController(exerciseID: "idle")
     @State private var session: SessionItems?
+    /// The session zooms out of the card that started it.
+    @Namespace private var sessionZoom
     @State private var showingTest = false
     @AppStorage("pelvicFloor") private var pelvicFloor = true
 
@@ -51,6 +53,7 @@ struct TodayView: View {
             .fullScreenCover(item: $session) { wrapper in
                 SessionView(items: wrapper.items, voice: voice)
                     .environmentObject(model)
+                    .navigationTransition(.zoom(sourceID: wrapper.source, in: sessionZoom))
             }
             .fullScreenCover(isPresented: $showingTest) {
                 FloorAgeTestView()
@@ -189,6 +192,7 @@ struct TodayView: View {
             .controlSize(.large)
         }
         .tintedCard(.glance)
+        .matchedTransitionSource(id: "plan", in: sessionZoom)
     }
 }
 
@@ -196,7 +200,7 @@ extension TodayView {
     /// One tap into a guided pelvic floor (Kegel) session, for any time of day.
     fileprivate var pelvicFloorCard: some View {
         Button {
-            session = SessionItems(items: PlanBuilder.pelvicFloor)
+            session = SessionItems(items: PlanBuilder.pelvicFloor, source: "pelvic")
         } label: {
             HStack(spacing: 14) {
                 FeatureBadge(feature: .plan, symbol: "figure.mind.and.body", size: 48)
@@ -213,6 +217,7 @@ extension TodayView {
                     .foregroundStyle(Color.accentColor)
             }
             .tintedCard(.plan)
+            .matchedTransitionSource(id: "pelvic", in: sessionZoom)
         }
         .buttonStyle(.plain)
     }
@@ -222,4 +227,6 @@ extension TodayView {
 private struct SessionItems: Identifiable {
     let id = UUID()
     let items: [PlanItem]
+    /// Which card it opened from, for the zoom.
+    var source = "plan"
 }
