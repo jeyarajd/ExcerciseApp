@@ -843,3 +843,56 @@ final class PoseScoringTests: XCTestCase {
         XCTAssertEqual(estimator.level, .ankles)
     }
 }
+
+final class PoseMirrorTests: XCTestCase {
+    private let mirror = PoseMirror(rig: ExerciseLibrary.shared.rig)
+    private let aspect = 720.0 / 1280.0
+
+    private func angles(_ body: BodyPose) throws -> [String: SIMD3<Float>] {
+        try XCTUnwrap(mirror.pose(from: body, aspect: aspect)).angles
+    }
+
+    func testEulerAnglesRoundTrip() {
+        for degrees in [SIMD3<Float>(-80, 20, 10), SIMD3(30, -45, 60), SIMD3(0, 0, -20), SIMD3(95, 10, -5)] {
+            let q = PoseSolver.localRotation(degrees)
+            let back = PoseSolver.localRotation(PoseMirror.eulerDegrees(q))
+            for v in [SIMD3<Float>(1, 0, 0), SIMD3(0, 1, 0), SIMD3(0, 0, 1)] {
+                XCTAssertLessThan(simd_distance(q.act(v), back.act(v)), 0.001, "\(degrees)")
+            }
+        }
+    }
+
+    func testStandingMirrorsAsStanding() throws {
+        let a = try angles(.sample())
+        for joint in ["lHip", "rHip", "lKnee", "rKnee"] {
+            XCTAssertLessThan(abs(a[joint]?.x ?? 0), 15, joint)
+        }
+        XCTAssertLessThan(simd_length(a["pelvis"] ?? .zero), 15, "upright and facing the camera")
+    }
+
+    func testSittingBendsHipsAndKnees() throws {
+        let a = try angles(.sample(rise: 0.02, armsCrossed: true))
+        // Thighs swing forward (negative x) and the knees bend (positive x), about 90° each.
+        XCTAssertEqual(a["lHip"]?.x ?? 0, -90, accuracy: 25)
+        XCTAssertEqual(a["lKnee"]?.x ?? 0, 90, accuracy: 30)
+        let pose = try XCTUnwrap(mirror.pose(from: .sample(rise: 0.02), aspect: aspect))
+        let standing = try XCTUnwrap(mirror.pose(from: .sample(), aspect: aspect))
+        XCTAssertLessThan(pose.pelvis.y, standing.pelvis.y - 0.25, "seated is lower")
+    }
+
+    func testLiftingAFootRaisesThatKnee() throws {
+        let a = try angles(.sample(lift: 1))
+        XCTAssertLessThan(a["lHip"]?.x ?? 0, -20, "left thigh comes forward")
+        XCTAssertLessThan(abs(a["rHip"]?.x ?? 0), 15, "standing leg stays straight")
+    }
+
+    func testSideOnFoldTipsTheBodyForward() throws {
+        let a = try angles(.sample(fold: 1, wristDepth: 0.3))
+        let pelvis = PoseSolver.localRotation(a["pelvis"] ?? .zero)
+        // The trunk's up direction ends up mostly horizontal.
+        XCTAssertLessThan(pelvis.act(SIMD3(0, 1, 0)).y, 0.4)
+        // And the legs still point down to the floor.
+        let thigh = pelvis * PoseSolver.localRotation(a["lHip"] ?? .zero)
+        XCTAssertLessThan(thigh.act(SIMD3(0, -1, 0)).y, -0.9)
+    }
+}

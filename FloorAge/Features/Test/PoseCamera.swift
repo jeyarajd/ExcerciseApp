@@ -110,16 +110,17 @@ final class PoseCamera: NSObject, ObservableObject {
 
     private func startDemo(_ demo: Demo) {
         status = .running
-        demoStart = Date()
+        // `-demoPhase <seconds>` starts the scripted movement further along (for screenshots).
+        demoStart = Date().addingTimeInterval(-UserDefaults.standard.double(forKey: "demoPhase"))
         demoTimer = Timer.scheduledTimer(withTimeInterval: 1.0 / 15, repeats: true) { [weak self] _ in
             guard let self else { return }
             let t = Date().timeIntervalSince(self.demoStart)
             let pose: BodyPose = switch demo {
             case .chairStand:
                 // Sit, stand, sit… about one stand every 2.4 seconds.
-                .sample(rise: (1 - cos(t / 2.4 * 2 * .pi)) / 2)
+                .sample(rise: (1 - cos(t / 2.4 * 2 * .pi)) / 2, armsCrossed: true)
             case .balance:
-                .sample(lift: t > 1 ? min((t - 1) * 2, 1) : 0)
+                .sample(lift: t > 1 ? min((t - 1) * 2, 1) : 0, armSpread: 0.05)
             case .reach:
                 .sample(fold: min(t / 3, 1), wristDepth: 0.25)
             }
@@ -213,113 +214,240 @@ private struct CameraPreview: UIViewRepresentable {
     }
 }
 
-/// A glowing figure over the camera image: a head, a torso and rounded limbs in the test's
-/// colours, with the joints the test measures pulsing. Mapped the same way the preview fits the frame.
+/// A mannequin-style body over the camera image, built from the tracked joints: a shaped torso,
+/// limbs that taper like real ones, neck, head, hands and feet, filled as one smooth silhouette
+/// with a light edge, soft shading and a glow in the test's colours. The joints the test measures
+/// pulse. Mapped the same way the preview fits the frame.
 private struct BodyOverlay: View {
     let pose: BodyPose?
     let frameSize: CGSize
     let feature: Feature
     let focus: Set<BodyJoint>
 
-    private static let limbs: [[BodyJoint]] = [
-        [.leftShoulder, .leftElbow, .leftWrist], [.rightShoulder, .rightElbow, .rightWrist],
-        [.leftHip, .leftKnee, .leftAnkle], [.rightHip, .rightKnee, .rightAnkle],
-    ]
-
     var body: some View {
         TimelineView(.animation(paused: focus.isEmpty || pose == nil)) { timeline in
             let pulse = (sin(timeline.date.timeIntervalSinceReferenceDate * 4) + 1) / 2
             Canvas { context, size in
                 guard let pose else { return }
-                draw(pose, in: &context, size: size, pulse: pulse)
+                let placed = pose.joints.mapValues { place($0, in: size) }
+                guard let figure = Mannequin(joints: placed) else { return }
+                draw(figure, in: &context, size: size, pulse: pulse)
             }
         }
         .allowsHitTesting(false)
     }
 
-    private func draw(_ pose: BodyPose, in context: inout GraphicsContext, size: CGSize, pulse: Double) {
+    private func place(_ p: CGPoint, in size: CGSize) -> CGPoint {
         let scale = min(size.width / frameSize.width, size.height / frameSize.height)
         let drawn = CGSize(width: frameSize.width * scale, height: frameSize.height * scale)
-        func place(_ joint: BodyJoint) -> CGPoint? {
-            pose[joint].map {
-                CGPoint(x: $0.x * drawn.width - (drawn.width - size.width) / 2,
-                        y: (1 - $0.y) * drawn.height - (drawn.height - size.height) / 2)
-            }
-        }
-        func mid(_ a: CGPoint?, _ b: CGPoint?) -> CGPoint? {
-            switch (a, b) {
-            case let (a?, b?): CGPoint(x: (a.x + b.x) / 2, y: (a.y + b.y) / 2)
-            default: a ?? b
-            }
-        }
+        return CGPoint(x: p.x * drawn.width - (drawn.width - size.width) / 2,
+                       y: (1 - p.y) * drawn.height - (drawn.height - size.height) / 2)
+    }
 
-        // Size everything from the body, so a person far away gets a slimmer figure. The shin keeps
-        // its length whether standing, sitting or folded, so it steadies the trunk measure.
-        let shoulders = mid(place(.leftShoulder), place(.rightShoulder)) ?? place(.neck)
-        let hips = mid(place(.leftHip), place(.rightHip))
-        let knee = mid(place(.leftKnee), place(.rightKnee)), ankle = mid(place(.leftAnkle), place(.rightAnkle))
-        let shin = knee.flatMap { k in ankle.map { hypot(k.x - $0.x, k.y - $0.y) } } ?? 0
-        let trunk = max(shoulders.flatMap { s in hips.map { hypot(s.x - $0.x, s.y - $0.y) } } ?? 120, shin * 1.3)
-        let limbWidth = min(max(trunk * 0.16, 7), 24)
-        let shading = GraphicsContext.Shading.linearGradient(Gradient(colors: feature.colors),
-                                                             startPoint: CGPoint(x: 0, y: 0), endPoint: CGPoint(x: size.width, y: size.height))
-
-        var limbs = Path()
-        for chain in Self.limbs {
-            let points = chain.compactMap(place)
-            guard points.count >= 2 else { continue }
-            limbs.addLines(points)
-        }
-        if let neck = place(.neck) ?? shoulders, let hips {
-            limbs.move(to: neck)
-            limbs.addLine(to: hips)
-        }
-
-        var torso = Path()
-        let corners = [place(.leftShoulder), place(.rightShoulder), place(.rightHip), place(.leftHip)].compactMap { $0 }
-        if corners.count == 4 {
-            torso.addLines(corners)
-            torso.closeSubpath()
-        }
-
-        var head = Path()
-        if let nose = place(.nose) ?? place(.neck).map({ CGPoint(x: $0.x, y: $0.y - trunk * 0.25) }) {
-            let r = max(trunk * 0.2, 9)
-            head.addEllipse(in: CGRect(x: nose.x - r, y: nose.y - r * 1.1, width: r * 2, height: r * 2.2))
-        }
-
-        let style = StrokeStyle(lineWidth: limbWidth, lineCap: .round, lineJoin: .round)
-        // Soft glow underneath.
+    private func draw(_ figure: Mannequin, in context: inout GraphicsContext, size: CGSize, pulse: Double) {
+        let body = figure.silhouette(grow: 0)
+        let edge = figure.silhouette(grow: 2.5)
+        let fill = GraphicsContext.Shading.linearGradient(Gradient(colors: feature.colors),
+                                                          startPoint: figure.bounds.origin,
+                                                          endPoint: CGPoint(x: figure.bounds.maxX, y: figure.bounds.maxY))
+        // Glow behind the body.
         context.drawLayer { glow in
-            glow.addFilter(.blur(radius: limbWidth * 0.9))
-            glow.opacity = 0.75
-            glow.stroke(limbs, with: shading, style: StrokeStyle(lineWidth: limbWidth * 1.8, lineCap: .round, lineJoin: .round))
-            glow.fill(torso, with: shading)
-            glow.fill(head, with: shading)
+            glow.addFilter(.blur(radius: figure.unit * 0.12))
+            glow.opacity = 0.7
+            glow.fill(edge, with: fill)
         }
-        context.fill(torso, with: shading)
-        context.opacity = 0.9
-        context.fill(torso, with: .color(.white.opacity(0.12)))
-        context.opacity = 1
-        context.stroke(limbs, with: shading, style: style)
-        // A light core down each limb gives the figure some depth.
-        context.stroke(limbs, with: .color(.white.opacity(0.35)), style: StrokeStyle(lineWidth: limbWidth * 0.3, lineCap: .round, lineJoin: .round))
-        context.fill(head, with: shading)
-        context.stroke(head, with: .color(.white.opacity(0.85)), lineWidth: 2)
-        context.stroke(torso, with: .color(.white.opacity(0.5)), lineWidth: 1.5)
-
-        for joint in [BodyJoint.leftElbow, .rightElbow, .leftWrist, .rightWrist, .leftKnee, .rightKnee, .leftAnkle, .rightAnkle, .leftHip, .rightHip] {
-            guard let p = place(joint) else { continue }
-            if focus.contains(joint) {
-                let ring = limbWidth * (0.9 + 0.6 * pulse)
-                context.stroke(Path(ellipseIn: CGRect(x: p.x - ring, y: p.y - ring, width: ring * 2, height: ring * 2)),
-                               with: .color(.white.opacity(0.9 - 0.5 * pulse)), lineWidth: 2.5)
-                let dot = limbWidth * 0.45
-                context.fill(Path(ellipseIn: CGRect(x: p.x - dot, y: p.y - dot, width: dot * 2, height: dot * 2)), with: .color(.white))
-            } else {
-                let dot = limbWidth * 0.28
-                context.fill(Path(ellipseIn: CGRect(x: p.x - dot, y: p.y - dot, width: dot * 2, height: dot * 2)), with: .color(.white.opacity(0.9)))
+        // A light edge, then the body itself.
+        context.fill(edge, with: .color(.white.opacity(0.85)))
+        context.fill(body, with: fill)
+        // Light from the top left and a shadow to the bottom right give it volume.
+        context.drawLayer { shade in
+            shade.clip(to: body)
+            shade.fill(Path(figure.bounds.insetBy(dx: -20, dy: -20)),
+                       with: .linearGradient(Gradient(colors: [.white.opacity(0.35), .clear, .black.opacity(0.28)]),
+                                             startPoint: figure.bounds.origin,
+                                             endPoint: CGPoint(x: figure.bounds.maxX, y: figure.bounds.maxY)))
+            // A soft sheen down each limb makes them look round.
+            shade.addFilter(.blur(radius: figure.unit * 0.03))
+            for (a, b, width) in figure.sheens {
+                var line = Path()
+                line.move(to: a)
+                line.addLine(to: b)
+                shade.stroke(line, with: .color(.white.opacity(0.38)), style: StrokeStyle(lineWidth: width, lineCap: .round))
             }
         }
+        // The joints this test measures.
+        for joint in focus {
+            guard let p = figure.joints[joint] else { continue }
+            let ring = figure.unit * (0.12 + 0.07 * pulse)
+            context.stroke(Path(ellipseIn: CGRect(x: p.x - ring, y: p.y - ring, width: ring * 2, height: ring * 2)),
+                           with: .color(.white.opacity(0.95 - 0.55 * pulse)), lineWidth: 2.5)
+            let dot = figure.unit * 0.045
+            context.fill(Path(ellipseIn: CGRect(x: p.x - dot, y: p.y - dot, width: dot * 2, height: dot * 2)), with: .color(.white))
+        }
+    }
+}
+
+/// Body shapes from joint positions (in view points). Sizes follow average human proportions,
+/// measured in `unit`: the trunk length, steadied by the shin, which keeps its length in any pose.
+private struct Mannequin {
+    let joints: [BodyJoint: CGPoint]
+    let unit: CGFloat
+    private var parts: [(CGFloat) -> Path] = []
+    private(set) var sheens: [(CGPoint, CGPoint, CGFloat)] = []
+    private(set) var bounds = CGRect.null
+
+    init?(joints: [BodyJoint: CGPoint]) {
+        self.joints = joints
+        func mid(_ a: BodyJoint, _ b: BodyJoint) -> CGPoint? {
+            switch (joints[a], joints[b]) {
+            case let (p?, q?): CGPoint(x: (p.x + q.x) / 2, y: (p.y + q.y) / 2)
+            case let (p, q): p ?? q
+            }
+        }
+        guard let hips = mid(.leftHip, .rightHip), let shoulders = mid(.leftShoulder, .rightShoulder) ?? joints[.neck] else { return nil }
+        let shin = [(BodyJoint.leftKnee, BodyJoint.leftAnkle), (.rightKnee, .rightAnkle)]
+            .compactMap { pair in joints[pair.0].flatMap { k in joints[pair.1].map { Self.length(k, $0) } } }.max() ?? 0
+        unit = max(Self.length(shoulders, hips), shin * 1.3, 20)
+        let u = unit
+
+        // Torso: shaped (shoulders, waist, hips) when seen from the front; a rounded column side-on.
+        if let ls = joints[.leftShoulder], let rs = joints[.rightShoulder], let lh = joints[.leftHip], let rh = joints[.rightHip],
+           Self.length(ls, rs) > u * 0.35 {
+            add { grow in Self.torso(ls: ls, rs: rs, lh: lh, rh: rh, unit: u, grow: grow) }
+        } else {
+            add { grow in Self.capsule(shoulders, hips, u * 0.2 + grow, u * 0.19 + grow) }
+        }
+
+        // Neck and head.
+        let neckBase = joints[.neck] ?? shoulders
+        let up = Self.unitVector(from: hips, to: shoulders)
+        let face = joints[.nose] ?? CGPoint(x: neckBase.x + up.x * u * 0.32, y: neckBase.y + up.y * u * 0.32)
+        let headAxis = Self.unitVector(from: neckBase, to: face)
+        let headCenter = CGPoint(x: face.x + headAxis.x * u * 0.04, y: face.y + headAxis.y * u * 0.04)
+        let chin = CGPoint(x: headCenter.x - headAxis.x * u * 0.2, y: headCenter.y - headAxis.y * u * 0.2)
+        add { grow in Self.capsule(neckBase, chin, u * 0.1 + grow, u * 0.09 + grow) }
+        add { grow in Self.head(center: headCenter, axis: headAxis, unit: u, grow: grow) }
+
+        // Arms: upper arm, forearm, hand.
+        for (s, e, w) in [(BodyJoint.leftShoulder, BodyJoint.leftElbow, BodyJoint.leftWrist), (.rightShoulder, .rightElbow, .rightWrist)] {
+            guard let shoulder = joints[s] else { continue }
+            let elbow = joints[e], wrist = joints[w]
+            add { grow in Self.circle(shoulder, u * 0.11 + grow) }
+            if let elbow {
+                add { grow in Self.capsule(shoulder, elbow, u * 0.1 + grow, u * 0.075 + grow) }
+                sheens.append((shoulder, elbow, u * 0.04))
+            }
+            if let wrist, let from = elbow ?? Optional(shoulder) {
+                add { grow in Self.capsule(from, wrist, u * 0.075 + grow, u * 0.055 + grow) }
+                let dir = Self.unitVector(from: from, to: wrist)
+                let fingertips = CGPoint(x: wrist.x + dir.x * u * 0.17, y: wrist.y + dir.y * u * 0.17)
+                add { grow in Self.capsule(wrist, fingertips, u * 0.06 + grow, u * 0.045 + grow) }
+                sheens.append((from, wrist, u * 0.03))
+            }
+        }
+
+        // Legs: thigh, calf, foot.
+        for (h, k, a, side) in [(BodyJoint.leftHip, BodyJoint.leftKnee, BodyJoint.leftAnkle, CGFloat(1)), (.rightHip, .rightKnee, .rightAnkle, -1)] {
+            guard let hip = joints[h] else { continue }
+            let knee = joints[k], ankle = joints[a]
+            if let knee {
+                add { grow in Self.capsule(hip, knee, u * 0.18 + grow, u * 0.115 + grow) }
+                sheens.append((hip, knee, u * 0.06))
+            }
+            if let ankle, let from = knee ?? Optional(hip) {
+                // The calf is fullest just below the knee.
+                let calf = CGPoint(x: from.x + (ankle.x - from.x) * 0.3, y: from.y + (ankle.y - from.y) * 0.3)
+                add { grow in Self.capsule(from, calf, u * 0.11 + grow, u * 0.115 + grow) }
+                add { grow in Self.capsule(calf, ankle, u * 0.115 + grow, u * 0.065 + grow) }
+                let toe = CGPoint(x: ankle.x + side * u * 0.1, y: ankle.y + u * 0.07)
+                add { grow in Self.capsule(ankle, toe, u * 0.065 + grow, u * 0.05 + grow) }
+                sheens.append((from, ankle, u * 0.045))
+            }
+        }
+
+        bounds = silhouette(grow: 0).boundingRect
+    }
+
+    private mutating func add(_ part: @escaping (CGFloat) -> Path) { parts.append(part) }
+
+    /// All the parts merged into one outline; `grow` widens it for the edge and glow.
+    func silhouette(grow: CGFloat) -> Path {
+        parts.reduce(Path()) { $0.isEmpty ? $1(grow) : $0.union($1(grow)) }
+    }
+
+    // MARK: Shapes
+
+    static func length(_ a: CGPoint, _ b: CGPoint) -> CGFloat { hypot(b.x - a.x, b.y - a.y) }
+
+    static func unitVector(from a: CGPoint, to b: CGPoint) -> CGPoint {
+        let l = max(length(a, b), 0.001)
+        return CGPoint(x: (b.x - a.x) / l, y: (b.y - a.y) / l)
+    }
+
+    static func circle(_ c: CGPoint, _ r: CGFloat) -> Path {
+        Path(ellipseIn: CGRect(x: c.x - r, y: c.y - r, width: r * 2, height: r * 2))
+    }
+
+    /// Two circles joined by their outer tangents: a limb that tapers from `ra` to `rb`.
+    static func capsule(_ a: CGPoint, _ b: CGPoint, _ ra: CGFloat, _ rb: CGFloat) -> Path {
+        let d = length(a, b)
+        guard d > abs(ra - rb) + 0.5 else { return circle(ra >= rb ? a : b, max(ra, rb)) }
+        let theta = atan2(b.y - a.y, b.x - a.x)
+        let phi = acos((ra - rb) / d)
+        var points: [CGPoint] = []
+        let steps = 10
+        for i in 0...steps {
+            let t = theta + phi + (2 * .pi - 2 * phi) * CGFloat(i) / CGFloat(steps)
+            points.append(CGPoint(x: a.x + ra * cos(t), y: a.y + ra * sin(t)))
+        }
+        for i in 0...steps {
+            let t = theta - phi + 2 * phi * CGFloat(i) / CGFloat(steps)
+            points.append(CGPoint(x: b.x + rb * cos(t), y: b.y + rb * sin(t)))
+        }
+        var path = Path()
+        path.addLines(points)
+        path.closeSubpath()
+        return path
+    }
+
+    /// Shoulders, a narrower waist and hips, with curved sides.
+    static func torso(ls: CGPoint, rs: CGPoint, lh: CGPoint, rh: CGPoint, unit u: CGFloat, grow: CGFloat) -> Path {
+        func push(_ p: CGPoint, awayFrom c: CGPoint, by amount: CGFloat) -> CGPoint {
+            let v = unitVector(from: c, to: p)
+            return CGPoint(x: p.x + v.x * amount, y: p.y + v.y * amount)
+        }
+        let top = CGPoint(x: (ls.x + rs.x) / 2, y: (ls.y + rs.y) / 2)
+        let bottom = CGPoint(x: (lh.x + rh.x) / 2, y: (lh.y + rh.y) / 2)
+        let lShoulder = push(ls, awayFrom: top, by: u * 0.08 + grow)
+        let rShoulder = push(rs, awayFrom: top, by: u * 0.08 + grow)
+        let lHip = push(lh, awayFrom: bottom, by: u * 0.12 + grow)
+        let rHip = push(rh, awayFrom: bottom, by: u * 0.12 + grow)
+        let waistMid = CGPoint(x: top.x + (bottom.x - top.x) * 0.62, y: top.y + (bottom.y - top.y) * 0.62)
+        let across = unitVector(from: rShoulder, to: lShoulder)
+        let halfWaist = min(length(lHip, rHip), length(lShoulder, rShoulder)) * 0.38 + grow
+        let lWaist = CGPoint(x: waistMid.x + across.x * halfWaist, y: waistMid.y + across.y * halfWaist)
+        let rWaist = CGPoint(x: waistMid.x - across.x * halfWaist, y: waistMid.y - across.y * halfWaist)
+        let neckDip = CGPoint(x: top.x - (bottom.x - top.x) * 0.06, y: top.y - (bottom.y - top.y) * 0.06)
+        let crotch = CGPoint(x: bottom.x + (bottom.x - top.x) * 0.12, y: bottom.y + (bottom.y - top.y) * 0.12 + grow)
+        var path = Path()
+        path.move(to: neckDip)
+        path.addQuadCurve(to: lShoulder, control: CGPoint(x: lShoulder.x - (lShoulder.x - neckDip.x) * 0.3, y: neckDip.y))
+        path.addQuadCurve(to: lWaist, control: CGPoint(x: lShoulder.x, y: (lShoulder.y + lWaist.y) / 2))
+        path.addQuadCurve(to: lHip, control: CGPoint(x: lWaist.x, y: (lWaist.y + lHip.y) / 2))
+        path.addQuadCurve(to: crotch, control: CGPoint(x: lHip.x, y: crotch.y))
+        path.addQuadCurve(to: rHip, control: CGPoint(x: rHip.x, y: crotch.y))
+        path.addQuadCurve(to: rWaist, control: CGPoint(x: rWaist.x, y: (rWaist.y + rHip.y) / 2))
+        path.addQuadCurve(to: rShoulder, control: CGPoint(x: rShoulder.x, y: (rShoulder.y + rWaist.y) / 2))
+        path.addQuadCurve(to: neckDip, control: CGPoint(x: rShoulder.x - (rShoulder.x - neckDip.x) * 0.3, y: neckDip.y))
+        path.closeSubpath()
+        return path
+    }
+
+    /// An egg-shaped head lined up with the neck.
+    static func head(center: CGPoint, axis: CGPoint, unit u: CGFloat, grow: CGFloat) -> Path {
+        let width = u * 0.33 + grow * 2, height = u * 0.43 + grow * 2
+        let angle = atan2(axis.y, axis.x) + .pi / 2
+        let transform = CGAffineTransform(translationX: center.x, y: center.y).rotated(by: angle)
+        return Path(ellipseIn: CGRect(x: -width / 2, y: -height / 2, width: width, height: height)).applying(transform)
     }
 }

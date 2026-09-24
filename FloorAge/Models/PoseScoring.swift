@@ -174,41 +174,67 @@ struct ReachEstimator {
 }
 
 extension BodyPose {
-    /// A made-up front or side view skeleton, for tests and the Debug demo screens.
-    /// `rise` 1 is standing and 0 seated; `lift` raises the left foot (0–1); `fold` bends forward
-    /// until the wrists reach `wristDepth` shin lengths above the ankles.
-    static func sample(rise: Double = 1, lift: Double = 0, fold: Double = 0, wristDepth: Double = 1.4) -> BodyPose {
-        let ankleY = 0.12, shin = 0.2
+    /// A made-up skeleton, for tests and the Debug demo screens. Seen from the front unless `fold`
+    /// is above 0, which shows a forward fold side-on (facing right) until the wrists reach
+    /// `wristDepth` shin lengths above the ankles. `rise` 1 is standing and 0 seated; `lift` raises
+    /// the left foot (0–1); `armsCrossed` folds the arms over the chest, as in the chair stand;
+    /// `armSpread` holds the arms out a little, as for balance.
+    static func sample(rise: Double = 1, lift: Double = 0, fold: Double = 0, wristDepth: Double = 1.4,
+                       armsCrossed: Bool = false, armSpread: Double = 0) -> BodyPose {
+        let ankleY = 0.12, shin = 0.2, torso = 0.26
         let kneeY = ankleY + shin
         let hipY = kneeY + shin * rise
-        let torso = 0.28
-        let leanForward = fold * 0.2
-        let neck = CGPoint(x: 0.5 + leanForward, y: hipY + torso * (1 - fold * 0.9))
-        let wristY = fold > 0 ? ankleY + shin * (wristDepth + (1 - fold) * 2) : hipY - 0.02
-        let leftWrist = CGPoint(x: 0.6 + leanForward * 0.5, y: wristY)
-        let rightWrist = CGPoint(x: 0.4 + leanForward * 0.5, y: wristY + 0.01)
-        func elbow(_ shoulder: CGPoint, _ wrist: CGPoint, out: Double) -> CGPoint {
-            CGPoint(x: (shoulder.x + wrist.x) / 2 + out, y: (shoulder.y + wrist.y) / 2)
+        if fold > 0 {
+            // Side-on: left and right overlap, and the trunk tips forward from the hips.
+            let x = 0.45
+            let tilt = fold * 1.8
+            let neck = CGPoint(x: x + torso * sin(tilt), y: hipY + torso * cos(tilt))
+            let shoulder = CGPoint(x: neck.x - 0.01 * sin(tilt), y: neck.y - 0.01 * cos(tilt))
+            let wristY = min(ankleY + shin * (wristDepth + (1 - fold) * 2), shoulder.y - 0.05)
+            let wrist = CGPoint(x: shoulder.x + 0.03, y: wristY)
+            let elbow = CGPoint(x: (shoulder.x + wrist.x) / 2 + 0.01, y: (shoulder.y + wrist.y) / 2)
+            let head = tilt + 0.3
+            return BodyPose(joints: [
+                .nose: CGPoint(x: neck.x + 0.07 * sin(head), y: neck.y + 0.07 * cos(head)),
+                .neck: neck,
+                .leftShoulder: shoulder, .rightShoulder: CGPoint(x: shoulder.x - 0.004, y: shoulder.y),
+                .leftElbow: elbow, .rightElbow: CGPoint(x: elbow.x - 0.004, y: elbow.y),
+                .leftWrist: wrist, .rightWrist: CGPoint(x: wrist.x - 0.004, y: wrist.y + 0.005),
+                .leftHip: CGPoint(x: x, y: hipY), .rightHip: CGPoint(x: x - 0.004, y: hipY),
+                .leftKnee: CGPoint(x: x + 0.005, y: kneeY), .rightKnee: CGPoint(x: x + 0.001, y: kneeY),
+                .leftAnkle: CGPoint(x: x, y: ankleY), .rightAnkle: CGPoint(x: x - 0.004, y: ankleY),
+            ])
         }
+        let neck = CGPoint(x: 0.5, y: hipY + torso)
         let leftShoulder = CGPoint(x: neck.x + 0.08, y: neck.y - 0.01)
         let rightShoulder = CGPoint(x: neck.x - 0.08, y: neck.y - 0.01)
-        let leftAnkleY = ankleY + lift * 0.14
-        let leftKneeY = kneeY + lift * 0.1
+        let leftWrist, rightWrist, leftElbow, rightElbow: CGPoint
+        if armsCrossed {
+            // Each hand on the opposite shoulder, elbows out and down.
+            leftWrist = CGPoint(x: neck.x - 0.06, y: neck.y - 0.08)
+            rightWrist = CGPoint(x: neck.x + 0.06, y: neck.y - 0.09)
+            leftElbow = CGPoint(x: neck.x + 0.1, y: neck.y - 0.15)
+            rightElbow = CGPoint(x: neck.x - 0.1, y: neck.y - 0.15)
+        } else {
+            leftWrist = CGPoint(x: 0.6 + armSpread, y: hipY - 0.02 + armSpread * 0.5)
+            rightWrist = CGPoint(x: 0.4 - armSpread, y: hipY - 0.01 + armSpread * 0.5)
+            leftElbow = CGPoint(x: (leftShoulder.x + leftWrist.x) / 2 + 0.02, y: (leftShoulder.y + leftWrist.y) / 2)
+            rightElbow = CGPoint(x: (rightShoulder.x + rightWrist.x) / 2 - 0.02, y: (rightShoulder.y + rightWrist.y) / 2)
+        }
         return BodyPose(joints: [
-            // The head tips forward and down with the fold.
-            .nose: CGPoint(x: neck.x + 0.07 * fold, y: neck.y + 0.07 * (1 - fold) - 0.02 * fold),
+            .nose: CGPoint(x: neck.x, y: neck.y + 0.07),
             .neck: neck,
             .leftShoulder: leftShoulder,
             .rightShoulder: rightShoulder,
-            .leftElbow: elbow(leftShoulder, leftWrist, out: 0.03),
-            .rightElbow: elbow(rightShoulder, rightWrist, out: -0.03),
+            .leftElbow: leftElbow,
+            .rightElbow: rightElbow,
             .leftWrist: leftWrist,
             .rightWrist: rightWrist,
             .leftHip: CGPoint(x: 0.55, y: hipY),
             .rightHip: CGPoint(x: 0.45, y: hipY),
-            .leftKnee: CGPoint(x: 0.56, y: leftKneeY),
+            .leftKnee: CGPoint(x: 0.56, y: kneeY + lift * 0.1),
             .rightKnee: CGPoint(x: 0.44, y: kneeY),
-            .leftAnkle: CGPoint(x: 0.56, y: leftAnkleY),
+            .leftAnkle: CGPoint(x: 0.56, y: ankleY + lift * 0.14),
             .rightAnkle: CGPoint(x: 0.44, y: ankleY),
         ])
     }

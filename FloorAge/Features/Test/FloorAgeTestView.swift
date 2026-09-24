@@ -168,15 +168,45 @@ struct FloorAgeTestView: View {
         let unsafe = PlanBuilder.unsafe(for: model.profile?.limitations ?? []).contains(test.exerciseID)
         return ScrollView {
             VStack(alignment: .leading, spacing: 18) {
-                Group {
-                    if useCamera, test.usesCamera {
-                        CameraStage(camera: camera, feature: test.feature, focus: test.cameraFocus, reading: cameraReading(test))
-                            .frame(height: 440)
-                    } else {
-                        AvatarView(controller: avatar)
-                            .frame(height: 280)
+                // One 3D view throughout: with the camera on, the realistic coach copies you and the
+                // camera itself becomes the small picture.
+                let mirroring = useCamera && test.usesCamera
+                AvatarView(controller: avatar)
+                    .frame(height: mirroring ? 420 : 280)
+                    .overlay(alignment: .topTrailing) {
+                        if mirroring {
+                            CameraStage(camera: camera, feature: test.feature, focus: test.cameraFocus)
+                                .frame(width: 96, height: 150)
+                                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                                .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).strokeBorder(.white.opacity(0.8), lineWidth: 2))
+                                .shadow(color: .black.opacity(0.25), radius: 8, y: 4)
+                                .padding(.top, 40)
+                                .padding(.trailing, 12)
+                        }
                     }
-                }
+                    .overlay(alignment: .topLeading) {
+                        if mirroring {
+                            VStack(alignment: .leading, spacing: 6) {
+                                Label("Mirroring you", systemImage: "person.fill.viewfinder")
+                                    .font(.caption.weight(.bold))
+                                    .foregroundStyle(.white)
+                                    .padding(.horizontal, 10)
+                                    .padding(.vertical, 5)
+                                    .background(.black.opacity(0.35), in: Capsule())
+                                if let reading = cameraReading(test), camera.pose?.legsVisible == true {
+                                    Text(reading)
+                                        .font(.subheadline.weight(.bold))
+                                        .foregroundStyle(.white)
+                                        .padding(.horizontal, 12)
+                                        .padding(.vertical, 6)
+                                        .background(test.feature.gradient, in: Capsule())
+                                        .shadow(color: test.feature.colors.last!.opacity(0.5), radius: 8)
+                                }
+                            }
+                            .padding(.top, 40)
+                            .padding(.leading, 12)
+                        }
+                    }
                 .background(RadialGradient(colors: [test.feature.tint.opacity(0.28), .clear],
                                            center: .bottom, startRadius: 10, endRadius: 230))
                 .clipShape(RoundedRectangle(cornerRadius: 28, style: .continuous))
@@ -447,11 +477,18 @@ struct FloorAgeTestView: View {
             camera.start()
         } else {
             camera.stop()
+            avatar.follow(nil)
         }
     }
 
+    private static let mirror = PoseMirror(rig: ExerciseLibrary.shared.rig)
+
     private func handle(_ pose: BodyPose) {
         guard useCamera, tests.indices.contains(step - 1), result == nil else { return }
+        if pose.legsVisible,
+           let mirrored = Self.mirror.pose(from: pose, aspect: Double(camera.frameSize.width / max(camera.frameSize.height, 1))) {
+            avatar.follow(mirrored)
+        }
         switch tests[step - 1] {
         case .chairStand:
             if chairGo, chairCountdown != nil, chairCounter.update(pose) {

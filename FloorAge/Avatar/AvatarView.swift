@@ -35,6 +35,9 @@ final class AvatarController: NSObject, ObservableObject {
     private let camera = PerspectiveCamera()
     private let turntable = Entity()
     private weak var view: ARView?
+    /// While set, the coach copies this pose (from the camera) instead of playing the exercise.
+    private var live: Pose?
+    private var yawBeforeLive: Float?
 
     init(exerciseID: String? = nil) {
         super.init()
@@ -90,6 +93,25 @@ final class AvatarController: NSObject, ObservableObject {
         self.distance = distance
         cameraHeight = height
         updateCamera()
+    }
+
+    /// Makes the coach copy a live pose, like a mirror (turned to face the viewer). Pass nil to go
+    /// back to demonstrating the exercise. The exercise's props, such as the chair, stay in place.
+    func follow(_ pose: Pose?) {
+        if let pose {
+            if live == nil {
+                yawBeforeLive = yaw
+                yaw = 0
+                updateCamera()
+            }
+            live = pose
+        } else if live != nil {
+            live = nil
+            blendFrom = lastPose
+            blendTime = 0
+            if let yawBeforeLive { yaw = yawBeforeLive }
+            updateCamera()
+        }
     }
 
     func seek(to t: Double) {
@@ -175,6 +197,14 @@ final class AvatarController: NSObject, ObservableObject {
     }()
 
     private func tick(_ dt: TimeInterval) {
+        if let live {
+            // Ease towards each new camera pose so small jitters don't show.
+            let pose = lastPose.map { $0.blended(to: live, by: Float(min(dt * 14, 1))) } ?? live
+            lastPose = pose
+            rig.apply(alive(pose, dt: dt))
+            contactShadow?.position = [pose.pelvis.x, 0.004, pose.pelvis.z + 0.04]
+            return
+        }
         guard let clip else { return }
         if isPlaying {
             let previous = time

@@ -8536,6 +8536,22 @@
           }
         }
       }
+    },
+    "Mirroring you" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आपकी नकल कर रहे हैं"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Imitándote"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"
