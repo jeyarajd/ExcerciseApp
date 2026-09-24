@@ -513,6 +513,22 @@
         }
       }
     },
+    "Home Screen" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pantalla de inicio"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "होम स्क्रीन"
+          }
+        }
+      }
+    },
     "How hard was that?" : {
       "localizations" : {
         "es" : {
@@ -621,6 +637,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "अगला स्तर! अगली बार: %@।"
+          }
+        }
+      }
+    },
+    "Lock Screen" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pantalla bloqueada"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "लॉक स्क्रीन"
           }
         }
       }

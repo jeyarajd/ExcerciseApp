@@ -201,6 +201,14 @@ def draw_panel(img, ox, oy, world, pts, props, view, label):
             if view == "side":
                 back = proj([0, 0.9, h0 - half])
                 d.line([a, back], fill=(160, 120, 60), width=3)
+        elif prop["type"] == "wall":
+            # [x, height, z of the wall's face], as in AvatarSet.wall.
+            x, height, z = prop["position"]
+            if view == "side":
+                d.line([proj([0, 0, z]), proj([0, height, z])], fill=(170, 160, 150), width=4)
+            else:
+                a, b = proj([x - 0.7, height, 0]), proj([x + 0.7, 0, 0])
+                d.rectangle([a[0], a[1], b[0], b[1]], outline=(200, 190, 180), width=1)
     # draw far side first so the near side is on top
     order = sorted(BONES, key=lambda b: 0 if b[1].startswith("r") else 1)
     for a, b in order:

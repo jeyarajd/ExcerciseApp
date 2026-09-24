@@ -21,3 +21,4 @@ tools/out/
 *.p12
 
 .DS_Store
+__pycache__/

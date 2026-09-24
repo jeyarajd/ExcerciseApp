@@ -1133,7 +1133,25 @@ final class ProgressionTests: XCTestCase {
             for level in family.levels { XCTAssertNotNil(library.exercise(level.exercise), "\(family.id) \(level.exercise)") }
         }
         XCTAssertEqual(library.family("sit_to_stand")?.exercise(at: 2).name, "Low Chair Stand")
-        XCTAssertEqual(library.family("sit_to_stand")?.exercise(at: 2).id, "chair_stand", "the coach plays the chair stand")
+        // Each level shows its own movement: a low seat, a chair to touch, eyes shut, hands free.
+        XCTAssertEqual(library.family("sit_to_stand")?.exercise(at: 2).id, "low_chair_stand")
+        XCTAssertEqual(library.family("squat")?.exercise(at: 1).id, "chair_squat")
+        XCTAssertEqual(library.family("balance")?.exercise(at: 3).eyesClosed, true)
+        XCTAssertEqual(library.family("calf_raise")?.exercise(at: 3).id, "single_leg_calf_raise_free")
+        XCTAssertEqual(library.family("floor")?.exercise(at: 2).id, "kneel_to_stand_free")
+    }
+
+    func testHarderVersionsAreFilteredLikeTheirBase() {
+        let versions = ["chair_squat": "squat", "kneel_to_stand_free": "kneel_to_stand",
+                        "single_leg_calf_raise_free": "single_leg_calf_raise", "single_leg_balance_eyes_closed": "single_leg_balance"]
+        for limitation in Limitation.allCases {
+            let unsafe = PlanBuilder.unsafe(for: [limitation])
+            for (version, base) in versions where unsafe.contains(base) {
+                XCTAssertTrue(unsafe.contains(version), "\(version) with \(limitation)")
+            }
+        }
+        XCTAssertTrue(PlanBuilder.unsafe(for: [.dizziness]).contains("single_leg_balance_eyes_closed"))
+        XCTAssertTrue(PlanBuilder.unsafe(for: [.knee]).contains("low_chair_stand"), "a low seat bends the knee further")
     }
 
     func testTwoForTwoMovesUpOneLevel() {
@@ -1229,10 +1247,11 @@ final class ProgressionTests: XCTestCase {
         let fresh = LevelBook()
         XCTAssertEqual(fresh.item("chair_stand", reps: 10)?.exercise.id, "chair_stand", "most people start at level B")
         XCTAssertEqual(LevelBook(gentle: true).item("chair_stand", reps: 10)?.exercise.id, "chair_stand_hands", "gentle starts at A")
-        // Level D of sit to stand is the floor rise: knees cap it at the low chair.
+        // Level D of sit to stand is the floor rise. Knees cap it at an ordinary chair: the low seat
+        // bends the knee further.
         let top = ["sit_to_stand": ExerciseProgress(id: "sit_to_stand", level: 3)]
         XCTAssertEqual(LevelBook(progress: top).item("chair_stand")?.exercise.id, "sit_rise")
-        XCTAssertEqual(LevelBook(progress: top, limitations: [.knee]).item("chair_stand")?.exercise.name, "Low Chair Stand")
+        XCTAssertEqual(LevelBook(progress: top, limitations: [.knee]).item("chair_stand")?.exercise.name, "Chair Stand")
         // Eyes closed is out with dizziness.
         let balance = ["balance": ExerciseProgress(id: "balance", level: 3)]
         XCTAssertEqual(LevelBook(progress: balance, limitations: [.dizziness]).item("single_leg_balance")?.level, 2)

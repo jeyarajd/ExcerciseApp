@@ -221,8 +221,16 @@ private struct DemoScreenHost: View {
 @MainActor
 private enum SelfSnapshot {
     static func save(to path: String) {
+        capture { image in
+            let ok = (try? image?.pngData()?.write(to: URL(fileURLWithPath: path))) != nil
+            exit(ok ? 0 : 1)
+        }
+    }
+
+    /// The window as a picture, with each 3D view's own render laid over it.
+    static func capture(_ done: @escaping (UIImage?) -> Void) {
         let windows = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.flatMap(\.windows)
-        guard let window = windows.first(where: \.isKeyWindow) ?? windows.first else { exit(1) }
+        guard let window = windows.first(where: \.isKeyWindow) ?? windows.first else { return done(nil) }
         let arViews = allSubviews(of: window).compactMap { $0 as? ARView }
         let group = DispatchGroup()
         var stills: [UIImageView] = []
@@ -243,13 +251,70 @@ private enum SelfSnapshot {
                 _ = window.drawHierarchy(in: window.bounds, afterScreenUpdates: true)
             }
             stills.forEach { $0.removeFromSuperview() }
-            let ok = (try? image.pngData()?.write(to: URL(fileURLWithPath: path))) != nil
-            exit(ok ? 0 : 1)
+            done(image)
         }
     }
 
     private static func allSubviews(of view: UIView) -> [UIView] {
         view.subviews + view.subviews.flatMap(allSubviews)
+    }
+}
+
+/// `-demoAudit <folder>`: plays every exercise and saves a picture of the coach at each keyframe
+/// and halfway between keyframes (mirrored too, for exercises that switch sides), then quits.
+/// Launch it once per coach with `-coachLook female|male` and `-coachStyle realistic|friendly`.
+struct AvatarAuditView: View {
+    let folder: String
+    @StateObject private var avatar = AvatarController()
+
+    static var folder: String? {
+        #if DEBUG
+        UserDefaults.standard.string(forKey: "demoAudit")
+        #else
+        nil
+        #endif
+    }
+
+    var body: some View {
+        AvatarView(controller: avatar)
+            .ignoresSafeArea()
+            .background(AppBackground())
+            .overlay(alignment: .top) {
+                Text(avatar.exercise?.name ?? "")
+                    .font(.headline)
+                    .padding(Space.s)
+                    .background(.ultraThinMaterial, in: Capsule())
+                    .padding(.top, 60)
+            }
+            .task { await run() }
+    }
+
+    @MainActor
+    private func run() async {
+        try? await Task.sleep(for: .seconds(2))
+        // `-demoAuditExercises squat,toe_reach` limits it to those.
+        let only = UserDefaults.standard.string(forKey: "demoAuditExercises").map { Set($0.split(separator: ",").map(String.init)) }
+        for exercise in ExerciseLibrary.shared.exercises where only?.contains(exercise.id) ?? true {
+            let times = exercise.keyframes.map(\.t)
+            let moments = zip(times, times.dropFirst()).flatMap { [$0, ($0 + $1) / 2] } + [times.last ?? 0]
+            for mirrored in exercise.mirrorHalfway == true ? [false, true] : [false] {
+                avatar.play(exercise, mirrored: mirrored)
+                avatar.speed = 0
+                // `-demoAuditYaw 200` looks from that side instead of the exercise's own angle.
+                if UserDefaults.standard.object(forKey: "demoAuditYaw") != nil {
+                    avatar.turn(toDegrees: UserDefaults.standard.double(forKey: "demoAuditYaw"))
+                }
+                for t in moments {
+                    avatar.seek(to: t)
+                    // Long enough for the camera to turn and the framing to settle.
+                    try? await Task.sleep(for: .seconds(1.3))
+                    let name = String(format: "%@%@-%05.2f.png", exercise.id, mirrored ? "-mirrored" : "", t)
+                    let image = await withCheckedContinuation { done in SelfSnapshot.capture { done.resume(returning: $0) } }
+                    try? image?.pngData()?.write(to: URL(fileURLWithPath: folder).appendingPathComponent(name))
+                }
+            }
+        }
+        exit(0)
     }
 }
 
@@ -260,7 +325,7 @@ private struct PortraitView: View {
     var body: some View {
         AvatarView(controller: avatar)
             .ignoresSafeArea()
-            .onAppear { avatar.setCamera(distance: 1.05, height: 1.6) }
+            .onAppear { avatar.setCamera(distance: 1.05, height: 1.6, fitsWholeBody: false) }
     }
 }
 

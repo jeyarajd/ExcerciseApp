@@ -117,6 +117,11 @@ final class AvatarRig {
         joints["pelvis"]?.position = pose.pelvis
     }
 
+    /// The friendly coach is built at the skeleton's own size.
+    var scale: Float { 1 }
+    /// The friendly coach has a big head and a hair bun on top.
+    var headHeight: Float { 0.42 }
+
     /// 0 = eyes open, 1 = closed.
     func blink(_ closed: Float) {
         for eye in eyes { eye.scale = [1, max(0.08, 1 - closed), 1] }
@@ -157,12 +162,14 @@ final class AvatarRig {
         }
 
         // Where the waist (spine) and ribs (chest) pieces meet, their cross-sections are the same
-        // shape, so the join is a level line: the edge of the colour-blocked top.
+        // shape, so the join is a level line: the edge of the colour-blocked top. Above the chest
+        // joint (0.22) the waist narrows inside the ribs, so a deep bend never pushes it out
+        // through the back of the top.
         let waist: [Ring] = female
             ? [Ring(-0.06, 0, 0), Ring(-0.05, 0.13, 0.088), Ring(0.04, 0.124, 0.085), Ring(0.14, 0.126, 0.086),
-               Ring(0.26, 0.128, 0.088), Ring(0.285, 0.1, 0.068), Ring(0.3, 0, 0)]
+               Ring(0.21, 0.125, 0.085), Ring(0.25, 0.1, 0.066), Ring(0.27, 0, 0)]
             : [Ring(-0.06, 0, 0), Ring(-0.05, 0.14, 0.09), Ring(0.04, 0.142, 0.092), Ring(0.14, 0.143, 0.093),
-               Ring(0.26, 0.145, 0.094), Ring(0.285, 0.112, 0.073), Ring(0.3, 0, 0)]
+               Ring(0.21, 0.139, 0.09), Ring(0.25, 0.11, 0.07), Ring(0.27, 0, 0)]
         attach("spine", MeshKit.lathe(waist), panel)
 
         let ribs: [Ring] = female
@@ -198,12 +205,14 @@ final class AvatarRig {
         for side in ["l", "r"] {
             attach(side + "Shoulder", MeshKit.limb(length: 0.27, radii: [0.046, 0.044, 0.04, 0.036].map { $0 * armScale }, top: -0.02), skin)
             if !female {
-                let sleeve = [Ring(0.05, 0, 0), Ring(0.035, 0.047, 0.049), Ring(0.0, 0.053, 0.053), Ring(-0.11, 0.05, 0.05),
-                              Ring(-0.118, 0.044, 0.044), Ring(-0.095, 0, 0)]
+                // A rounded shoulder, so the sleeve never shows a flat end when the arms hang forward.
+                let sleeve = [Ring(0.066, 0, 0), Ring(0.06, 0.026, 0.027), Ring(0.047, 0.042, 0.043), Ring(0.025, 0.051, 0.051),
+                              Ring(0.0, 0.053, 0.053), Ring(-0.11, 0.05, 0.05), Ring(-0.118, 0.044, 0.044), Ring(-0.095, 0, 0)]
                 attach(side + "Shoulder", MeshKit.lathe(sleeve), top)
             }
             attach(side + "Elbow", MeshKit.limb(length: 0.21, radii: [0.037, 0.038, 0.031, 0.026].map { $0 * armScale }), skin)
-            let palm = [Ring(0.012, 0, 0), Ring(0.008, 0.014, 0.022), Ring(-0.02, 0.017, 0.033), Ring(-0.058, 0.016, 0.034),
+            // The palm starts inside the end of the forearm, so there's no pinch at the wrist.
+            let palm = [Ring(0.024, 0, 0), Ring(0.018, 0.019, 0.022), Ring(0.004, 0.021, 0.028), Ring(-0.02, 0.018, 0.033), Ring(-0.058, 0.016, 0.034),
                         Ring(-0.086, 0.013, 0.027), Ring(-0.102, 0, 0)]
             attach(side + "Wrist", MeshKit.lathe(palm.map { $0.scaled(armScale) }), skin)
             let thumb = attach(side + "Wrist", MeshKit.limb(length: 0.03 * armScale, radii: [0.012, 0.01].map { $0 * armScale }),
@@ -394,18 +403,54 @@ enum AvatarSet {
         return shadow
     }
 
+    /// A stretch of warm plaster wall with a skirting board, for the wall sit. `position` is
+    /// [x, height, z of the wall's face]. One-sided (faces the coach, back faces culled), so
+    /// turning the coach round never puts a wall between the camera and the coach.
+    private static func wall(_ prop: Prop) -> Entity {
+        var plaster = PhysicallyBasedMaterial()
+        plaster.baseColor = .init(tint: UIColor(red: 0.96, green: 0.92, blue: 0.86, alpha: 1))
+        plaster.roughness = .init(floatLiteral: 0.9)
+        plaster.metallic = .init(floatLiteral: 0)
+        var skirting = plaster
+        skirting.baseColor = .init(tint: UIColor(red: 0.88, green: 0.83, blue: 0.76, alpha: 1))
+        let height = prop.position[1], width: Float = 1.4
+        let wall = Entity()
+        wall.position = [prop.position[0], 0, prop.position[2]]
+        let panel = ModelEntity(mesh: .generatePlane(width: width, height: height), materials: [plaster])
+        panel.position = [0, height / 2, 0]
+        wall.addChild(panel)
+        let board = ModelEntity(mesh: .generatePlane(width: width, height: 0.1), materials: [skirting])
+        board.position = [0, 0.05, 0.003]
+        wall.addChild(board)
+        return wall
+    }
+
     static func mat() -> Entity {
         var m = PhysicallyBasedMaterial()
         m.baseColor = .init(tint: UIColor(red: 0.17, green: 0.6, blue: 0.55, alpha: 1))
         m.roughness = .init(floatLiteral: 0.85)
         m.metallic = .init(floatLiteral: 0)
-        let mat = ModelEntity(mesh: .generateBox(size: [0.66, 0.01, 1.8], cornerRadius: 0.005), materials: [m])
-        mat.position = [0, -0.007, -0.1]
+        let mat = ModelEntity(mesh: .generateBox(size: [0.66, 0.01, matLength], cornerRadius: 0.005), materials: [m])
+        mat.transform = matTransform(endingAt: nil)
         return mat
     }
 
+    private static let matLength: Float = 1.8
+    private static let matFront: Float = 0.8
+
+    /// The mat's placement: from its front edge back to `wallZ` when there's a wall, otherwise
+    /// its full length.
+    static func matTransform(endingAt wallZ: Float?) -> Transform {
+        let back = max(wallZ ?? matFront - matLength, matFront - matLength)
+        let length = matFront - back
+        return Transform(scale: [1, 1, length / matLength], rotation: simd_quatf(ix: 0, iy: 0, iz: 0, r: 1),
+                         translation: [0, -0.007, (matFront + back) / 2])
+    }
+
     static func prop(_ prop: Prop) -> Entity? {
-        guard prop.type == "chair", prop.position.count == 3 else { return nil }
+        guard prop.position.count == 3 else { return nil }
+        if prop.type == "wall" { return wall(prop) }
+        guard prop.type == "chair" else { return nil }
         var wood = PhysicallyBasedMaterial()
         wood.baseColor = .init(tint: UIColor(red: 0.55, green: 0.37, blue: 0.22, alpha: 1))
         wood.roughness = .init(floatLiteral: 0.55)

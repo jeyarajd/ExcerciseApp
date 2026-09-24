@@ -64,16 +64,18 @@ enum MeshKit {
     }
 
     /// A rounded limb hanging down the -Y axis: radii from top to bottom, evenly spaced over
-    /// `length`, with rounded ends.
+    /// `length`, with hemispherical ends, so a shoulder or elbow seen end-on is a ball, not a disc.
     static func limb(length: Float, radii: [Float], depth: Float = 1, top: Float = 0) -> MeshResource {
         let first = radii.first ?? 0.05, last = radii.last ?? 0.05
-        var rings = [Ring(top + first * 0.9, 0, 0), Ring(top + first * 0.55, first * 0.83, first * 0.83 * depth)]
+        // Points on a quarter circle, from the pole to the side.
+        let cap: [(up: Float, out: Float)] = [(1, 0), (0.92, 0.38), (0.71, 0.71), (0.38, 0.92)]
+        var rings = cap.map { Ring(top + first * $0.up, first * $0.out, first * $0.out * depth) }
         for (i, r) in radii.enumerated() {
             let y = top - length * Float(i) / Float(max(radii.count - 1, 1))
             rings.append(Ring(y, r, r * depth))
         }
         let end = top - length
-        rings += [Ring(end - last * 0.55, last * 0.83, last * 0.83 * depth), Ring(end - last * 0.9, 0, 0)]
+        rings += cap.reversed().map { Ring(end - last * $0.up, last * $0.out, last * $0.out * depth) }
         return lathe(rings)
     }
 

@@ -652,10 +652,12 @@ enum PlanBuilder {
 
     static func unsafe(for limitations: Set<Limitation>) -> Set<String> {
         var ids = Set<String>()
-        if limitations.contains(.knee) { ids.formUnion(["sit_rise", "deep_squat_hold", "squat", "wall_sit", "kneel_to_stand", "half_kneel"]) }
-        if limitations.contains(.hip) { ids.formUnion(["sit_rise", "deep_squat_hold", "side_leg_raise", "kneel_to_stand", "half_kneel"]) }
+        if limitations.contains(.knee) {
+            ids.formUnion(["sit_rise", "deep_squat_hold", "squat", "chair_squat", "low_chair_stand", "wall_sit", "kneel_to_stand", "kneel_to_stand_free", "half_kneel"])
+        }
+        if limitations.contains(.hip) { ids.formUnion(["sit_rise", "deep_squat_hold", "side_leg_raise", "kneel_to_stand", "kneel_to_stand_free", "half_kneel"]) }
         if limitations.contains(.back) { ids.formUnion(["toe_reach", "sit_rise"]) }
-        if limitations.contains(.dizziness) { ids.formUnion(["toe_reach"]) }
+        if limitations.contains(.dizziness) { ids.formUnion(["toe_reach", "single_leg_balance_eyes_closed"]) }
         return ids
     }
 

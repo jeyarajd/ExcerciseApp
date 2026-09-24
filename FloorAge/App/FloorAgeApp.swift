@@ -45,7 +45,9 @@ struct RootView: View {
     private let demoExercise = UserDefaults.standard.string(forKey: "demoExercise")
 
     var body: some View {
-        if let demoExercise {
+        if let folder = AvatarAuditView.folder {
+            AvatarAuditView(folder: folder)
+        } else if let demoExercise {
             DemoView(exerciseID: demoExercise)
         } else if let screen = DemoScreen.current {
             DemoScreen.view(for: screen)

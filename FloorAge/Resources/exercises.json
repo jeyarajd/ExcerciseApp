@@ -73,7 +73,7 @@
       "lElbow": [-40, 0, 0], "rElbow": [-40, 0, 0]
     },
     "rightKneeUp": {
-      "rHip": [-45, 0, 0], "rKnee": [75, 0, 0], "rAnkle": [15, 0, 0],
+      "rHip": [-60, 0, 0], "rKnee": [85, 0, 0], "rAnkle": [15, 0, 0],
       "lShoulder": [0, 0, 40], "rShoulder": [0, 0, -40],
       "lElbow": [-10, 0, 0], "rElbow": [-10, 0, 0]
     },
@@ -169,7 +169,7 @@
     },
     {
       "id": "single_leg_balance",
-      "cameraYaw": 20,
+      "cameraYaw": 50,
       "name": "One-Leg Balance",
       "kind": "hold",
       "defaultSeconds": 30,
@@ -341,16 +341,17 @@
       "intro": "Wall sit. Stand with your back flat against a wall, feet a step forward. Slide down until your knees bend, like sitting on an invisible chair, and hold.",
       "cues": ["Back flat on the wall.", "Knees over your ankles.", "Keep breathing."],
       "safety": "Only slide as low as feels comfortable for your knees.",
+      "props": [{ "type": "wall", "position": [0, 1.9, -0.56] }],
       "keyframes": [
-        { "t": 0, "pose": "stand" },
-        { "t": 1.6, "pose": "stand", "joints": { "lHip": [-75, 0, 4], "rHip": [-75, 0, -4], "lKnee": [75, 0, 0], "rKnee": [75, 0, 0], "lShoulder": [0, 0, 10], "rShoulder": [0, 0, -10] } },
-        { "t": 6.4, "pose": "stand", "joints": { "lHip": [-75, 0, 4], "rHip": [-75, 0, -4], "lKnee": [75, 0, 0], "rKnee": [75, 0, 0], "lShoulder": [0, 0, 10], "rShoulder": [0, 0, -10] } },
-        { "t": 8.0, "pose": "stand" }
+        { "t": 0, "pose": "stand", "ground": "lowest", "rootZ": -0.414, "joints": { "lHip": [-30, 0, 4], "rHip": [-30, 0, -4], "lAnkle": [30, 0, 0], "rAnkle": [30, 0, 0] } },
+        { "t": 1.6, "pose": "stand", "ground": "lowest", "rootZ": -0.414, "joints": { "lHip": [-75, 0, 4], "rHip": [-75, 0, -4], "lKnee": [75, 0, 0], "rKnee": [75, 0, 0], "lShoulder": [0, 0, 10], "rShoulder": [0, 0, -10] } },
+        { "t": 6.4, "pose": "stand", "ground": "lowest", "rootZ": -0.414, "joints": { "lHip": [-75, 0, 4], "rHip": [-75, 0, -4], "lKnee": [75, 0, 0], "rKnee": [75, 0, 0], "lShoulder": [0, 0, 10], "rShoulder": [0, 0, -10] } },
+        { "t": 8.0, "pose": "stand", "ground": "lowest", "rootZ": -0.414, "joints": { "lHip": [-30, 0, 4], "rHip": [-30, 0, -4], "lAnkle": [30, 0, 0], "rAnkle": [30, 0, 0] } }
       ]
     },
     {
       "id": "feet_together_balance",
-      "cameraYaw": 30,
+      "cameraYaw": 80,
       "name": "Feet Together Balance",
       "kind": "hold",
       "defaultSeconds": 30,
@@ -367,7 +368,7 @@
     },
     {
       "id": "tandem_stance",
-      "cameraYaw": 50,
+      "cameraYaw": 70,
       "name": "Tandem Stance",
       "kind": "hold",
       "defaultSeconds": 30,
@@ -378,15 +379,15 @@
       "safety": "Stand next to a wall or kitchen counter you can touch if you wobble.",
       "keyframes": [
         { "t": 0, "pose": "stand", "joints": { "lShoulder": [0, 0, 20], "rShoulder": [0, 0, -20] } },
-        { "t": 1.2, "pose": "stand", "joints": { "lHip": [-7, 0, -7], "rHip": [7, 0, 7], "lShoulder": [0, 0, 25], "rShoulder": [0, 0, -25] } },
-        { "t": 4.0, "pose": "stand", "joints": { "spine": [0, 0, -2], "lHip": [-7, 0, -7], "rHip": [7, 0, 7], "lShoulder": [0, 0, 32], "rShoulder": [0, 0, -20] } },
-        { "t": 6.8, "pose": "stand", "joints": { "lHip": [-7, 0, -7], "rHip": [7, 0, 7], "lShoulder": [0, 0, 25], "rShoulder": [0, 0, -25] } },
+        { "t": 1.2, "pose": "stand", "joints": { "lHip": [-10, 0, -7], "rHip": [10, 0, 7], "lShoulder": [0, 0, 25], "rShoulder": [0, 0, -25] } },
+        { "t": 4.0, "pose": "stand", "joints": { "spine": [0, 0, -2], "lHip": [-10, 0, -7], "rHip": [10, 0, 7], "lShoulder": [0, 0, 32], "rShoulder": [0, 0, -20] } },
+        { "t": 6.8, "pose": "stand", "joints": { "lHip": [-10, 0, -7], "rHip": [10, 0, 7], "lShoulder": [0, 0, 25], "rShoulder": [0, 0, -25] } },
         { "t": 8.0, "pose": "stand", "joints": { "lShoulder": [0, 0, 20], "rShoulder": [0, 0, -20] } }
       ]
     },
     {
       "id": "supported_calf_raise",
-      "cameraYaw": 55,
+      "cameraYaw": 75,
       "name": "Calf Raise at a Chair",
       "kind": "reps",
       "defaultReps": 10,
@@ -405,7 +406,7 @@
     },
     {
       "id": "single_leg_calf_raise",
-      "cameraYaw": 55,
+      "cameraYaw": 75,
       "name": "One-Leg Calf Raise",
       "kind": "reps",
       "defaultReps": 10,
@@ -421,6 +422,86 @@
         { "t": 0.9, "pose": "stand", "ground": "left", "joints": { "rHip": [5, 0, 0], "rKnee": [70, 0, 0], "lAnkle": [30, 0, 0], "lShoulder": [-24, 0, 8], "rShoulder": [-24, 0, -8], "lElbow": [-25, 0, 0], "rElbow": [-25, 0, 0] } },
         { "t": 1.5, "pose": "stand", "ground": "left", "joints": { "rHip": [5, 0, 0], "rKnee": [70, 0, 0], "lAnkle": [30, 0, 0], "lShoulder": [-24, 0, 8], "rShoulder": [-24, 0, -8], "lElbow": [-25, 0, 0], "rElbow": [-25, 0, 0] } },
         { "t": 2.4, "pose": "stand", "ground": "left", "joints": { "rHip": [5, 0, 0], "rKnee": [70, 0, 0], "lShoulder": [-30, 0, 8], "rShoulder": [-30, 0, -8], "lElbow": [-15, 0, 0], "rElbow": [-15, 0, 0] } }
+      ]
+    },
+    {
+      "id": "single_leg_calf_raise_free",
+      "cameraYaw": 75,
+      "name": "One-Leg Calf Raise, No Hands",
+      "kind": "reps",
+      "defaultReps": 10,
+      "repTime": 2.4,
+      "mirrorHalfway": true,
+      "focus": ["balance", "legs"],
+      "intro": "One-leg calf raises without holding on. Stand next to a chair, lift one foot behind you and rise up onto the toes of the other. Lower slowly. We'll switch legs halfway.",
+      "cues": ["Rise straight up.", "Pause at the top.", "Lower slowly."],
+      "safety": "Keep the chair right next to you and grab it if you wobble.",
+      "props": [{ "type": "chair", "position": [0, 0.425, 0.55] }],
+      "keyframes": [
+        { "t": 0, "pose": "stand", "ground": "left", "joints": { "rHip": [5, 0, 0], "rKnee": [70, 0, 0], "lShoulder": [0, 0, 22], "rShoulder": [0, 0, -22] } },
+        { "t": 0.9, "pose": "stand", "ground": "left", "joints": { "rHip": [5, 0, 0], "rKnee": [70, 0, 0], "lAnkle": [30, 0, 0], "lShoulder": [0, 0, 28], "rShoulder": [0, 0, -28] } },
+        { "t": 1.5, "pose": "stand", "ground": "left", "joints": { "rHip": [5, 0, 0], "rKnee": [70, 0, 0], "lAnkle": [30, 0, 0], "lShoulder": [0, 0, 28], "rShoulder": [0, 0, -28] } },
+        { "t": 2.4, "pose": "stand", "ground": "left", "joints": { "rHip": [5, 0, 0], "rKnee": [70, 0, 0], "lShoulder": [0, 0, 22], "rShoulder": [0, 0, -22] } }
+      ]
+    },
+    {
+      "id": "single_leg_balance_eyes_closed",
+      "cameraYaw": 70,
+      "name": "One-Leg Balance, Eyes Closed",
+      "kind": "hold",
+      "defaultSeconds": 20,
+      "mirrorHalfway": true,
+      "eyesClosed": true,
+      "focus": ["balance"],
+      "intro": "One leg balance with your eyes closed. Stand right next to a wall or chair. Lift one knee, find your balance, then close your eyes and hold.",
+      "cues": ["Find your balance first.", "Now close your eyes.", "Breathe slowly.", "Open them if you wobble."],
+      "safety": "Only with a wall or sturdy chair within reach. Skip this one if you get dizzy.",
+      "props": [{ "type": "chair", "position": [0, 0.425, 0.75] }],
+      "keyframes": [
+        { "t": 0, "pose": "stand", "joints": { "lShoulder": [0, 0, 20], "rShoulder": [0, 0, -20] } },
+        { "t": 1.0, "pose": "rightKneeUp", "ground": "left", "cue": "Now close your eyes." },
+        { "t": 4.0, "pose": "rightKneeUp", "ground": "left", "joints": { "lShoulder": [0, 0, 35], "rShoulder": [0, 0, -45], "spine": [0, 0, -2] } },
+        { "t": 7.0, "pose": "rightKneeUp", "ground": "left", "cue": "Open your eyes." },
+        { "t": 8.0, "pose": "stand", "joints": { "lShoulder": [0, 0, 20], "rShoulder": [0, 0, -20] } }
+      ]
+    },
+    {
+      "id": "chair_squat",
+      "cameraYaw": 35,
+      "name": "Squat to a Chair",
+      "kind": "reps",
+      "defaultReps": 10,
+      "repTime": 3.2,
+      "focus": ["legs", "floor"],
+      "intro": "Squats to a chair. Stand in front of a sturdy chair, arms forward. Sit back until you just touch the seat, then stand tall without sitting down.",
+      "cues": ["Push your hips back.", "Just touch the seat.", "Keep your chest up.", "Heels stay on the floor."],
+      "safety": "Use a sturdy chair against a wall so it can't slide.",
+      "props": [{ "type": "chair", "position": [0, 0.39, -0.52] }],
+      "keyframes": [
+        { "t": 0, "pose": "stand" },
+        { "t": 1.4, "pose": "squatBottom" },
+        { "t": 1.8, "pose": "squatBottom" },
+        { "t": 3.2, "pose": "stand" }
+      ]
+    },
+    {
+      "id": "low_chair_stand",
+      "cameraYaw": 45,
+      "name": "Low Chair Stand",
+      "kind": "reps",
+      "defaultReps": 10,
+      "repTime": 1.2,
+      "focus": ["legs"],
+      "intro": "Low chair stands. Use a lower seat, like a sturdy stool or a low sofa, arms crossed on your chest. Stand up fully, then sit back down slowly.",
+      "cues": ["Lean forward slightly to stand.", "Stand all the way up.", "Sit down with control."],
+      "safety": "Use a sturdy seat that can't slide or tip.",
+      "props": [{ "type": "chair", "position": [0, 0.345, -0.38] }],
+      "keyframes": [
+        { "t": 0, "pose": "chairSeated", "joints": { "lHip": [-100, 0, 4], "rHip": [-100, 0, -4], "lKnee": [110, 0, 0], "rKnee": [110, 0, 0], "lAnkle": [-10, 0, 0], "rAnkle": [-10, 0, 0] } },
+        { "t": 0.5, "pose": "chairSeated", "joints": { "pelvis": [40, 0, 0], "lHip": [-130, 0, 4], "rHip": [-130, 0, -4], "lKnee": [110, 0, 0], "rKnee": [110, 0, 0], "lAnkle": [-10, 0, 0], "rAnkle": [-10, 0, 0] } },
+        { "t": 1.2, "pose": "armsCrossed" },
+        { "t": 1.7, "pose": "armsCrossed", "joints": { "pelvis": [30, 0, 0], "lHip": [-85, 0, 4], "rHip": [-85, 0, -4], "lKnee": [70, 0, 0], "rKnee": [70, 0, 0], "lAnkle": [-10, 0, 0], "rAnkle": [-10, 0, 0] } },
+        { "t": 2.3, "pose": "chairSeated", "joints": { "lHip": [-100, 0, 4], "rHip": [-100, 0, -4], "lKnee": [110, 0, 0], "rKnee": [110, 0, 0], "lAnkle": [-10, 0, 0], "rAnkle": [-10, 0, 0] } }
       ]
     },
     {
@@ -455,6 +536,27 @@
       "keyframes": [
         { "t": 0, "pose": "stand" },
         { "t": 1.1, "pose": "stand", "ground": "lowest", "joints": { "pelvis": [8, 0, 0], "lHip": [-60, 0, 4], "lKnee": [70, 0, 0], "rHip": [15, 0, -4], "rKnee": [45, 0, 0], "rAnkle": [20, 0, 0], "lShoulder": [-30, 0, 8], "rShoulder": [-30, 0, -8], "lElbow": [-25, 0, 0], "rElbow": [-25, 0, 0] } },
+        { "t": 2.3, "pose": "halfKneel", "ground": "lowest", "joints": { "spine": [12, 0, 0], "lShoulder": [-50, 0, 0], "rShoulder": [-50, 0, 25], "lElbow": [0, 0, 0], "rElbow": [0, 0, 0] } },
+        { "t": 3.1, "pose": "halfKneel", "ground": "lowest", "joints": { "spine": [12, 0, 0], "lShoulder": [-50, 0, 0], "rShoulder": [-50, 0, 25], "lElbow": [0, 0, 0], "rElbow": [0, 0, 0] } },
+        { "t": 4.3, "pose": "stand", "ground": "lowest", "joints": { "pelvis": [8, 0, 0], "lHip": [-60, 0, 4], "lKnee": [70, 0, 0], "rHip": [15, 0, -4], "rKnee": [45, 0, 0], "rAnkle": [20, 0, 0], "lShoulder": [-30, 0, 8], "rShoulder": [-30, 0, -8], "lElbow": [-25, 0, 0], "rElbow": [-25, 0, 0] } },
+        { "t": 5.4, "pose": "stand" }
+      ]
+    },
+    {
+      "id": "kneel_to_stand_free",
+      "cameraYaw": 70,
+      "name": "Kneel to Stand, No Hands",
+      "kind": "reps",
+      "defaultReps": 4,
+      "repTime": 5.4,
+      "mirrorHalfway": true,
+      "focus": ["floor", "legs"],
+      "intro": "Kneel to stand without your hands. Step back and lower one knee gently to the mat, then push through your front foot to stand up, arms forward for balance.",
+      "cues": ["Lower slowly.", "Push through the front heel.", "Stand all the way up."],
+      "safety": "Kneel on a soft mat or a folded towel, next to a chair you can hold.",
+      "keyframes": [
+        { "t": 0, "pose": "stand" },
+        { "t": 1.1, "pose": "stand", "ground": "lowest", "joints": { "pelvis": [8, 0, 0], "lHip": [-60, 0, 4], "lKnee": [70, 0, 0], "rHip": [15, 0, -4], "rKnee": [45, 0, 0], "rAnkle": [20, 0, 0], "lShoulder": [-30, 0, 8], "rShoulder": [-30, 0, -8], "lElbow": [-25, 0, 0], "rElbow": [-25, 0, 0] } },
         { "t": 2.3, "pose": "halfKneel", "ground": "lowest" },
         { "t": 3.1, "pose": "halfKneel", "ground": "lowest" },
         { "t": 4.3, "pose": "stand", "ground": "lowest", "joints": { "pelvis": [8, 0, 0], "lHip": [-60, 0, 4], "lKnee": [70, 0, 0], "rHip": [15, 0, -4], "rKnee": [45, 0, 0], "rAnkle": [20, 0, 0], "lShoulder": [-30, 0, 8], "rShoulder": [-30, 0, -8], "lElbow": [-25, 0, 0], "rElbow": [-25, 0, 0] } },
@@ -468,7 +570,7 @@
       "levels": [
         { "exercise": "chair_stand_hands" },
         { "exercise": "chair_stand" },
-        { "exercise": "chair_stand", "name": "Low Chair Stand", "intro": "Low chair stands. Use a lower seat, like a sturdy stool or a low sofa, arms crossed on your chest. Stand up fully, then sit back down slowly." },
+        { "exercise": "low_chair_stand" },
         { "exercise": "sit_rise", "reps": 3 }
       ]
     },
@@ -476,7 +578,7 @@
       "id": "squat", "anchor": "squat", "start": 1,
       "levels": [
         { "exercise": "wall_sit", "seconds": 20 },
-        { "exercise": "squat", "name": "Squat to a Chair", "intro": "Squats to a chair. Stand in front of a sturdy chair, arms forward. Sit back until you just touch the seat, then stand tall without sitting down." },
+        { "exercise": "chair_squat" },
         { "exercise": "squat" },
         { "exercise": "deep_squat_hold", "seconds": 30 }
       ]
@@ -487,7 +589,7 @@
         { "exercise": "feet_together_balance" },
         { "exercise": "tandem_stance" },
         { "exercise": "single_leg_balance", "seconds": 20 },
-        { "exercise": "single_leg_balance", "name": "One-Leg Balance, Eyes Closed", "intro": "One leg balance with your eyes closed. Stand right next to a wall or chair. Lift one knee, find your balance, then close your eyes and hold.", "avoid": ["dizziness"] }
+        { "exercise": "single_leg_balance_eyes_closed", "avoid": ["dizziness"] }
       ]
     },
     {
@@ -496,7 +598,7 @@
         { "exercise": "supported_calf_raise" },
         { "exercise": "calf_raise" },
         { "exercise": "single_leg_calf_raise" },
-        { "exercise": "single_leg_calf_raise", "name": "One-Leg Calf Raise, No Hands", "intro": "One-leg calf raises without holding on. Stand next to a chair, lift one foot behind you and rise up onto the toes of the other. Lower slowly. We'll switch legs halfway." }
+        { "exercise": "single_leg_calf_raise_free" }
       ]
     },
     {
@@ -504,7 +606,7 @@
       "levels": [
         { "exercise": "half_kneel" },
         { "exercise": "kneel_to_stand" },
-        { "exercise": "kneel_to_stand", "name": "Kneel to Stand, No Hands", "intro": "Kneel to stand without your hands. Step back and lower one knee gently to the mat, then push through your front foot to stand up, arms forward for balance." },
+        { "exercise": "kneel_to_stand_free" },
         { "exercise": "sit_rise", "reps": 3 }
       ]
     }

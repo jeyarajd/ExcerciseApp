@@ -8,6 +8,11 @@ protocol CoachBody: AnyObject {
     func apply(_ pose: Pose)
     func blink(_ closed: Float)
     func restyle(_ look: CoachLook)
+    /// How much bigger the body is than the skeleton in exercises.json (the man coach is taller),
+    /// so the camera can keep the whole of it in view.
+    var scale: Float { get }
+    /// How far the top of the head (with hair) sits above the head joint, before `scale`.
+    var headHeight: Float { get }
 }
 
 /// Realistic coach built with MakeHuman (CC0, see tools/build_coach.py), bundled as
@@ -51,6 +56,8 @@ final class RealisticCoach: CoachBody {
     private var contacts: [String: (bone: Int, offset: SIMD3<Float>)] = [:]
     /// How much further the model's pelvis moves than ours (leg length ratio).
     private var legRatio: Float = 1
+    var scale: Float { legRatio }
+    var headHeight: Float { 0.28 }
     private var ourRestPelvis: SIMD3<Float> = .zero
 
     init?(look: CoachLook, rig: Rig) {
