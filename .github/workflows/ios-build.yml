@@ -1,0 +1,78 @@
+name: iOS build
+
+# Compiles the app on GitHub's macOS machines (no Mac needed locally), then runs it in the
+# iOS Simulator in demo mode and saves screenshots of the coach avatar as a build artifact.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ios-build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: macos-26
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select newest Xcode 26
+        run: |
+          XCODE=$(ls -d /Applications/Xcode_26*.app | sort -V | tail -1)
+          sudo xcode-select -s "$XCODE"
+          xcodebuild -version
+
+      - name: Generate Xcode project
+        run: |
+          brew install xcodegen
+          xcodegen generate
+
+      - name: Build for iOS Simulator
+        run: |
+          set -o pipefail
+          xcodebuild build \
+            -project FloorAge.xcodeproj \
+            -scheme FloorAge \
+            -configuration Debug \
+            -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO \
+            2>&1 | tee build.log | grep -E "error:|warning: .*FloorAge/|BUILD (SUCCEEDED|FAILED)" || true
+          grep -q "BUILD SUCCEEDED" build.log
+
+      - name: Screenshots in the Simulator
+        run: |
+          UDID=$(xcrun simctl list devices available -j \
+            | jq -r '[.devices[][] | select(.name | test("^iPhone [0-9]+( Pro)?$"))] | last | .udid')
+          echo "Simulator: $UDID"
+          xcrun simctl boot "$UDID"
+          xcrun simctl bootstatus "$UDID" -b
+          xcrun simctl install "$UDID" build/Build/Products/Debug-iphonesimulator/FloorAge.app
+          mkdir -p screenshots
+          shoot() {
+            xcrun simctl terminate "$UDID" com.jeyaraj.floorage 2>/dev/null || true
+            xcrun simctl launch "$UDID" com.jeyaraj.floorage "${@:2}"
+            sleep 8
+            xcrun simctl io "$UDID" screenshot "screenshots/$1.png"
+          }
+          shoot onboarding
+          shoot squat -demoExercise squat -demoTime 1.5
+          shoot sit_rise_seated -demoExercise sit_rise -demoTime 3.3
+          shoot sit_rise_down -demoExercise sit_rise -demoTime 1.9
+          shoot chair_stand -demoExercise chair_stand -demoTime 0.1
+          shoot balance -demoExercise single_leg_balance -demoTime 2.5
+          shoot deep_squat -demoExercise deep_squat_hold -demoTime 4
+          shoot toe_reach -demoExercise toe_reach -demoTime 2.2
+
+      - name: Upload screenshots and log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-build-${{ github.run_number }}
+          path: |
+            screenshots/
+            build.log
+          if-no-files-found: ignore

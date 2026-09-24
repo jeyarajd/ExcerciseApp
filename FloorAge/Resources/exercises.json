@@ -1,0 +1,279 @@
+{
+  "version": 1,
+  "rig": {
+    "joints": [
+      { "name": "pelvis", "parent": null, "offset": [0, 0, 0] },
+      { "name": "spine", "parent": "pelvis", "offset": [0, 0.08, 0] },
+      { "name": "chest", "parent": "spine", "offset": [0, 0.22, 0] },
+      { "name": "neck", "parent": "chest", "offset": [0, 0.22, 0] },
+      { "name": "head", "parent": "neck", "offset": [0, 0.08, 0] },
+      { "name": "lShoulder", "parent": "chest", "offset": [0.19, 0.17, 0] },
+      { "name": "lElbow", "parent": "lShoulder", "offset": [0, -0.28, 0] },
+      { "name": "lWrist", "parent": "lElbow", "offset": [0, -0.25, 0] },
+      { "name": "rShoulder", "parent": "chest", "offset": [-0.19, 0.17, 0] },
+      { "name": "rElbow", "parent": "rShoulder", "offset": [0, -0.28, 0] },
+      { "name": "rWrist", "parent": "rElbow", "offset": [0, -0.25, 0] },
+      { "name": "lHip", "parent": "pelvis", "offset": [0.1, -0.06, 0] },
+      { "name": "lKnee", "parent": "lHip", "offset": [0, -0.43, 0] },
+      { "name": "lAnkle", "parent": "lKnee", "offset": [0, -0.42, 0] },
+      { "name": "rHip", "parent": "pelvis", "offset": [-0.1, -0.06, 0] },
+      { "name": "rKnee", "parent": "rHip", "offset": [0, -0.43, 0] },
+      { "name": "rAnkle", "parent": "rKnee", "offset": [0, -0.42, 0] }
+    ],
+    "contacts": {
+      "lHeel": { "joint": "lAnkle", "offset": [0, -0.075, -0.05] },
+      "lToe": { "joint": "lAnkle", "offset": [0, -0.075, 0.15] },
+      "rHeel": { "joint": "rAnkle", "offset": [0, -0.075, -0.05] },
+      "rToe": { "joint": "rAnkle", "offset": [0, -0.075, 0.15] },
+      "seat": { "joint": "pelvis", "offset": [0, -0.13, -0.03] },
+      "lKneeCap": { "joint": "lKnee", "offset": [0, 0, 0.06] },
+      "rKneeCap": { "joint": "rKnee", "offset": [0, 0, 0.06] },
+      "lHand": { "joint": "lWrist", "offset": [0, -0.07, 0] },
+      "rHand": { "joint": "rWrist", "offset": [0, -0.07, 0] }
+    }
+  },
+  "poses": {
+    "stand": {
+      "lShoulder": [0, 0, 6], "rShoulder": [0, 0, -6],
+      "lElbow": [-10, 0, 0], "rElbow": [-10, 0, 0]
+    },
+    "armsCrossed": {
+      "lShoulder": [-35, -75, 10], "rShoulder": [-35, 75, -10],
+      "lElbow": [-105, 0, 0], "rElbow": [-105, 0, 0]
+    },
+    "squatBottom": {
+      "pelvis": [20, 0, 0], "spine": [8, 0, 0], "chest": [5, 0, 0], "neck": [-25, 0, 0],
+      "lHip": [-110, 10, 10], "rHip": [-110, -10, -10],
+      "lKnee": [118, 0, 0], "rKnee": [118, 0, 0],
+      "lAnkle": [-28, 0, 0], "rAnkle": [-28, 0, 0],
+      "lShoulder": [-120, 0, 5], "rShoulder": [-120, 0, -5],
+      "lElbow": [-5, 0, 0], "rElbow": [-5, 0, 0]
+    },
+    "chairSeated": {
+      "spine": [5, 0, 0],
+      "lHip": [-90, 0, 4], "rHip": [-90, 0, -4],
+      "lKnee": [90, 0, 0], "rKnee": [90, 0, 0],
+      "lShoulder": [-35, -75, 10], "rShoulder": [-35, 75, -10],
+      "lElbow": [-105, 0, 0], "rElbow": [-105, 0, 0]
+    },
+    "crossSquat": {
+      "pelvis": [30, 0, 0], "spine": [10, 0, 0], "neck": [-20, 0, 0],
+      "lHip": [-115, 30, 35], "rHip": [-115, -30, -35],
+      "lKnee": [135, 0, 0], "rKnee": [135, 0, 0],
+      "lAnkle": [-25, 0, 0], "rAnkle": [-25, 0, 0],
+      "lShoulder": [-130, 0, 5], "rShoulder": [-130, 0, -5],
+      "lElbow": [-5, 0, 0], "rElbow": [-5, 0, 0]
+    },
+    "crossSeated": {
+      "pelvis": [-8, 0, 0], "spine": [12, 0, 0], "chest": [5, 0, 0],
+      "lHip": [-80, 90, 45], "rHip": [-78, -90, -45],
+      "lKnee": [135, 0, 0], "rKnee": [132, 0, 0],
+      "lAnkle": [0, 0, 0], "rAnkle": [0, 0, 0],
+      "lShoulder": [-40, 0, 10], "rShoulder": [-40, 0, -10],
+      "lElbow": [-40, 0, 0], "rElbow": [-40, 0, 0]
+    },
+    "rightKneeUp": {
+      "rHip": [-45, 0, 0], "rKnee": [75, 0, 0], "rAnkle": [15, 0, 0],
+      "lShoulder": [0, 0, 40], "rShoulder": [0, 0, -40],
+      "lElbow": [-10, 0, 0], "rElbow": [-10, 0, 0]
+    },
+    "malasana": {
+      "pelvis": [15, 0, 0], "spine": [15, 0, 0], "chest": [5, 0, 0], "neck": [-20, 0, 0],
+      "lHip": [-120, 25, 22], "rHip": [-120, -25, -22],
+      "lKnee": [145, 0, 0], "rKnee": [145, 0, 0],
+      "lAnkle": [-40, 0, 0], "rAnkle": [-40, 0, 0],
+      "lShoulder": [-55, 0, -25], "rShoulder": [-55, 0, 25],
+      "lElbow": [-110, 0, 0], "rElbow": [-110, 0, 0]
+    }
+  },
+  "exercises": [
+    {
+      "id": "idle",
+      "name": "Ready",
+      "kind": "timed",
+      "defaultSeconds": 5,
+      "focus": [],
+      "intro": "",
+      "cues": [],
+      "keyframes": [
+        { "t": 0, "pose": "stand" },
+        { "t": 1.6, "pose": "stand", "joints": { "chest": [-3, 0, 0], "neck": [-2, 0, 0], "lShoulder": [0, 0, 8], "rShoulder": [0, 0, -8] } },
+        { "t": 3.2, "pose": "stand" }
+      ]
+    },
+    {
+      "id": "squat",
+      "name": "Squat",
+      "kind": "reps",
+      "defaultReps": 10,
+      "repTime": 3.2,
+      "focus": ["legs", "floor"],
+      "intro": "Squats. Feet shoulder width apart, arms forward. Sit back like there is a chair behind you, then stand tall.",
+      "cues": ["Push your hips back.", "Keep your chest up.", "Knees follow your toes.", "Heels stay on the floor."],
+      "safety": "Only go as low as feels comfortable. Put a chair behind you if you're unsure.",
+      "keyframes": [
+        { "t": 0, "pose": "stand" },
+        { "t": 1.4, "pose": "squatBottom" },
+        { "t": 1.8, "pose": "squatBottom" },
+        { "t": 3.2, "pose": "stand" }
+      ]
+    },
+    {
+      "id": "chair_stand",
+      "name": "Chair Stand",
+      "kind": "reps",
+      "defaultReps": 10,
+      "repTime": 1.2,
+      "focus": ["legs"],
+      "intro": "Chair stands. Sit in the middle of a chair, arms crossed on your chest. Stand up fully, then sit back down.",
+      "cues": ["Lean forward slightly to stand.", "Stand all the way up.", "Sit down with control."],
+      "safety": "Use a sturdy chair against a wall so it can't slide.",
+      "props": [{ "type": "chair", "position": [0, 0.425, -0.46] }],
+      "keyframes": [
+        { "t": 0, "pose": "chairSeated" },
+        { "t": 0.5, "pose": "chairSeated", "joints": { "pelvis": [35, 0, 0], "lHip": [-125, 0, 4], "rHip": [-125, 0, -4] } },
+        { "t": 1.2, "pose": "armsCrossed" },
+        { "t": 1.7, "pose": "armsCrossed", "joints": { "pelvis": [30, 0, 0], "lHip": [-80, 0, 4], "rHip": [-80, 0, -4], "lKnee": [60, 0, 0], "rKnee": [60, 0, 0], "lAnkle": [-10, 0, 0], "rAnkle": [-10, 0, 0] } },
+        { "t": 2.3, "pose": "chairSeated" }
+      ]
+    },
+    {
+      "id": "sit_rise",
+      "name": "Sit to Rise",
+      "kind": "reps",
+      "defaultReps": 3,
+      "repTime": 6.5,
+      "focus": ["floor"],
+      "intro": "Sit to rise. Cross your legs and lower yourself to the floor, then stand back up. Try not to use your hands or knees.",
+      "cues": ["Arms forward for balance.", "Go slow and controlled.", "Lean forward to rise."],
+      "safety": "Skip this if you have knee or hip pain. Practise on a soft mat.",
+      "keyframes": [
+        { "t": 0, "pose": "stand", "joints": { "lShoulder": [-30, 0, 8], "rShoulder": [-30, 0, -8] } },
+        { "t": 0.8, "pose": "stand", "joints": { "lShoulder": [-45, 0, 8], "rShoulder": [-45, 0, -8], "rHip": [-10, -5, 10], "rKnee": [10, 0, 0] } },
+        { "t": 1.9, "pose": "crossSquat" },
+        { "t": 2.9, "pose": "crossSeated", "ground": "seat", "seatZ": -0.05 },
+        { "t": 3.7, "pose": "crossSeated", "ground": "seat", "seatZ": -0.05 },
+        { "t": 4.4, "pose": "crossSeated", "ground": "seat", "seatZ": -0.05, "joints": { "spine": [35, 0, 0], "chest": [15, 0, 0], "lShoulder": [-120, 0, 5], "rShoulder": [-120, 0, -5], "lElbow": [-5, 0, 0], "rElbow": [-5, 0, 0] } },
+        { "t": 5.4, "pose": "crossSquat" },
+        { "t": 6.5, "pose": "stand", "joints": { "lShoulder": [-30, 0, 8], "rShoulder": [-30, 0, -8] } }
+      ]
+    },
+    {
+      "id": "single_leg_balance",
+      "name": "One-Leg Balance",
+      "kind": "hold",
+      "defaultSeconds": 30,
+      "mirrorHalfway": true,
+      "focus": ["balance"],
+      "intro": "One leg balance. Lift one knee and hold. Keep your eyes on a spot in front of you.",
+      "cues": ["Stand tall.", "Soft knee on the standing leg.", "Breathe slowly.", "Eyes on one spot."],
+      "safety": "Stand near a wall or chair you can hold if you wobble.",
+      "keyframes": [
+        { "t": 0, "pose": "stand", "joints": { "lShoulder": [0, 0, 20], "rShoulder": [0, 0, -20] } },
+        { "t": 1.0, "pose": "rightKneeUp", "ground": "left" },
+        { "t": 4.0, "pose": "rightKneeUp", "ground": "left", "joints": { "lShoulder": [0, 0, 35], "rShoulder": [0, 0, -45], "spine": [0, 0, -2] } },
+        { "t": 7.0, "pose": "rightKneeUp", "ground": "left" },
+        { "t": 8.0, "pose": "stand", "joints": { "lShoulder": [0, 0, 20], "rShoulder": [0, 0, -20] } }
+      ]
+    },
+    {
+      "id": "toe_reach",
+      "name": "Toe Reach",
+      "kind": "reps",
+      "defaultReps": 6,
+      "repTime": 4.2,
+      "focus": ["flex"],
+      "intro": "Toe reach. Knees soft, fold forward from your hips and let your hands reach toward your toes.",
+      "cues": ["Let your head hang.", "Breathe out as you reach.", "Roll up slowly."],
+      "safety": "Never bounce. Stop at a gentle stretch, not pain.",
+      "keyframes": [
+        { "t": 0, "pose": "stand" },
+        { "t": 1.6, "pose": "stand", "joints": { "pelvis": [75, 0, 0], "lHip": [-75, 0, 3], "rHip": [-75, 0, -3], "lKnee": [8, 0, 0], "rKnee": [8, 0, 0], "lAnkle": [-8, 0, 0], "rAnkle": [-8, 0, 0], "spine": [25, 0, 0], "chest": [20, 0, 0], "neck": [10, 0, 0], "lShoulder": [-120, 0, 4], "rShoulder": [-120, 0, -4], "lElbow": [0, 0, 0], "rElbow": [0, 0, 0] } },
+        { "t": 2.8, "pose": "stand", "joints": { "pelvis": [75, 0, 0], "lHip": [-75, 0, 3], "rHip": [-75, 0, -3], "lKnee": [8, 0, 0], "rKnee": [8, 0, 0], "lAnkle": [-8, 0, 0], "rAnkle": [-8, 0, 0], "spine": [25, 0, 0], "chest": [20, 0, 0], "neck": [10, 0, 0], "lShoulder": [-120, 0, 4], "rShoulder": [-120, 0, -4], "lElbow": [0, 0, 0], "rElbow": [0, 0, 0] } },
+        { "t": 4.2, "pose": "stand" }
+      ]
+    },
+    {
+      "id": "calf_raise",
+      "name": "Calf Raise",
+      "kind": "reps",
+      "defaultReps": 12,
+      "repTime": 2.4,
+      "focus": ["balance", "legs"],
+      "intro": "Calf raises. Rise up onto your toes, pause, then lower slowly.",
+      "cues": ["Rise straight up.", "Pause at the top.", "Lower slowly."],
+      "safety": "Hold a wall or chair for support if you need it.",
+      "keyframes": [
+        { "t": 0, "pose": "stand", "joints": { "lShoulder": [-15, 0, 10], "rShoulder": [-15, 0, -10] } },
+        { "t": 0.9, "pose": "stand", "joints": { "lShoulder": [-15, 0, 10], "rShoulder": [-15, 0, -10], "lAnkle": [30, 0, 0], "rAnkle": [30, 0, 0] } },
+        { "t": 1.5, "pose": "stand", "joints": { "lShoulder": [-15, 0, 10], "rShoulder": [-15, 0, -10], "lAnkle": [30, 0, 0], "rAnkle": [30, 0, 0] } },
+        { "t": 2.4, "pose": "stand", "joints": { "lShoulder": [-15, 0, 10], "rShoulder": [-15, 0, -10] } }
+      ]
+    },
+    {
+      "id": "march",
+      "name": "March in Place",
+      "kind": "timed",
+      "defaultSeconds": 45,
+      "focus": ["warmup"],
+      "intro": "Let's warm up. March in place, lift your knees and swing your arms.",
+      "cues": ["Lift those knees.", "Swing your arms.", "Nice and steady.", "Keep breathing."],
+      "keyframes": [
+        { "t": 0, "pose": "stand", "joints": { "lElbow": [-60, 0, 0], "rElbow": [-60, 0, 0] } },
+        { "t": 0.45, "pose": "stand", "ground": "left", "joints": { "rHip": [-70, 0, 0], "rKnee": [80, 0, 0], "rAnkle": [15, 0, 0], "lShoulder": [-35, 0, 6], "rShoulder": [25, 0, -6], "lElbow": [-70, 0, 0], "rElbow": [-70, 0, 0] } },
+        { "t": 0.9, "pose": "stand", "joints": { "lElbow": [-60, 0, 0], "rElbow": [-60, 0, 0] } },
+        { "t": 1.35, "pose": "stand", "ground": "right", "joints": { "lHip": [-70, 0, 0], "lKnee": [80, 0, 0], "lAnkle": [15, 0, 0], "rShoulder": [-35, 0, -6], "lShoulder": [25, 0, 6], "lElbow": [-70, 0, 0], "rElbow": [-70, 0, 0] } },
+        { "t": 1.8, "pose": "stand", "joints": { "lElbow": [-60, 0, 0], "rElbow": [-60, 0, 0] } }
+      ]
+    },
+    {
+      "id": "arm_raise",
+      "name": "Side Arm Raise",
+      "kind": "timed",
+      "defaultSeconds": 30,
+      "focus": ["warmup"],
+      "intro": "Side arm raises. Lift your arms out to the side up to shoulder height, then lower.",
+      "cues": ["Shoulders relaxed.", "Breathe in as you lift.", "Breathe out as you lower."],
+      "keyframes": [
+        { "t": 0, "pose": "stand" },
+        { "t": 1.0, "pose": "stand", "joints": { "lShoulder": [0, 0, 90], "rShoulder": [0, 0, -90], "lElbow": [0, 0, 0], "rElbow": [0, 0, 0] } },
+        { "t": 1.3, "pose": "stand", "joints": { "lShoulder": [0, 0, 90], "rShoulder": [0, 0, -90], "lElbow": [0, 0, 0], "rElbow": [0, 0, 0] } },
+        { "t": 2.3, "pose": "stand" }
+      ]
+    },
+    {
+      "id": "side_leg_raise",
+      "name": "Side Leg Raise",
+      "kind": "reps",
+      "defaultReps": 10,
+      "repTime": 2.6,
+      "mirrorHalfway": true,
+      "focus": ["balance", "legs"],
+      "intro": "Side leg raises. Stand tall and lift one leg out to the side, then bring it back. We'll switch sides halfway.",
+      "cues": ["Toes point forward.", "Don't lean too far.", "Slow and controlled."],
+      "safety": "Hold a chair for balance if you need it.",
+      "keyframes": [
+        { "t": 0, "pose": "stand", "joints": { "lShoulder": [0, 0, 25], "rShoulder": [0, 0, -25] } },
+        { "t": 1.0, "pose": "stand", "ground": "left", "joints": { "rHip": [0, 0, -35], "spine": [0, 0, -5], "lShoulder": [0, 0, 30], "rShoulder": [0, 0, -30] } },
+        { "t": 1.6, "pose": "stand", "ground": "left", "joints": { "rHip": [0, 0, -35], "spine": [0, 0, -5], "lShoulder": [0, 0, 30], "rShoulder": [0, 0, -30] } },
+        { "t": 2.6, "pose": "stand", "joints": { "lShoulder": [0, 0, 25], "rShoulder": [0, 0, -25] } }
+      ]
+    },
+    {
+      "id": "deep_squat_hold",
+      "name": "Deep Squat Hold",
+      "kind": "hold",
+      "defaultSeconds": 20,
+      "focus": ["floor", "flex"],
+      "intro": "Deep squat, like Malasana. Feet a little wider, toes turned out, sink down and rest with palms together.",
+      "cues": ["Heels down if you can.", "Elbows gently press knees out.", "Breathe into your hips."],
+      "safety": "Hold a door frame or put a folded towel under your heels if that helps.",
+      "keyframes": [
+        { "t": 0, "pose": "stand" },
+        { "t": 2.0, "pose": "malasana" },
+        { "t": 7.0, "pose": "malasana" },
+        { "t": 9.0, "pose": "stand" }
+      ]
+    }
+  ]
+}

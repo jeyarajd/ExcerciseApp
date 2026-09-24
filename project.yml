@@ -1,0 +1,49 @@
+# XcodeGen spec. Generate the Xcode project with:  xcodegen generate
+name: FloorAge
+options:
+  bundleIdPrefix: com.jeyaraj
+  deploymentTarget:
+    iOS: "18.0"
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    DEVELOPMENT_TEAM: ""
+    CODE_SIGN_STYLE: Automatic
+targets:
+  FloorAge:
+    type: application
+    platform: iOS
+    sources:
+      - path: FloorAge
+    info:
+      path: FloorAge/Info.plist
+      properties:
+        CFBundleDisplayName: Floor Age
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+        UIRequiresFullScreen: true
+        ITSAppUsesNonExemptEncryption: false
+        CoachServerURL: $(COACH_SERVER_URL)
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jeyaraj.floorage
+        TARGETED_DEVICE_FAMILY: "1"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        COACH_SERVER_URL: ""
+        ENABLE_PREVIEWS: YES
+schemes:
+  FloorAge:
+    build:
+      targets:
+        FloorAge: all
+    run:
+      config: Debug
+    archive:
+      config: Release

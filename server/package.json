@@ -1,0 +1,22 @@
+{
+  "name": "floorage-coach-server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Holds the Claude API key and answers coach chat messages from the Floor Age iOS app.",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsc && node --env-file=.env dist/index.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.128.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.2",
+    "typescript": "^7.0.2"
+  }
+}
