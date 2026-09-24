@@ -85,6 +85,14 @@ jobs:
           shoot balance -demoExercise single_leg_balance -demoTime 2.5
           shoot deep_squat -demoExercise deep_squat_hold -demoTime 4
           shoot toe_reach -demoExercise toe_reach -demoTime 2.2
+          # Both realistic coaches, so a new coach model can be checked in every pose.
+          for look in female male; do
+            shoot ${look}_squat -demoExercise squat -demoTime 1.5 -coachLook $look
+            shoot ${look}_sit_rise_down -demoExercise sit_rise -demoTime 1.9 -coachLook $look
+            shoot ${look}_deep_squat -demoExercise deep_squat_hold -demoTime 4 -coachLook $look
+            shoot ${look}_balance -demoExercise single_leg_balance -demoTime 2.5 -coachLook $look
+            shoot ${look}_today -demoScreen today -coachLook $look
+          done
 
       - name: Upload screenshots and log
         if: always()
