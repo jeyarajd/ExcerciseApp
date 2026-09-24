@@ -11,6 +11,8 @@ struct FloorAgeTestView: View {
     @State private var step: Int
     @State private var scores: [String: Double] = [:]
     @State private var result: FloorAgeResult?
+    /// The Floor Age before this check, to celebrate if it drops.
+    @State private var previousFloorAge: Int?
 
     // Sit to rise inputs
     @State private var downSupports = 0
@@ -37,6 +39,7 @@ struct FloorAgeTestView: View {
     @State private var chairCounter = ChairStandCounter()
     @State private var balanceDetector = BalanceDetector()
     @State private var reachEstimator = ReachEstimator()
+    @ObservedObject private var watch = WatchLink.shared
 
     private let tests = FloorTest.allCases
 
@@ -53,7 +56,7 @@ struct FloorAgeTestView: View {
         NavigationStack {
             Group {
                 if let result {
-                    FloorAgeResultView(result: result) { dismiss() }
+                    FloorAgeResultView(result: result, previous: previousFloorAge) { dismiss() }
                 } else if step == 0 {
                     intro
                 } else {
@@ -78,6 +81,22 @@ struct FloorAgeTestView: View {
         .onDisappear {
             stopTimers()
             camera.stop()
+        }
+        // Tests done on the Apple Watch fill in the matching test here.
+        .onChange(of: watch.testResult) { _, result in
+            guard let result, tests.indices.contains(step - 1) else { return }
+            switch (result.test, tests[step - 1]) {
+            case (.chairStand, .chairStand):
+                stopTimers()
+                chairCountdown = nil
+                chairReps = Int(result.value)
+                chairDone = true
+            case (.balance, .balance):
+                balanceStart = nil
+                balanceBest = max(balanceBest ?? 0, min(result.value, 45))
+            default:
+                break
+            }
         }
         .onReceive(tick) { _ in
             if let start = balanceStart {
@@ -268,6 +287,11 @@ struct FloorAgeTestView: View {
                     }
                     if test.usesCamera, !useCamera {
                         Text("Tip: prop the phone up 2–3 m away and the camera counts for you. Nothing is recorded.")
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
+                    }
+                    if watch.isWatchReady, test == .chairStand || test == .balance {
+                        Label("Or do this test on your Apple Watch: open Floor Age there and the result appears here.", systemImage: "applewatch")
                             .font(.footnote)
                             .foregroundStyle(.secondary)
                     }
@@ -600,14 +624,19 @@ struct FloorAgeTestView: View {
             return
         }
         let result = FloorAgeResult(age: model.profile?.age ?? 40, scores: scores)
+        previousFloorAge = model.latestResult?.floorAge
         model.add(result)
         self.result = result
         avatar.play(id: "idle")
         let difference = result.floorAge - result.age
-        let summary = difference > 0
+        var summary = difference > 0
             ? String(localized: "Your Floor Age is \(result.floorAge). That's \(difference) years above your age, and we'll work on it together.")
             : String(localized: "Your Floor Age is \(result.floorAge). Brilliant, your body moves younger than your age!")
+        if let previous = previousFloorAge, previous > result.floorAge {
+            summary = String(localized: "Your Floor Age dropped from \(previous) to \(result.floorAge). Your training is working!") + " " + summary
+        }
         voice.say(summary, interrupt: true)
+        Task { await model.refreshReminders() }
     }
 
     private func stopBalance() {

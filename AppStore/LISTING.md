@@ -206,7 +206,10 @@ App Review rejects previews that show things outside the app, so a real person o
 - [ ] Optional: joined the App Store Small Business Program (15% commission).
 
 **App ID and build**
-- [ ] HealthKit capability enabled on the App ID `com.jeyaraj.floorage` (developer.apple.com › Identifiers).
+- [ ] HealthKit capability enabled on the App ID `com.jeyaraj.floorage` (developer.apple.com › Identifiers). The app now also writes workouts, so App Review will see the Health write permission.
+- [ ] App Group `group.com.jeyaraj.floorage` created and enabled on both `com.jeyaraj.floorage` and `com.jeyaraj.floorage.widgets` (needed for the widgets).
+- [ ] App IDs exist for the widget extension (`com.jeyaraj.floorage.widgets`) and the Watch app (`com.jeyaraj.floorage.watchkitapp`); automatic signing creates them on the first TestFlight build.
+- [ ] Watch app and widgets tried on real devices: chair stand counting on the wrist, balance timer, session remote, widget refresh.
 - [x] `MARKETING_VERSION` in `project.yml` set to `1.0`.
 - [x] `NSCameraUsageDescription` covers both meal photos and camera scoring, translated in `InfoPlist.xcstrings`.
 - [x] `PrivacyInfo.xcprivacy` added (see section 2).

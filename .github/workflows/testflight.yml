@@ -37,6 +37,10 @@ jobs:
           printf '%s\n' "$ASC_KEY_P8" > "$RUNNER_TEMP/keys/AuthKey_$ASC_KEY_ID.p8"
           echo "KEY_PATH=$RUNNER_TEMP/keys/AuthKey_$ASC_KEY_ID.p8" >> "$GITHUB_ENV"
 
+      - name: Make sure the watchOS platform is installed
+        # The app embeds an Apple Watch app, which needs the watchOS platform to archive.
+        run: xcodebuild -downloadPlatform watchOS || true
+
       - name: Archive
         run: |
           set -o pipefail

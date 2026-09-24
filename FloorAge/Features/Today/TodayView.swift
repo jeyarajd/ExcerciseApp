@@ -29,9 +29,11 @@ struct TodayView: View {
                         testPrompt
                     } else if let result = model.latestResult {
                         floorAgeSummary(result)
+                        if Retest.isDue(lastCheck: result.date) { retestCard(result) }
                     }
 
                     TrainingPlanCard()
+                    ChallengeCard()
                     planCard
                     if store.hasPlus {
                         pelvicFloorCard
@@ -131,6 +133,26 @@ struct TodayView: View {
             }
         }
         .heroCard(.floorAge)
+    }
+
+    /// Four weeks after the last check: time to see what the training has done.
+    private func retestCard(_ result: FloorAgeResult) -> some View {
+        Button { showingTest = true } label: {
+            HStack(spacing: 14) {
+                FeatureBadge(feature: .floorAge, symbol: "arrow.triangle.2.circlepath", size: 44)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Time to retest").font(.display(.headline))
+                    Text("It's been 4 weeks since your last check. See how far you've come.")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.leading)
+                }
+                Spacer(minLength: 0)
+                Image(systemName: "chevron.right").foregroundStyle(.tertiary)
+            }
+            .tintedCard(.floorAge)
+        }
+        .buttonStyle(.plain)
     }
 
     private var planCard: some View {

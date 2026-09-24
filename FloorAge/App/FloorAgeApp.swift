@@ -6,6 +6,7 @@ struct FloorAgeApp: App {
     @StateObject private var voice = VoiceCoach()
     @StateObject private var steps = DemoScreen.current == nil ? StepCounter() : StepCounter.sample()
     @StateObject private var store = DemoScreen.current == nil ? Store() : Store(preview: DemoScreen.hasPlus)
+    @StateObject private var snapshots = SnapshotPublisher()
     @Environment(\.scenePhase) private var scenePhase
 
     init() {
@@ -20,6 +21,11 @@ struct FloorAgeApp: App {
                 .environmentObject(steps)
                 .environmentObject(store)
                 .tint(Color("AccentColor"))
+                .onAppear {
+                    guard DemoScreen.current == nil else { return }
+                    snapshots.attach(model: model, steps: steps)
+                    WatchLink.shared.activate()
+                }
         }
         .onChange(of: scenePhase) { _, phase in
             guard phase == .active else { return }
@@ -46,6 +52,12 @@ struct RootView: View {
             OnboardingView()
         } else {
             MainTabs()
+                .overlay {
+                    if let badge = model.newBadge {
+                        BadgeCelebration(badge: badge) { withAnimation { model.newBadge = nil } }
+                            .transition(.opacity)
+                    }
+                }
                 .onAppear(perform: keepFamilyInPlus)
                 .onChange(of: store.hasPlus) { keepFamilyInPlus() }
         }
@@ -79,6 +91,10 @@ struct MainTabs: View {
             SettingsView()
                 .tabItem { Label("Settings", systemImage: "gearshape.fill") }
                 .tag(Tab.settings)
+        }
+        // Links from the widgets.
+        .onOpenURL { url in
+            tab = url.host == "steps" ? .track : .today
         }
     }
 }

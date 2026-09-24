@@ -53,6 +53,10 @@ final class StepCounter: ObservableObject {
     /// Starts live counting for today and loads the week. Safe to call again (e.g. on foreground).
     func start() {
         guard !isSample else { return }
+        if AppleHealth.readsSteps {
+            loadFromHealth()
+            return
+        }
         guard CMPedometer.isStepCountingAvailable() else {
             status = .unavailable
             return
@@ -81,6 +85,23 @@ final class StepCounter: ObservableObject {
                     self.status = CMPedometer.authorizationStatus() == .denied ? .denied : self.status
                 }
             }
+        }
+    }
+
+    /// Steps from Apple Health instead of the motion chip, which adds an Apple Watch's steps.
+    private func loadFromHealth() {
+        pedometer.stopUpdates()
+        liveSince = nil
+        Task { @MainActor in
+            let steps = await AppleHealth.dailySteps()
+            let cal = Calendar.current
+            let today = cal.startOfDay(for: Date())
+            self.week = (0..<7).map { offset in
+                let day = cal.date(byAdding: .day, value: offset - 6, to: today)!
+                return Day(date: day, steps: steps[day] ?? 0)
+            }
+            self.today = steps[today] ?? 0
+            self.status = .available
         }
     }
 

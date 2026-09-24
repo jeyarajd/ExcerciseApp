@@ -37,6 +37,17 @@ enum TrainingPlan {
         let kind: Kind
         let seconds: Int
 
+        /// Compendium MET values: running about 5 mph, brisk walking about 3.5 mph, and an easy
+        /// walk about 2.5–3 mph.
+        var met: Double {
+            switch kind {
+            case .run: 8.3
+            case .brisk: 4.3
+            case .walk, .warmUp, .coolDown: 3.5
+            case .easy: 3.0
+            }
+        }
+
         /// The interval's name in the person's language ("Run", "Brisk walk").
         var title: String {
             switch kind {

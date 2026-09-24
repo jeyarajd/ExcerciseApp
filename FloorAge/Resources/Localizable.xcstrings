@@ -1,6 +1,22 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "–" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "–"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "–"
+          }
+        }
+      }
+    },
     "(%@, %@) × %lld" : {
       "localizations" : {
         "en" : {
@@ -399,6 +415,22 @@
         }
       }
     },
+    "%@ steps" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ कदम"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ pasos"
+          }
+        }
+      }
+    },
     "%@ walk" : {
       "localizations" : {
         "es" : {
@@ -723,6 +755,28 @@
         }
       }
     },
+    "%lld more to “%@”" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld more to “%2$@”"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "“%2$@” के लिए %1$lld और"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld más para “%2$@”"
+          }
+        }
+      }
+    },
     "%lld of %lld" : {
       "localizations" : {
         "en" : {
@@ -745,6 +799,44 @@
         }
       }
     },
+    "%lld of %lld badges" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld of %2$lld badges"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%2$lld में से %1$lld बैज"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld de %2$lld insignias"
+          }
+        }
+      }
+    },
+    "%lld of 7 days" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "7 में से %lld दिन"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld de 7 días"
+          }
+        }
+      }
+    },
     "%lld of the last 7 days" : {
       "localizations" : {
         "es" : {
@@ -763,16 +855,16 @@
     },
     "%lld people on this iPhone" : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "इस iPhone पर %lld लोग"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld personas en este iPhone"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "इस iPhone पर %lld लोग"
           }
         }
       }
@@ -893,24 +985,6 @@
             }
           }
         },
-        "hi" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld बार खड़े हुए"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld बार खड़े हुए"
-                }
-              }
-            }
-          }
-        },
         "es" : {
           "variations" : {
             "plural" : {
@@ -924,6 +998,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld repeticiones"
+                }
+              }
+            }
+          }
+        },
+        "hi" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld बार खड़े हुए"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld बार खड़े हुए"
                 }
               }
             }
@@ -943,6 +1035,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld टेस्ट"
+          }
+        }
+      }
+    },
+    "%lld to go" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld बाकी"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "faltan %lld"
           }
         }
       }
@@ -969,6 +1077,22 @@
         }
       }
     },
+    "%lld years younger" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld साल छोटी"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld años más joven"
+          }
+        }
+      }
+    },
     "%lld years younger than my age (%lld)" : {
       "localizations" : {
         "en" : {
@@ -987,6 +1111,122 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "मेरी उम्र (%2$lld) से %1$lld साल कम"
+          }
+        }
+      }
+    },
+    "%lld yrs older" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld yr older"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld yrs older"
+                }
+              }
+            }
+          }
+        },
+        "hi" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld साल बड़ी"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld साल बड़ी"
+                }
+              }
+            }
+          }
+        },
+        "es" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld año más"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld años más"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "%lld yrs younger" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld yr younger"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld yrs younger"
+                }
+              }
+            }
+          }
+        },
+        "hi" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld साल छोटी"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld साल छोटी"
+                }
+              }
+            }
+          }
+        },
+        "es" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld año menos"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld años menos"
+                }
+              }
+            }
           }
         }
       }
@@ -1077,6 +1317,22 @@
         }
       }
     },
+    "%lldk" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lldk"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lldk"
+          }
+        }
+      }
+    },
     "~%lld min" : {
       "localizations" : {
         "es" : {
@@ -1105,6 +1361,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "1 मिनट"
+          }
+        }
+      }
+    },
+    "1 year younger" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 साल छोटी"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 año más joven"
           }
         }
       }
@@ -1277,6 +1549,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "30 सेकंड"
+          }
+        }
+      }
+    },
+    "30-day challenge" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "30 दिन का चैलेंज"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reto de 30 días"
           }
         }
       }
@@ -1615,16 +1903,16 @@
     },
     "Add a family member" : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "परिवार का सदस्य जोड़ें"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Añadir a un familiar"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "परिवार का सदस्य जोड़ें"
           }
         }
       }
@@ -1837,6 +2125,22 @@
         }
       }
     },
+    "Any session counts: the daily session, pelvic floor or a plan day. Missing a day never takes a badge away." : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कोई भी सेशन गिना जाता है: रोज़ का सेशन, पेल्विक फ़्लोर या प्लान का दिन। कोई दिन छूटने पर कभी बैज नहीं छिनता।"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cualquier sesión cuenta: la sesión diaria, el suelo pélvico o un día del plan. Saltarte un día nunca te quita una insignia."
+          }
+        }
+      }
+    },
     "Anything we should know?" : {
       "localizations" : {
         "es" : {
@@ -1849,6 +2153,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "कोई बात जो हमें पता होनी चाहिए?"
+          }
+        }
+      }
+    },
+    "Apple Health" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Health"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Health"
           }
         }
       }
@@ -1929,6 +2249,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "कमर या पीठ दर्द"
+          }
+        }
+      }
+    },
+    "Badges" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "बैज"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Insignias"
           }
         }
       }
@@ -2067,6 +2403,22 @@
         }
       }
     },
+    "Best reach: %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mejor alcance: %@"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "सबसे अच्छी पहुंच: %@"
+          }
+        }
+      }
+    },
     "Best: %.1f s" : {
       "localizations" : {
         "es" : {
@@ -2165,6 +2517,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "BMI रेंज"
+          }
+        }
+      }
+    },
+    "Both feet down" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los dos pies en el suelo"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "दोनों पैर ज़मीन पर"
           }
         }
       }
@@ -2299,48 +2667,48 @@
     },
     "Camera access is off. Allow it in iPhone Settings › Privacy & Security › Camera." : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "कैमरा की अनुमति बंद है। iPhone सेटिंग्स › गोपनीयता और सुरक्षा › कैमरा में इसे चालू करें।"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "El acceso a la cámara está desactivado. Actívalo en Ajustes del iPhone › Privacidad y seguridad › Cámara."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कैमरा की अनुमति बंद है। iPhone सेटिंग्स › गोपनीयता और सुरक्षा › कैमरा में इसे चालू करें।"
           }
         }
       }
     },
     "Camera on" : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "कैमरा चालू"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cámara activada"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कैमरा चालू"
           }
         }
       }
     },
     "Can you get up off the floor without using your hands?" : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "क्या आप हाथों का सहारा लिए बिना ज़मीन से उठ सकते हैं?"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "¿Puedes levantarte del suelo sin usar las manos?"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "क्या आप हाथों का सहारा लिए बिना ज़मीन से उठ सकते हैं?"
           }
         }
       }
@@ -2357,6 +2725,76 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "रद्द करें"
+          }
+        }
+      }
+    },
+    "Chair stand" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कुर्सी से उठना"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Levantarse de la silla"
+          }
+        }
+      }
+    },
+    "Challenge complete" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "चैलेंज पूरा"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reto completado"
+          }
+        }
+      }
+    },
+    "Challenge day %lld" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "चैलेंज का दिन %lld"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Día %lld del reto"
+          }
+        }
+      }
+    },
+    "Challenge day %lld · %lld trained" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Challenge day %1$lld · %2$lld trained"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "चैलेंज का दिन %1$lld · %2$lld दिन ट्रेनिंग"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Día %1$lld del reto · %2$lld entrenados"
           }
         }
       }
@@ -2649,6 +3087,66 @@
         }
       }
     },
+    "Day %lld of %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Day %1$lld of %2$lld"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "दिन %1$lld / %2$lld"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Día %1$lld de %2$lld"
+          }
+        }
+      }
+    },
+    "Day %lld of %lld · %lld trained" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Day %1$lld of %2$lld · %3$lld trained"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "दिन %1$lld / %2$lld · %3$lld दिन ट्रेनिंग"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Día %1$lld de %2$lld · %3$lld entrenados"
+          }
+        }
+      }
+    },
+    "days" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "दिन"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "días"
+          }
+        }
+      }
+    },
     "Daytime activity, like your walks, helps you fall asleep." : {
       "localizations" : {
         "es" : {
@@ -2825,6 +3323,22 @@
         }
       }
     },
+    "Done today" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आज पूरा"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hecho hoy"
+          }
+        }
+      }
+    },
     "Easy walk" : {
       "localizations" : {
         "es" : {
@@ -2949,6 +3463,38 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "सेशन ख़त्म करें"
+          }
+        }
+      }
+    },
+    "End the challenge" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "चैलेंज खत्म करें"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terminar el reto"
+          }
+        }
+      }
+    },
+    "End the challenge? Your badges so far are kept on this screen until you start a new one." : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "चैलेंज खत्म करें? अब तक के बैज इस स्क्रीन पर तब तक रहेंगे जब तक आप नया चैलेंज शुरू नहीं करते।"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Terminar el reto? Tus insignias se quedan en esta pantalla hasta que empieces uno nuevo."
           }
         }
       }
@@ -3083,48 +3629,48 @@
     },
     "Everyone gets their own Floor Age, plan and history. Steps, Apple Health sleep and reminders stay with %@, because they come from this iPhone." : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "हर किसी को अपना Floor Age, प्लान और इतिहास मिलता है। कदम, Apple Health की नींद और रिमाइंडर %@ के पास रहते हैं, क्योंकि ये इसी iPhone से आते हैं।"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cada persona tiene su propio Floor Age, plan e historial. Los pasos, el sueño de Apple Health y los recordatorios siguen siendo de %@, porque vienen de este iPhone."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "हर किसी को अपना Floor Age, प्लान और इतिहास मिलता है। कदम, Apple Health की नींद और रिमाइंडर %@ के पास रहते हैं, क्योंकि ये इसी iPhone से आते हैं।"
           }
         }
       }
     },
     "Family" : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "परिवार"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Familia"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "परिवार"
           }
         }
       }
     },
     "Family profiles" : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "परिवार की प्रोफ़ाइलें"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Perfiles familiares"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "परिवार की प्रोफ़ाइलें"
           }
         }
       }
@@ -3195,32 +3741,32 @@
     },
     "Find your Floor Age: 4 tests, 10 minutes. Scan to get the app." : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "अपना Floor Age जानें: 4 टेस्ट, 10 मिनट। ऐप पाने के लिए स्कैन करें।"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Descubre tu Floor Age: 4 pruebas, 10 minutos. Escanea para descargar la app."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अपना Floor Age जानें: 4 टेस्ट, 10 मिनट। ऐप पाने के लिए स्कैन करें।"
           }
         }
       }
     },
     "Find your Floor Age: 4 tests, 10 minutes. Search “Floor Age” on the App Store." : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "अपना Floor Age जानें: 4 टेस्ट, 10 मिनट। App Store पर “Floor Age” खोजें।"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Descubre tu Floor Age: 4 pruebas, 10 minutos. Busca “Floor Age” en el App Store."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अपना Floor Age जानें: 4 टेस्ट, 10 मिनट। App Store पर “Floor Age” खोजें।"
           }
         }
       }
@@ -3337,6 +3883,28 @@
         }
       }
     },
+    "Floor Age %lld · %lld/7 days" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Floor Age %1$lld · %2$lld/7 days"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Floor Age %1$lld · %2$lld/7 दिन"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Floor Age %1$lld · %2$lld/7 días"
+          }
+        }
+      }
+    },
     "Floor Age is a fitness estimate from simple movement tests, not a medical diagnosis." : {
       "localizations" : {
         "es" : {
@@ -3397,6 +3965,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Floor Age Plus फिर से चालू हो गया है। वापसी पर स्वागत है!"
+          }
+        }
+      }
+    },
+    "Floor champion" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "फ़्लोर चैंपियन"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Campeón del suelo"
           }
         }
       }
@@ -3465,6 +4049,22 @@
         }
       }
     },
+    "Foot up" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pie arriba"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "पैर ऊपर"
+          }
+        }
+      }
+    },
     "For a more natural voice, download an Enhanced or Premium voice in iPhone Settings › Accessibility › Spoken Content › Voices." : {
       "localizations" : {
         "es" : {
@@ -3513,6 +4113,28 @@
         }
       }
     },
+    "From %lld to %lld. Your training is working." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "From %1$lld to %2$lld. Your training is working."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld से %2$lld तक। आपकी ट्रेनिंग असर कर रही है।"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De %1$lld a %2$lld. Tu entrenamiento funciona."
+          }
+        }
+      }
+    },
     "ft / in" : {
       "localizations" : {
         "es" : {
@@ -3557,6 +4179,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "हल्का वॉकिंग प्लान"
+          }
+        }
+      }
+    },
+    "Get off the floor" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ज़मीन से उठिए"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Levántate del suelo"
           }
         }
       }
@@ -3781,6 +4419,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "कभी भी गाइडेड कीगल सेशन, और हर रोज़ के सेशन के आख़िर में कीगल।"
+          }
+        }
+      }
+    },
+    "Habit formed" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आदत बन गई"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hábito creado"
           }
         }
       }
@@ -4047,18 +4701,50 @@
         }
       }
     },
-    "Just you so far" : {
+    "It's been 4 weeks since your last check. See how far you've come." : {
       "localizations" : {
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "अभी सिर्फ़ आप"
+            "value" : "पिछले चेक को 4 हफ़्ते हो गए। देखिए आप कितना आगे आए हैं।"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
+            "value" : "Han pasado 4 semanas desde tu última prueba. Mira cuánto has avanzado."
+          }
+        }
+      }
+    },
+    "It's been 4 weeks. Take the 10-minute check and see how far you've come." : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "4 हफ़्ते हो गए। 10 मिनट का चेक कीजिए और देखिए आप कितना आगे आए हैं।"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Han pasado 4 semanas. Haz la prueba de 10 minutos y mira cuánto has avanzado."
+          }
+        }
+      }
+    },
+    "Just you so far" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "Por ahora, solo tú"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अभी सिर्फ़ आप"
           }
         }
       }
@@ -4107,6 +4793,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "आज खाई गई kcal"
+          }
+        }
+      }
+    },
+    "Keep going" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आगे बढ़ते रहिए"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sigue así"
           }
         }
       }
@@ -4353,16 +5055,16 @@
     },
     "Lift your foot and the timer starts by itself" : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "पैर उठाते ही टाइमर अपने आप शुरू हो जाएगा"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Levanta el pie y el cronómetro empezará solo"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "पैर उठाते ही टाइमर अपने आप शुरू हो जाएगा"
           }
         }
       }
@@ -4527,6 +5229,22 @@
         }
       }
     },
+    "Mirroring you" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Imitándote"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आपकी नकल कर रहे हैं"
+          }
+        }
+      }
+    },
     "Missed a day? No problem. Consistency beats perfection." : {
       "localizations" : {
         "es" : {
@@ -4641,16 +5359,16 @@
     },
     "My Floor Age is %lld. Can you get up off the floor without using your hands? Find your Floor Age:" : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "मेरा Floor Age %lld है। क्या आप हाथों का सहारा लिए बिना ज़मीन से उठ सकते हैं? अपना Floor Age जानें:"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mi Floor Age es %lld. ¿Puedes levantarte del suelo sin usar las manos? Descubre tu Floor Age:"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "मेरा Floor Age %lld है। क्या आप हाथों का सहारा लिए बिना ज़मीन से उठ सकते हैं? अपना Floor Age जानें:"
           }
         }
       }
@@ -4667,6 +5385,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "नमस्ते!"
+          }
+        }
+      }
+    },
+    "New badge" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "नया बैज"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nueva insignia"
           }
         }
       }
@@ -4877,16 +5611,16 @@
     },
     "No name" : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "बिना नाम"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sin nombre"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "बिना नाम"
           }
         }
       }
@@ -4935,6 +5669,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "अभी नहीं"
+          }
+        }
+      }
+    },
+    "Not yet" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अभी नहीं"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aún no"
           }
         }
       }
@@ -5003,6 +5753,22 @@
         }
       }
     },
+    "of %@" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ में से"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "de %@"
+          }
+        }
+      }
+    },
     "of %@ · %@" : {
       "localizations" : {
         "en" : {
@@ -5021,6 +5787,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "लक्ष्य %1$@ · %2$@"
+          }
+        }
+      }
+    },
+    "Off the floor" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ज़मीन से ऊपर"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arriba del suelo"
           }
         }
       }
@@ -5089,6 +5871,22 @@
         }
       }
     },
+    "One week strong" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "एक हफ़्ता मज़बूत"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Una semana firme"
+          }
+        }
+      }
+    },
     "One-Leg Balance" : {
       "localizations" : {
         "es" : {
@@ -5117,6 +5915,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "सिर्फ़ घुटनों तक"
+          }
+        }
+      }
+    },
+    "Or do this test on your Apple Watch: open Floor Age there and the result appears here." : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "या यह टेस्ट अपनी Apple Watch पर करें: वहां Floor Age खोलें और नतीजा यहां दिख जाएगा।"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O haz esta prueba en tu Apple Watch: abre Floor Age allí y el resultado aparecerá aquí."
           }
         }
       }
@@ -5489,6 +6303,22 @@
         }
       }
     },
+    "Read steps from Apple Health" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Health से कदम पढ़ें"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leer los pasos de Apple Health"
+          }
+        }
+      }
+    },
     "Ready. Go!" : {
       "localizations" : {
         "es" : {
@@ -5555,32 +6385,32 @@
     },
     "Remove" : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "हटाएं"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Eliminar"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "हटाएं"
           }
         }
       }
     },
     "Remove %@ and all their results from this iPhone?" : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ और उनके सभी नतीजे इस iPhone से हटाएं?"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "¿Eliminar a %@ y todos sus resultados de este iPhone?"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ और उनके सभी नतीजे इस iPhone से हटाएं?"
           }
         }
       }
@@ -5761,6 +6591,22 @@
         }
       }
     },
+    "Right on your age" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आपकी उम्र के बराबर"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Justo tu edad"
+          }
+        }
+      }
+    },
     "Run" : {
       "localizations" : {
         "es" : {
@@ -5857,6 +6703,22 @@
         }
       }
     },
+    "Save workouts to Apple Health" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "वर्कआउट Apple Health में सेव करें"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guardar entrenamientos en Apple Health"
+          }
+        }
+      }
+    },
     "Saved" : {
       "localizations" : {
         "es" : {
@@ -5907,16 +6769,16 @@
     },
     "search “Floor Age” on the App Store." : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "App Store पर “Floor Age” खोजें।"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "busca “Floor Age” en el App Store."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App Store पर “Floor Age” खोजें।"
           }
         }
       }
@@ -5933,6 +6795,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "रोटी, दाल, इडली खोजें…"
+          }
+        }
+      }
+    },
+    "Seated" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En la silla"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "बैठे हैं"
           }
         }
       }
@@ -6001,6 +6879,38 @@
         }
       }
     },
+    "Send to iPhone" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iPhone पर भेजें"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enviar al iPhone"
+          }
+        }
+      }
+    },
+    "Sent to iPhone" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iPhone पर भेजा गया"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enviado al iPhone"
+          }
+        }
+      }
+    },
     "Servings: %@ × %@" : {
       "localizations" : {
         "en" : {
@@ -6019,6 +6929,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "मात्रा: %1$@ × %2$@"
+          }
+        }
+      }
+    },
+    "Session" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "सेशन"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sesión"
           }
         }
       }
@@ -6051,6 +6977,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "सेशन"
+          }
+        }
+      }
+    },
+    "Sessions and run/walk days count towards your Activity rings. Reading steps from Health adds the steps your Apple Watch counts. Floor Age only shares with Health on this iPhone." : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "सेशन और दौड़/वॉक के दिन आपकी Activity रिंग्स में गिने जाते हैं। Health से कदम पढ़ने पर आपकी Apple Watch के गिने कदम भी जुड़ जाते हैं। Floor Age सिर्फ़ इसी iPhone पर Health के साथ जानकारी साझा करता है।"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Las sesiones y los días de correr/caminar cuentan para tus anillos de Actividad. Leer los pasos de Salud suma los que cuenta tu Apple Watch. Floor Age solo comparte con Salud en este iPhone."
           }
         }
       }
@@ -6089,16 +7031,16 @@
     },
     "Share" : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "शेयर करें"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Compartir"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "शेयर करें"
           }
         }
       }
@@ -6121,16 +7063,32 @@
     },
     "Show my real age" : {
       "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar mi edad real"
+          }
+        },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "मेरी असली उम्र दिखाएं"
           }
+        }
+      }
+    },
+    "Sit in the middle of a sturdy chair and cross your arms over your chest." : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "मज़बूत कुर्सी के बीच में बैठें और हाथ सीने पर क्रॉस करें।"
+          }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mostrar mi edad real"
+            "value" : "Siéntate en el centro de una silla firme y cruza los brazos sobre el pecho."
           }
         }
       }
@@ -6503,6 +7461,38 @@
         }
       }
     },
+    "Standing" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De pie"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "खड़े हैं"
+          }
+        }
+      }
+    },
+    "stands · %lld s" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "बार · %lld सेकंड"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "veces · %lld s"
+          }
+        }
+      }
+    },
     "Start" : {
       "localizations" : {
         "es" : {
@@ -6551,6 +7541,54 @@
         }
       }
     },
+    "Start a new challenge" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "नया चैलेंज शुरू करें"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Empezar un nuevo reto"
+          }
+        }
+      }
+    },
+    "Start a session on your iPhone to control it here." : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "इसे यहां से चलाने के लिए अपने iPhone पर सेशन शुरू करें।"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Empieza una sesión en tu iPhone para controlarla desde aquí."
+          }
+        }
+      }
+    },
+    "Start the challenge" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "चैलेंज शुरू करें"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Empezar el reto"
+          }
+        }
+      }
+    },
     "Start timer" : {
       "localizations" : {
         "es" : {
@@ -6585,32 +7623,32 @@
     },
     "Starting the camera…" : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "कैमरा शुरू हो रहा है…"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Iniciando la cámara…"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कैमरा शुरू हो रहा है…"
           }
         }
       }
     },
     "Step back so your feet are in view" : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "थोड़ा पीछे हटें ताकि आपके पैर दिखें"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aléjate un poco para que se vean tus pies"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "थोड़ा पीछे हटें ताकि आपके पैर दिखें"
           }
         }
       }
@@ -6633,16 +7671,16 @@
     },
     "Step into view, 2–3 m from the phone" : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "फ़ोन से 2–3 मीटर दूर, कैमरे के सामने आएं"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ponte delante de la cámara, a 2–3 m del teléfono"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "फ़ोन से 2–3 मीटर दूर, कैमरे के सामने आएं"
           }
         }
       }
@@ -6809,16 +7847,16 @@
     },
     "Suggested by the camera. Tap another answer if it's not right." : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "कैमरे का सुझाव। सही न हो तो दूसरा जवाब चुनें।"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sugerido por la cámara. Toca otra respuesta si no es correcta."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कैमरे का सुझाव। सही न हो तो दूसरा जवाब चुनें।"
           }
         }
       }
@@ -6883,6 +7921,38 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "फ़ोटो लें"
+          }
+        }
+      }
+    },
+    "Take the check" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "चेक कीजिए"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Haz la prueba"
+          }
+        }
+      }
+    },
+    "Take the check on your iPhone" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अपने iPhone पर चेक कीजिए"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Haz la prueba en tu iPhone"
           }
         }
       }
@@ -6991,16 +8061,16 @@
     },
     "Test and coach your parents or partner on this iPhone, each with their own Floor Age and plan." : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "इसी iPhone पर अपने माता-पिता या जीवनसाथी का टेस्ट और कोचिंग करें, हर किसी का अपना Floor Age और प्लान।"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Evalúa y entrena a tus padres o a tu pareja en este iPhone, cada uno con su propio Floor Age y plan."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "इसी iPhone पर अपने माता-पिता या जीवनसाथी का टेस्ट और कोचिंग करें, हर किसी का अपना Floor Age और प्लान।"
           }
         }
       }
@@ -7087,32 +8157,32 @@
     },
     "the owner" : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "फ़ोन के मालिक"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "el propietario"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "फ़ोन के मालिक"
           }
         }
       }
     },
     "The picture shows your Floor Age and areas, never your name. It's shared only where you choose." : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "तस्वीर में आपका Floor Age और हर हिस्से का नतीजा दिखता है, आपका नाम कभी नहीं। यह सिर्फ़ वहीं शेयर होती है जहां आप चुनें।"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "La imagen muestra tu Floor Age y tus áreas, nunca tu nombre. Solo se comparte donde tú elijas."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "तस्वीर में आपका Floor Age और हर हिस्से का नतीजा दिखता है, आपका नाम कभी नहीं। यह सिर्फ़ वहीं शेयर होती है जहां आप चुनें।"
           }
         }
       }
@@ -7135,16 +8205,16 @@
     },
     "They get their own Floor Age, plan and history on this iPhone. Hand them the phone, or fill it in together." : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "उन्हें इसी iPhone पर अपना Floor Age, प्लान और इतिहास मिलेगा। फ़ोन उन्हें दे दें, या साथ मिलकर भरें।"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tendrá su propio Floor Age, plan e historial en este iPhone. Pásale el teléfono o rellénalo juntos."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "उन्हें इसी iPhone पर अपना Floor Age, प्लान और इतिहास मिलेगा। फ़ोन उन्हें दे दें, या साथ मिलकर भरें।"
           }
         }
       }
@@ -7183,32 +8253,32 @@
     },
     "This device has no front camera." : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "इस डिवाइस में सामने का कैमरा नहीं है।"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Este dispositivo no tiene cámara frontal."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "इस डिवाइस में सामने का कैमरा नहीं है।"
           }
         }
       }
     },
     "This iPhone's owner" : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "इस iPhone के मालिक"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Propietario de este iPhone"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "इस iPhone के मालिक"
           }
         }
       }
@@ -7245,18 +8315,50 @@
         }
       }
     },
-    "Tip: prop the phone up 2–3 m away and the camera counts for you. Nothing is recorded." : {
+    "Time to retest" : {
       "localizations" : {
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "टिप: फ़ोन को 2–3 मीटर दूर टिकाकर रखें, कैमरा आपके लिए गिनेगा। कुछ भी रिकॉर्ड नहीं होता।"
+            "value" : "फिर से टेस्ट का समय"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
+            "value" : "Hora de repetir la prueba"
+          }
+        }
+      }
+    },
+    "Time to retest your Floor Age" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अपना Floor Age फिर से जांचने का समय"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hora de repetir tu prueba de Floor Age"
+          }
+        }
+      }
+    },
+    "Tip: prop the phone up 2–3 m away and the camera counts for you. Nothing is recorded." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "Consejo: apoya el teléfono a 2–3 m y la cámara contará por ti. No se graba nada."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "टिप: फ़ोन को 2–3 मीटर दूर टिकाकर रखें, कैमरा आपके लिए गिनेगा। कुछ भी रिकॉर्ड नहीं होता।"
           }
         }
       }
@@ -7373,6 +8475,38 @@
         }
       }
     },
+    "Today's session is waiting" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आज का सेशन आपका इंतज़ार कर रहा है"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu sesión de hoy te espera"
+          }
+        }
+      }
+    },
+    "Today's steps against your goal." : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आपके लक्ष्य के मुकाबले आज के कदम।"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tus pasos de hoy frente a tu meta."
+          }
+        }
+      }
+    },
     "Toe Reach" : {
       "localizations" : {
         "es" : {
@@ -7439,32 +8573,80 @@
     },
     "Tracking. Face the phone." : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ट्रैक कर रहे हैं। फ़ोन की ओर मुंह करें।"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Siguiéndote. Mira hacia el teléfono."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ट्रैक कर रहे हैं। फ़ोन की ओर मुंह करें।"
           }
         }
       }
     },
     "Tracking. Stand side-on to the phone." : {
       "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Siguiéndote. Ponte de lado al teléfono."
+          }
+        },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "ट्रैक कर रहे हैं। फ़ोन की ओर बगल से खड़े हों।"
           }
+        }
+      }
+    },
+    "Train on 30 days, any session counts, and collect 5 badges along the way." : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "30 दिन ट्रेनिंग करें, कोई भी सेशन गिना जाएगा, और रास्ते में 5 बैज जीतें।"
+          }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Siguiéndote. Ponte de lado al teléfono."
+            "value" : "Entrena 30 días (cualquier sesión cuenta) y gana 5 insignias por el camino."
+          }
+        }
+      }
+    },
+    "Trained" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ट्रेनिंग की"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entrenado"
+          }
+        }
+      }
+    },
+    "Trained on %lld days of the challenge" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "चैलेंज के %lld दिन ट्रेनिंग की"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entrenaste %lld días del reto"
           }
         }
       }
@@ -7487,16 +8669,16 @@
     },
     "Training plan, family profiles, food photos, sleep, pelvic floor and progress history" : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ट्रेनिंग प्लान, परिवार की प्रोफ़ाइलें, फ़ोटो से कैलोरी, नींद, पेल्विक फ़्लोर और प्रगति का इतिहास"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Plan de entrenamiento, perfiles familiares, fotos de comida, sueño, suelo pélvico e historial de progreso"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ट्रेनिंग प्लान, परिवार की प्रोफ़ाइलें, फ़ोटो से कैलोरी, नींद, पेल्विक फ़्लोर और प्रगति का इतिहास"
           }
         }
       }
@@ -7529,6 +8711,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "बस दो और!"
+          }
+        }
+      }
+    },
+    "Two weeks steady" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "दो हफ़्ते लगातार"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dos semanas constantes"
           }
         }
       }
@@ -7647,16 +8845,16 @@
     },
     "Use camera" : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "कैमरा इस्तेमाल करें"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Usar la cámara"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कैमरा इस्तेमाल करें"
           }
         }
       }
@@ -8005,16 +9203,16 @@
     },
     "Who's training?" : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "कौन ट्रेनिंग कर रहा है?"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "¿Quién entrena?"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कौन ट्रेनिंग कर रहा है?"
           }
         }
       }
@@ -8085,16 +9283,16 @@
     },
     "You" : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "आप"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tú"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आप"
           }
         }
       }
@@ -8127,6 +9325,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "आज आपने कसरत की। यही सबसे ज़रूरी है।"
+          }
+        }
+      }
+    },
+    "You trained on %lld of %lld days." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "You trained on %1$lld of %2$lld days."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आपने %2$lld में से %1$lld दिन ट्रेनिंग की।"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entrenaste %1$lld de %2$lld días."
           }
         }
       }
@@ -8191,6 +9411,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "कोच के साथ आपका 10 मिनट का सेशन तैयार है। एक दिन छूटने से आपकी प्रगति कभी शून्य नहीं होती।"
+          }
+        }
+      }
+    },
+    "Your 30 days" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आपके 30 दिन"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tus 30 días"
           }
         }
       }
@@ -8323,6 +9559,44 @@
         }
       }
     },
+    "Your Floor Age dropped" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आपका Floor Age कम हुआ"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu Floor Age bajó"
+          }
+        }
+      }
+    },
+    "Your Floor Age dropped from %lld to %lld. Your training is working!" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Your Floor Age dropped from %1$lld to %2$lld. Your training is working!"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आपका Floor Age %1$lld से घटकर %2$lld हो गया। आपकी ट्रेनिंग असर कर रही है!"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu Floor Age bajó de %1$lld a %2$lld. ¡Tu entrenamiento funciona!"
+          }
+        }
+      }
+    },
     "Your Floor Age is %lld. Brilliant, your body moves younger than your age!" : {
       "localizations" : {
         "es" : {
@@ -8357,6 +9631,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "आपकी Floor Age %1$lld है। यह आपकी उम्र से %2$lld साल ज़्यादा है, और हम मिलकर इस पर काम करेंगे।"
+          }
+        }
+      }
+    },
+    "Your Floor Age, this week's training and today's steps." : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आपका Floor Age, इस हफ़्ते की ट्रेनिंग और आज के कदम।"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu Floor Age, el entrenamiento de esta semana y los pasos de hoy."
           }
         }
       }
@@ -8453,102 +9743,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "आपका ट्रेनिंग प्लान"
-          }
-        }
-      }
-    },
-    "Standing" : {
-      "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "खड़े हैं"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "De pie"
-          }
-        }
-      }
-    },
-    "Seated" : {
-      "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "बैठे हैं"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "En la silla"
-          }
-        }
-      }
-    },
-    "Foot up" : {
-      "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "पैर ऊपर"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pie arriba"
-          }
-        }
-      }
-    },
-    "Both feet down" : {
-      "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "दोनों पैर ज़मीन पर"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Los dos pies en el suelo"
-          }
-        }
-      }
-    },
-    "Best reach: %@" : {
-      "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "सबसे अच्छी पहुंच: %@"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mejor alcance: %@"
-          }
-        }
-      }
-    },
-    "Mirroring you" : {
-      "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "आपकी नकल कर रहे हैं"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Imitándote"
           }
         }
       }

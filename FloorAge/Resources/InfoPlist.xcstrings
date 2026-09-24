@@ -80,19 +80,19 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Floor Age reads your sleep from Apple Health to show how long you sleep. It never changes your Health data or sends it anywhere."
+            "value" : "Floor Age reads your sleep and, if you choose, your steps from Apple Health to show them in the app. It never sends your Health data anywhere."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Floor Age lee tus datos de sueño de Apple Health para mostrarte cuánto duermes. Nunca modifica tus datos de salud ni los envía a ninguna parte."
+            "value" : "Floor Age lee tu sueño y, si lo eliges, tus pasos de Apple Health para mostrarlos en la app. Nunca envía tus datos de Salud a ningún sitio."
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Floor Age आपकी नींद का डेटा Apple Health से पढ़ता है, ताकि दिखा सके कि आप कितनी देर सोते हैं। यह आपका Health डेटा कभी नहीं बदलता, और न ही उसे कहीं भेजता है।"
+            "value" : "Floor Age ऐप में दिखाने के लिए Apple Health से आपकी नींद और, अगर आप चाहें तो, आपके कदम पढ़ता है। यह आपका Health डेटा कभी कहीं नहीं भेजता।"
           }
         }
       }
@@ -117,6 +117,30 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Floor Age इस iPhone पर आपके रोज़ के कदम गिनता है। आपके कदमों का डेटा कभी आपके फ़ोन से बाहर नहीं जाता।"
+          }
+        }
+      }
+    },
+    "NSHealthUpdateUsageDescription" : {
+      "comment" : "Privacy - Health Update Usage Description",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Floor Age saves your finished sessions to Apple Health as workouts, if you switch this on, so they count towards your Activity rings."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अगर आप यह चालू करते हैं, तो Floor Age आपके पूरे हुए सेशन Apple Health में वर्कआउट के रूप में सेव करता है, ताकि वे आपकी Activity रिंग्स में गिने जाएं।"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Si lo activas, Floor Age guarda tus sesiones terminadas en Apple Health como entrenamientos, para que cuenten en tus anillos de Actividad."
           }
         }
       }

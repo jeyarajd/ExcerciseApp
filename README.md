@@ -26,6 +26,11 @@
 
   Each week has run/walk intervals or walking minutes, strength days with sets × reps, balance days from 65, and a daily step goal. A guided timer talks you through each run/walk. The numbers follow WHO 2020, NHS Couch to 5K, ACSM 2009 and Paluch et al. 2022 (listed in the app).
 - **Sleep.** Log bedtime and wake time, or read them from Apple Health, and compare with the recommended 7–9 hours (7–8 from 65; National Sleep Foundation).
+- **30-day challenge.** "Get off the floor": train on 30 days (any session counts) and earn badges at 3, 7, 14, 21 and 30 days, celebrated with confetti. Missing a day never takes a badge away.
+- **Floor Age drop loop.** A "Time to retest" card and one reminder 4 weeks after each check. When your Floor Age drops, the result opens with a celebration, and the coach says so.
+- **Widgets.** Floor Age (small, medium and three Lock Screen styles) and Steps (small and Lock Screen) widgets. The app shares a small summary with them through an App Group, and they read today's steps fresh from the iPhone.
+- **Apple Watch app.** Shows your Floor Age, week, steps and challenge day, and does the chair stand (counted from wrist motion, arms crossed) and balance tests on the wrist. Results appear in the Floor Age check on the iPhone. It's also a remote for guided sessions: see the exercise and count, and pause or skip.
+- **Apple Health (optional).** Saves sessions and run/walk days as workouts, with energy estimated from Compendium MET values, so they count towards your Activity rings. Can read steps from Health, which adds your Watch's steps. Both are off until switched on in Settings.
 - **Editable profile.** Change your age or limitations in Settings. Your plan and safety filtering update right away.
 - **Floor Age Plus.** A free download with one optional in-app purchase, no subscription. Plus unlocks the training plan, family profiles, food photo calories, sleep tracking, the pelvic floor programme and the Floor Age history chart. The Floor Age check, daily sessions with the coach, steps, calories, BMI and all safety guidance stay free. See [Floor Age Plus](#floor-age-plus-in-app-purchase).
 - **Privacy.** Everything is stored on the phone. Nothing is sent anywhere except the Plus purchase itself, which goes through Apple.
@@ -40,6 +45,8 @@
 | `FloorAge/` | SwiftUI app source (iOS 18+) |
 | `FloorAge/Resources/exercises.json` | Avatar skeleton, poses and the exercise library (keyframes, cues, rep timing) |
 | `FloorAge/Resources/Videos/` | Demo clips, `demo_<exercise id>.mp4` (see [Demo videos](#demo-videos)) |
+| `FloorAgeWidgets/` | WidgetKit extension: Floor Age and Steps widgets (`WidgetViews.swift` is also compiled into the app for its demo screen) |
+| `FloorAgeWatch/` | Apple Watch app: summary, wrist tests, session remote |
 | `FloorAgeTests/` | Unit tests: scoring, plan safety filtering, persistence, exercise data, pose solver, reminders |
 | `tools/pose_preview.py` | Renders stick-figure previews of every exercise from `exercises.json` (no Mac needed) |
 | `tools/build_coach.py` | Builds the realistic coach models `FloorAge/Resources/coach_*.usdz` in Blender (see [Realistic coach](#realistic-coach)) |
