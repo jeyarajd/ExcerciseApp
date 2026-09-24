@@ -661,3 +661,27 @@ final class RealisticCoachTests: XCTestCase {
         XCTAssertLessThan(lowestFoot(body.lastPositions), 0.1, "feet on the floor while seated")
     }
 }
+
+@MainActor
+final class StoreTests: XCTestCase {
+    func testOnlyAnUnrefundedPlusPurchaseUnlocks() {
+        XCTAssertTrue(Store.unlocks(Store.plusID, revoked: false))
+        XCTAssertFalse(Store.unlocks(Store.plusID, revoked: true), "a refunded purchase locks Plus again")
+        XCTAssertFalse(Store.unlocks("com.jeyaraj.floorage.other", revoked: false))
+    }
+
+    func testProductBelongsToTheApp() {
+        // App Store Connect product IDs must sit under the app's bundle ID.
+        XCTAssertTrue(Store.plusID.hasPrefix("com.jeyaraj.floorage."))
+    }
+
+    func testPreviewStoreNeverTouchesStoreKit() async {
+        let locked = Store(preview: false)
+        XCTAssertFalse(locked.hasPlus)
+        XCTAssertEqual(locked.price, "$4.99")
+        let restored = await locked.restore()
+        XCTAssertNil(restored)
+        XCTAssertFalse(locked.hasPlus)
+        XCTAssertTrue(Store(preview: true).hasPlus)
+    }
+}

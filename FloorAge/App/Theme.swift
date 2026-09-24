@@ -69,7 +69,7 @@ extension View {
 /// Each area of the app has its own colours and symbol, so screens feel distinct rather than
 /// uniform white cards.
 enum Feature {
-    case steps, calories, bmi, sleep, plan, floorAge, glance
+    case steps, calories, bmi, sleep, plan, floorAge, glance, plus
 
     var colors: [Color] {
         switch self {
@@ -80,6 +80,7 @@ enum Feature {
         case .plan: [Color(red: 0.14, green: 0.74, blue: 0.9), Color(red: 0.24, green: 0.36, blue: 0.9)]
         case .floorAge: [Color(red: 0.98, green: 0.6, blue: 0.1), Color(red: 0.86, green: 0.28, blue: 0.2)]
         case .glance: [Color(red: 1.0, green: 0.55, blue: 0.25), Color(red: 0.93, green: 0.3, blue: 0.5), Color(red: 0.45, green: 0.3, blue: 0.85)]
+        case .plus: [Color(red: 0.42, green: 0.26, blue: 0.66), Color(red: 0.13, green: 0.08, blue: 0.28)]
         }
     }
 
@@ -92,11 +93,15 @@ enum Feature {
         case .plan: "calendar.badge.checkmark"
         case .floorAge: "figure.cross.training"
         case .glance: "sun.max.fill"
+        case .plus: "crown.fill"
         }
     }
 
     var gradient: LinearGradient { LinearGradient(colors: colors, startPoint: .topLeading, endPoint: .bottomTrailing) }
     var tint: Color { colors[0] }
+
+    /// The warm gold used with Plus (crown, price) against its deep purple.
+    static let gold = Color(red: 1.0, green: 0.8, blue: 0.38)
 }
 
 extension View {

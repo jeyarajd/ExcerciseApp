@@ -3,6 +3,7 @@ import SwiftUI
 struct TodayView: View {
     @EnvironmentObject private var model: AppModel
     @EnvironmentObject private var voice: VoiceCoach
+    @EnvironmentObject private var store: Store
     @StateObject private var avatar = AvatarController(exerciseID: "idle")
     @State private var session: SessionItems?
     @State private var showingTest = false
@@ -32,7 +33,11 @@ struct TodayView: View {
 
                     TrainingPlanCard()
                     planCard
-                    pelvicFloorCard
+                    if store.hasPlus {
+                        pelvicFloorCard
+                    } else {
+                        PlusLockedCard(feature: .pelvicFloor)
+                    }
                 }
                 .padding()
             }
@@ -52,7 +57,7 @@ struct TodayView: View {
 
     private var plan: [PlanItem] {
         guard let profile = model.profile else { return [] }
-        return PlanBuilder.today(profile: profile, latest: model.latestResult, pelvicFloor: pelvicFloor)
+        return PlanBuilder.today(profile: profile, latest: model.latestResult, pelvicFloor: pelvicFloor && store.hasPlus)
     }
 
     private var greeting: String {

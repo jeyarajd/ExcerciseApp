@@ -5,6 +5,7 @@ struct FloorAgeApp: App {
     @StateObject private var model = DemoScreen.current == nil ? AppModel() : DemoScreen.sampleModel()
     @StateObject private var voice = VoiceCoach()
     @StateObject private var steps = DemoScreen.current == nil ? StepCounter() : StepCounter.sample()
+    @StateObject private var store = DemoScreen.current == nil ? Store() : Store(preview: DemoScreen.hasPlus)
     @Environment(\.scenePhase) private var scenePhase
 
     init() {
@@ -17,11 +18,13 @@ struct FloorAgeApp: App {
                 .environmentObject(model)
                 .environmentObject(voice)
                 .environmentObject(steps)
+                .environmentObject(store)
                 .tint(Color("AccentColor"))
         }
         .onChange(of: scenePhase) { _, phase in
             guard phase == .active else { return }
             Task { await model.refreshReminders() }
+            Task { await store.refreshEntitlement() }
             if model.profile != nil { steps.start() }
         }
     }

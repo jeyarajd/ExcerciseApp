@@ -5,6 +5,7 @@ import SwiftUI
 struct TrackView: View {
     @EnvironmentObject private var model: AppModel
     @EnvironmentObject private var steps: StepCounter
+    @EnvironmentObject private var store: Store
 
     var body: some View {
         NavigationStack {
@@ -15,7 +16,11 @@ struct TrackView: View {
                     NavigationLink { StepsView() } label: { stepsCard }
                     NavigationLink { FoodLogView() } label: { caloriesCard }
                     NavigationLink { BMIView() } label: { bmiCard }
-                    NavigationLink { SleepView() } label: { SleepCard() }
+                    if store.hasPlus {
+                        NavigationLink { SleepView() } label: { SleepCard() }
+                    } else {
+                        PlusLockedCard(feature: .sleep)
+                    }
                     Text("Estimates for everyday fitness, not medical advice.")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
@@ -306,9 +311,11 @@ struct StepsView: View {
 
 struct FoodLogView: View {
     @EnvironmentObject private var model: AppModel
+    @EnvironmentObject private var store: Store
     @State private var day = Calendar.current.startOfDay(for: Date())
     @State private var adding = false
     @State private var snapping = false
+    @State private var showingPlus = false
 
     var body: some View {
         let entries = model.foods(on: day)
@@ -372,8 +379,14 @@ struct FoodLogView: View {
                 .onDelete { offsets in
                     offsets.map { entries[$0].id }.forEach(model.removeFood)
                 }
-                Button { snapping = true } label: {
-                    Label("Snap your plate", systemImage: "camera.fill").font(.headline)
+                Button(action: snap) {
+                    HStack {
+                        Label("Snap your plate", systemImage: "camera.fill").font(.headline)
+                        if !store.hasPlus {
+                            Spacer()
+                            PlusBadge()
+                        }
+                    }
                 }
                 Button { adding = true } label: {
                     Label("Add food", systemImage: "plus.circle.fill").font(.headline)
@@ -392,11 +405,19 @@ struct FoodLogView: View {
         .sheet(isPresented: $snapping) {
             FoodPhotoView(day: day)
         }
+        .sheet(isPresented: $showingPlus) {
+            PlusView(highlight: .foodPhoto).environmentObject(store)
+        }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                Button("Snap your plate", systemImage: "camera") { snapping = true }
+                Button("Snap your plate", systemImage: "camera", action: snap)
             }
         }
+    }
+
+    /// Food photos are part of Floor Age Plus.
+    private func snap() {
+        if store.hasPlus { snapping = true } else { showingPlus = true }
     }
 
     private var dayTitle: String {

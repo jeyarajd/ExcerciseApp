@@ -24,7 +24,8 @@
   Each week has run/walk intervals or walking minutes, strength days with sets × reps, balance days from 65, and a daily step goal. A guided timer talks you through each run/walk. The numbers follow WHO 2020, NHS Couch to 5K, ACSM 2009 and Paluch et al. 2022 (listed in the app).
 - **Sleep.** Log bedtime and wake time, or read them from Apple Health, and compare with the recommended 7–9 hours (7–8 from 65; National Sleep Foundation).
 - **Editable profile.** Change your age or limitations in Settings. Your plan and safety filtering update right away.
-- **Privacy.** Everything is stored on the phone and nothing is sent anywhere.
+- **Floor Age Plus.** A free download with one optional in-app purchase, no subscription. Plus unlocks the training plan, food photo calories, sleep tracking, the pelvic floor programme and the Floor Age history chart. The Floor Age check, daily sessions with the coach, steps, calories, BMI and all safety guidance stay free. See [Floor Age Plus](#floor-age-plus-in-app-purchase).
+- **Privacy.** Everything is stored on the phone. Nothing is sent anywhere except the Plus purchase itself, which goes through Apple.
 - **Languages.** English (default), Hindi and Spanish, following the iPhone's language. Screens, spoken coaching (in the matching iPhone voice), exercise instructions and food names are all translated.
 - **Look.** A warm, slowly drifting gradient behind every screen and the 3D coach standing right on the background. Each area has its own colours: orange steps, green calories, violet BMI, midnight sleep, ocean-blue plan, amber Floor Age. Headline numbers sit on gradient hero cards with semicircle gauges, and headings use a serif display face.
 
@@ -104,6 +105,24 @@ To change a coach's look (body shape, skin, hair, clothes), edit `COACHES` in `t
 1. Install Blender 4.2+ and the MPFB extension (extensions.blender.org/add-ons/mpfb).
 2. Load the CC0 packs `makehuman_system_assets`, `skins01`, `skins02`, `hair01`, `shirts01`, `pants01` and `shoes01` from the [asset packs page](https://static.makehumancommunity.org/assets/assetpacks/index.html) into MPFB.
 3. Run `blender -b --python tools/build_coach.py -- FloorAge/Resources`, then `xcodegen generate`.
+
+## Floor Age Plus (in-app purchase)
+
+Plus is one **non-consumable** in-app purchase, handled on the phone by StoreKit 2 (`Models/Store.swift`, screen in `Features/Plus/PlusView.swift`). There is no server; Apple signs and checks the transactions.
+
+To sell it:
+1. In App Store Connect, sign the **Paid Apps Agreement** and add your bank and tax details (Business section).
+2. Optionally join the **App Store Small Business Program**, which lowers Apple's commission from 30% to 15%.
+3. In the app's page, under Monetization › In-App Purchases, create a **Non-Consumable** with product ID `com.jeyaraj.floorage.plus` (must match `Store.plusID`). Give it a display name and description for each language, a price, and a review screenshot of the Plus screen. Turn on Family Sharing if you want families to share it.
+4. Submit the in-app purchase together with the next app version.
+
+To test without real money:
+- **In Xcode:** the FloorAge scheme uses `FloorAge.storekit`, so Run lets you buy, refund and restore Plus locally.
+- **On a device:** use a Sandbox Apple Account (App Store Connect › Users and Access › Sandbox) through TestFlight.
+
+For screenshots, demo screens show Plus unlocked. Add `-demoPlus NO` to show the locked cards, and use `-demoScreen plus` to open the Plus screen.
+
+When adding a feature, decide whether it's free or Plus. If it's Plus, add it to `PlusFeature` and show `PlusLockedCard` when `store.hasPlus` is false. Safety guidance always stays free.
 
 ## Translations
 

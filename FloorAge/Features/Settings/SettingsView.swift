@@ -3,7 +3,10 @@ import SwiftUI
 struct SettingsView: View {
     @EnvironmentObject private var model: AppModel
     @EnvironmentObject private var voice: VoiceCoach
+    @EnvironmentObject private var store: Store
     @State private var confirmingReset = false
+    @State private var showingPlus = false
+    @State private var storeMessage: String?
     @State private var reminderOn = Reminders.isOn
     @State private var reminderTime = ReminderTime.date(fromMinute: Reminders.minuteOfDay)
     @State private var notificationsDenied = false
@@ -12,6 +15,8 @@ struct SettingsView: View {
     var body: some View {
         NavigationStack {
             Form {
+                plusSection
+
                 Section {
                     Picker("Coach", selection: Binding(get: { CoachStyle.current }, set: { CoachStyle.current = $0 })) {
                         ForEach(CoachStyle.allCases) { Text($0.label).tag($0) }
@@ -43,7 +48,18 @@ struct SettingsView: View {
                 }
 
                 Section {
-                    Toggle("Pelvic floor (Kegel) exercises", isOn: $pelvicFloor)
+                    if store.hasPlus {
+                        Toggle("Pelvic floor (Kegel) exercises", isOn: $pelvicFloor)
+                    } else {
+                        Button { showingPlus = true } label: {
+                            HStack {
+                                Text("Pelvic floor (Kegel) exercises")
+                                Spacer()
+                                PlusBadge()
+                            }
+                        }
+                        .tint(.primary)
+                    }
                 } header: {
                     Text("Daily session")
                 } footer: {
@@ -104,6 +120,10 @@ struct SettingsView: View {
             }
             .appBackground()
             .navigationTitle("Settings")
+            .sheet(isPresented: $showingPlus) {
+                PlusView().environmentObject(store)
+            }
+            .messageAlert($storeMessage)
             .confirmationDialog("Delete your profile, Floor Age results and session history?",
                                 isPresented: $confirmingReset, titleVisibility: .visible) {
                 Button("Delete everything", role: .destructive) {
@@ -111,6 +131,48 @@ struct SettingsView: View {
                     reminderOn = false
                     Task { await Reminders.disable() }
                 }
+            }
+        }
+    }
+}
+
+extension SettingsView {
+    /// Plus status, the way to buy it, and Restore Purchases (which App Review requires).
+    fileprivate var plusSection: some View {
+        Section {
+            if store.hasPlus {
+                HStack(spacing: 12) {
+                    FeatureBadge(feature: .plus, size: 34)
+                    VStack(alignment: .leading, spacing: 1) {
+                        Text("Floor Age Plus").font(.headline)
+                        Text("Unlocked. Thank you!").font(.caption).foregroundStyle(.secondary)
+                    }
+                }
+            } else {
+                Button { showingPlus = true } label: {
+                    HStack(spacing: 12) {
+                        FeatureBadge(feature: .plus, size: 34)
+                        VStack(alignment: .leading, spacing: 1) {
+                            Text("Floor Age Plus").font(.headline)
+                            Text("Training plan, food photos, sleep, pelvic floor and progress history")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                        Spacer(minLength: 0)
+                        if let price = store.price {
+                            Text(price).font(.subheadline.weight(.semibold)).foregroundStyle(Feature.plus.tint)
+                        }
+                    }
+                }
+                .tint(.primary)
+                Button("Restore Purchases") {
+                    Task { storeMessage = await store.restore() }
+                }
+                .disabled(store.busy)
+            }
+        } footer: {
+            if !store.hasPlus {
+                Text("One purchase unlocks Plus for good. No subscription.")
             }
         }
     }

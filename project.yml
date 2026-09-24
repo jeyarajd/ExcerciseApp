@@ -69,6 +69,8 @@ schemes:
         FloorAgeTests: [test]
     run:
       config: Debug
+      # Test the Floor Age Plus purchase in Xcode without the App Store or real money.
+      storeKitConfiguration: FloorAge.storekit
     test:
       config: Debug
       targets:

@@ -484,8 +484,17 @@ struct IntervalWorkoutView: View {
 /// Today's part of the training plan, or an invitation to get one. Opens `PlanView`.
 struct TrainingPlanCard: View {
     @EnvironmentObject private var model: AppModel
+    @EnvironmentObject private var store: Store
 
     var body: some View {
+        if store.hasPlus {
+            card
+        } else {
+            PlusLockedCard(feature: .plan)
+        }
+    }
+
+    private var card: some View {
         NavigationLink { PlanView() } label: {
             HStack(spacing: 14) {
                 VStack(alignment: .leading, spacing: 3) {
