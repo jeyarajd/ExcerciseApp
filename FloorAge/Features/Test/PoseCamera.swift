@@ -246,36 +246,7 @@ private struct BodyOverlay: View {
     }
 
     private func draw(_ figure: Mannequin, in context: inout GraphicsContext, size: CGSize, pulse: Double) {
-        let body = figure.silhouette(grow: 0)
-        let edge = figure.silhouette(grow: 2.5)
-        let fill = GraphicsContext.Shading.linearGradient(Gradient(colors: feature.colors),
-                                                          startPoint: figure.bounds.origin,
-                                                          endPoint: CGPoint(x: figure.bounds.maxX, y: figure.bounds.maxY))
-        // Glow behind the body.
-        context.drawLayer { glow in
-            glow.addFilter(.blur(radius: figure.unit * 0.12))
-            glow.opacity = 0.7
-            glow.fill(edge, with: fill)
-        }
-        // A light edge, then the body itself.
-        context.fill(edge, with: .color(.white.opacity(0.85)))
-        context.fill(body, with: fill)
-        // Light from the top left and a shadow to the bottom right give it volume.
-        context.drawLayer { shade in
-            shade.clip(to: body)
-            shade.fill(Path(figure.bounds.insetBy(dx: -20, dy: -20)),
-                       with: .linearGradient(Gradient(colors: [.white.opacity(0.35), .clear, .black.opacity(0.28)]),
-                                             startPoint: figure.bounds.origin,
-                                             endPoint: CGPoint(x: figure.bounds.maxX, y: figure.bounds.maxY)))
-            // A soft sheen down each limb makes them look round.
-            shade.addFilter(.blur(radius: figure.unit * 0.03))
-            for (a, b, width) in figure.sheens {
-                var line = Path()
-                line.move(to: a)
-                line.addLine(to: b)
-                shade.stroke(line, with: .color(.white.opacity(0.38)), style: StrokeStyle(lineWidth: width, lineCap: .round))
-            }
-        }
+        figure.draw(in: &context, feature: feature)
         // The joints this test measures.
         for joint in focus {
             guard let p = figure.joints[joint] else { continue }
@@ -290,7 +261,8 @@ private struct BodyOverlay: View {
 
 /// Body shapes from joint positions (in view points). Sizes follow average human proportions,
 /// measured in `unit`: the trunk length, steadied by the shin, which keeps its length in any pose.
-private struct Mannequin {
+/// Also draws the pose thumbnails on the session's "Next up" card.
+struct Mannequin {
     let joints: [BodyJoint: CGPoint]
     let unit: CGFloat
     private var parts: [(CGFloat) -> Path] = []
@@ -370,6 +342,40 @@ private struct Mannequin {
     }
 
     private mutating func add(_ part: @escaping (CGFloat) -> Path) { parts.append(part) }
+
+    /// The filled body: a glow, a light edge, the feature gradient and soft shading.
+    func draw(in context: inout GraphicsContext, feature: Feature) {
+        let body = silhouette(grow: 0)
+        let edge = silhouette(grow: 2.5)
+        let fill = GraphicsContext.Shading.linearGradient(Gradient(colors: feature.colors),
+                                                          startPoint: bounds.origin,
+                                                          endPoint: CGPoint(x: bounds.maxX, y: bounds.maxY))
+        // Glow behind the body.
+        context.drawLayer { glow in
+            glow.addFilter(.blur(radius: unit * 0.12))
+            glow.opacity = 0.7
+            glow.fill(edge, with: fill)
+        }
+        // A light edge, then the body itself.
+        context.fill(edge, with: .color(.white.opacity(0.85)))
+        context.fill(body, with: fill)
+        // Light from the top left and a shadow to the bottom right give it volume.
+        context.drawLayer { shade in
+            shade.clip(to: body)
+            shade.fill(Path(bounds.insetBy(dx: -20, dy: -20)),
+                       with: .linearGradient(Gradient(colors: [.white.opacity(0.35), .clear, .black.opacity(0.28)]),
+                                             startPoint: bounds.origin,
+                                             endPoint: CGPoint(x: bounds.maxX, y: bounds.maxY)))
+            // A soft sheen down each limb makes them look round.
+            shade.addFilter(.blur(radius: unit * 0.03))
+            for (a, b, width) in sheens {
+                var line = Path()
+                line.move(to: a)
+                line.addLine(to: b)
+                shade.stroke(line, with: .color(.white.opacity(0.38)), style: StrokeStyle(lineWidth: width, lineCap: .round))
+            }
+        }
+    }
 
     /// All the parts merged into one outline; `grow` widens it for the edge and glow.
     func silhouette(grow: CGFloat) -> Path {

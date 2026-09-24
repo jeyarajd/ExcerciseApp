@@ -10,6 +10,11 @@ enum AppLinks {
     static var appStoreURL: URL? {
         appStoreID.flatMap { URL(string: "https://apps.apple.com/app/id\($0)") }
     }
+
+    /// The end of a share message: the link, or how to find the app until there is one.
+    static var findTheApp: String {
+        appStoreURL?.absoluteString ?? String(localized: "search “Floor Age” on the App Store.")
+    }
 }
 
 /// A story-sized (9:16) picture of a Floor Age result with a challenge, for WhatsApp, Instagram and
@@ -22,19 +27,7 @@ struct ShareCard: View {
 
     var body: some View {
         let difference = result.floorAge - result.age
-        VStack(spacing: 0) {
-            HStack(spacing: 10) {
-                Image(systemName: "figure.cross.training")
-                    .font(.system(size: 17, weight: .bold))
-                    .frame(width: 34, height: 34)
-                    .background(.white.opacity(0.22), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
-                Text("Floor Age").font(.system(size: 22, weight: .bold, design: .serif))
-                Spacer()
-            }
-            .padding(.top, 34)
-
-            Spacer(minLength: 12)
-
+        ShareCardFrame {
             Text("MY FLOOR AGE")
                 .font(.system(size: 13, weight: .heavy))
                 .tracking(3)
@@ -73,6 +66,33 @@ struct ShareCard: View {
             .padding(14)
             .background(.white.opacity(0.14), in: RoundedRectangle(cornerRadius: 18, style: .continuous))
             .padding(.top, 20)
+        }
+    }
+
+    @MainActor
+    func render() -> UIImage? { renderShareCard() }
+}
+
+/// What every share card has around its own content: the app name at the top, the invitation to
+/// find your own Floor Age at the bottom, and the brand gradient behind.
+struct ShareCardFrame<Content: View>: View {
+    @ViewBuilder var content: Content
+
+    var body: some View {
+        VStack(spacing: 0) {
+            HStack(spacing: 10) {
+                Image(systemName: "figure.cross.training")
+                    .font(.system(size: 17, weight: .bold))
+                    .frame(width: 34, height: 34)
+                    .background(.white.opacity(0.22), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                Text("Floor Age").font(.system(size: 22, weight: .bold, design: .serif))
+                Spacer()
+            }
+            .padding(.top, 34)
+
+            Spacer(minLength: 12)
+
+            content
 
             Spacer(minLength: 12)
 
@@ -103,7 +123,7 @@ struct ShareCard: View {
         }
         .foregroundStyle(.white)
         .padding(.horizontal, 24)
-        .frame(width: Self.size.width, height: Self.size.height)
+        .frame(width: ShareCard.size.width, height: ShareCard.size.height)
         .background {
             ZStack {
                 LinearGradient(colors: Feature.floorAge.colors + [Color(red: 0.45, green: 0.12, blue: 0.3)],
@@ -118,9 +138,12 @@ struct ShareCard: View {
         }
         .clipped()
     }
+}
 
+extension View {
+    /// The card as a 1080 × 1920 picture.
     @MainActor
-    func render() -> UIImage? {
+    func renderShareCard() -> UIImage? {
         let renderer = ImageRenderer(content: self)
         renderer.scale = 3
         return renderer.uiImage
@@ -191,7 +214,7 @@ struct ShareCardView: View {
 
     private var shareMessage: String {
         let text = String(localized: "My Floor Age is \(result.floorAge). Can you get up off the floor without using your hands? Find your Floor Age:")
-        return text + " " + (AppLinks.appStoreURL?.absoluteString ?? String(localized: "search “Floor Age” on the App Store."))
+        return text + " " + AppLinks.findTheApp
     }
 
     @MainActor

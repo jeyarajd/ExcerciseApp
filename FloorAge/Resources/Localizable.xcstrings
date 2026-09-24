@@ -9778,6 +9778,230 @@
           }
         }
       }
+    },
+    "%lld areas worked" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld zonas trabajadas"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld हिस्सों पर काम किया"
+          }
+        }
+      }
+    },
+    "%lld days in a row" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld días seguidos"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "लगातार %lld दिन"
+          }
+        }
+      }
+    },
+    "Areas you worked" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zonas que has trabajado"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "जिन हिस्सों पर काम किया"
+          }
+        }
+      }
+    },
+    "Come back tomorrow to start a streak." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vuelve mañana para empezar una racha."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "सिलसिला शुरू करने के लिए कल फिर आइए।"
+          }
+        }
+      }
+    },
+    "Day one" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Día uno"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "पहला दिन"
+          }
+        }
+      }
+    },
+    "I just finished a %lld-minute Floor Age session. Can you get up off the floor without using your hands? Find your Floor Age:" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acabo de terminar una sesión de Floor Age de %lld minutos. ¿Puedes levantarte del suelo sin usar las manos? Descubre tu Floor Age:"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "मैंने अभी %lld मिनट का Floor Age सत्र पूरा किया। क्या आप बिना हाथों के सहारे ज़मीन से उठ सकते हैं? अपनी Floor Age जानिए:"
+          }
+        }
+      }
+    },
+    "I moved today" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hoy me he movido"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आज मैंने कसरत की"
+          }
+        }
+      }
+    },
+    "Missing a day never undoes your progress." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saltarte un día nunca deshace tu progreso."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "एक दिन छूटने से आपकी प्रगति कभी नहीं मिटती।"
+          }
+        }
+      }
+    },
+    "My Floor Age session" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mi sesión de Floor Age"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "मेरा Floor Age सत्र"
+          }
+        }
+      }
+    },
+    "Next up" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A continuación"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अगला"
+          }
+        }
+      }
+    },
+    "days in a row" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "días seguidos"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "दिन लगातार"
+          }
+        }
+      }
+    },
+    "exercises" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ejercicios"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "व्यायाम"
+          }
+        }
+      }
+    },
+    "min" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "min"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "मिनट"
+          }
+        }
+      }
+    },
+    "minutes of movement" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "minutos de movimiento"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "मिनट की कसरत"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

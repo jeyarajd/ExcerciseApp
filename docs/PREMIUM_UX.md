@@ -13,7 +13,7 @@ A to-do list for giving Floor Age a premium feel. It follows the rules in `CLAUD
 - To check: run `-demoScreen today -coachLook female` and then `-coachLook male`, plus `-demoExercise squat -demoTime 1.2`. Make sure the tee doesn't clip through the tights at the waist during squats and sit-to-rise. If it does, raise `waist += 0.03` in `trim_above_waist`.
 - The build now also runs on Blender 4.2 (`export_textures` fallback). `PREVIEW=<dir> blender -b --python tools/build_coach.py -- <out>` renders studio previews.
 
-## 1. Coach presentation (the hero of the app)
+## 1. Coach presentation (the hero of the app) (done)
 
 1. **Face and hands lighting.** In `AvatarController.makeView`, bring `key.light.intensity` down to about 1800 and turn the rim light up to about 1200, so the new darker skin tones keep their shape against the peach background. Set `intensityExponent` to between 0.6 and 0.8 for dark mode only.
 2. **Idle life.** Between reps, add a slow weight shift (±1.5° pelvis roll over 4 s) on top of the existing breathing and blink. Add it in `PoseAnimator` so the stylized rig gets it too.
@@ -21,7 +21,7 @@ A to-do list for giving Floor Age a premium feel. It follows the rules in `CLAUD
 4. **Camera choreography.** Set a preferred yaw for each exercise in `exercises.json` (for example, a side view for toe reach and hip hinge), and animate the camera there over 0.6 s when the exercise changes. Always respect Reduce Motion.
 5. **Look-at.** During the intro and rest phases, turn the coach's head towards the camera (up to 20°), so it feels as if it's talking to you.
 
-## 2. Motion and haptics
+## 2. Motion and haptics (done)
 
 - Use `.sensoryFeedback` (iOS 17 and later):
   - `.increase` on every counted rep (`SessionEngine.onRep`);
@@ -33,10 +33,10 @@ A to-do list for giving Floor Age a premium feel. It follows the rules in `CLAUD
 - Screen changes: use `matchedGeometryEffect` or `navigationTransition(.zoom)` from the Today hero card into the session, so the coach seems to step forward.
 - Keep every animation under 0.5 s, and skip decorative motion when `accessibilityReduceMotion` is on.
 
-## 3. Session screen polish (`Features/Session/SessionView.swift`)
+## 3. Session screen polish (`Features/Session/SessionView.swift`) (done)
 
 - A **progress ring** round the rep counter that fills per set. Use the `Feature` colours of the area being trained.
-- **Next up** card during rest: exercise name, a thumbnail pose (render the rig's first keyframe into an image once and cache it), and a "Skip rest" button.
+- **Next up** card during rest: exercise name, a thumbnail pose (render the rig's first keyframe into an image once and cache it). Done with `PoseThumbnail`: the keyframe furthest from standing, since most first keyframes are just standing, drawn side-on in the camera mannequin style, and a "Skip rest" button.
 - **Cue capsule:** a material background (`.ultraThinMaterial`) with a thin brand-gradient stroke looks more premium than a solid accent capsule. Keep the contrast at 4.5:1 or more.
 - **Session complete:** a full-screen summary with minutes, reps, the area improved, and a streak flame. Offer a "Share" button that reuses `ShareCard`.
 

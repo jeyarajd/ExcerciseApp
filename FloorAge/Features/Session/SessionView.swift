@@ -6,33 +6,55 @@ struct SessionView: View {
     @StateObject private var engine: SessionEngine
     @State private var speed = 1.0
     @State private var startedAt = Date()
+    @State private var finishedAt: Date?
     @State private var coachShown = false
     @State private var repPulse = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @ObservedObject private var watch = WatchLink.shared
     private let items: [PlanItem]
+    /// Screenshots only: open straight into rest or the summary.
+    private let demoPhase: SessionEngine.Phase?
 
-    init(items: [PlanItem], voice: VoiceCoach) {
+    init(items: [PlanItem], voice: VoiceCoach, demoPhase: SessionEngine.Phase? = nil) {
         self.items = items
+        self.demoPhase = demoPhase
         _engine = StateObject(wrappedValue: SessionEngine(items: items, voice: voice))
     }
 
     var body: some View {
-        screen
+        content
             .modifier(SessionFeedback(engine: engine, speed: speed, repPulse: $repPulse, reduceMotion: reduceMotion))
             .onAppear {
                 startedAt = Date()
                 engine.start()
+                #if DEBUG
+                if let demoPhase { engine.showDemo(demoPhase) }
+                #endif
                 withAnimation(reduceMotion ? .easeOut(duration: 0.3) : .spring(duration: 0.4)) { coachShown = true }
             }
             .modifier(WatchRemote(engine: engine, watch: watch, status: { watchStatus }))
             .onDisappear { engine.end() }
             .onChange(of: engine.phase) { _, phase in
                 guard phase == .done else { return }
+                finishedAt = Date()
                 model.completeSession()
                 Task { await model.refreshReminders() }
                 saveToHealth()
             }
+    }
+
+    /// The coached session, then the full-screen summary once it's done.
+    private var content: some View {
+        Group {
+            if engine.phase == .done {
+                SessionSummaryView(minutes: minutes, reps: engine.totalReps, practised: engine.practised,
+                                   streak: model.streak()) { dismiss() }
+                    .transition(reduceMotion ? .opacity : .opacity.combined(with: .scale(scale: 0.96)))
+            } else {
+                screen
+            }
+        }
+        .animation(reduceMotion ? .easeOut(duration: 0.25) : .spring(duration: 0.45), value: engine.phase == .done)
     }
 
     private var screen: some View {
@@ -48,11 +70,16 @@ struct SessionView: View {
                         if let cue = engine.cueText, engine.phase == .intro || engine.phase == .active {
                             Text(cue)
                                 .font(.title2.weight(.bold))
-                                .foregroundStyle(.white)
+                                .foregroundStyle(.primary)
                                 .padding(.horizontal, 22)
                                 .padding(.vertical, 12)
-                                .background(Color.accentColor.gradient, in: Capsule())
-                                .shadow(color: .black.opacity(0.15), radius: 8, y: 4)
+                                // Glass with a thin brand edge. The tint under the material keeps the
+                                // text above 4.5:1 whatever is behind it.
+                                .background(.ultraThinMaterial, in: Capsule())
+                                .background(Color(.systemBackground).opacity(0.45), in: Capsule())
+                                .overlay(Capsule().strokeBorder(Feature.floorAge.gradient, lineWidth: 1.5))
+                                .shadow(color: .black.opacity(0.12), radius: 8, y: 4)
+                                .accessibilityAddTraits(.updatesFrequently)
                                 .padding(.bottom, 20)
                                 .transition(.scale.combined(with: .opacity))
                                 .id(cue)
@@ -66,6 +93,10 @@ struct SessionView: View {
             controls
         }
         .background(AppBackground())
+    }
+
+    private var minutes: Int {
+        max(1, Int(((finishedAt ?? Date()).timeIntervalSince(startedAt) / 60).rounded()))
     }
 
     /// Records the finished session as a workout in Apple Health, if that's switched on.
@@ -127,13 +158,18 @@ struct SessionView: View {
         return String(localized: "\(position) · \(engine.current?.amountLabel ?? "")")
     }
 
+    /// The ring fills with each set, in the colours of the area being trained (the next one's
+    /// during rest).
     private var counter: some View {
-        ZStack {
-            Circle().stroke(Color.accentColor.opacity(0.2), lineWidth: 8)
+        let feature = engine.current?.exercise.feature ?? .plan
+        return ZStack {
+            Circle().stroke(feature.tint.opacity(0.2), lineWidth: 8)
             Circle()
                 .trim(from: 0, to: engine.phase == .rest ? engine.secondsLeft / engine.restSeconds : engine.progress)
-                .stroke(Color.accentColor, style: StrokeStyle(lineWidth: 8, lineCap: .round))
+                .stroke(AngularGradient(colors: feature.colors + [feature.colors[0]], center: .center),
+                        style: StrokeStyle(lineWidth: 8, lineCap: .round))
                 .rotationEffect(.degrees(-90))
+                .shadow(color: feature.tint.opacity(0.45), radius: 4)
                 .animation(.linear(duration: 0.1), value: engine.progress)
             VStack(spacing: 0) {
                 Text(counterValue)
@@ -207,29 +243,12 @@ struct SessionView: View {
                         .controlSize(.large)
                 }
             case .rest:
-                Button {
-                    engine.skip()
-                } label: {
-                    Text("Skip rest").frame(maxWidth: .infinity)
+                if let item = engine.current {
+                    NextUpCard(item: item) { engine.skip() }
                 }
-                .buttonStyle(.bordered)
-                .controlSize(.large)
             case .done:
-                Image(systemName: "checkmark.seal.fill")
-                    .font(.system(size: 44))
-                    .foregroundStyle(Feature.calories.gradient)
-                    .symbolEffect(.bounce, value: engine.phase == .done)
-                    .accessibilityHidden(true)
-                Text("You moved today. That's what counts.")
-                    .font(.title3.weight(.semibold))
-                    .multilineTextAlignment(.center)
-                Button {
-                    dismiss()
-                } label: {
-                    Text("Finish").frame(maxWidth: .infinity)
-                }
-                .buttonStyle(.borderedProminent)
-                .controlSize(.large)
+                // The summary replaces the whole screen.
+                EmptyView()
             }
         }
         .padding(16)

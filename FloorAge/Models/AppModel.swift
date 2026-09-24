@@ -167,6 +167,21 @@ final class AppModel: ObservableObject {
         sessionDays.contains(Calendar.current.startOfDay(for: Date()))
     }
 
+    /// Days in a row with a session or a plan day done, counting back from today (or from
+    /// yesterday before today's is done, so the streak never looks broken in the morning).
+    func streak(on date: Date = Date()) -> Int {
+        let cal = Calendar.current
+        let trained = Set((sessionDays + planDone).map { cal.startOfDay(for: $0) })
+        var day = cal.startOfDay(for: date)
+        if !trained.contains(day) { day = cal.date(byAdding: .day, value: -1, to: day)! }
+        var count = 0
+        while trained.contains(day) {
+            count += 1
+            day = cal.date(byAdding: .day, value: -1, to: day)!
+        }
+        return count
+    }
+
     /// Which of the last 7 days (oldest first) had a session. Missing a day never resets progress.
     var lastSevenDays: [Bool] {
         let cal = Calendar.current

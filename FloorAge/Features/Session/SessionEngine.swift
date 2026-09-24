@@ -18,6 +18,10 @@ final class SessionEngine: ObservableObject {
     @Published private(set) var mirrored = false
     /// The current timed prompt for exercises with keyframe cues ("Squeeze and lift").
     @Published private(set) var cueText: String?
+    /// For the summary: every counted rep, and the exercises actually started (not skipped at
+    /// the intro).
+    private(set) var totalReps = 0
+    private(set) var practised: [PlanItem] = []
 
     private let voice: VoiceCoach
     private var timer: Timer?
@@ -61,6 +65,7 @@ final class SessionEngine: ObservableObject {
 
     func beginActive() {
         guard let item = current else { return }
+        if practised.last?.id != item.id { practised.append(item) }
         phase = .active
         repsDone = 0
         cueText = nil
@@ -153,6 +158,26 @@ final class SessionEngine: ObservableObject {
         voice.say(String(localized: "That's the session done. Great job showing up today!"), interrupt: true)
     }
 
+    #if DEBUG
+    /// Screenshots: jump to resting before the second exercise, or to the finished session with
+    /// every exercise done.
+    func showDemo(_ phase: Phase) {
+        switch phase {
+        case .rest where items.count > 1:
+            practised = [items[0]]
+            totalReps = items[0].reps ?? 0
+            index = 1
+            startRest()
+        case .done:
+            practised = items
+            totalReps = items.compactMap(\.reps).reduce(0, +)
+            finish()
+        default:
+            break
+        }
+    }
+    #endif
+
     // MARK: - Ticking
 
     private func startTimer() {
@@ -197,6 +222,7 @@ final class SessionEngine: ObservableObject {
     private func handleRep() {
         guard phase == .active, !isPaused, !stopped, let item = current, let target = item.reps else { return }
         repsDone += 1
+        totalReps += 1
         if repsDone >= target {
             voice.say(String(localized: "\(repsDone). Done!"), interrupt: true)
             advance()

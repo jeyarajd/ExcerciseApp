@@ -143,6 +143,23 @@ final class AppModelTests: XCTestCase {
         XCTAssertEqual(model.lastSevenDays, [false, false, false, true, false, false, true])
     }
 
+    func testStreakCountsDaysInARowIncludingPlanDays() {
+        let model = AppModel(fileURL: url)
+        let cal = Calendar.current
+        let today = Date()
+        func daysAgo(_ n: Int) -> Date { cal.date(byAdding: .day, value: -n, to: today)! }
+        XCTAssertEqual(model.streak(on: today), 0)
+        model.completeSession(on: daysAgo(1))
+        model.setPlanDay(daysAgo(2), done: true)
+        model.completeSession(on: daysAgo(4))
+        // Not trained yet today: yesterday's run still counts.
+        XCTAssertEqual(model.streak(on: today), 2)
+        model.completeSession(on: today)
+        XCTAssertEqual(model.streak(on: today), 3)
+        // A gap ends it.
+        XCTAssertEqual(model.streak(on: daysAgo(3)), 1)
+    }
+
     func testResetDeletesEverything() {
         let model = AppModel(fileURL: url)
         model.profile = Profile(name: "", age: 30, limitations: [])
@@ -205,6 +222,33 @@ final class ExerciseLibraryTests: XCTestCase {
         for test in FloorTest.allCases { XCTAssertTrue(ids.contains(test.exerciseID)) }
         for options in PlanBuilder.trainers.values { XCTAssertTrue(Set(options).isSubset(of: ids)) }
         XCTAssertTrue(PlanBuilder.unsafe(for: Set(Limitation.allCases)).isSubset(of: ids))
+    }
+
+    func testEveryFocusTagIsAnAreaOrAWarmUp() {
+        // A new tag in exercises.json needs a TrainingArea, or the session loses its colours.
+        for exercise in library.exercises {
+            for tag in exercise.focus where tag != "warmup" {
+                XCTAssertNotNil(TrainingArea(focus: tag), "\(exercise.id): \(tag)")
+            }
+        }
+        XCTAssertEqual(library["squat"].areas, [.legs, .floor])
+        XCTAssertEqual(library["kegel"].feature, TrainingArea.pelvicFloor.feature)
+    }
+
+    func testPoseThumbnailShowsTheKeyPositionInsideThePicture() {
+        let size = CGSize(width: 72, height: 72)
+        for exercise in library.exercises where exercise.id != "idle" {
+            let joints = PoseThumbnail.joints(for: exercise, size: size)
+            XCTAssertEqual(Set(joints.keys), Set(BodyJoint.allCases), exercise.id)
+            for (joint, p) in joints {
+                XCTAssertTrue(CGRect(origin: .zero, size: size).contains(p), "\(exercise.id) \(joint) at \(p)")
+            }
+        }
+        // The squat shows the bottom of the squat: hips nearly down at the knees (y grows downwards).
+        let squat = PoseThumbnail.joints(for: library["squat"], size: size)
+        let thigh = squat[.leftKnee]!.y - squat[.leftHip]!.y
+        let shin = squat[.leftAnkle]!.y - squat[.leftKnee]!.y
+        XCTAssertLessThan(thigh, shin * 0.6)
     }
 }
 
