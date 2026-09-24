@@ -2,6 +2,7 @@
 *.xcodeproj/
 *.xcworkspace/
 FloorAge/Info.plist
+FloorAge/FloorAge.entitlements
 build/
 DerivedData/
 xcuserdata/

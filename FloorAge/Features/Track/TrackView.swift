@@ -10,9 +10,11 @@ struct TrackView: View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 16) {
+                    TrainingPlanCard()
                     NavigationLink { StepsView() } label: { stepsCard }
                     NavigationLink { FoodLogView() } label: { caloriesCard }
                     NavigationLink { BMIView() } label: { bmiCard }
+                    NavigationLink { SleepView() } label: { SleepCard() }
                     Text("Estimates for everyday fitness, not medical advice.")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
@@ -42,7 +44,7 @@ struct TrackView: View {
                     Text("iPhone Settings › Privacy & Security").font(.caption).foregroundStyle(.secondary)
                 default:
                     Text(steps.today.formatted()).font(.system(.title, design: .rounded, weight: .bold))
-                    Text("of \(steps.goal.formatted()) · \(Steps.kilometres(steps.today), specifier: "%.1f") km")
+                    Text("of \(steps.goal.formatted()) · \(Steps.distance(steps.today))")
                         .font(.caption).foregroundStyle(.secondary)
                 }
             }
@@ -179,7 +181,7 @@ struct StepsView: View {
                     }
                     .frame(width: 210, height: 210)
                     HStack(spacing: 28) {
-                        stat("\(Steps.kilometres(steps.today).formatted(.number.precision(.fractionLength(1)))) km", "distance")
+                        stat(Steps.distance(steps.today), "distance")
                         stat("\(max(steps.goal - steps.today, 0).formatted())", "to your goal")
                         stat("\(Int(Double(steps.today) * 0.04).formatted())", "kcal burned")
                     }
@@ -434,11 +436,13 @@ struct BMIView: View {
     @State private var feet = 5
     @State private var inches = 5
     @State private var weightKg = 65.0
+    @State private var pounds = Region.usesPounds
+    @State private var scale = BMIScale.current
 
     var body: some View {
         let height = metricHeight ? heightCm : BMI.centimetres(feet: feet, inches: inches)
         let bmi = BMI.value(weightKg: weightKg, heightCm: height) ?? 0
-        let category = BMI.category(bmi)
+        let category = BMI.category(bmi, scale: scale)
         Form {
             Section {
                 VStack(spacing: 14) {
@@ -450,13 +454,13 @@ struct BMIView: View {
                         .padding(.horizontal, 14).padding(.vertical, 5)
                         .background(category.color.opacity(0.18), in: Capsule())
                         .foregroundStyle(category.color)
-                    BMIGauge(bmi: bmi)
+                    BMIGauge(bmi: bmi, scale: scale)
                         .frame(height: 34)
                     Text(category.message)
                         .font(.subheadline)
                         .multilineTextAlignment(.center)
-                    let range = BMI.healthyWeight(heightCm: height)
-                    Text("A healthy weight for your height is about \(Int(range.lowerBound.rounded()))–\(Int(range.upperBound.rounded())) kg.")
+                    let range = BMI.healthyWeight(heightCm: height, scale: scale)
+                    Text("A healthy weight for your height is about \(weightText(range.lowerBound, decimals: false))–\(weightText(range.upperBound, decimals: false)).")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                         .multilineTextAlignment(.center)
@@ -481,8 +485,24 @@ struct BMIView: View {
             }
 
             Section("Weight") {
-                Stepper("\(weightKg, specifier: "%.1f") kg", value: $weightKg, in: 30...200, step: 0.5)
-                Slider(value: $weightKg, in: 30...150, step: 0.5)
+                Picker("Units", selection: $pounds) {
+                    Text("kg").tag(false)
+                    Text("lb").tag(true)
+                }
+                .pickerStyle(.segmented)
+                Stepper(weightText(weightKg, decimals: true), value: $weightKg, in: 30...200, step: pounds ? BMI.kilograms(pounds: 1) : 0.5)
+                Slider(value: $weightKg, in: 30...150, step: pounds ? BMI.kilograms(pounds: 1) : 0.5)
+            }
+
+            Section {
+                Picker("BMI ranges", selection: $scale) {
+                    ForEach(BMIScale.allCases) { Text($0.label).tag($0) }
+                }
+                .onChange(of: scale) { _, value in BMIScale.current = value }
+            } footer: {
+                Text(scale == .asian
+                     ? "Asian ranges (healthy 18.5–22.9) are recommended for people of Asian descent, whose health risks start at a lower BMI."
+                     : "WHO international ranges: healthy 18.5–24.9. If you're of South Asian, Chinese or other Asian descent, the Asian ranges fit better.")
             }
 
             Section {
@@ -493,15 +513,15 @@ struct BMIView: View {
                 .font(.headline)
                 .disabled(saved)
             } footer: {
-                Text("Uses the BMI cut-offs recommended for South Asians (healthy 18.5–22.9), since health risks rise at a lower BMI than the international ranges suggest. BMI doesn't account for muscle, so treat it as a rough guide, not a diagnosis.")
+                Text("BMI doesn't account for muscle, so treat it as a rough guide, not a diagnosis.")
             }
 
             if model.weights.count >= 2 {
                 Section("Weight over time") {
                     Chart(model.weights, id: \.date) { entry in
-                        LineMark(x: .value("Date", entry.date), y: .value("kg", entry.kg))
+                        LineMark(x: .value("Date", entry.date), y: .value("Weight", pounds ? BMI.pounds(entry.kg) : entry.kg))
                             .interpolationMethod(.monotone)
-                        PointMark(x: .value("Date", entry.date), y: .value("kg", entry.kg))
+                        PointMark(x: .value("Date", entry.date), y: .value("Weight", pounds ? BMI.pounds(entry.kg) : entry.kg))
                     }
                     .chartYScale(domain: .automatic(includesZero: false))
                     .frame(height: 160)
@@ -511,6 +531,12 @@ struct BMIView: View {
         .appBackground()
         .navigationTitle("BMI")
         .onAppear(perform: load)
+    }
+
+    private func weightText(_ kg: Double, decimals: Bool) -> String {
+        let value = pounds ? BMI.pounds(kg) : kg
+        let number = decimals && !pounds ? String(format: "%.1f", value) : "\(Int(value.rounded()))"
+        return "\(number) \(pounds ? "lb" : "kg")"
     }
 
     private func isSaved(height: Double) -> Bool {
@@ -530,9 +556,11 @@ struct BMIView: View {
 /// Coloured bands for the four BMI categories with a marker at this BMI.
 struct BMIGauge: View {
     let bmi: Double
-    private let bands: [(BMI.Category, ClosedRange<Double>)] = [
-        (.underweight, 15...18.5), (.healthy, 18.5...23), (.overweight, 23...25), (.obese, 25...35),
-    ]
+    var scale: BMIScale = .current
+    private var bands: [(BMI.Category, ClosedRange<Double>)] {
+        [(.underweight, 15...BMI.underweightBelow), (.healthy, BMI.underweightBelow...scale.overweight),
+         (.overweight, scale.overweight...scale.obese), (.obese, scale.obese...35)]
+    }
 
     var body: some View {
         GeometryReader { geo in

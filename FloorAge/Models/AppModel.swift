@@ -57,6 +57,13 @@ final class AppModel: ObservableObject {
     @Published private(set) var sessionDays: [Date] = []
     @Published private(set) var foodLog: [FoodEntry] = []
     @Published private(set) var weights: [WeightEntry] = []
+    /// The training plan: when it started, the chosen program, and the days marked done.
+    @Published private(set) var planStart: Date?
+    @Published private(set) var planProgram: TrainingPlan.Program?
+    @Published private(set) var planDone: [Date] = []
+    /// Average daily steps when the plan started; step goals build from here.
+    @Published private(set) var planBaseSteps: Int?
+    @Published private(set) var sleepLog: [SleepEntry] = []
 
     private struct Stored: Codable {
         var profile: Profile?
@@ -65,6 +72,11 @@ final class AppModel: ObservableObject {
         // Optional: files saved by earlier versions don't have them.
         var foodLog: [FoodEntry]?
         var weights: [WeightEntry]?
+        var planStart: Date?
+        var planProgram: String?
+        var planDone: [Date]?
+        var planBaseSteps: Int?
+        var sleepLog: [SleepEntry]?
     }
 
     private let fileURL: URL
@@ -112,6 +124,94 @@ final class AppModel: ObservableObject {
         sessionDays = []
         foodLog = []
         weights = []
+        planStart = nil
+        planProgram = nil
+        planBaseSteps = nil
+        planDone = []
+        sleepLog = []
+        save()
+    }
+
+    // MARK: - Sleep
+
+    /// Adds or replaces the night that ends on this entry's wake day.
+    func logSleep(_ entry: SleepEntry) {
+        sleepLog.removeAll { Calendar.current.isDate($0.day, inSameDayAs: entry.day) }
+        sleepLog.append(entry)
+        sleepLog.sort { $0.wake < $1.wake }
+        save()
+    }
+
+    /// Adds nights from Apple Health, keeping any night the person logged themselves.
+    func importSleep(_ nights: [SleepEntry]) {
+        let manualDays = Set(sleepLog.filter { !$0.fromHealth }.map(\.day))
+        sleepLog.removeAll { $0.fromHealth }
+        sleepLog += nights.filter { !manualDays.contains($0.day) }
+        sleepLog.sort { $0.wake < $1.wake }
+        save()
+    }
+
+    func removeSleep(id: UUID) {
+        sleepLog.removeAll { $0.id == id }
+        save()
+    }
+
+    /// The nights of the last `days` days, oldest first.
+    func recentSleep(days: Int = 7, now: Date = Date()) -> [SleepEntry] {
+        let from = Calendar.current.date(byAdding: .day, value: -(days - 1), to: Calendar.current.startOfDay(for: now)) ?? now
+        return sleepLog.filter { $0.day >= from }
+    }
+
+    var averageSleep: Double? {
+        let nights = recentSleep()
+        return nights.isEmpty ? nil : nights.map(\.hours).reduce(0, +) / Double(nights.count)
+    }
+
+    // MARK: - Training plan
+
+    /// What the evening reminder says on this date: the day's plan, the daily session when there's
+    /// no plan, or nothing on a plan rest day.
+    func reminderText(on date: Date) -> String? {
+        guard let profile, let program = planProgram, let position = planPosition(on: date) else {
+            return "Your 10-minute session with Coach is ready. Missing a day never resets your progress."
+        }
+        let day = TrainingPlan.week(position.week, program: program, profile: profile, averageSteps: planBaseSteps).days[position.day]
+        guard day.activities != [.rest] else { return nil }
+        return "Today: \(TrainingPlan.headline(day)). A little now keeps your streak going."
+    }
+
+    func startPlan(_ program: TrainingPlan.Program, averageSteps: Int?, on date: Date = Date()) {
+        planStart = Calendar.current.startOfDay(for: date)
+        planProgram = program
+        planBaseSteps = averageSteps
+        planDone = []
+        save()
+    }
+
+    func stopPlan() {
+        planStart = nil
+        planProgram = nil
+        planBaseSteps = nil
+        planDone = []
+        save()
+    }
+
+    /// Week (from 1) and day (0...6) of the plan on this date, or nil before it starts.
+    func planPosition(on date: Date = Date()) -> (week: Int, day: Int)? {
+        guard let planStart else { return nil }
+        let days = Calendar.current.dateComponents([.day], from: planStart, to: Calendar.current.startOfDay(for: date)).day ?? 0
+        guard days >= 0 else { return nil }
+        return (days / 7 + 1, days % 7)
+    }
+
+    func isPlanDayDone(_ date: Date) -> Bool {
+        planDone.contains { Calendar.current.isDate($0, inSameDayAs: date) }
+    }
+
+    func setPlanDay(_ date: Date, done: Bool) {
+        let day = Calendar.current.startOfDay(for: date)
+        planDone.removeAll { Calendar.current.isDate($0, inSameDayAs: day) }
+        if done { planDone.append(day) }
         save()
     }
 
@@ -163,11 +263,18 @@ final class AppModel: ObservableObject {
         sessionDays = stored.sessionDays
         foodLog = stored.foodLog ?? []
         weights = stored.weights ?? []
+        planStart = stored.planStart
+        planProgram = stored.planProgram.flatMap(TrainingPlan.Program.init(rawValue:))
+        planDone = stored.planDone ?? []
+        planBaseSteps = stored.planBaseSteps
+        sleepLog = stored.sleepLog ?? []
     }
 
     private func save() {
         guard !loading else { return }
-        let stored = Stored(profile: profile, results: results, sessionDays: sessionDays, foodLog: foodLog, weights: weights)
+        let stored = Stored(profile: profile, results: results, sessionDays: sessionDays, foodLog: foodLog, weights: weights,
+                            planStart: planStart, planProgram: planProgram?.rawValue, planDone: planDone,
+                            planBaseSteps: planBaseSteps, sleepLog: sleepLog)
         guard let data = try? JSONEncoder().encode(stored) else { return }
         try? data.write(to: fileURL, options: [.atomic, .completeFileProtection])
     }

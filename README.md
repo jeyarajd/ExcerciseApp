@@ -15,7 +15,14 @@
   - **Steps:** today's steps against a goal you set, distance, and a 7-day chart, from the iPhone's own motion sensors (CoreMotion, Motion & Fitness permission). No account or HealthKit needed.
   - **Calories:** log meals from about 75 common Indian foods with typical portions, or add your own. **Snap your plate** takes a photo and suggests what's on it using Apple's on-device image classifier (it knows dishes like biryani, curry, naan, samosa, rice and raita, plus fruit and drinks). You tick the right items and set the servings, because no photo can show portion size. The photo never leaves the phone. The daily target comes from the Mifflin-St Jeor formula for your age, gender, height and weight.
   - **BMI:** height (cm or ft/in) and weight, a colour-coded result with encouragement, your healthy weight range, and a weight chart. It uses the lower BMI cut-offs recommended for South Asians (healthy 18.5–22.9).
-- **Daily reminder.** Optional, at a time you pick. It's skipped on days you've already trained.
+- **Evening reminder.** Optional, at a time you pick (6 pm by default). One notification a day, only if you haven't done that day's training, naming what's planned. None on rest days.
+- **Training plan.** Chosen from your BMI, age and limitations:
+  - **Couch to 5K run/walk:** a healthy weight, under 60, no joint limits.
+  - **Brisk walking:** overweight or underweight, 60+, or knee or hip problems.
+  - **Gentle walking:** obese, 70+, or a doctor's limit.
+
+  Each week has run/walk intervals or walking minutes, strength days with sets × reps, balance days from 65, and a daily step goal. A guided timer talks you through each run/walk. The numbers follow WHO 2020, NHS Couch to 5K, ACSM 2009 and Paluch et al. 2022 (listed in the app).
+- **Sleep.** Log bedtime and wake time, or read them from Apple Health, and compare with the recommended 7–9 hours (7–8 from 65; National Sleep Foundation).
 - **Editable profile.** Change your age or limitations in Settings. Your plan and safety filtering update right away.
 - **Privacy.** Everything is stored on the phone and nothing is sent anywhere.
 - **Look.** A warm, slowly drifting gradient behind every screen, glass cards, and the 3D coach standing right on the background.
@@ -49,6 +56,8 @@ One-time setup:
    - `APPLE_TEAM_ID` from developer.apple.com → Membership
    - `ASC_KEY_ID` and `ASC_ISSUER_ID`
    - `ASC_KEY_P8`: paste the whole contents of the `.p8` file
+
+The app reads sleep from Apple Health, so the bundle ID needs the **HealthKit** capability. Automatic signing usually turns it on. If the TestFlight build fails with a HealthKit provisioning error, tick HealthKit for the identifier at developer.apple.com. The App Store also asks for a privacy policy for apps that use Health data.
 
 Then open **Actions → TestFlight → Run workflow**. When App Store Connect finishes processing (usually 5–15 min), the build appears in the TestFlight app on your iPhone.
 

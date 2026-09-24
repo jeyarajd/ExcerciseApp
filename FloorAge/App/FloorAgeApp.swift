@@ -17,8 +17,7 @@ struct FloorAgeApp: App {
         }
         .onChange(of: scenePhase) { _, phase in
             guard phase == .active else { return }
-            let trained = model.didSessionToday
-            Task { await Reminders.refresh(trainedToday: trained) }
+            Task { await model.refreshReminders() }
             if model.profile != nil { steps.start() }
         }
     }

@@ -1,0 +1,512 @@
+import SwiftUI
+import UIKit
+
+/// The weekly training plan: which program suits the person and why, this week's days with sets,
+/// reps, walking/running intervals and step goals, and the sources behind the numbers.
+struct PlanView: View {
+    @EnvironmentObject private var model: AppModel
+    @EnvironmentObject private var steps: StepCounter
+    @EnvironmentObject private var voice: VoiceCoach
+    @State private var choice: TrainingPlan.Program?
+    @State private var cardio: CardioWorkout?
+    @State private var session: StrengthSession?
+    @State private var confirmingRestart = false
+    @State private var offeringReminder = false
+
+    var body: some View {
+        ScrollView {
+            VStack(spacing: 16) {
+                if let profile = model.profile {
+                    if let program = model.planProgram, let position = model.planPosition() {
+                        let week = TrainingPlan.week(position.week, program: program, profile: profile, averageSteps: model.planBaseSteps)
+                        weekHeader(week, finished: position.week > program.weeks)
+                        ForEach(week.days, id: \.index) { day in
+                            dayCard(day, week: week, date: date(ofDay: day.index, week: position.week), isToday: day.index == position.day)
+                        }
+                        Button("Change or restart plan", role: .destructive) { confirmingRestart = true }
+                            .font(.subheadline)
+                    } else {
+                        intro(profile)
+                    }
+                    sources
+                }
+            }
+            .padding()
+        }
+        .background(AppBackground())
+        .navigationTitle("Training plan")
+        .onAppear { steps.start() }
+        .confirmationDialog("Restart your plan? Your progress in this plan will be cleared.", isPresented: $confirmingRestart, titleVisibility: .visible) {
+            Button("Restart", role: .destructive) {
+                model.stopPlan()
+                Task { await model.refreshReminders() }
+            }
+        }
+        .alert("Remind you in the evening?", isPresented: $offeringReminder) {
+            Button("Yes, at \(ReminderTime.label)") {
+                Task { if await Reminders.enable() { await model.refreshReminders() } }
+            }
+            Button("Not now", role: .cancel) {}
+        } message: {
+            Text("One notification a day, only if you haven't done that day's training yet. You can change the time in Settings.")
+        }
+        .fullScreenCover(item: $cardio) { workout in
+            IntervalWorkoutView(title: workout.title, intervals: workout.intervals) {
+                model.setPlanDay(Date(), done: true)
+                Task { await model.refreshReminders() }
+            }
+            .environmentObject(voice)
+            .environmentObject(steps)
+        }
+        .fullScreenCover(item: $session) { session in
+            SessionView(items: session.items, voice: voice)
+                .environmentObject(model)
+        }
+    }
+
+    // MARK: - Before starting
+
+    private func intro(_ profile: Profile) -> some View {
+        let recommended = TrainingPlan.recommendedProgram(for: profile)
+        let selected = choice ?? recommended
+        return VStack(alignment: .leading, spacing: 14) {
+            Label("Your plan", systemImage: "calendar.badge.checkmark").font(.title2.bold())
+            Text(reason(for: recommended, profile: profile))
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+            Picker("Plan", selection: Binding(get: { selected }, set: { choice = $0 })) {
+                ForEach(TrainingPlan.Program.allCases) { program in
+                    Text(program == recommended ? "\(program.title) (recommended)" : program.title).tag(program)
+                }
+            }
+            .pickerStyle(.inline)
+            .labelsHidden()
+            Text(summary(of: selected, profile: profile)).font(.subheadline)
+            if profile.bmi == nil {
+                NavigationLink { BMIView() } label: {
+                    Label("Add your height and weight for a plan that fits your weight", systemImage: "scalemass")
+                        .font(.subheadline)
+                }
+            }
+            Button {
+                model.startPlan(selected, averageSteps: averageSteps)
+                if !Reminders.isOn { offeringReminder = true }
+                Task { await model.refreshReminders() }
+            } label: {
+                Text("Start \(selected.title.lowercased()) today").frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.borderedProminent)
+            .controlSize(.large)
+            Text("Check with your doctor before starting if you have a heart, lung or joint condition, are pregnant, or haven't been active for a long time.")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        }
+        .card()
+    }
+
+    private func reason(for program: TrainingPlan.Program, profile: Profile) -> String {
+        var facts = ["age \(profile.age)"]
+        if let bmi = profile.bmi {
+            facts.insert("BMI \(bmi.formatted(.number.precision(.fractionLength(1)))) (\(BMI.category(bmi).label.lowercased()))", at: 0)
+        }
+        if !profile.limitations.isEmpty { facts.append("your \(profile.limitations.map(\.rawValue).sorted().joined(separator: " and ")) notes") }
+        let why: String = switch program {
+        case .runWalk: "you can build up to running safely"
+        case .briskWalk: "brisk walking burns fat while being kind to your joints"
+        case .gentleWalk: "a gentle start builds fitness safely"
+        }
+        return "Based on your \(facts.joined(separator: ", ")), we recommend this plan: \(why)."
+    }
+
+    private func summary(of program: TrainingPlan.Program, profile: Profile) -> String {
+        let loss = TrainingPlan.aimsForWeightLoss(profile)
+        switch program {
+        case .runWalk:
+            return "9 weeks, 3 run/walk sessions a week (about 30 min), building from 1-minute runs to 30 minutes of running, plus 2 strength days."
+        case .briskWalk:
+            return "12 weeks of brisk walking on 5 days, from 20 minutes up to \(loss ? "50" : "30") a day (\(loss ? "250" : "150") min a week), plus 2 strength days."
+        case .gentleWalk:
+            return "12 weeks of easy walking on 5 days, from 10 minutes up to \(loss ? "50" : "30") a day, plus 2 gentle strength days with a chair."
+        }
+    }
+
+    // MARK: - The week
+
+    private func weekHeader(_ week: TrainingPlan.Week, finished: Bool) -> some View {
+        let doneDays = week.days.filter { model.isPlanDayDone(date(ofDay: $0.index, week: model.planPosition()?.week ?? 1)) }.count
+        return VStack(alignment: .leading, spacing: 12) {
+            HStack {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(week.program.title).font(.headline)
+                    Text(finished ? "Plan complete: keep repeating the final week" : "Week \(week.number) of \(week.program.weeks)")
+                        .font(.subheadline).foregroundStyle(.secondary)
+                }
+                Spacer()
+                ProgressRing(progress: Double(doneDays) / 7, color: .accentColor, lineWidth: 7) {
+                    Text("\(doneDays)/7").font(.caption.bold())
+                }
+                .frame(width: 52, height: 52)
+            }
+            HStack(spacing: 10) {
+                goal("\(week.aerobicMinutes)", "active min", sub: "goal \(week.targetMinutes)+")
+                goal(week.stepGoal.formatted(), "steps a day", sub: "today \(steps.today.formatted())")
+                goal("\(week.sets) × \(week.reps)", "sets × reps", sub: "2 days")
+            }
+        }
+        .card()
+    }
+
+    private func goal(_ value: String, _ label: String, sub: String) -> some View {
+        VStack(spacing: 2) {
+            Text(value).font(.system(.title3, design: .rounded, weight: .bold))
+            Text(label).font(.caption)
+            Text(sub).font(.caption2).foregroundStyle(.secondary)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 8)
+        .background(Color.accentColor.opacity(0.08), in: RoundedRectangle(cornerRadius: 12))
+    }
+
+    private func dayCard(_ day: TrainingPlan.Day, week: TrainingPlan.Week, date: Date, isToday: Bool) -> some View {
+        let done = model.isPlanDayDone(date)
+        let canTick = date <= Date()
+        return VStack(alignment: .leading, spacing: 10) {
+            HStack {
+                Text(isToday ? "Today" : date.formatted(.dateTime.weekday(.wide)))
+                    .font(.headline)
+                    .foregroundStyle(isToday ? Color.accentColor : Color.primary)
+                Text(date.formatted(.dateTime.day().month())).font(.subheadline).foregroundStyle(.secondary)
+                Spacer()
+                if canTick {
+                    Button {
+                        model.setPlanDay(date, done: !done)
+                        Task { await model.refreshReminders() }
+                    } label: {
+                        Label(done ? "Done" : "Mark done", systemImage: done ? "checkmark.circle.fill" : "circle")
+                            .font(.subheadline.weight(.semibold))
+                    }
+                    .buttonStyle(.plain)
+                    .foregroundStyle(done ? Color.green : Color.secondary)
+                }
+            }
+            ForEach(Array(day.activities.enumerated()), id: \.offset) { _, activity in
+                activityRow(activity, week: week, isToday: isToday)
+            }
+            if day.activities != [.rest] {
+                Label("Aim for \(day.stepGoal.formatted()) steps", systemImage: "figure.walk")
+                    .font(.caption).foregroundStyle(.secondary)
+            }
+        }
+        .card()
+        .overlay(RoundedRectangle(cornerRadius: 20, style: .continuous).strokeBorder(Color.accentColor, lineWidth: isToday ? 2 : 0))
+    }
+
+    @ViewBuilder
+    private func activityRow(_ activity: TrainingPlan.Activity, week: TrainingPlan.Week, isToday: Bool) -> some View {
+        switch activity {
+        case .cardio(let program, let intervals):
+            let title = program == .runWalk ? "Run/walk" : intervals.contains { $0.kind == .brisk } ? "Brisk walk" : "Walk"
+            row(icon: program == .runWalk ? "figure.run" : "figure.walk", title: "\(title) · \(activity.minutes) min",
+                detail: TrainingPlan.describe(intervals) + " · ≈ \(activity.steps.formatted()) steps",
+                start: isToday ? { cardio = CardioWorkout(title: "\(title), week \(week.number)", intervals: intervals) } : nil)
+        case .strength(let sets, let moves):
+            row(icon: "dumbbell.fill", title: "Strength · \(sets) \(sets == 1 ? "set" : "sets")",
+                detail: describe(moves) + ". Rest 1 minute between sets.",
+                start: isToday ? { session = StrengthSession(items: TrainingPlan.sessionItems(sets: sets, moves: moves)) } : nil)
+        case .balance(let sets, let moves):
+            row(icon: "figure.stand", title: "Balance · \(sets) \(sets == 1 ? "set" : "sets")",
+                detail: describe(moves) + ". Hold a wall or chair if you need to.",
+                start: isToday ? { session = StrengthSession(items: TrainingPlan.sessionItems(sets: sets, moves: moves)) } : nil)
+        case .rest:
+            row(icon: "bed.double.fill", title: "Rest day", detail: "Recovery is part of training. A gentle stroll or stretching is fine.", start: nil)
+        }
+    }
+
+    private func row(icon: String, title: String, detail: String, start: (() -> Void)?) -> some View {
+        HStack(alignment: .top, spacing: 12) {
+            Image(systemName: icon)
+                .font(.title3)
+                .frame(width: 36, height: 36)
+                .background(Color.accentColor.opacity(0.14), in: RoundedRectangle(cornerRadius: 10))
+                .foregroundStyle(Color.accentColor)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title).font(.subheadline.weight(.semibold))
+                Text(detail).font(.caption).foregroundStyle(.secondary)
+            }
+            Spacer(minLength: 0)
+            if let start {
+                Button("Start", action: start)
+                    .buttonStyle(.borderedProminent)
+                    .controlSize(.small)
+            }
+        }
+    }
+
+    private func describe(_ moves: [TrainingPlan.StrengthMove]) -> String {
+        moves.map { move in
+            let name = ExerciseLibrary.shared[move.exerciseID].name
+            if let reps = move.reps { return "\(name) × \(reps)" }
+            return "\(name) \(move.seconds ?? 30) s"
+        }
+        .joined(separator: ", ")
+    }
+
+    // MARK: - Sources
+
+    private var sources: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Label("Where these numbers come from", systemImage: "books.vertical").font(.headline)
+            source("WHO guidelines on physical activity (2020)", "150–300 active minutes a week, strength on 2+ days, balance on 3+ days from 65.",
+                   "https://www.who.int/publications/i/item/9789240015128")
+            source("NHS Couch to 5K", "9 weeks, 3 run/walk sessions a week building to 30 minutes of running.",
+                   "https://www.nhs.uk/better-health/get-active/get-running-with-couch-to-5k/")
+            source("American College of Sports Medicine (2009)", "More than 250 min a week for weight loss; beginners train strength 2–3 days, 8–12 reps, 1–3 sets.",
+                   "https://pubmed.ncbi.nlm.nih.gov/19127177/")
+            source("Paluch et al., Lancet Public Health (2022)", "Benefits of walking level off at 8,000–10,000 steps a day under 60, and 6,000–8,000 from 60.",
+                   "https://pubmed.ncbi.nlm.nih.gov/35247352/")
+            Text("A general fitness plan, not medical advice. Stop and rest if anything hurts, and seek help for chest pain, dizziness or severe breathlessness.")
+                .font(.caption).foregroundStyle(.secondary)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .card()
+    }
+
+    private func source(_ title: String, _ detail: String, _ url: String) -> some View {
+        VStack(alignment: .leading, spacing: 1) {
+            if let link = URL(string: url) {
+                Link(title, destination: link).font(.subheadline.weight(.semibold))
+            }
+            Text(detail).font(.caption).foregroundStyle(.secondary)
+        }
+    }
+
+    // MARK: - Helpers
+
+    private var averageSteps: Int? {
+        let past = steps.week.dropLast().map(\.steps).filter { $0 > 0 }
+        return past.isEmpty ? nil : past.reduce(0, +) / past.count
+    }
+
+    private func date(ofDay day: Int, week: Int) -> Date {
+        let start = model.planStart ?? Calendar.current.startOfDay(for: Date())
+        return Calendar.current.date(byAdding: .day, value: (week - 1) * 7 + day, to: start) ?? start
+    }
+}
+
+private struct CardioWorkout: Identifiable {
+    let id = UUID()
+    let title: String
+    let intervals: [TrainingPlan.Interval]
+}
+
+private struct StrengthSession: Identifiable {
+    let id = UUID()
+    let items: [PlanItem]
+}
+
+// MARK: - Guided run/walk
+
+/// Talks you through a walk or run/walk: announces each interval, counts down, and shows your
+/// steps. Keeps the screen on while it runs.
+struct IntervalWorkoutView: View {
+    let title: String
+    let intervals: [TrainingPlan.Interval]
+    var onFinish: () -> Void = {}
+
+    @EnvironmentObject private var voice: VoiceCoach
+    @EnvironmentObject private var steps: StepCounter
+    @Environment(\.dismiss) private var dismiss
+    @State private var elapsed: TimeInterval = 0
+    @State private var running = false
+    @State private var started = false
+    @State private var announced = -1
+    @State private var finished = false
+    private let tick = Timer.publish(every: 0.25, on: .main, in: .common).autoconnect()
+
+    private var total: TimeInterval { TimeInterval(intervals.reduce(0) { $0 + $1.seconds }) }
+
+    /// The current interval and seconds left in it.
+    private var position: (index: Int, left: TimeInterval) {
+        var t = elapsed
+        for (i, interval) in intervals.enumerated() {
+            if t < TimeInterval(interval.seconds) { return (i, TimeInterval(interval.seconds) - t) }
+            t -= TimeInterval(interval.seconds)
+        }
+        return (intervals.count - 1, 0)
+    }
+
+    var body: some View {
+        let (index, left) = position
+        let current = intervals[index]
+        VStack(spacing: 22) {
+            HStack {
+                Button { stop() } label: { Image(systemName: "xmark").font(.headline).frame(width: 44, height: 44) }
+                Text(title).font(.headline)
+                Spacer()
+            }
+            Spacer()
+            Text(finished ? "Well done!" : current.kind.rawValue)
+                .font(.system(size: 40, weight: .heavy, design: .rounded))
+                .foregroundStyle(color(current.kind))
+            ProgressRing(progress: finished ? 1 : 1 - left / TimeInterval(current.seconds), color: color(current.kind), lineWidth: 18) {
+                VStack(spacing: 4) {
+                    Text(clock(finished ? 0 : left)).font(.system(size: 54, weight: .bold, design: .rounded)).monospacedDigit()
+                    Text("Interval \(index + 1) of \(intervals.count)").font(.caption).foregroundStyle(.secondary)
+                }
+            }
+            .frame(width: 250, height: 250)
+            if !finished, index + 1 < intervals.count {
+                Text("Next: \(intervals[index + 1].kind.rawValue) \(clock(TimeInterval(intervals[index + 1].seconds)))")
+                    .font(.headline).foregroundStyle(.secondary)
+            }
+            ProgressView(value: min(elapsed, total), total: total).tint(.accentColor).padding(.horizontal)
+            HStack(spacing: 28) {
+                stat(clock(elapsed), "elapsed")
+                stat(clock(max(total - elapsed, 0)), "left")
+                stat(steps.today.formatted(), "steps today")
+            }
+            Spacer()
+            controls
+        }
+        .padding()
+        .background(AppBackground())
+        .onReceive(tick) { _ in advance() }
+        .onAppear { UIApplication.shared.isIdleTimerDisabled = true }
+        .onDisappear { UIApplication.shared.isIdleTimerDisabled = false }
+    }
+
+    @ViewBuilder
+    private var controls: some View {
+        if finished {
+            Button { dismiss() } label: { Text("Finish").frame(maxWidth: .infinity) }
+                .buttonStyle(.borderedProminent).controlSize(.large)
+        } else if !started {
+            Button {
+                started = true
+                running = true
+            } label: { Text("Start").frame(maxWidth: .infinity) }
+                .buttonStyle(.borderedProminent).controlSize(.large)
+        } else {
+            HStack(spacing: 12) {
+                Button(running ? "Pause" : "Resume") {
+                    running.toggle()
+                    voice.say(running ? "Let's go." : "Paused.", interrupt: true)
+                }
+                .buttonStyle(.borderedProminent)
+                .frame(maxWidth: .infinity)
+                Button("Skip interval") { skip() }
+                    .buttonStyle(.bordered)
+            }
+            .controlSize(.large)
+        }
+    }
+
+    private func advance() {
+        guard running, !finished else { return }
+        elapsed += 0.25
+        let index = position.index
+        if index != announced {
+            announced = index
+            voice.say(Self.announcement(intervals[index], isFirst: index == 0), interrupt: true)
+        }
+        if elapsed >= total {
+            finished = true
+            running = false
+            voice.say("That's it, well done! Walking and running like this is how fitness builds.", interrupt: true)
+            onFinish()
+        }
+    }
+
+    private func skip() {
+        let (index, left) = position
+        guard index + 1 < intervals.count else { elapsed = total; return }
+        elapsed += left
+    }
+
+    private func stop() {
+        voice.stop()
+        dismiss()
+    }
+
+    /// "Run for a minute and a half."
+    static func announcement(_ interval: TrainingPlan.Interval, isFirst: Bool) -> String {
+        let length = spoken(interval.seconds)
+        switch interval.kind {
+        case .warmUp: return "Warm up with a \(length) walk at an easy pace."
+        case .coolDown: return "Great work. Cool down with a \(length) easy walk."
+        case .run: return "Run for \(length). Keep it slow enough to talk."
+        case .walk: return "Walk for \(length)."
+        case .brisk: return "Now walk briskly for \(length). You should be able to talk, but not sing."
+        case .easy: return "Easy walk for \(length)."
+        }
+    }
+
+    static func spoken(_ seconds: Int) -> String {
+        let minutes = seconds / 60, rest = seconds % 60
+        switch (minutes, rest) {
+        case (0, _): return "\(rest) seconds"
+        case (1, 0): return "1 minute"
+        case (1, 30): return "a minute and a half"
+        case (_, 0): return "\(minutes) minutes"
+        case (_, 30): return "\(minutes) and a half minutes"
+        default: return "\(minutes) minutes \(rest) seconds"
+        }
+    }
+
+    private func color(_ kind: TrainingPlan.Interval.Kind) -> Color {
+        kind == .run ? .accentColor : Color(red: 0.13, green: 0.6, blue: 0.55)
+    }
+
+    private func clock(_ t: TimeInterval) -> String {
+        let s = Int(t.rounded(.up))
+        return String(format: "%d:%02d", s / 60, s % 60)
+    }
+
+    private func stat(_ value: String, _ label: String) -> some View {
+        VStack(spacing: 2) {
+            Text(value).font(.headline).monospacedDigit()
+            Text(label).font(.caption).foregroundStyle(.secondary)
+        }
+    }
+}
+
+// MARK: - Summary card
+
+/// Today's part of the training plan, or an invitation to get one. Opens `PlanView`.
+struct TrainingPlanCard: View {
+    @EnvironmentObject private var model: AppModel
+
+    var body: some View {
+        NavigationLink { PlanView() } label: {
+            HStack(spacing: 14) {
+                Image(systemName: "calendar.badge.checkmark")
+                    .font(.title2)
+                    .frame(width: 48, height: 48)
+                    .background(Color.accentColor.opacity(0.15), in: RoundedRectangle(cornerRadius: 12))
+                    .foregroundStyle(Color.accentColor)
+                VStack(alignment: .leading, spacing: 3) {
+                    if let profile = model.profile, let program = model.planProgram, let position = model.planPosition() {
+                        let week = TrainingPlan.week(position.week, program: program, profile: profile, averageSteps: model.planBaseSteps)
+                        let today = week.days[position.day]
+                        Text("\(program.title) · week \(min(position.week, program.weeks))").font(.caption).foregroundStyle(.secondary)
+                        Text(TrainingPlan.headline(today)).font(.headline).multilineTextAlignment(.leading)
+                        if model.isPlanDayDone(Date()) {
+                            Label("Done for today", systemImage: "checkmark.circle.fill").font(.caption).foregroundStyle(.green)
+                        } else if today.activities != [.rest] {
+                            Text("Aim for \(today.stepGoal.formatted()) steps").font(.caption).foregroundStyle(.secondary)
+                        }
+                    } else {
+                        Text("Your training plan").font(.headline)
+                        Text("Walking or running, strength sets and daily steps, built for your weight and age.")
+                            .font(.subheadline).foregroundStyle(.secondary).multilineTextAlignment(.leading)
+                    }
+                }
+                Spacer(minLength: 0)
+                Image(systemName: "chevron.right").foregroundStyle(.tertiary)
+            }
+            .card()
+        }
+        .buttonStyle(.plain)
+    }
+}
+

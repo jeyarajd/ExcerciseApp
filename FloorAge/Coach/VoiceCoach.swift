@@ -32,7 +32,7 @@ final class VoiceCoach: NSObject, ObservableObject, AVSpeechSynthesizerDelegate 
 
     override init() {
         enabled = UserDefaults.standard.object(forKey: "voiceEnabled") as? Bool ?? true
-        accent = UserDefaults.standard.string(forKey: "voiceAccent") ?? "en-IN"
+        accent = UserDefaults.standard.string(forKey: "voiceAccent") ?? Region.defaultAccent
         super.init()
         synthesizer.delegate = self
         try? AVAudioSession.sharedInstance().setCategory(

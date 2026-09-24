@@ -31,6 +31,12 @@ targets:
         ITSAppUsesNonExemptEncryption: false
         NSMotionUsageDescription: Floor Age counts your daily steps on this iPhone. Your steps never leave your phone.
         NSCameraUsageDescription: Take a photo of your meal to get calorie suggestions. The photo is checked on your iPhone and is never saved or sent.
+        NSHealthShareUsageDescription: Floor Age reads your sleep from Apple Health to show how long you sleep. It never changes your Health data or sends it anywhere.
+    entitlements:
+      path: FloorAge/FloorAge.entitlements
+      properties:
+        com.apple.developer.healthkit: true
+        com.apple.developer.healthkit.access: []
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.jeyaraj.floorage

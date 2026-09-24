@@ -26,6 +26,9 @@ Native iOS app (SwiftUI, RealityKit, iOS 18+). Fully offline: no server, no AI, 
 - New fields in `AppModel.Stored` and `Profile` must be optional (or have defaults), so files saved by older versions still decode. `TrackingStorageTests.testFilesFromTheOlderVersionStillLoad` guards this.
 - Screens use `AppBackground()` (or `.appBackground()` on List/Form) and `.card()` for content blocks (`App/Theme.swift`). The 3D view is transparent so the coach stands on that background.
 - Food photos: `FoodRecognizer` maps Vision's built-in `VNClassifyImageRequest` labels to `FoodLibrary` names (`suggestions`); every mapped name must exist in `FoodLibrary` (tested). Photos are never stored.
+- `TrainingPlan` (Models) builds each week from the profile. Every number traces to a source listed in its header comment and in `PlanView`; keep them in step. `TrainingPlanTests` checks the Couch to 5K intervals against the NHS plan.
+- Reminders: call `model.refreshReminders()` after anything that changes what's done or planned (`App/ReminderSync.swift`). `AppModel.reminderText(on:)` decides each day's message (nil = no reminder).
+- Sleep: `SleepGuide.nights(from:)` merges Apple Health samples (tested without HealthKit). HealthKit is read-only (`HealthSleep`), with the entitlement generated from `project.yml`. Screenshots built for Mac need `CODE_SIGN_ENTITLEMENTS=` because ad-hoc-signed apps can't carry it.
 - `StepCounter` uses CoreMotion's pedometer (iOS only; step counting isn't available in the Simulator, so screenshots use `StepCounter.sample()`).
 - Demo videos are bundled as `FloorAge/Resources/Videos/demo_<exercise id>.mp4` (`DemoVideo`). They're optional per exercise, and the 3D coach still drives sessions and rep counting. The current clips are placeholders.
 - Floor Age is a fitness estimate, never medical advice. Keep safety copy and limitation filtering (`PlanBuilder.unsafe`) intact when adding exercises.

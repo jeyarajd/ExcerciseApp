@@ -312,16 +312,26 @@ final class RemindersTests: XCTestCase {
 final class HealthTests: XCTestCase {
     func testBMIUsesAsianIndianCutoffs() throws {
         XCTAssertEqual(try XCTUnwrap(BMI.value(weightKg: 70, heightCm: 170)), 24.22, accuracy: 0.01)
-        XCTAssertEqual(BMI.category(17.3), .underweight)
-        XCTAssertEqual(BMI.category(20.8), .healthy)
-        XCTAssertEqual(BMI.category(23.0), .overweight, "23 is already overweight for South Asians")
-        XCTAssertEqual(BMI.category(24.9), .overweight)
-        XCTAssertEqual(BMI.category(25.0), .obese)
+        XCTAssertEqual(BMI.category(17.3, scale: .asian), .underweight)
+        XCTAssertEqual(BMI.category(20.8, scale: .asian), .healthy)
+        XCTAssertEqual(BMI.category(23.0, scale: .asian), .overweight, "23 is already overweight on the Asian scale")
+        XCTAssertEqual(BMI.category(24.9, scale: .asian), .overweight)
+        XCTAssertEqual(BMI.category(25.0, scale: .asian), .obese)
         XCTAssertNil(BMI.value(weightKg: 70, heightCm: 0))
     }
 
+    func testBMIUsesWHOCutoffsInternationally() {
+        XCTAssertEqual(BMI.category(23.0, scale: .international), .healthy)
+        XCTAssertEqual(BMI.category(25.0, scale: .international), .overweight)
+        XCTAssertEqual(BMI.category(29.9, scale: .international), .overweight)
+        XCTAssertEqual(BMI.category(30.0, scale: .international), .obese)
+        XCTAssertEqual(BMI.healthyWeight(heightCm: 170, scale: .international).upperBound, 71.96, accuracy: 0.01, "24.9 x 1.7^2")
+        XCTAssertEqual(BMI.Category.healthy.range(.international), "18.5 – 24.9")
+        XCTAssertEqual(BMI.pounds(70), 154.3, accuracy: 0.1)
+    }
+
     func testHealthyWeightRangeAndUnits() {
-        let range = BMI.healthyWeight(heightCm: 170)
+        let range = BMI.healthyWeight(heightCm: 170, scale: .asian)
         XCTAssertEqual(range.lowerBound, 53.5, accuracy: 0.1)
         XCTAssertEqual(range.upperBound, 66.2, accuracy: 0.1)
         XCTAssertEqual(BMI.centimetres(feet: 5, inches: 7), 170.18, accuracy: 0.01)
@@ -343,9 +353,11 @@ final class HealthTests: XCTestCase {
     }
 
     func testFoodLibraryIsSensible() {
-        XCTAssertGreaterThan(FoodLibrary.items.count, 50)
+        XCTAssertGreaterThan(FoodLibrary.indian.count, 50)
+        XCTAssertGreaterThan(FoodLibrary.international.count, 40)
+        XCTAssertTrue(FoodLibrary.international.allSatisfy { $0.cuisine == .international })
         XCTAssertEqual(Set(FoodLibrary.items.map(\.name)).count, FoodLibrary.items.count, "no duplicate names")
-        XCTAssertTrue(FoodLibrary.items.allSatisfy { (10...800).contains($0.kcal) })
+        XCTAssertTrue(FoodLibrary.items.allSatisfy { (1...800).contains($0.kcal) }, "black coffee is 5 kcal")
         XCTAssertEqual(FoodLibrary.search("DOSA").map(\.name), ["Plain dosa", "Masala dosa"])
     }
 }
@@ -367,6 +379,13 @@ final class FoodRecognizerTests: XCTestCase {
         XCTAssertEqual(guesses.map(\.label), ["biryani", "curry", "yogurt", "fruit"])
         XCTAssertEqual(guesses.first?.items.first?.name, "Chicken biryani")
         XCTAssertEqual(guesses[1].title, "Curry")
+    }
+
+    func testLocalDishesComeFirst() {
+        let india = FoodRecognizer.guesses(from: [("pancake", 0.6)], preferIndian: true)
+        let elsewhere = FoodRecognizer.guesses(from: [("pancake", 0.6)], preferIndian: false)
+        XCTAssertEqual(india.first?.items.first?.name, "Plain dosa")
+        XCTAssertEqual(elsewhere.first?.items.first?.name, "Pancakes")
     }
 
     func testEachFoodIsSuggestedOnce() {
@@ -429,6 +448,155 @@ final class TrackingStorageTests: XCTestCase {
         XCTAssertEqual(model.sessionDays.count, 1)
         XCTAssertTrue(model.foodLog.isEmpty)
         XCTAssertNil(model.profile?.bmi)
+    }
+}
+
+final class TrainingPlanTests: XCTestCase {
+    private func profile(age: Int = 35, heightCm: Double = 170, weightKg: Double = 65, limits: Set<Limitation> = []) -> Profile {
+        Profile(name: "", age: age, limitations: limits, gender: .male, heightCm: heightCm, weightKg: weightKg)
+    }
+
+    func testProgramFollowsWeightAgeAndLimitations() {
+        // 170 cm: 65 kg is BMI 22.5, 76 kg 26.3, 90 kg 31.1.
+        XCTAssertEqual(TrainingPlan.recommendedProgram(for: profile(weightKg: 65), scale: .international), .runWalk)
+        XCTAssertEqual(TrainingPlan.recommendedProgram(for: profile(weightKg: 76), scale: .international), .briskWalk)
+        XCTAssertEqual(TrainingPlan.recommendedProgram(for: profile(weightKg: 90), scale: .international), .gentleWalk)
+        XCTAssertEqual(TrainingPlan.recommendedProgram(for: profile(weightKg: 65), scale: .asian), .runWalk)
+        XCTAssertEqual(TrainingPlan.recommendedProgram(for: profile(weightKg: 76), scale: .asian), .gentleWalk, "26.3 is obese on the Asian scale")
+        XCTAssertEqual(TrainingPlan.recommendedProgram(for: profile(age: 62), scale: .international), .briskWalk)
+        XCTAssertEqual(TrainingPlan.recommendedProgram(for: profile(limits: [.knee]), scale: .international), .briskWalk)
+        XCTAssertEqual(TrainingPlan.recommendedProgram(for: profile(age: 72), scale: .international), .gentleWalk)
+        XCTAssertEqual(TrainingPlan.recommendedProgram(for: profile(weightKg: 50), scale: .international), .briskWalk, "underweight: no running")
+    }
+
+    func testCouchTo5KMatchesTheNHSPlan() {
+        let week1 = TrainingPlan.couchTo5K(week: 1, run: 0)
+        XCTAssertEqual(week1.filter { $0.kind == .run }.count, 8)
+        XCTAssertEqual(week1.filter { $0.kind == .walk }.map(\.seconds), Array(repeating: 90, count: 7))
+        XCTAssertEqual(week1.first, TrainingPlan.Interval(kind: .warmUp, seconds: 300))
+        XCTAssertEqual(week1.last, TrainingPlan.Interval(kind: .coolDown, seconds: 300))
+        XCTAssertEqual(TrainingPlan.couchTo5K(week: 5, run: 2).filter { $0.kind == .run }.map(\.seconds), [1200])
+        XCTAssertEqual(TrainingPlan.couchTo5K(week: 9, run: 0).filter { $0.kind == .run }.map(\.seconds), [1800])
+        XCTAssertEqual(TrainingPlan.describe(week1), "5 min walk, (run 1 min, walk 1½ min) × 7, run 1 min, 5 min walk")
+    }
+
+    func testRunWalkWeekHasThreeRunsWithRestBetween() {
+        let week = TrainingPlan.week(1, program: .runWalk, profile: profile(), averageSteps: nil, scale: .international)
+        let runDays = week.days.filter { $0.activities.contains { if case .cardio(.runWalk, _) = $0 { true } else { false } } }.map(\.index)
+        XCTAssertEqual(runDays, [0, 2, 4])
+        let strengthDays = week.days.filter { $0.activities.contains { if case .strength = $0 { true } else { false } } }.count
+        XCTAssertEqual(strengthDays, 2, "WHO: strength on 2+ days")
+        XCTAssertEqual(week.days.last?.activities, [.rest])
+    }
+
+    func testWalkingBuildsToTheWeeklyTarget() {
+        let overweight = profile(weightKg: 76)
+        let first = TrainingPlan.week(1, program: .briskWalk, profile: overweight, averageSteps: nil, scale: .international)
+        let last = TrainingPlan.week(12, program: .briskWalk, profile: overweight, averageSteps: nil, scale: .international)
+        XCTAssertEqual(first.targetMinutes, 250, "ACSM: over 250 min a week for weight loss")
+        XCTAssertLessThan(first.aerobicMinutes, last.aerobicMinutes)
+        XCTAssertGreaterThanOrEqual(last.aerobicMinutes, 250)
+        let healthy = TrainingPlan.week(12, program: .briskWalk, profile: profile(age: 62), averageSteps: nil, scale: .international)
+        XCTAssertEqual(healthy.targetMinutes, 150)
+        XCTAssertGreaterThanOrEqual(healthy.aerobicMinutes, 150, "WHO: at least 150 min")
+    }
+
+    func testSetsAndStepsProgressWithinGuidelines() {
+        let p = profile()
+        XCTAssertEqual(TrainingPlan.week(1, program: .runWalk, profile: p, averageSteps: 5000).sets, 1)
+        XCTAssertEqual(TrainingPlan.week(3, program: .runWalk, profile: p, averageSteps: 5000).sets, 2)
+        XCTAssertEqual(TrainingPlan.week(6, program: .runWalk, profile: p, averageSteps: 5000).sets, 3)
+        XCTAssertEqual(TrainingPlan.week(6, program: .gentleWalk, profile: p, averageSteps: 5000).sets, 2)
+        XCTAssertEqual(TrainingPlan.week(1, program: .runWalk, profile: p, averageSteps: 5000).stepGoal, 5000)
+        XCTAssertEqual(TrainingPlan.week(3, program: .runWalk, profile: p, averageSteps: 5000).stepGoal, 7000)
+        XCTAssertEqual(TrainingPlan.week(9, program: .runWalk, profile: p, averageSteps: 5000).stepGoal, 10000, "capped at 10,000 under 60")
+        XCTAssertEqual(TrainingPlan.week(12, program: .briskWalk, profile: profile(age: 65), averageSteps: 5000).stepGoal, 8000, "capped at 8,000 from 60")
+    }
+
+    func testOlderAdultsGetBalanceThreeDaysAndUnsafeMovesAreLeftOut() {
+        let week = TrainingPlan.week(4, program: .briskWalk, profile: profile(age: 67, limits: [.knee]), averageSteps: nil, scale: .international)
+        let balanceDays = week.days.filter { $0.activities.contains { if case .balance = $0 { true } else { false } } }.count
+        XCTAssertEqual(balanceDays, 3, "WHO: balance on 3+ days from 65")
+        let unsafe = PlanBuilder.unsafe(for: [.knee])
+        for case .strength(_, let moves) in week.days.flatMap(\.activities) {
+            XCTAssertTrue(moves.allSatisfy { !unsafe.contains($0.exerciseID) })
+        }
+        XCTAssertEqual(TrainingPlan.sessionItems(sets: 2, moves: [.init(exerciseID: "calf_raise", reps: 10, seconds: nil)]).count, 2)
+    }
+
+    func testPlanDatesAndDoneDaysPersist() throws {
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent("floorage-\(UUID().uuidString).json")
+        defer { try? FileManager.default.removeItem(at: url) }
+        let cal = Calendar.current
+        let model = AppModel(fileURL: url)
+        model.startPlan(.briskWalk, averageSteps: 4200, on: cal.date(byAdding: .day, value: -9, to: Date())!)
+        XCTAssertTrue(try XCTUnwrap(model.planPosition()) == (2, 2))
+        model.setPlanDay(Date(), done: true)
+        let reloaded = AppModel(fileURL: url)
+        XCTAssertEqual(reloaded.planProgram, .briskWalk)
+        XCTAssertEqual(reloaded.planBaseSteps, 4200)
+        XCTAssertTrue(reloaded.isPlanDayDone(Date()))
+        reloaded.stopPlan()
+        XCTAssertNil(AppModel(fileURL: url).planPosition())
+    }
+}
+
+final class SleepTests: XCTestCase {
+    private let cal = Calendar.current
+
+    private func at(_ daysAgo: Int, _ hour: Int, _ minute: Int = 0) -> Date {
+        cal.date(bySettingHour: hour, minute: minute, second: 0, of: cal.date(byAdding: .day, value: -daysAgo, to: Date())!)!
+    }
+
+    func testRecommendedHoursByAge() {
+        XCTAssertEqual(SleepGuide.recommended(age: 40), 7...9)
+        XCTAssertEqual(SleepGuide.recommended(age: 70), 7...8)
+        XCTAssertTrue(SleepGuide.assessment(hours: 7.5, age: 40).contains("Right in"))
+        XCTAssertTrue(SleepGuide.assessment(hours: 5.5, age: 40).contains("short"))
+        XCTAssertEqual(SleepGuide.duration(6.75), "6 h 45 min")
+    }
+
+    func testHealthSamplesMergeIntoOneNightWithoutDoubleCounting() {
+        // iPhone and Watch both recorded the same night; plus an in-bed record.
+        let samples = [
+            SleepGuide.Sample(start: at(1, 23), end: at(0, 3), asleep: true),
+            SleepGuide.Sample(start: at(0, 2), end: at(0, 6, 30), asleep: true),
+            SleepGuide.Sample(start: at(1, 22, 30), end: at(0, 7), asleep: false),
+        ]
+        let nights = SleepGuide.nights(from: samples)
+        XCTAssertEqual(nights.count, 1)
+        XCTAssertEqual(nights[0].minutesAsleep, 450, "23:00-06:30 asleep, overlap counted once, in-bed ignored")
+        XCTAssertEqual(nights[0].day, cal.startOfDay(for: Date()))
+        // Only in-bed data: use it.
+        let inBed = SleepGuide.nights(from: [SleepGuide.Sample(start: at(2, 23), end: at(1, 7), asleep: false)])
+        XCTAssertEqual(inBed.first?.hours ?? 0, 8, accuracy: 0.01)
+    }
+
+    func testManualNightsWinOverHealthAndPersist() {
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent("floorage-\(UUID().uuidString).json")
+        defer { try? FileManager.default.removeItem(at: url) }
+        let model = AppModel(fileURL: url)
+        model.logSleep(SleepEntry(bedtime: at(1, 23), wake: at(0, 6), quality: 3))
+        model.importSleep([SleepEntry(bedtime: at(1, 22), wake: at(0, 7), minutesAsleep: 500, fromHealth: true),
+                           SleepEntry(bedtime: at(2, 23), wake: at(1, 7), minutesAsleep: 420, fromHealth: true)])
+        let reloaded = AppModel(fileURL: url)
+        XCTAssertEqual(reloaded.sleepLog.count, 2)
+        XCTAssertEqual(reloaded.sleepLog.last?.hours ?? 0, 7, accuracy: 0.01, "the night logged by hand is kept")
+        XCTAssertEqual(reloaded.averageSleep ?? 0, 7, accuracy: 0.01)
+    }
+}
+
+final class ReminderTextTests: XCTestCase {
+    func testReminderNamesTheDaysPlanAndSkipsRestDays() {
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent("floorage-\(UUID().uuidString).json")
+        defer { try? FileManager.default.removeItem(at: url) }
+        let model = AppModel(fileURL: url)
+        model.profile = Profile(name: "", age: 35, limitations: [], gender: .female, heightCm: 165, weightKg: 58)
+        XCTAssertEqual(model.reminderText(on: Date()), "Your 10-minute session with Coach is ready. Missing a day never resets your progress.")
+        model.startPlan(.runWalk, averageSteps: 5000, on: Date())
+        XCTAssertEqual(model.reminderText(on: Date()), "Today: Run/walk 28 min. A little now keeps your streak going.")
+        let restDay = Calendar.current.date(byAdding: .day, value: 6, to: Date())!
+        XCTAssertNil(model.reminderText(on: restDay), "no reminder on the plan's rest day")
     }
 }
 

@@ -27,7 +27,7 @@ struct OnboardingView: View {
         }
         .background(AppBackground())
         .onAppear {
-            voice.say("Namaste! I'm your coach. Let's find out how old your body moves, and make it younger.")
+            voice.say("\(Region.greeting) I'm your coach. Let's find out how old your body moves, and make it younger.")
         }
     }
 

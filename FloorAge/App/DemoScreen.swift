@@ -7,7 +7,7 @@ import SwiftUI
 /// `-demoSnapshot <path.png>` to have the app save a picture of itself and quit (no screen
 /// recording permission needed).
 enum DemoScreen: String, CaseIterable {
-    case onboarding, today, track, steps, food, foodPhoto, bmi, progress, settings, session, kegel, test, balance, result, video, portrait
+    case onboarding, today, track, plan, planIntro, cardio, sleep, steps, food, foodPhoto, bmi, progress, settings, session, kegel, test, balance, result, video, portrait
 
     static var current: DemoScreen? {
         #if DEBUG
@@ -44,6 +44,16 @@ enum DemoScreen: String, CaseIterable {
                                              (13, "Dal", 150, 1.0), (13, "Mixed veg sabzi", 130, 1.0), (17, "Banana", 105, 1.0)] {
             model.addFood(FoodEntry(date: cal.date(byAdding: .hour, value: hour, to: today)!, name: name, kcal: kcal, servings: servings))
         }
+        // Two weeks of nights, mostly a little under 7 hours.
+        for (daysAgo, bedHour, bedMinute, hours) in [(13, 23, 10, 6.8), (12, 23, 40, 6.2), (11, 22, 50, 7.3), (10, 23, 30, 6.5),
+                                                     (9, 0, 15, 5.9), (8, 23, 0, 7.4), (7, 22, 45, 7.8), (6, 23, 20, 6.9),
+                                                     (5, 23, 35, 6.4), (4, 22, 55, 7.2), (3, 23, 45, 6.1), (2, 23, 5, 7.0),
+                                                     (1, 22, 40, 7.6), (0, 23, 15, 6.9)] {
+            let wakeDay = cal.date(byAdding: .day, value: -daysAgo, to: today)!
+            let bedDay = bedHour < 12 ? wakeDay : cal.date(byAdding: .day, value: -1, to: wakeDay)!
+            let bed = cal.date(bySettingHour: bedHour, minute: bedMinute, second: 0, of: bedDay)!
+            model.logSleep(SleepEntry(bedtime: bed, wake: bed.addingTimeInterval(hours * 3600), quality: hours >= 7 ? 3 : 2))
+        }
         return model
     }
 
@@ -76,6 +86,22 @@ private struct DemoScreenHost: View {
             MainTabs(initial: .today)
         case .track:
             MainTabs(initial: .track)
+        case .plan:
+            NavigationStack { PlanView() }
+                .onAppear {
+                    // Week 2, day 3 of a brisk walking plan, with the first days done.
+                    let start = Calendar.current.date(byAdding: .day, value: -9, to: Date())!
+                    model.startPlan(.briskWalk, averageSteps: 5200, on: start)
+                    for back in [9, 8, 6, 5, 3, 2, 1] {
+                        model.setPlanDay(Calendar.current.date(byAdding: .day, value: -back, to: Date())!, done: true)
+                    }
+                }
+        case .sleep:
+            NavigationStack { SleepView() }
+        case .planIntro:
+            NavigationStack { PlanView() }
+        case .cardio:
+            IntervalWorkoutView(title: "Run/walk, week 1", intervals: TrainingPlan.couchTo5K(week: 1, run: 0))
         case .steps:
             NavigationStack { StepsView() }
         case .food:

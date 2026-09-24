@@ -1,8 +1,24 @@
 import Foundation
 
-/// Body mass index. Categories use the lower cut-offs recommended for Asian Indians (Misra et al.,
-/// Consensus Statement for Asian Indians, JAPI 2009; WHO expert consultation, Lancet 2004), because
-/// health risks start at a lower BMI than the international cut-offs suggest.
+/// Which BMI cut-offs to use. International follows WHO (overweight from 25, obese from 30).
+/// Asian uses the lower cut-offs recommended for Asian populations, whose health risks start at a
+/// lower BMI (WHO expert consultation, Lancet 2004; Misra et al., JAPI 2009 for Asian Indians):
+/// overweight from 23, obese from 25. The default follows the phone's region.
+enum BMIScale: String, CaseIterable, Identifiable {
+    case international, asian
+
+    var id: String { rawValue }
+    var label: String { self == .international ? "International (WHO)" : "Asian" }
+    var overweight: Double { self == .international ? 25 : 23 }
+    var obese: Double { self == .international ? 30 : 25 }
+
+    static var current: BMIScale {
+        get { BMIScale(rawValue: UserDefaults.standard.string(forKey: "bmiScale") ?? "") ?? Region.defaultBMIScale }
+        set { UserDefaults.standard.set(newValue.rawValue, forKey: "bmiScale") }
+    }
+}
+
+/// Body mass index, categorised on a `BMIScale`.
 enum BMI {
     enum Category: String, CaseIterable {
         case underweight, healthy, overweight, obese
@@ -26,17 +42,17 @@ enum BMI {
             }
         }
 
-        var range: String {
+        func range(_ scale: BMIScale) -> String {
             switch self {
             case .underweight: "below 18.5"
-            case .healthy: "18.5 – 22.9"
-            case .overweight: "23 – 24.9"
-            case .obese: "25 and above"
+            case .healthy: "18.5 – \(scale.overweight - 0.1)"
+            case .overweight: "\(scale.overweight.formatted()) – \(scale.obese - 0.1)"
+            case .obese: "\(scale.obese.formatted()) and above"
             }
         }
     }
 
-    static let healthy = 18.5..<23.0
+    static let underweightBelow = 18.5
 
     static func value(weightKg: Double, heightCm: Double) -> Double? {
         guard weightKg > 0, heightCm > 0 else { return nil }
@@ -44,20 +60,21 @@ enum BMI {
         return weightKg / (metres * metres)
     }
 
-    static func category(_ bmi: Double) -> Category {
-        switch bmi {
-        case ..<18.5: .underweight
-        case ..<23: .healthy
-        case ..<25: .overweight
-        default: .obese
-        }
+    static func category(_ bmi: Double, scale: BMIScale = .current) -> Category {
+        if bmi < underweightBelow { return .underweight }
+        if bmi < scale.overweight { return .healthy }
+        if bmi < scale.obese { return .overweight }
+        return .obese
     }
 
     /// Weights (kg) that give a healthy BMI at this height.
-    static func healthyWeight(heightCm: Double) -> ClosedRange<Double> {
+    static func healthyWeight(heightCm: Double, scale: BMIScale = .current) -> ClosedRange<Double> {
         let m2 = pow(heightCm / 100, 2)
-        return (healthy.lowerBound * m2)...((healthy.upperBound - 0.1) * m2)
+        return (underweightBelow * m2)...((scale.overweight - 0.1) * m2)
     }
+
+    static func pounds(_ kg: Double) -> Double { kg / 0.45359237 }
+    static func kilograms(pounds: Double) -> Double { pounds * 0.45359237 }
 
     static func centimetres(feet: Int, inches: Int) -> Double { Double(feet * 12 + inches) * 2.54 }
 
@@ -88,6 +105,12 @@ enum Calories {
 enum Steps {
     static let defaultGoal = 8000
     static func kilometres(_ steps: Int) -> Double { Double(steps) * 0.75 / 1000 }
+
+    /// "4.7 km" or "2.9 mi", following the phone's settings.
+    static func distance(_ steps: Int) -> String {
+        Measurement(value: kilometres(steps), unit: UnitLength.kilometers)
+            .formatted(.measurement(width: .abbreviated, usage: .road, numberFormatStyle: .number.precision(.fractionLength(1))))
+    }
 }
 
 struct WeightEntry: Codable, Equatable {
@@ -108,16 +131,24 @@ struct FoodEntry: Codable, Identifiable, Equatable {
 
 /// A food in the built-in list, with calories for a typical serving.
 struct FoodItem: Identifiable, Hashable {
+    enum Cuisine { case indian, international }
+
     let name: String
     let serving: String
     let kcal: Int
+    var cuisine: Cuisine = .indian
     var id: String { name }
 }
 
-/// Common Indian foods and snacks with typical home portions. Values are approximate (around
-/// the averages in the Indian Food Composition Tables, NIN 2017) and vary with recipe and oil.
+/// Common foods with typical portions: Indian dishes (around the averages in the Indian Food
+/// Composition Tables, NIN 2017) and international ones (around USDA FoodData Central). Values are
+/// approximate and vary with recipe and oil. Listed Indian or international first by region.
 enum FoodLibrary {
-    static let items: [FoodItem] = [
+    static var items: [FoodItem] {
+        Region.prefersIndianFood ? indian + international : international + indian
+    }
+
+    static let indian: [FoodItem] = [
         // Breads and grains
         FoodItem(name: "Roti / chapati", serving: "1 medium", kcal: 110),
         FoodItem(name: "Phulka", serving: "1", kcal: 70),
@@ -141,8 +172,8 @@ enum FoodLibrary {
         FoodItem(name: "Medu vada", serving: "1", kcal: 140),
         FoodItem(name: "Upma", serving: "1 cup", kcal: 200),
         FoodItem(name: "Pongal", serving: "1 cup", kcal: 260),
-        FoodItem(name: "Sambar", serving: "1 katori", kcal: 110),
-        FoodItem(name: "Rasam", serving: "1 katori", kcal: 60),
+        FoodItem(name: "Sambar", serving: "1 small bowl", kcal: 110),
+        FoodItem(name: "Rasam", serving: "1 small bowl", kcal: 60),
         FoodItem(name: "Coconut chutney", serving: "2 tbsp", kcal: 70),
         // Breakfast
         FoodItem(name: "Poha", serving: "1 cup", kcal: 250),
@@ -151,21 +182,21 @@ enum FoodLibrary {
         FoodItem(name: "Boiled egg", serving: "1", kcal: 78),
         FoodItem(name: "Omelette", serving: "2 eggs", kcal: 190),
         // Dals and curries
-        FoodItem(name: "Dal", serving: "1 katori", kcal: 150),
-        FoodItem(name: "Rajma", serving: "1 katori", kcal: 180),
-        FoodItem(name: "Chole", serving: "1 katori", kcal: 210),
-        FoodItem(name: "Mixed veg sabzi", serving: "1 katori", kcal: 130),
-        FoodItem(name: "Aloo sabzi", serving: "1 katori", kcal: 170),
-        FoodItem(name: "Bhindi fry", serving: "1 katori", kcal: 120),
-        FoodItem(name: "Palak paneer", serving: "1 katori", kcal: 240),
-        FoodItem(name: "Paneer butter masala", serving: "1 katori", kcal: 320),
-        FoodItem(name: "Chicken curry", serving: "1 katori", kcal: 250),
-        FoodItem(name: "Butter chicken", serving: "1 katori", kcal: 330),
-        FoodItem(name: "Fish curry", serving: "1 katori", kcal: 200),
-        FoodItem(name: "Egg curry", serving: "1 katori", kcal: 220),
+        FoodItem(name: "Dal", serving: "1 small bowl", kcal: 150),
+        FoodItem(name: "Rajma", serving: "1 small bowl", kcal: 180),
+        FoodItem(name: "Chole", serving: "1 small bowl", kcal: 210),
+        FoodItem(name: "Mixed veg sabzi", serving: "1 small bowl", kcal: 130),
+        FoodItem(name: "Aloo sabzi", serving: "1 small bowl", kcal: 170),
+        FoodItem(name: "Bhindi fry", serving: "1 small bowl", kcal: 120),
+        FoodItem(name: "Palak paneer", serving: "1 small bowl", kcal: 240),
+        FoodItem(name: "Paneer butter masala", serving: "1 small bowl", kcal: 320),
+        FoodItem(name: "Chicken curry", serving: "1 small bowl", kcal: 250),
+        FoodItem(name: "Butter chicken", serving: "1 small bowl", kcal: 330),
+        FoodItem(name: "Fish curry", serving: "1 small bowl", kcal: 200),
+        FoodItem(name: "Egg curry", serving: "1 small bowl", kcal: 220),
         // Dairy and drinks
-        FoodItem(name: "Curd / dahi", serving: "1 katori", kcal: 60),
-        FoodItem(name: "Raita", serving: "1 katori", kcal: 80),
+        FoodItem(name: "Curd / dahi", serving: "1 small bowl", kcal: 60),
+        FoodItem(name: "Raita", serving: "1 small bowl", kcal: 80),
         FoodItem(name: "Buttermilk / chaas", serving: "1 glass", kcal: 40),
         FoodItem(name: "Milk, toned", serving: "1 glass", kcal: 120),
         FoodItem(name: "Lassi, sweet", serving: "1 glass", kcal: 220),
@@ -197,12 +228,76 @@ enum FoodLibrary {
         FoodItem(name: "Jalebi", serving: "2 pieces", kcal: 150),
         FoodItem(name: "Rasgulla", serving: "1", kcal: 120),
         FoodItem(name: "Ladoo", serving: "1", kcal: 180),
-        FoodItem(name: "Kheer", serving: "1 katori", kcal: 200),
+        FoodItem(name: "Kheer", serving: "1 small bowl", kcal: 200),
         // Fats
         FoodItem(name: "Ghee", serving: "1 tsp", kcal: 45),
         FoodItem(name: "Butter", serving: "1 tsp", kcal: 35),
         FoodItem(name: "Cooking oil", serving: "1 tsp", kcal: 40),
     ]
+
+    static let international: [FoodItem] = [
+        // Breakfast
+        FoodItem(name: "Oatmeal", serving: "1 bowl", kcal: 160),
+        FoodItem(name: "Toast with butter", serving: "1 slice", kcal: 110),
+        FoodItem(name: "Scrambled eggs", serving: "2 eggs", kcal: 200),
+        FoodItem(name: "Pancakes", serving: "2 medium", kcal: 180),
+        FoodItem(name: "Bagel with cream cheese", serving: "1", kcal: 350),
+        FoodItem(name: "Croissant", serving: "1", kcal: 230),
+        FoodItem(name: "Yogurt with granola", serving: "1 bowl", kcal: 250),
+        FoodItem(name: "Avocado toast", serving: "1 slice", kcal: 200),
+        FoodItem(name: "Fruit smoothie", serving: "1 glass", kcal: 200),
+        // Meals
+        FoodItem(name: "Pizza", serving: "1 slice", kcal: 285),
+        FoodItem(name: "Burger", serving: "1", kcal: 500),
+        FoodItem(name: "Chicken sandwich", serving: "1", kcal: 400),
+        FoodItem(name: "Wrap", serving: "1", kcal: 400),
+        FoodItem(name: "Pasta with tomato sauce", serving: "1 plate", kcal: 400),
+        FoodItem(name: "Spaghetti bolognese", serving: "1 plate", kcal: 550),
+        FoodItem(name: "Mac and cheese", serving: "1 cup", kcal: 400),
+        FoodItem(name: "Grilled chicken breast", serving: "150 g", kcal: 250),
+        FoodItem(name: "Fried chicken", serving: "2 pieces", kcal: 480),
+        FoodItem(name: "Steak", serving: "200 g", kcal: 500),
+        FoodItem(name: "Salmon fillet", serving: "150 g", kcal: 300),
+        FoodItem(name: "Fish and chips", serving: "1 portion", kcal: 800),
+        FoodItem(name: "Fried rice", serving: "1 plate", kcal: 450),
+        FoodItem(name: "Noodle stir-fry", serving: "1 plate", kcal: 450),
+        FoodItem(name: "Ramen", serving: "1 bowl", kcal: 450),
+        FoodItem(name: "Sushi", serving: "6 pieces", kcal: 300),
+        FoodItem(name: "Dumplings", serving: "6", kcal: 300),
+        FoodItem(name: "Tacos", serving: "2", kcal: 350),
+        FoodItem(name: "Burrito", serving: "1", kcal: 600),
+        FoodItem(name: "Caesar salad", serving: "1 bowl", kcal: 350),
+        FoodItem(name: "Soup", serving: "1 bowl", kcal: 150),
+        FoodItem(name: "Hot dog", serving: "1", kcal: 300),
+        // Sides and snacks
+        FoodItem(name: "French fries", serving: "1 medium", kcal: 360, cuisine: .international),
+        FoodItem(name: "Potato chips", serving: "1 small bag", kcal: 160),
+        FoodItem(name: "Popcorn", serving: "1 bowl", kcal: 100),
+        FoodItem(name: "Granola bar", serving: "1", kcal: 190),
+        FoodItem(name: "Cheese", serving: "1 slice", kcal: 110),
+        FoodItem(name: "Hummus with vegetables", serving: "1 small bowl", kcal: 150),
+        FoodItem(name: "Mixed nuts", serving: "1 handful", kcal: 170),
+        // Drinks
+        FoodItem(name: "Latte", serving: "1 cup", kcal: 190),
+        FoodItem(name: "Black coffee", serving: "1 cup", kcal: 5),
+        FoodItem(name: "Orange juice", serving: "1 glass", kcal: 110),
+        FoodItem(name: "Milkshake", serving: "1 glass", kcal: 400),
+        FoodItem(name: "Protein shake", serving: "1", kcal: 150),
+        // Sweets
+        FoodItem(name: "Ice cream", serving: "1 scoop", kcal: 140),
+        FoodItem(name: "Chocolate bar", serving: "1", kcal: 230),
+        FoodItem(name: "Cookie", serving: "1 large", kcal: 200),
+        FoodItem(name: "Donut", serving: "1", kcal: 250),
+        FoodItem(name: "Cake", serving: "1 slice", kcal: 350),
+        FoodItem(name: "Muffin", serving: "1", kcal: 400),
+        // Fruit
+        FoodItem(name: "Grapes", serving: "1 cup", kcal: 100),
+        FoodItem(name: "Strawberries", serving: "1 cup", kcal: 50),
+        FoodItem(name: "Blueberries", serving: "1 cup", kcal: 85),
+        FoodItem(name: "Watermelon", serving: "1 cup", kcal: 45),
+        FoodItem(name: "Pineapple", serving: "1 cup", kcal: 80),
+        FoodItem(name: "Pear", serving: "1 medium", kcal: 100),
+    ].map { FoodItem(name: $0.name, serving: $0.serving, kcal: $0.kcal, cuisine: .international) }
 
     static func search(_ text: String) -> [FoodItem] {
         let query = text.trimmingCharacters(in: .whitespaces).lowercased()

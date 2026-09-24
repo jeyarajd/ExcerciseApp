@@ -47,15 +47,14 @@ struct SettingsView: View {
                 }
 
                 Section {
-                    Toggle("Daily reminder", isOn: $reminderOn)
+                    Toggle("Evening reminder", isOn: $reminderOn)
                         .onChange(of: reminderOn) { _, on in
                             guard on != Reminders.isOn else { return }
-                            let trained = model.didSessionToday
                             Task {
                                 if on {
-                                    let granted = await Reminders.enable(trainedToday: trained)
+                                    let granted = await Reminders.enable()
                                     notificationsDenied = !granted
-                                    if !granted { reminderOn = false }
+                                    if granted { await model.refreshReminders() } else { reminderOn = false }
                                 } else {
                                     await Reminders.disable()
                                 }
@@ -65,8 +64,7 @@ struct SettingsView: View {
                         DatePicker("Time", selection: $reminderTime, displayedComponents: .hourAndMinute)
                             .onChange(of: reminderTime) { _, time in
                                 Reminders.minuteOfDay = ReminderTime.minute(of: time)
-                                let trained = model.didSessionToday
-                                Task { await Reminders.refresh(trainedToday: trained) }
+                                Task { await model.refreshReminders() }
                             }
                     }
                 } header: {
@@ -74,7 +72,7 @@ struct SettingsView: View {
                 } footer: {
                     Text(notificationsDenied
                          ? "Notifications are off for Floor Age. Turn them on in iPhone Settings › Notifications."
-                         : "Skipped on days you've already trained.")
+                         : "One reminder a day, only if you haven't done today's training yet. None on rest days.")
                 }
 
                 if let profile = model.profile {
@@ -114,7 +112,10 @@ struct SettingsView: View {
     }
 }
 
-private enum ReminderTime {
+enum ReminderTime {
+    /// "6:00 PM", the current reminder time.
+    static var label: String { date(fromMinute: Reminders.minuteOfDay).formatted(date: .omitted, time: .shortened) }
+
     static func date(fromMinute minute: Int) -> Date {
         Calendar.current.date(bySettingHour: minute / 60, minute: minute % 60, second: 0, of: Date()) ?? Date()
     }

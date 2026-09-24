@@ -43,7 +43,7 @@ struct SessionView: View {
         .onChange(of: engine.phase) { _, phase in
             guard phase == .done else { return }
             model.completeSession()
-            Task { await Reminders.refresh(trainedToday: true) }
+            Task { await model.refreshReminders() }
         }
     }
 

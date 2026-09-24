@@ -30,6 +30,7 @@ struct TodayView: View {
                         floorAgeSummary(result)
                     }
 
+                    TrainingPlanCard()
                     planCard
                     pelvicFloorCard
                 }

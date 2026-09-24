@@ -1,8 +1,9 @@
 import Foundation
 import UserNotifications
 
-/// Daily "time to move" reminder, scheduled on the device. Instead of one repeating notification,
-/// the coming days are scheduled one by one so a day you already trained is skipped.
+/// One evening nudge a day to finish the day's training, scheduled on the device. Instead of one
+/// repeating notification, the coming days are scheduled one by one: a day you've already trained
+/// (or a plan rest day) is skipped, and each says what that day's plan is.
 enum Reminders {
     /// How far ahead to schedule. Refreshed on every launch, and well under iOS's 64 pending limit,
     /// so someone who stays away for weeks still gets nudged.
@@ -17,47 +18,49 @@ enum Reminders {
         set { defaults.set(newValue, forKey: "reminderOn") }
     }
 
-    /// Minutes after midnight. Defaults to 7:00, before the day heats up.
+    /// Minutes after midnight. Defaults to 18:00: late enough to know the day's training is still
+    /// to do, early enough to fit it in.
     static var minuteOfDay: Int {
-        get { defaults.object(forKey: "reminderMinute") as? Int ?? 7 * 60 }
+        get { defaults.object(forKey: "reminderMinute") as? Int ?? 18 * 60 }
         set { defaults.set(newValue, forKey: "reminderMinute") }
     }
 
-    /// Asks for permission if needed and turns reminders on. Returns false if notifications are denied.
-    @MainActor static func enable(trainedToday: Bool) async -> Bool {
+    /// Asks for permission if needed and turns reminders on. Returns false if notifications are
+    /// denied. Schedule them afterwards with `AppModel.refreshReminders()`.
+    @MainActor static func enable() async -> Bool {
         let center = UNUserNotificationCenter.current()
         let granted = (try? await center.requestAuthorization(options: [.alert, .sound])) ?? false
         isOn = granted
-        if granted { await refresh(trainedToday: trainedToday) }
         return granted
     }
 
     @MainActor static func disable() async {
         isOn = false
-        await refresh(trainedToday: false)
+        await refresh(trainedToday: false) { _ in nil }
     }
 
-    /// Reschedules the coming reminders. Call on launch, after a session and when settings change.
-    @MainActor static func refresh(trainedToday: Bool, now: Date = Date()) async {
+    /// Reschedules the coming reminders. `text` gives each day's message, or nil to skip that day.
+    @MainActor static func refresh(trainedToday: Bool, now: Date = Date(), text: @escaping (Date) -> String?) async {
         let previous = lastRefresh
         let task = Task { @MainActor in
             await previous?.value
-            await reschedule(trainedToday: trainedToday, now: now)
+            await reschedule(trainedToday: trainedToday, now: now, text: text)
         }
         lastRefresh = task
         await task.value
     }
 
-    @MainActor private static func reschedule(trainedToday: Bool, now: Date) async {
+    @MainActor private static func reschedule(trainedToday: Bool, now: Date, text: (Date) -> String?) async {
         let center = UNUserNotificationCenter.current()
         let pending = await center.pendingNotificationRequests().map(\.identifier).filter { $0.hasPrefix(prefix) }
         center.removePendingNotificationRequests(withIdentifiers: pending)
         guard isOn else { return }
 
         for date in fireDates(minuteOfDay: minuteOfDay, trainedToday: trainedToday, now: now) {
+            guard let body = text(date) else { continue }
             let content = UNMutableNotificationContent()
-            content.title = "Time to move"
-            content.body = "Your 10-minute session with Coach is ready. Missing a day never resets your progress."
+            content.title = "Still time for today's training"
+            content.body = body
             content.sound = .default
             let parts = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: date)
             // One ID per day, so adding a day again replaces it rather than duplicating it.
