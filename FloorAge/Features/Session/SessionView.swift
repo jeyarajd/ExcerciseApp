@@ -9,6 +9,8 @@ struct SessionView: View {
     @State private var finishedAt: Date?
     @State private var coachShown = false
     @State private var repPulse = false
+    /// What the session changed in each exercise family's level, for the summary.
+    @State private var changes: [String: Progression.Change] = [:]
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @ObservedObject private var watch = WatchLink.shared
     private let items: [PlanItem]
@@ -38,6 +40,8 @@ struct SessionView: View {
                 guard phase == .done else { return }
                 finishedAt = Date()
                 model.completeSession()
+                changes = model.logSession(engine.familyResults)
+                logActivity()
                 Task { await model.refreshReminders() }
                 saveToHealth()
             }
@@ -48,7 +52,7 @@ struct SessionView: View {
         Group {
             if engine.phase == .done {
                 SessionSummaryView(minutes: minutes, reps: engine.totalReps, practised: engine.practised,
-                                   streak: model.streak()) { dismiss() }
+                                   streak: model.streak(), results: engine.familyResults, changes: changes) { dismiss() }
                     .transition(reduceMotion ? .opacity : .opacity.combined(with: .scale(scale: 0.96)))
             } else {
                 screen
@@ -97,6 +101,16 @@ struct SessionView: View {
 
     private var minutes: Int {
         max(1, Int(((finishedAt ?? Date()).timeIntervalSince(startedAt) / 60).rounded()))
+    }
+
+    /// Counts the session towards the week's strength and balance dials.
+    private func logActivity() {
+        let areas = Set(engine.practised.flatMap(\.exercise.areas))
+        var kinds: [ActivityRecord.Kind] = []
+        if !areas.isDisjoint(with: [.legs, .floor]) { kinds.append(.strength) }
+        if areas.contains(.balance) { kinds.append(.balance) }
+        guard !kinds.isEmpty else { return }
+        model.logActivity(ActivityRecord(date: Date(), minutes: minutes, kinds: kinds))
     }
 
     /// Records the finished session as a workout in Apple Health, if that's switched on.
@@ -165,7 +179,7 @@ struct SessionView: View {
         return ZStack {
             Circle().stroke(feature.tint.opacity(0.2), lineWidth: 8)
             Circle()
-                .trim(from: 0, to: engine.phase == .rest ? engine.secondsLeft / engine.restSeconds : engine.progress)
+                .trim(from: 0, to: engine.phase == .rest ? engine.secondsLeft / engine.restLength : engine.progress)
                 .stroke(AngularGradient(colors: feature.colors + [feature.colors[0]], center: .center),
                         style: StrokeStyle(lineWidth: 8, lineCap: .round))
                 .rotationEffect(.degrees(-90))
@@ -188,7 +202,7 @@ struct SessionView: View {
     private var watchStatus: SessionStatus {
         SessionStatus(exercise: title,
                       detail: engine.phase == .done ? String(localized: "Done") : "\(counterValue) \(counterUnit)",
-                      progress: engine.phase == .rest ? engine.secondsLeft / engine.restSeconds : engine.progress,
+                      progress: engine.phase == .rest ? engine.secondsLeft / engine.restLength : engine.progress,
                       step: subtitle,
                       isPaused: engine.isPaused,
                       isResting: engine.phase == .rest,

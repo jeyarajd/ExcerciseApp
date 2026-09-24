@@ -22,6 +22,10 @@ final class SessionEngine: ObservableObject {
     /// the intro).
     private(set) var totalReps = 0
     private(set) var practised: [PlanItem] = []
+    /// Reps done (or seconds held) for each item that was started, for progression.
+    private var performed: [UUID: Int] = [:]
+    /// Length of the current rest: short between exercises, a minute before the next set.
+    @Published private(set) var restLength: Double = 15
 
     private let voice: VoiceCoach
     private var timer: Timer?
@@ -29,6 +33,7 @@ final class SessionEngine: ObservableObject {
     private var stopped = false
     private var lastCueAt: Double = 0
     private var cueIndex = 0
+    private var breathed = false
     let restSeconds: Double = 15
 
     init(items: [PlanItem], voice: VoiceCoach) {
@@ -122,10 +127,32 @@ final class SessionEngine: ObservableObject {
         avatar.isPlaying = true
         avatar.looksAtCamera = true
         let amount = item.reps.map { String(localized: "\($0) reps.") } ?? String(localized: "\(item.seconds ?? 0) seconds.")
-        voice.say(String(localized: "\(item.exercise.intro) \(amount)"), interrupt: true)
+        let intro = String(localized: "\(item.exercise.intro) \(amount)")
+        voice.say(item.note.map { intro + " " + $0 } ?? intro, interrupt: true)
+    }
+
+    /// For each exercise family practised: the per-set target and the weakest set.
+    var familyResults: [FamilyResult] {
+        var byFamily: [String: FamilyResult] = [:]
+        for item in items {
+            guard let family = item.family, let level = item.level, let done = performed[item.id] else { continue }
+            let target = item.reps ?? item.seconds ?? 0
+            if let seen = byFamily[family] {
+                byFamily[family] = FamilyResult(family: family, level: seen.level, target: max(seen.target, target), done: min(seen.done, done))
+            } else {
+                byFamily[family] = FamilyResult(family: family, level: level, target: target, done: done)
+            }
+        }
+        return items.compactMap(\.family).reduce(into: [String]()) { if !$0.contains($1) { $0.append($1) } }.compactMap { byFamily[$0] }
+    }
+
+    private func recordPerformed() {
+        guard phase == .active, let item = current else { return }
+        performed[item.id] = item.reps != nil ? repsDone : Int((Double(item.seconds ?? 0) - secondsLeft).rounded())
     }
 
     private func advance() {
+        recordPerformed()
         timer?.invalidate()
         guard index + 1 < items.count else { return finish() }
         index += 1
@@ -138,13 +165,19 @@ final class SessionEngine: ObservableObject {
 
     private func startRest() {
         phase = .rest
-        secondsLeft = restSeconds
+        restLength = current?.restBefore ?? restSeconds
+        secondsLeft = restLength
+        breathed = false
         cueText = nil
         if let item = current {
             // The coach stands at ease and talks to you; the screen shows what's next.
             avatar.play(id: "idle")
             avatar.looksAtCamera = true
-            voice.say(String(localized: "Nice work. Rest. Next up, \(item.exercise.name)."), interrupt: true)
+            if item.restBefore != nil {
+                voice.say(String(localized: "Nice work. That's a set. Rest for a minute: breathe in slowly through your nose, and out through your mouth."), interrupt: true)
+            } else {
+                voice.say(String(localized: "Nice work. Rest. Next up, \(item.exercise.name)."), interrupt: true)
+            }
         }
         startTimer()
     }
@@ -171,6 +204,7 @@ final class SessionEngine: ObservableObject {
         case .done:
             practised = items
             totalReps = items.compactMap(\.reps).reduce(0, +)
+            for item in items { performed[item.id] = item.reps ?? item.seconds ?? 0 }
             finish()
         default:
             break
@@ -191,7 +225,17 @@ final class SessionEngine: ObservableObject {
         guard !isPaused, !stopped, let item = current else { return }
         switch phase {
         case .rest:
+            let before = secondsLeft
             secondsLeft -= dt
+            // Long rests between sets: a breathing cue halfway, then what's next.
+            if restLength > restSeconds {
+                if !breathed, secondsLeft <= restLength / 2 {
+                    breathed = true
+                    voice.say(String(localized: "Breathe in for four, and out for four."))
+                } else if before > 10, secondsLeft <= 10 {
+                    voice.say(String(localized: "Ten seconds. Next up, \(item.exercise.name)."))
+                }
+            }
             if secondsLeft <= 0 { showIntro() }
         case .active where item.reps == nil:
             let total = Double(item.seconds ?? 30)

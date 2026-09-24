@@ -29,6 +29,8 @@ struct TodayView: View {
 
                     weekStrip
 
+                    HabitCard()
+
                     TrainingPlanCard()
                     ChallengeCard()
                     planCard
@@ -60,7 +62,8 @@ struct TodayView: View {
 
     private var plan: [PlanItem] {
         guard let profile = model.profile else { return [] }
-        return PlanBuilder.today(profile: profile, latest: model.latestResult, pelvicFloor: pelvicFloor && store.hasPlus)
+        return PlanBuilder.today(profile: profile, latest: model.latestResult, pelvicFloor: pelvicFloor && store.hasPlus,
+                                 levels: model.levels())
     }
 
     private var greeting: String {
@@ -264,4 +267,41 @@ private struct SessionItems: Identifiable {
     let items: [PlanItem]
     /// Which card it opened from, for the zoom.
     var source = "plan"
+}
+
+/// Today's small habit from the LiFE programme: balance or strength folded into an everyday task,
+/// drawn from the plan's focus area. One tap ticks it off and it counts towards the week.
+struct HabitCard: View {
+    @EnvironmentObject private var model: AppModel
+
+    var body: some View {
+        let habit = DailyHabit.today(area: model.planEmphasis?.area)
+        let done = model.isHabitDone()
+        Button {
+            model.setHabit(done: !done)
+        } label: {
+            HStack(spacing: Space.l) {
+                FeatureBadge(feature: .bmi, symbol: habit.symbol, size: 44)
+                VStack(alignment: .leading, spacing: 2) {
+                    Eyebrow("Daily habit", feature: .bmi)
+                    Text(habit.text)
+                        .font(.subheadline.weight(.semibold))
+                        .multilineTextAlignment(.leading)
+                        .fixedSize(horizontal: false, vertical: true)
+                    Text(done ? "Done for today. It counts towards your week." : "Tap when you've done it.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                Spacer(minLength: 0)
+                Image(systemName: done ? "checkmark.circle.fill" : "circle")
+                    .font(.title2)
+                    .foregroundStyle(done ? AnyShapeStyle(Feature.bmi.ink) : AnyShapeStyle(Color.secondary))
+                    .contentTransition(.symbolEffect(.replace))
+            }
+            .tintedCard(.bmi)
+        }
+        .buttonStyle(.plain)
+        .sensoryFeedback(.success, trigger: done) { _, new in new }
+        .accessibilityAddTraits(done ? .isSelected : [])
+    }
 }

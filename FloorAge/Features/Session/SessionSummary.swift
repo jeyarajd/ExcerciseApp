@@ -121,6 +121,9 @@ struct SessionSummaryView: View {
     let reps: Int
     let practised: [PlanItem]
     let streak: Int
+    /// The exercise families trained and what logging them changed, for "How hard was that?".
+    var results: [FamilyResult] = []
+    var changes: [String: Progression.Change] = [:]
     let onFinish: () -> Void
     @State private var shareImage: UIImage?
     @State private var shown = false
@@ -149,6 +152,10 @@ struct SessionSummaryView: View {
                 }
                 .frame(maxWidth: .infinity)
                 .heroCard(.calories, symbol: "checkmark.seal.fill", padding: Space.xl)
+
+                if !results.isEmpty {
+                    EffortCard(results: results, changes: changes)
+                }
 
                 // Side by side, or one under another at accessibility text sizes.
                 let stats = typeSize.isAccessibilitySize ? AnyLayout(VStackLayout(spacing: Space.m)) : AnyLayout(HStackLayout(spacing: Space.m))

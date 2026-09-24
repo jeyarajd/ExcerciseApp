@@ -13,6 +13,15 @@ import Foundation
 ///   steps levels off at 8,000–10,000 under 60 and 6,000–8,000 at 60 and over.
 /// - NHS Couch to 5K: 9 weeks, 3 runs a week with rest days between, run/walk intervals that build
 ///   to 30 minutes of running, each run with a 5-minute walk before and after.
+/// - Otago Exercise Programme manual (Campbell & Robertson): strength and balance three times a
+///   week with walking on the days between; exercises progress through levels (see `Progression`).
+///   The plan's emphasis follows the weakest area of the last Floor Age check, and the other
+///   areas keep one session a week.
+/// - Every 4th week is a check week: one set fewer (deload), two strength sessions, and a Floor
+///   Age check to see what changed. If the focus area didn't improve, the next check's plan
+///   moves the emphasis on and says why.
+/// - Gentle plans (70+, a doctor's limit, or a Floor Age 15+ years above real age) cap strength at
+///   2 sets and start every exercise at level A.
 enum TrainingPlan {
     enum Program: String, CaseIterable, Identifiable {
         case runWalk, briskWalk, gentleWalk
@@ -78,10 +87,23 @@ enum TrainingPlan {
         let seconds: Int?
     }
 
+    /// Extra blocks from the Floor Age emphasis.
+    enum Mobility: String, Equatable {
+        /// Getting down to and up from the floor (weakest area: sit to rise).
+        case floor
+        /// Toe reach and hips (weakest area: toe reach).
+        case flexibility
+        /// One maintenance session for the areas that aren't the focus.
+        case allRound
+    }
+
     enum Activity: Equatable {
         case cardio(Program, [Interval])
         case strength(sets: Int, moves: [StrengthMove])
         case balance(sets: Int, moves: [StrengthMove])
+        case mobility(Mobility, sets: Int, moves: [StrengthMove])
+        /// The Floor Age re-test at the end of a check week.
+        case check
         case rest
     }
 
@@ -102,6 +124,17 @@ enum TrainingPlan {
         let targetMinutes: Int
         let sets: Int
         let reps: Int
+        /// The area the week emphasises (from the last Floor Age check), if any.
+        var focus: FloorTest? = nil
+        /// Every 4th week: lighter, with a Floor Age check.
+        var isCheckWeek = false
+    }
+
+    /// The plan's focus area, and the area it moved on from when that didn't improve.
+    struct Emphasis: Equatable {
+        let area: FloorTest
+        /// Set when the last focus didn't improve at the latest check, so the plan moved on.
+        var unchanged: FloorTest? = nil
     }
 
     // MARK: - Choosing the plan
@@ -127,19 +160,47 @@ enum TrainingPlan {
         return category == .overweight || category == .obese
     }
 
+    /// 70+, a doctor's limit, or a Floor Age 15 or more years above their age.
+    static func isGentle(_ profile: Profile, latest: FloorAgeResult?) -> Bool {
+        if profile.limitations.contains(.medical) || profile.age >= 70 { return true }
+        guard let latest else { return false }
+        return latest.floorAge - latest.age >= 15
+    }
+
+    /// Every 4th week is a check week.
+    static func isCheckWeek(_ number: Int) -> Bool { number % 4 == 0 }
+
+    /// Where the plan puts its emphasis: the weakest area of the latest check. If the area the
+    /// plan focused on didn't improve since the check before, the next weakest takes over.
+    static func emphasis(from results: [FloorAgeResult]) -> Emphasis? {
+        guard let latest = results.last, let weakest = latest.rankedWeakest.first else { return nil }
+        guard results.count >= 2, let before = emphasis(from: Array(results.dropLast())) else { return Emphasis(area: weakest) }
+        let focus = before.area
+        guard weakest == focus,
+              let now = latest.equivalentAge(focus), let then = results[results.count - 2].equivalentAge(focus),
+              now >= then,
+              let next = latest.rankedWeakest.dropFirst().first
+        else { return Emphasis(area: weakest) }
+        return Emphasis(area: next, unchanged: focus)
+    }
+
     // MARK: - Building a week
 
     static func week(_ number: Int, program: Program, profile: Profile, averageSteps: Int?,
-                     scale: BMIScale = .current) -> Week {
+                     focus: FloorTest? = nil, gentle: Bool = false, scale: BMIScale = .current) -> Week {
         let week = min(max(number, 1), program.weeks)
         let weightLoss = aimsForWeightLoss(profile, scale: scale)
         let older = profile.age >= 65
+        // Weeks past the end repeat the final week, but the 4-weekly check keeps its rhythm.
+        let checkWeek = isCheckWeek(number)
 
-        // Strength: 1 set in weeks 1–2, 2 sets in weeks 3–5, then 3 (at most 2 on the gentle plan).
-        let sets = min(week <= 2 ? 1 : week <= 5 ? 2 : 3, program == .gentleWalk ? 2 : 3)
+        // Strength: 1 set in weeks 1–2, 2 sets in weeks 3–5, then 3 (at most 2 on gentle plans).
+        // Check weeks drop a set: bodies adapt on rest.
+        let fullSets = min(week <= 2 ? 1 : week <= 5 ? 2 : 3, program == .gentleWalk || gentle ? 2 : 3)
+        let sets = checkWeek ? max(fullSets - 1, 1) : fullSets
         let reps = 10
         let strength = strengthMoves(for: profile, reps: reps, week: week)
-        let balance = balanceMoves(for: profile, week: week)
+        let balance = balanceMoves(for: profile, week: week, otago: focus == .balance)
 
         // Daily steps: from their own average, 1,000 more each week, up to the level where the
         // benefit levels off for their age.
@@ -167,10 +228,32 @@ enum TrainingPlan {
             days[0].append(.strength(sets: sets, moves: strength))
             days[3].append(.strength(sets: sets, moves: strength))
         }
-        // Older adults: balance and strength on 3 or more days (WHO).
-        if older {
+        // Leg strength focus: a third strength day (Otago: three a week), but only two in a check week.
+        if focus == .chairStand, !checkWeek {
+            let third = program == .runWalk ? 3 : 5
+            days[third].append(.strength(sets: sets, moves: strength))
+        }
+        // Older adults: balance and strength on 3 or more days (WHO). Balance focus: the Otago
+        // balance block three times a week for everyone.
+        if older || focus == .balance, !balance.isEmpty {
             for day in [1, 3, 5] { days[day].append(.balance(sets: min(sets, 2), moves: balance)) }
         }
+        // Floor focus: a floor mobility block 3 times a week. Reach focus: flexibility 4 times.
+        if focus == .sitRise {
+            let moves = mobilityMoves(.floor, profile: profile, week: week)
+            if !moves.isEmpty { for day in [1, 3, 5] { days[day].append(.mobility(.floor, sets: min(sets, 2), moves: moves)) } }
+        }
+        if focus == .reach {
+            let moves = mobilityMoves(.flexibility, profile: profile, week: week)
+            if !moves.isEmpty { for day in [0, 1, 3, 5] { days[day].append(.mobility(.flexibility, sets: 2, moves: moves)) } }
+        }
+        // The other areas keep one maintenance session a week.
+        if let focus {
+            let moves = maintenanceMoves(profile: profile, focus: focus, older: older, week: week)
+            if !moves.isEmpty { days[4].append(.mobility(.allRound, sets: 1, moves: moves)) }
+        }
+        // Check week: the Floor Age check on the last day.
+        if checkWeek { days[6].append(.check) }
         let plannedDays = days.enumerated().map { index, activities in
             Day(index: index, activities: activities.isEmpty ? [.rest] : activities, stepGoal: stepGoal)
         }
@@ -180,7 +263,8 @@ enum TrainingPlan {
         }
         let target = weightLoss ? 250 : 150
         return Week(program: program, number: week, days: plannedDays, stepGoal: stepGoal,
-                    aerobicMinutes: minutes, targetMinutes: target, sets: sets, reps: reps)
+                    aerobicMinutes: minutes, targetMinutes: target, sets: sets, reps: reps,
+                    focus: focus, isCheckWeek: checkWeek)
     }
 
     /// Brisk walking minutes per session: brisk starts at 20 and adds 5 a week; gentle starts at 10
@@ -236,21 +320,56 @@ enum TrainingPlan {
         }
     }
 
-    private static func balanceMoves(for profile: Profile, week: Int) -> [StrengthMove] {
+    /// The balance block; the Otago version adds calf raises (on the toes, the balance family's
+    /// partner in the manual).
+    private static func balanceMoves(for profile: Profile, week: Int, otago: Bool = false) -> [StrengthMove] {
+        let ids = otago ? ["single_leg_balance", "calf_raise", "side_leg_raise"] : ["single_leg_balance", "side_leg_raise"]
+        return moves(ids, profile: profile, reps: 8, seconds: min(20 + 5 * (week - 1), 45))
+    }
+
+    /// Floor: kneel to stand, squat and the deep squat hold. Flexibility: toe reach, the
+    /// half-kneel hip stretch, the deep squat hold and arm raises, about 10 minutes over 2 sets.
+    private static func mobilityMoves(_ kind: Mobility, profile: Profile, week: Int) -> [StrengthMove] {
+        switch kind {
+        case .floor: moves(["kneel_to_stand", "squat", "deep_squat_hold"], profile: profile, reps: 8, seconds: 30)
+        case .flexibility: moves(["toe_reach", "half_kneel", "deep_squat_hold", "arm_raise"], profile: profile, reps: 6, seconds: 30)
+        case .allRound: []
+        }
+    }
+
+    /// One move for each area that isn't the focus. Leg strength is already covered by the
+    /// strength days, and balance by the balance days from 65.
+    private static func maintenanceMoves(profile: Profile, focus: FloorTest, older: Bool, week: Int) -> [StrengthMove] {
+        let byArea: [(FloorTest, String)] = [(.sitRise, "kneel_to_stand"), (.balance, "single_leg_balance"), (.reach, "toe_reach")]
+        let ids = byArea.filter { $0.0 != focus && !($0.0 == .balance && older) }.map(\.1)
+        return moves(ids, profile: profile, reps: 8, seconds: 30)
+    }
+
+    private static func moves(_ ids: [String], profile: Profile, reps: Int, seconds: Int) -> [StrengthMove] {
         let unsafe = PlanBuilder.unsafe(for: profile.limitations)
-        return ["single_leg_balance", "side_leg_raise"].filter { !unsafe.contains($0) }.map { id in
+        return ids.filter { !unsafe.contains($0) }.map { id in
             ExerciseLibrary.shared[id].kind == .reps
-                ? StrengthMove(exerciseID: id, reps: 8, seconds: nil)
-                : StrengthMove(exerciseID: id, reps: nil, seconds: min(20 + 5 * (week - 1), 45))
+                ? StrengthMove(exerciseID: id, reps: reps, seconds: nil)
+                : StrengthMove(exerciseID: id, reps: nil, seconds: seconds)
         }
     }
 
     private static func roundTo500(_ steps: Int) -> Int { Int((Double(steps) / 500).rounded()) * 500 }
 
-    /// The coach-led session for a strength or balance block: the moves repeated once per set.
-    static func sessionItems(sets: Int, moves: [StrengthMove]) -> [PlanItem] {
-        (0..<max(sets, 1)).flatMap { _ in
-            moves.map { PlanItem($0.exerciseID, reps: $0.reps, seconds: $0.seconds) }
+    /// The coach-led session for a block: the moves repeated once per set, at the person's levels
+    /// when given. A move rated "Hard" twice gets one set fewer, and each new set starts after a
+    /// longer rest.
+    static func sessionItems(sets: Int, moves: [StrengthMove], levels: LevelBook? = nil) -> [PlanItem] {
+        let sets = max(sets, 1)
+        return (0..<sets).flatMap { set -> [PlanItem] in
+            let items = moves.compactMap { move -> PlanItem? in
+                if set == sets - 1, sets > 1, levels?.dropsASet(move.exerciseID) == true { return nil }
+                return levels.map { $0.item(move.exerciseID, reps: move.reps, seconds: move.seconds) }
+                    ?? PlanItem(move.exerciseID, reps: move.reps, seconds: move.seconds)
+            }
+            guard set > 0, var first = items.first else { return items }
+            first.restBefore = Progression.setRest
+            return [first] + items.dropFirst()
         }
     }
 }
@@ -259,9 +378,10 @@ extension TrainingPlan.Activity {
     var minutes: Int {
         switch self {
         case .cardio(_, let intervals): intervals.reduce(0) { $0 + $1.seconds } / 60
-        case .strength(let sets, let moves), .balance(let sets, let moves):
+        case .strength(let sets, let moves), .balance(let sets, let moves), .mobility(_, let sets, let moves):
             // About 40 s per move per set plus rest.
             max(1, sets * moves.count * 40 / 60 + sets)
+        case .check: 10
         case .rest: 0
         }
     }
@@ -322,10 +442,22 @@ extension TrainingPlan {
             case .strength(let sets, _):
                 return sets == 1 ? String(localized: "strength 1 set") : String(localized: "strength \(sets) sets")
             case .balance: return String(localized: "balance")
+            case .mobility(let kind, _, _): return kind.title.lowercased()
+            case .check: return String(localized: "Floor Age check")
             case .rest: return nil
             }
         }
         guard let first = parts.first else { return String(localized: "Rest day") }
         return ([first.prefix(1).uppercased() + first.dropFirst()] + parts.dropFirst()).joined(separator: " + ")
+    }
+}
+
+extension TrainingPlan.Mobility {
+    var title: String {
+        switch self {
+        case .floor: String(localized: "Floor mobility")
+        case .flexibility: String(localized: "Flexibility")
+        case .allRound: String(localized: "All-round")
+        }
     }
 }

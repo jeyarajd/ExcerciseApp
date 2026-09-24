@@ -653,7 +653,8 @@ final class ReminderTextTests: XCTestCase {
         model.startPlan(.runWalk, averageSteps: 5000, on: Date())
         XCTAssertEqual(model.reminderText(on: Date()), "Today: Run/walk 28 min. A little now keeps your streak going.")
         let restDay = Calendar.current.date(byAdding: .day, value: 6, to: Date())!
-        XCTAssertNil(model.reminderText(on: restDay), "no reminder on the plan's rest day")
+        let habit = DailyHabit.today(area: nil, on: restDay).text
+        XCTAssertEqual(model.reminderText(on: restDay), "Rest day. Today's small habit: \(habit)", "rest days only carry the small habit")
     }
 }
 
@@ -1110,5 +1111,282 @@ final class ThemeTests: XCTestCase {
                 }
             }
         }
+    }
+}
+
+final class ProgressionTests: XCTestCase {
+    private let cal = Calendar.current
+    private let library = ExerciseLibrary.shared
+
+    private func day(_ offset: Int) -> Date { cal.date(byAdding: .day, value: offset, to: cal.startOfDay(for: Date()))! }
+
+    private func log(_ target: Int, _ done: Int, _ effort: Effort? = nil, on offset: Int = 0) -> SessionLog {
+        SessionLog(date: day(offset), targetReps: target, doneReps: done, rpe: effort?.rawValue)
+    }
+
+    func testEveryFamilyHasFourLevelsOfKnownExercises() {
+        XCTAssertEqual(Set(library.families.map(\.id)), ["sit_to_stand", "squat", "balance", "calf_raise", "floor"])
+        for family in library.families {
+            XCTAssertEqual(family.levels.count, 4, family.id)
+            XCTAssertNotNil(library.exercise(family.anchor), family.id)
+            XCTAssertTrue(family.levels.indices.contains(family.start), family.id)
+            for level in family.levels { XCTAssertNotNil(library.exercise(level.exercise), "\(family.id) \(level.exercise)") }
+        }
+        XCTAssertEqual(library.family("sit_to_stand")?.exercise(at: 2).name, "Low Chair Stand")
+        XCTAssertEqual(library.family("sit_to_stand")?.exercise(at: 2).id, "chair_stand", "the coach plays the chair stand")
+    }
+
+    func testTwoForTwoMovesUpOneLevel() {
+        var p = ExerciseProgress(id: "sit_to_stand", level: 1)
+        p = Progression.record(log(10, 12, on: -2), to: p, levels: 4).0
+        XCTAssertEqual(p.level, 1, "one good session isn't enough")
+        let (next, change) = Progression.record(log(10, 12), to: p, levels: 4)
+        XCTAssertEqual(next.level, 2)
+        XCTAssertEqual(change, .up)
+        XCTAssertTrue(next.lastSessions.isEmpty, "the new level starts fresh")
+    }
+
+    func testEasyTwiceCountsAsTwoInReserve() {
+        var p = ExerciseProgress(id: "squat", level: 0)
+        p = Progression.record(log(10, 10, on: -2), to: p, levels: 4).0
+        p = Progression.rate(p, effort: .easy, levels: 4).0
+        p = Progression.record(log(10, 10), to: p, levels: 4).0
+        XCTAssertEqual(p.level, 0, "just finishing the target isn't a level up")
+        let (next, change) = Progression.rate(p, effort: .easy, levels: 4)
+        XCTAssertEqual(next.level, 1)
+        XCTAssertEqual(change, .up)
+        // Never beyond level D.
+        let top = ExerciseProgress(id: "squat", level: 3, lastSessions: [log(10, 12, on: -1)])
+        XCTAssertEqual(Progression.record(log(10, 12), to: top, levels: 4).0.level, 3)
+    }
+
+    func testMissingByThreeTwiceMovesDown() {
+        var p = ExerciseProgress(id: "calf_raise", level: 2)
+        p = Progression.record(log(10, 7, on: -2), to: p, levels: 4).0
+        let (next, change) = Progression.record(log(10, 6), to: p, levels: 4)
+        XCTAssertEqual(next.level, 1)
+        XCTAssertEqual(change, .down)
+        // Missing by 2 holds the level.
+        var q = ExerciseProgress(id: "calf_raise", level: 2)
+        q = Progression.record(log(10, 8, on: -2), to: q, levels: 4).0
+        XCTAssertEqual(Progression.record(log(10, 8), to: q, levels: 4).0.level, 2)
+    }
+
+    func testHardTwiceHoldsTheLevelAndDropsASet() {
+        var p = ExerciseProgress(id: "sit_to_stand", level: 1)
+        p = Progression.rate(Progression.record(log(10, 10, on: -2), to: p, levels: 4).0, effort: .hard, levels: 4).0
+        XCTAssertFalse(Progression.dropsASet(p))
+        p = Progression.rate(Progression.record(log(10, 10), to: p, levels: 4).0, effort: .hard, levels: 4).0
+        XCTAssertEqual(p.level, 1)
+        XCTAssertTrue(Progression.dropsASet(p))
+
+        let book = LevelBook(progress: ["sit_to_stand": p])
+        let moves = [TrainingPlan.StrengthMove(exerciseID: "chair_stand", reps: 10, seconds: nil),
+                     TrainingPlan.StrengthMove(exerciseID: "arm_raise", reps: nil, seconds: 30)]
+        let items = TrainingPlan.sessionItems(sets: 3, moves: moves, levels: book)
+        XCTAssertEqual(items.filter { $0.family == "sit_to_stand" }.count, 2, "one set fewer")
+        XCTAssertEqual(items.filter { $0.exercise.id == "arm_raise" }.count, 3)
+        XCTAssertEqual(items.compactMap(\.restBefore), [Progression.setRest, Progression.setRest], "a longer rest before sets 2 and 3")
+    }
+
+    func testSomethingHurtPlaysTheEasierLevelForAWeek() {
+        var p = Progression.record(log(10, 10), to: ExerciseProgress(id: "floor", level: 2), levels: 4).0
+        let (hurt, change) = Progression.rate(p, effort: nil, hurt: true, levels: 4)
+        XCTAssertEqual(change, .easier)
+        p = hurt
+        XCTAssertEqual(p.level, 2, "the level itself is kept")
+        XCTAssertEqual(Progression.level(p, on: day(3)), 1)
+        XCTAssertEqual(Progression.level(p, on: day(7)), 2, "back after a week")
+        let item = LevelBook(progress: ["floor": p], date: day(1)).item("kneel_to_stand")
+        XCTAssertEqual(item?.exercise.id, "kneel_to_stand")
+        XCTAssertEqual(item?.level, 1)
+        XCTAssertEqual(item?.note, "We're keeping this one easier for a few days.")
+    }
+
+    func testAWeekAwayEasesBackOneLevel() {
+        let p = Progression.record(log(10, 10, on: -20), to: ExerciseProgress(id: "balance", level: 2), levels: 4).0
+        XCTAssertEqual(Progression.level(p, on: day(-13)), 2, "6 days off: nothing changes")
+        XCTAssertEqual(Progression.level(p, on: day(0)), 1)
+        XCTAssertEqual(LevelBook(progress: ["balance": p]).item("single_leg_balance")?.note, "Let's ease back in.")
+        let (next, change) = Progression.record(log(10, 10), to: p, levels: 4)
+        XCTAssertEqual(change, .easeBack)
+        XCTAssertEqual(next.level, 1)
+        XCTAssertEqual(Progression.level(next, on: day(0)), 1, "dropped once, not twice")
+    }
+
+    func testCoachSaysLastTimeNotTheWeek() {
+        var p = ExerciseProgress(id: "sit_to_stand", level: 1)
+        p = Progression.record(log(10, 9), to: p, levels: 4).0
+        let item = LevelBook(progress: ["sit_to_stand": p]).item("chair_stand", reps: 10)
+        XCTAssertEqual(item?.note, "You did 9 last time. Try 10 again.")
+        p = Progression.rate(Progression.record(log(10, 10), to: ExerciseProgress(id: "sit_to_stand", level: 1), levels: 4).0,
+                             effort: .easy, levels: 4).0
+        XCTAssertEqual(LevelBook(progress: ["sit_to_stand": p]).item("chair_stand", reps: 10)?.note,
+                       "You did 10 last time. Try 10 again. If it feels easy again, we go up.")
+    }
+
+    func testLevelsStartByPlanAndSkipWhatsUnsafe() {
+        let fresh = LevelBook()
+        XCTAssertEqual(fresh.item("chair_stand", reps: 10)?.exercise.id, "chair_stand", "most people start at level B")
+        XCTAssertEqual(LevelBook(gentle: true).item("chair_stand", reps: 10)?.exercise.id, "chair_stand_hands", "gentle starts at A")
+        // Level D of sit to stand is the floor rise: knees cap it at the low chair.
+        let top = ["sit_to_stand": ExerciseProgress(id: "sit_to_stand", level: 3)]
+        XCTAssertEqual(LevelBook(progress: top).item("chair_stand")?.exercise.id, "sit_rise")
+        XCTAssertEqual(LevelBook(progress: top, limitations: [.knee]).item("chair_stand")?.exercise.name, "Low Chair Stand")
+        // Eyes closed is out with dizziness.
+        let balance = ["balance": ExerciseProgress(id: "balance", level: 3)]
+        XCTAssertEqual(LevelBook(progress: balance, limitations: [.dizziness]).item("single_leg_balance")?.level, 2)
+        // A level's own amount wins; otherwise the plan's amount when the kind matches.
+        let squat = LevelBook(gentle: true).item("squat", reps: 10)
+        XCTAssertEqual(squat?.exercise.id, "wall_sit")
+        XCTAssertEqual(squat?.seconds, 20)
+        XCTAssertNil(squat?.reps)
+        // Every family ruled out entirely: no item.
+        XCTAssertNil(LevelBook(limitations: [.knee]).item("kneel_to_stand"))
+        XCTAssertEqual(LevelBook().item("march", seconds: 45)?.seconds, 45, "exercises outside a family pass through")
+    }
+
+    func testDailySessionPlaysLevelsAndStaysSafe() {
+        let profile = Profile(name: "", age: 72, limitations: [.knee])
+        let levels = LevelBook(limitations: profile.limitations, gentle: true)
+        for offset in 0..<14 {
+            let plan = PlanBuilder.today(profile: profile, latest: nil, date: day(offset), levels: levels)
+            let unsafe = PlanBuilder.unsafe(for: profile.limitations)
+            XCTAssertTrue(plan.allSatisfy { !unsafe.contains($0.exercise.id) })
+            XCTAssertEqual(Set(plan.map(\.exercise.id)).count, plan.count, "no exercise twice")
+            XCTAssertFalse(plan.contains { $0.exercise.id == "chair_stand" }, "gentle plans play level A (with hands)")
+        }
+    }
+
+    func testProgressAndRatingsPersistPerFamilyMember() throws {
+        let dir = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: dir) }
+        let url = dir.appendingPathComponent("floorage.json")
+        let model = AppModel(fileURL: url)
+        model.profile = Profile(name: "Priya", age: 52, limitations: [])
+        let result = FamilyResult(family: "sit_to_stand", level: 1, target: 10, done: 10)
+        model.logSession([result], on: day(-2))
+        model.rateSession(.easy, families: ["sit_to_stand"], on: day(-2))
+        model.logSession([result], on: day(0))
+        let changes = model.rateSession(.easy, families: ["sit_to_stand"], on: day(0))
+        XCTAssertEqual(changes["sit_to_stand"], .up)
+        XCTAssertEqual(AppModel(fileURL: url).progress(for: "sit_to_stand")?.level, 2)
+
+        model.addMember()
+        model.profile = Profile(name: "Raj", age: 78, limitations: [])
+        XCTAssertNil(model.progress(for: "sit_to_stand"), "each member has their own levels")
+        model.switchMember(model.owner.id)
+        XCTAssertEqual(model.progress(for: "sit_to_stand")?.level, 2)
+    }
+}
+
+final class PlanEmphasisTests: XCTestCase {
+    private func profile(age: Int = 35, limits: Set<Limitation> = []) -> Profile {
+        Profile(name: "", age: age, limitations: limits, gender: .female, heightCm: 165, weightKg: 58)
+    }
+
+    /// Reach weakest (moves like 72), then chair stand (62).
+    private func result(reach: Double = 1, chair: Double = 15) -> FloorAgeResult {
+        FloorAgeResult(age: 45, scores: ["sitRise": 9, "balance": 40, "chairStand": chair, "reach": reach])
+    }
+
+    private func days(_ week: TrainingPlan.Week, containing match: (TrainingPlan.Activity) -> Bool) -> [Int] {
+        week.days.filter { $0.activities.contains(where: match) }.map(\.index)
+    }
+
+    func testEmphasisIsTheWeakestAreaAndMovesOnWhenItDidntImprove() {
+        XCTAssertNil(TrainingPlan.emphasis(from: []))
+        XCTAssertEqual(TrainingPlan.emphasis(from: [result()]), TrainingPlan.Emphasis(area: .reach))
+        XCTAssertEqual(TrainingPlan.emphasis(from: [result(), result()]), TrainingPlan.Emphasis(area: .chairStand, unchanged: .reach))
+        XCTAssertEqual(TrainingPlan.emphasis(from: [result(reach: 1), result(reach: 1.5)]), TrainingPlan.Emphasis(area: .reach),
+                       "improved, still the weakest: keep going")
+        XCTAssertEqual(TrainingPlan.emphasis(from: [result(reach: 1), result(reach: 3)]), TrainingPlan.Emphasis(area: .chairStand))
+    }
+
+    func testFocusShapesTheWeek() {
+        let p = profile()
+        func week(_ focus: FloorTest?, _ number: Int = 3, _ program: TrainingPlan.Program = .runWalk) -> TrainingPlan.Week {
+            TrainingPlan.week(number, program: program, profile: p, averageSteps: 5000, focus: focus, scale: .international)
+        }
+        let isStrength = { (a: TrainingPlan.Activity) in if case .strength = a { true } else { false } }
+        let isBalance = { (a: TrainingPlan.Activity) in if case .balance = a { true } else { false } }
+        XCTAssertEqual(days(week(nil), containing: isStrength), [1, 5])
+        XCTAssertEqual(days(week(.chairStand), containing: isStrength), [1, 3, 5], "Otago: strength 3 times a week")
+        XCTAssertEqual(days(week(.chairStand, 3, .briskWalk), containing: isStrength), [0, 3, 5])
+        XCTAssertEqual(days(week(.balance), containing: isBalance), [1, 3, 5], "balance block 3 times a week at any age")
+        XCTAssertTrue(days(week(nil), containing: isBalance).isEmpty)
+        XCTAssertEqual(days(week(.sitRise), containing: { if case .mobility(.floor, _, _) = $0 { true } else { false } }), [1, 3, 5])
+        XCTAssertEqual(days(week(.reach), containing: { if case .mobility(.flexibility, _, _) = $0 { true } else { false } }), [0, 1, 3, 5])
+        // The other areas keep one session a week, without the focus area's own move.
+        let own: [FloorTest: String] = [.sitRise: "kneel_to_stand", .balance: "single_leg_balance", .reach: "toe_reach"]
+        for focus in FloorTest.allCases {
+            let allRound = week(focus).days.flatMap(\.activities).compactMap { a -> [String]? in
+                if case .mobility(.allRound, _, let moves) = a { moves.map(\.exerciseID) } else { nil }
+            }
+            XCTAssertEqual(allRound.count, 1, "\(focus)")
+            if let mine = own[focus] { XCTAssertFalse(allRound.first?.contains(mine) ?? true, "\(focus)") }
+        }
+        XCTAssertEqual(week(nil).days[6].activities, [.rest], "rest day kept")
+    }
+
+    func testCheckWeekIsLighterWithAFloorAgeCheck() {
+        let p = profile()
+        let w3 = TrainingPlan.week(3, program: .runWalk, profile: p, averageSteps: 5000, focus: .chairStand, scale: .international)
+        let w4 = TrainingPlan.week(4, program: .runWalk, profile: p, averageSteps: 5000, focus: .chairStand, scale: .international)
+        let w8 = TrainingPlan.week(8, program: .runWalk, profile: p, averageSteps: 5000, scale: .international)
+        XCTAssertFalse(w3.isCheckWeek)
+        XCTAssertTrue(w4.isCheckWeek)
+        XCTAssertEqual(w3.sets, 2)
+        XCTAssertEqual(w4.sets, 1, "deload: one set fewer")
+        XCTAssertEqual(w8.sets, 2)
+        XCTAssertEqual(w4.days[6].activities, [.check])
+        XCTAssertEqual(days(w4, containing: { if case .strength = $0 { true } else { false } }).count, 2, "two lighter sessions")
+        XCTAssertEqual(TrainingPlan.headline(w4.days[6]), "Floor Age check")
+        XCTAssertTrue(TrainingPlan.week(13, program: .runWalk, profile: p, averageSteps: nil).days[6].activities.contains(.rest),
+                      "past the end the final week repeats, and week 13 isn't a check week")
+    }
+
+    func testGentlePlansCapSetsAtTwo() {
+        let p = profile(age: 45)
+        XCTAssertFalse(TrainingPlan.isGentle(p, latest: nil))
+        let older = FloorAgeResult(age: 45, scores: ["sitRise": 4, "balance": 6, "chairStand": 10, "reach": 0])
+        XCTAssertGreaterThanOrEqual(older.floorAge - older.age, 15)
+        XCTAssertTrue(TrainingPlan.isGentle(p, latest: older))
+        XCTAssertTrue(TrainingPlan.isGentle(profile(age: 71), latest: nil))
+        XCTAssertEqual(TrainingPlan.week(6, program: .runWalk, profile: p, averageSteps: nil, gentle: true).sets, 2)
+        XCTAssertEqual(TrainingPlan.week(6, program: .runWalk, profile: p, averageSteps: nil).sets, 3)
+    }
+
+    func testDailyHabitComesFromTheFocusArea() {
+        let cal = Calendar.current
+        for offset in 0..<8 {
+            let date = cal.date(byAdding: .day, value: offset, to: Date())!
+            XCTAssertTrue(DailyHabit.all(for: .balance).contains(DailyHabit.today(area: .balance, on: date)))
+            XCTAssertEqual(DailyHabit.today(area: nil, on: date), DailyHabit.today(area: .balance, on: date), "balance before any check")
+        }
+        let tomorrow = cal.date(byAdding: .day, value: 1, to: Date())!
+        XCTAssertNotEqual(DailyHabit.today(area: .chairStand), DailyHabit.today(area: .chairStand, on: tomorrow), "a new one each day")
+    }
+
+    func testWeeklyDoseCountsEachDayOnce() {
+        let cal = Calendar.current
+        let start = cal.startOfDay(for: Date())
+        let week = DateInterval(start: start, duration: 7 * 86400)
+        func at(_ day: Int) -> Date { cal.date(byAdding: .hour, value: 10, to: cal.date(byAdding: .day, value: day, to: start)!)! }
+        let strength = TrainingPlan.Activity.strength(sets: 2, moves: [.init(exerciseID: "squat", reps: 10, seconds: nil)])
+        let walk = TrainingPlan.Activity.cardio(.briskWalk, TrainingPlan.walk(briskMinutes: 30))
+        let dose = WeeklyDose.compute(
+            week: week,
+            records: [ActivityRecord(date: at(0), minutes: 12, kinds: [.strength, .balance]),
+                      ActivityRecord(date: at(1), minutes: 30, kinds: [.move]),
+                      ActivityRecord(date: at(9), minutes: 99, kinds: [.move])],
+            planDays: [(at(1), [walk, strength]), (at(2), [walk])],
+            habitDays: [(at(0), .balance), (at(3), .balance), (at(4), nil)],
+            moveTarget: 150, balanceTarget: 3)
+        XCTAssertEqual(dose.moveMinutes, 60, "day 1's walk was logged; day 2's ticked-off walk adds its 30 min; next week's doesn't count")
+        XCTAssertEqual(dose.strengthDays, 2)
+        XCTAssertEqual(dose.strengthMinutes, 12 + strength.minutes)
+        XCTAssertEqual(dose.balanceDays, 2, "a session and a habit on the same day count once")
     }
 }

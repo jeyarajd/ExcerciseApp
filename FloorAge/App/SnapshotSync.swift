@@ -47,8 +47,7 @@ extension AppModel {
             snapshot.challengeDay = challenge.dayNumber()
             snapshot.challengeDone = challenge.completed
         }
-        if let profile, let program = planProgram, let position = planPosition() {
-            let week = TrainingPlan.week(position.week, program: program, profile: profile, averageSteps: planBaseSteps)
+        if let position = planPosition(), let week = planWeek(position.week) {
             snapshot.planToday = TrainingPlan.headline(week.days[position.day])
         }
         snapshot.trainedToday = didSessionToday || isPlanDayDone(Date())

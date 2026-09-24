@@ -4,14 +4,24 @@ struct FloorAgeResultView: View {
     let result: FloorAgeResult
     /// The Floor Age from the check before this one, to celebrate a drop.
     var previous: Int?
+    /// The checks before this one, oldest first: each area shows its change, and the plan's focus
+    /// before and after.
+    var history: [FloorAgeResult] = []
     var onDone: (() -> Void)?
 
     @State private var sharing = false
 
+    private var before: FloorAgeResult? { history.last }
+    private var previousFloorAge: Int? { previous ?? before?.floorAge }
+
     private var drop: Int? {
-        guard let previous, previous > result.floorAge else { return nil }
+        guard let previous = previousFloorAge, previous > result.floorAge else { return nil }
         return previous - result.floorAge
     }
+
+    /// What the plan focused on since the last check.
+    private var focusBefore: FloorTest? { TrainingPlan.emphasis(from: history)?.area }
+    private var focusNext: TrainingPlan.Emphasis? { TrainingPlan.emphasis(from: history + [result]) }
 
     var body: some View {
         ScrollView {
@@ -22,7 +32,7 @@ struct FloorAgeResultView: View {
                         VStack(alignment: .leading, spacing: 2) {
                             Text("Your Floor Age dropped").font(.caption.weight(.heavy)).tracking(1.4).textCase(.uppercase).opacity(0.9)
                             Text(drop == 1 ? String(localized: "1 year younger") : String(localized: "\(drop) years younger")).font(.display(.title2))
-                            Text("From \(previous ?? 0) to \(result.floorAge). Your training is working.").font(.subheadline).opacity(0.9)
+                            Text("From \(previousFloorAge ?? 0) to \(result.floorAge). Your training is working.").font(.subheadline).opacity(0.9)
                         }
                         Spacer(minLength: 0)
                     }
@@ -31,18 +41,28 @@ struct FloorAgeResultView: View {
                 FloorAgeCard(result: result)
                 VStack(alignment: .leading, spacing: Space.l) {
                     Text("By area").font(.display(.title3))
+                    if let focusBefore {
+                        Text("Since your last check, your plan focused on \(focusBefore.area.lowercased()).")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                    }
                     ForEach(FloorTest.allCases) { test in
-                        AreaRow(test: test, result: result)
+                        AreaRow(test: test, result: result, before: before, focused: test == focusBefore)
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .tintedCard(.floorAge)
 
-                if let weakest = result.weakest {
+                if let focus = focusNext {
+                    let weakest = focus.area
                     HStack(alignment: .top, spacing: Space.l) {
                         FeatureBadge(feature: weakest.feature, symbol: "target", size: 42)
                         VStack(alignment: .leading, spacing: Space.xs) {
                             Eyebrow("Focus", feature: weakest.feature)
+                            if let unchanged = focus.unchanged {
+                                Text("\(unchanged.area) didn't change this time, so your plan now focuses on \(weakest.area.lowercased()) instead. \(unchanged.area) keeps a session every week.")
+                                    .font(.callout)
+                            }
                             Text("Your plan now focuses on \(weakest.area.lowercased()). Retest in about 4 weeks to see your Floor Age drop.")
                                 .font(.callout)
                         }
@@ -122,6 +142,9 @@ struct FloorAgeCard: View {
 private struct AreaRow: View {
     let test: FloorTest
     let result: FloorAgeResult
+    var before: FloorAgeResult?
+    /// The plan worked on this area since the last check.
+    var focused = false
 
     var body: some View {
         HStack(spacing: Space.m) {
@@ -129,11 +152,15 @@ private struct AreaRow: View {
             VStack(alignment: .leading, spacing: 1) {
                 Text(test.area).font(.subheadline.weight(.semibold))
                 Text(test.title).font(.caption).foregroundStyle(.secondary)
+                if focused {
+                    Label("Your plan's focus", systemImage: "target").font(.caption2.weight(.semibold)).foregroundStyle(test.feature.ink)
+                }
             }
             Spacer(minLength: 0)
             if let age = result.equivalentAge(test) {
                 let older = age > Double(result.age) + 2
-                Text("moves like \(Int(age.rounded()))")
+                Text(before?.equivalentAge(test).map { String(localized: "\(Int($0.rounded())) → \(Int(age.rounded())) years") }
+                     ?? String(localized: "moves like \(Int(age.rounded()))"))
                     .font(.caption.weight(.bold))
                     .foregroundStyle(.white)
                     .padding(.horizontal, Space.m)

@@ -13,14 +13,16 @@ struct PlanView: View {
     @State private var session: StrengthSession?
     @State private var confirmingRestart = false
     @State private var offeringReminder = false
+    @State private var checking = false
 
     var body: some View {
         ScrollView {
             VStack(spacing: Space.l) {
                 if let profile = model.profile {
-                    if let program = model.planProgram, let position = model.planPosition() {
-                        let week = TrainingPlan.week(position.week, program: program, profile: profile, averageSteps: model.planBaseSteps)
+                    if let program = model.planProgram, let position = model.planPosition(), let week = model.planWeek(position.week) {
                         weekHeader(week, finished: position.week > program.weeks)
+                        focusCard(week, profile: profile)
+                        if let dose = model.weeklyDose() { DoseDials(dose: dose) }
                         ForEach(week.days, id: \.index) { day in
                             dayCard(day, week: week, date: date(ofDay: day.index, week: position.week), isToday: day.index == position.day)
                         }
@@ -54,6 +56,8 @@ struct PlanView: View {
         .fullScreenCover(item: $cardio) { workout in
             IntervalWorkoutView(title: workout.title, intervals: workout.intervals) {
                 model.setPlanDay(Date(), done: true)
+                let moderate = workout.intervals.reduce(0) { $0 + ($1.kind == .run ? 2 : 1) * $1.seconds } / 60
+                model.logActivity(ActivityRecord(date: Date(), minutes: moderate, kinds: [.move]))
                 Task { await model.refreshReminders() }
                 saveToHealth(workout.intervals)
             }
@@ -64,6 +68,51 @@ struct PlanView: View {
             SessionView(items: session.items, voice: voice)
                 .environmentObject(model)
         }
+        .fullScreenCover(isPresented: $checking) {
+            FloorAgeTestView()
+                .environmentObject(model)
+                .environmentObject(voice)
+        }
+    }
+
+    // MARK: - Focus
+
+    /// What the plan emphasises and why, the check week, and the gentle-plan chair rule.
+    @ViewBuilder
+    private func focusCard(_ week: TrainingPlan.Week, profile: Profile) -> some View {
+        let gentle = TrainingPlan.isGentle(profile, latest: model.latestResult)
+        if week.focus != nil || week.isCheckWeek || gentle {
+            VStack(alignment: .leading, spacing: Space.s) {
+                if let emphasis = model.planEmphasis {
+                    Eyebrow("This month's focus", feature: emphasis.area.feature)
+                    Label(emphasis.area.area, systemImage: emphasis.area.symbol).font(.display(.headline))
+                    Text(focusReason(emphasis)).font(.subheadline).foregroundStyle(.secondary)
+                }
+                if week.isCheckWeek {
+                    Label("Check week: one set fewer, and a Floor Age check on the last day. Bodies adapt on rest.", systemImage: "arrow.triangle.2.circlepath")
+                        .font(.subheadline)
+                }
+                if gentle {
+                    Label("Gentle plan: every exercise starts at the easiest level, at most 2 sets, with a sturdy chair within reach for all standing moves.", systemImage: "chair.fill")
+                        .font(.subheadline)
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .tintedCard(model.planEmphasis?.area.feature ?? .plan)
+        }
+    }
+
+    private func focusReason(_ emphasis: TrainingPlan.Emphasis) -> String {
+        if let unchanged = emphasis.unchanged {
+            return String(localized: "\(unchanged.area) didn't change at your last check, so the plan now works on \(emphasis.area.area.lowercased()). \(unchanged.area) still gets a session every week.")
+        }
+        let blocks: String = switch emphasis.area {
+        case .sitRise: String(localized: "Floor mobility 3 times a week, leg strength twice.")
+        case .chairStand: String(localized: "Leg strength 3 times a week, walking in between.")
+        case .balance: String(localized: "A balance block 3 times a week, plus a small habit every day.")
+        case .reach: String(localized: "About 10 minutes of flexibility 4 times a week, strength twice.")
+        }
+        return String(localized: "Your weakest area at the last check. \(blocks) The other areas get one session a week.")
     }
 
     // MARK: - Before starting
@@ -219,21 +268,45 @@ struct PlanView: View {
         case .strength(let sets, let moves):
             row(icon: "dumbbell.fill", title: sets == 1 ? String(localized: "Strength · 1 set") : String(localized: "Strength · \(sets) sets"),
                 detail: String(localized: "\(describe(moves)). Rest 1 minute between sets."),
-                start: isToday ? { session = StrengthSession(items: TrainingPlan.sessionItems(sets: sets, moves: moves)) } : nil)
+                start: isToday ? { startSession(sets: sets, moves: moves) } : nil)
         case .balance(let sets, let moves):
             row(icon: "figure.stand", title: sets == 1 ? String(localized: "Balance · 1 set") : String(localized: "Balance · \(sets) sets"),
-                detail: String(localized: "\(describe(moves)). Hold a wall or chair if you need to."),
-                start: isToday ? { session = StrengthSession(items: TrainingPlan.sessionItems(sets: sets, moves: moves)) } : nil)
+                detail: String(localized: "\(describe(moves)). If you've fallen in the last year or use a walking aid, keep a chair or wall within reach."),
+                start: isToday ? { startSession(sets: sets, moves: moves) } : nil)
+        case .mobility(let kind, let sets, let moves):
+            row(icon: kind == .flexibility ? "figure.flexibility" : "figure.cross.training",
+                title: sets == 1 ? String(localized: "\(kind.title) · 1 set") : String(localized: "\(kind.title) · \(sets) sets"),
+                detail: String(localized: "\(describe(moves)). Use a soft mat for kneeling."),
+                start: isToday ? { startSession(sets: sets, moves: moves) } : nil)
+        case .check:
+            row(icon: "arrow.triangle.2.circlepath", title: String(localized: "Floor Age check"),
+                detail: checkedThisWeek ? String(localized: "Done. See how each area changed in History.")
+                                        : String(localized: "Four quick tests to see what the last 4 weeks changed."),
+                start: isToday && !checkedThisWeek ? { checking = true } : nil)
         case .rest:
             row(icon: "bed.double.fill", title: String(localized: "Rest day"),
                 detail: String(localized: "Recovery is part of training. A gentle stroll or stretching is fine."), start: nil)
         }
     }
 
+    private func startSession(sets: Int, moves: [TrainingPlan.StrengthMove]) {
+        let items = TrainingPlan.sessionItems(sets: sets, moves: moves, levels: model.levels())
+        guard !items.isEmpty else { return }
+        session = StrengthSession(items: items)
+    }
+
+    /// A Floor Age check in the last 7 days counts for this check week.
+    private var checkedThisWeek: Bool {
+        guard let last = model.latestResult?.date else { return false }
+        return Date().timeIntervalSince(last) < 7 * 24 * 3600
+    }
+
     private func row(icon: String, title: String, detail: String, start: (() -> Void)?) -> some View {
         let feature: Feature = switch icon {
         case "dumbbell.fill": .plan
-        case "figure.stand": .bmi
+        case "figure.stand", "figure.cross.training": .bmi
+        case "figure.flexibility": .sleep
+        case "arrow.triangle.2.circlepath": .floorAge
         case "bed.double.fill": .sleep
         default: .steps
         }
@@ -252,11 +325,14 @@ struct PlanView: View {
         }
     }
 
+    /// The moves at the person's levels: "Chair Stand × 10, Tandem Stance 30 s".
     private func describe(_ moves: [TrainingPlan.StrengthMove]) -> String {
-        moves.map { move in
-            let name = ExerciseLibrary.shared[move.exerciseID].name
-            if let reps = move.reps { return String(localized: "\(name) × \(reps)") }
-            return String(localized: "\(name) \(move.seconds ?? 30) s")
+        let levels = model.levels()
+        return moves.compactMap { move in
+            guard let item = levels.item(move.exerciseID, reps: move.reps, seconds: move.seconds) else { return nil }
+            let name = item.exercise.name
+            if let reps = item.reps { return String(localized: "\(name) × \(reps)") }
+            return String(localized: "\(name) \(item.seconds ?? 30) s")
         }
         .joined(separator: ", ")
     }
@@ -274,7 +350,15 @@ struct PlanView: View {
                    "https://pubmed.ncbi.nlm.nih.gov/19127177/")
             source("Paluch et al., Lancet Public Health (2022)", "Benefits of walking level off at 8,000–10,000 steps a day under 60, and 6,000–8,000 from 60.",
                    "https://pubmed.ncbi.nlm.nih.gov/35247352/")
-            Text("A general fitness plan, not medical advice. Stop and rest if anything hurts, and seek help for chest pain, dizziness or severe breathlessness.")
+            source("Otago Exercise Programme", "Strength and balance 3 times a week; move up a level after 2 sets of 10 good reps; rest 1–2 minutes between sets.",
+                   "https://www.livestronger.org.nz/assets/Uploads/acc1162-otago-exercise-manual.pdf")
+            source("Clemson et al., BMJ (2012): the LiFE programme", "Balance and strength built into daily tasks cut falls by nearly a third.",
+                   "https://pubmed.ncbi.nlm.nih.gov/22949503/")
+            source("Momma et al., Br J Sports Med (2022)", "The biggest benefit of muscle strengthening comes at about 30–60 minutes a week, with no extra benefit above that.",
+                   "https://pubmed.ncbi.nlm.nih.gov/35228201/")
+            source("ACSM's Health & Fitness Journal: the talk test", "At a moderate pace you can still say a few words per breath: you can talk, but not sing.",
+                   "https://journals.lww.com/acsm-healthfitness/")
+            Text("A general fitness plan, not medical advice. Stop and rest if anything hurts, and seek help for chest pain, dizziness or sharp joint pain. If you've fallen in the last year or use a walking aid, do balance work only with a chair or wall within reach.")
                 .font(.caption).foregroundStyle(.secondary)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -379,7 +463,13 @@ struct IntervalWorkoutView: View {
                 }
             }
             .frame(width: 250, height: 250)
-            if !finished, index + 1 < intervals.count {
+            if !started {
+                Label("The talk test: at a moderate pace you can still say a few words per breath. You should be able to talk, but not sing.",
+                      systemImage: "bubble.left.and.bubble.right.fill")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .padding(.horizontal)
+            } else if !finished, index + 1 < intervals.count {
                 Text("Next: \(intervals[index + 1].title) \(clock(TimeInterval(intervals[index + 1].seconds)))")
                     .font(.headline).foregroundStyle(.secondary)
             }
@@ -456,13 +546,21 @@ struct IntervalWorkoutView: View {
     static func announcement(_ interval: TrainingPlan.Interval, isFirst: Bool) -> String {
         let length = spoken(interval.seconds)
         switch interval.kind {
-        case .warmUp: return String(localized: "Warm up with a \(length) walk at an easy pace.")
+        case .warmUp:
+            let warmUp = String(localized: "Warm up with a \(length) walk at an easy pace.")
+            return isFirst ? warmUp + " " + talkTest : warmUp
         case .coolDown: return String(localized: "Great work. Cool down with a \(length) easy walk.")
         case .run: return String(localized: "Run for \(length). Keep it slow enough to talk.")
         case .walk: return String(localized: "Walk for \(length).")
         case .brisk: return String(localized: "Now walk briskly for \(length). You should be able to talk, but not sing.")
         case .easy: return String(localized: "Easy walk for \(length).")
         }
+    }
+
+    /// The talk test (ACSM's Health & Fitness Journal): at a moderate pace you can still say 3–5
+    /// words per breath.
+    static var talkTest: String {
+        String(localized: "Use the talk test: when you speed up, you should be able to talk, but not sing.")
     }
 
     static func spoken(_ seconds: Int) -> String {
@@ -513,8 +611,7 @@ struct TrainingPlanCard: View {
         NavigationLink { PlanView() } label: {
             HStack(spacing: Space.l) {
                 VStack(alignment: .leading, spacing: 3) {
-                    if let profile = model.profile, let program = model.planProgram, let position = model.planPosition() {
-                        let week = TrainingPlan.week(position.week, program: program, profile: profile, averageSteps: model.planBaseSteps)
+                    if let program = model.planProgram, let position = model.planPosition(), let week = model.planWeek(position.week) {
                         let today = week.days[position.day]
                         Text("\(program.title) · week \(min(position.week, program.weeks))").font(.caption).opacity(0.85)
                         Text(TrainingPlan.headline(today)).font(.display(.title3)).multilineTextAlignment(.leading)
@@ -538,3 +635,55 @@ struct TrainingPlanCard: View {
     }
 }
 
+
+// MARK: - Weekly dose
+
+/// Three dials filled from what was actually done this plan week: moderate minutes (WHO), strength
+/// days and minutes (with the 30–60 minute sweet spot from Momma et al. 2022), and balance days
+/// for 65+ or while balance is the focus.
+struct DoseDials: View {
+    let dose: WeeklyDose
+    @Environment(\.dynamicTypeSize) private var typeSize
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: Space.m) {
+            Eyebrow("This week's dose", feature: .plan)
+            let layout = typeSize.isAccessibilitySize ? AnyLayout(VStackLayout(spacing: Space.m)) : AnyLayout(HStackLayout(alignment: .top, spacing: Space.m))
+            layout {
+                dial(progress: Double(dose.moveMinutes) / Double(max(dose.moveTarget, 1)), value: "\(dose.moveMinutes)",
+                     title: String(localized: "Move"), detail: String(localized: "of \(dose.moveTarget) min"), feature: .steps)
+                dial(progress: Double(dose.strengthDays) / Double(WeeklyDose.strengthDaysTarget), value: "\(dose.strengthDays)",
+                     title: String(localized: "Strength"),
+                     detail: String(localized: "of \(WeeklyDose.strengthDaysTarget) days · \(dose.strengthMinutes) min"), feature: .plan)
+                if let target = dose.balanceTarget {
+                    dial(progress: Double(dose.balanceDays) / Double(target), value: "\(dose.balanceDays)",
+                         title: String(localized: "Balance"), detail: String(localized: "of \(target) days"), feature: .bmi)
+                }
+            }
+            Text(strengthNote).font(.caption).foregroundStyle(.secondary)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .tintedCard(.plan)
+    }
+
+    /// "More isn't better here": past 60 minutes of strength a week there's no extra benefit.
+    private var strengthNote: String {
+        if dose.strengthMinutes > WeeklyDose.strengthSweetSpot.upperBound {
+            return String(localized: "That's plenty of strength work. More isn't better here: 30–60 minutes a week is the sweet spot.")
+        }
+        return String(localized: "Strength: more isn't better here. About 40 minutes a week is the sweet spot.")
+    }
+
+    private func dial(progress: Double, value: String, title: String, detail: String, feature: Feature) -> some View {
+        VStack(spacing: Space.xs) {
+            ArcGauge(progress: min(progress, 1), colors: feature.colors, track: feature.tint.opacity(0.2), lineWidth: 8) {
+                Text(value).font(.metric(20)).foregroundStyle(feature.ink)
+            }
+            .frame(width: 76)
+            Text(title).font(.subheadline.weight(.semibold))
+            Text(detail).font(.caption2).foregroundStyle(.secondary).multilineTextAlignment(.center)
+        }
+        .frame(maxWidth: .infinity)
+        .accessibilityElement(children: .combine)
+    }
+}

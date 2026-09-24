@@ -86,6 +86,12 @@ final class AppModel: ObservableObject {
     @Published private(set) var sleepLog: [SleepEntry] = []
     /// When the 30-day challenge started, if one is running (or finished and not cleared).
     @Published private(set) var challengeStart: Date?
+    /// Each exercise family's level and recent sessions (see `Progression`).
+    @Published private(set) var progress: [ExerciseProgress] = []
+    /// Days the daily habit (LiFE) was ticked off.
+    @Published private(set) var habitDays: [Date] = []
+    /// Finished workouts, for the weekly dose dials.
+    @Published private(set) var activityLog: [ActivityRecord] = []
     /// A challenge badge just earned, for the app to celebrate once. Not saved.
     @Published var newBadge: Challenge.Badge?
 
@@ -102,6 +108,9 @@ final class AppModel: ObservableObject {
         var planBaseSteps: Int?
         var sleepLog: [SleepEntry]?
         var challengeStart: Date?
+        var progress: [ExerciseProgress]?
+        var habitDays: [Date]?
+        var activityLog: [ActivityRecord]?
     }
 
     /// Everyone who uses this iPhone. The first is the phone's owner, whose data lives in the
@@ -214,6 +223,9 @@ final class AppModel: ObservableObject {
         planDone = []
         sleepLog = []
         challengeStart = nil
+        progress = []
+        habitDays = []
+        activityLog = []
         save()
     }
 
@@ -257,12 +269,43 @@ final class AppModel: ObservableObject {
     /// What the evening reminder says on this date: the day's plan, the daily session when there's
     /// no plan, or nothing on a plan rest day.
     func reminderText(on date: Date) -> String? {
-        guard let profile, let program = planProgram, let position = planPosition(on: date) else {
+        guard let position = planPosition(on: date), let week = planWeek(position.week) else {
             return String(localized: "Your 10-minute session with Coach is ready. Missing a day never resets your progress.")
         }
-        let day = TrainingPlan.week(position.week, program: program, profile: profile, averageSteps: planBaseSteps).days[position.day]
-        guard day.activities != [.rest] else { return nil }
+        let day = week.days[position.day]
+        // Rest days only carry the day's small habit (LiFE), never a workout.
+        guard day.activities != [.rest] else {
+            let habit = DailyHabit.today(area: planEmphasis?.area, on: date)
+            return String(localized: "Rest day. Today's small habit: \(habit.text)")
+        }
         return String(localized: "Today: \(TrainingPlan.headline(day)). A little now keeps your streak going.")
+    }
+
+    /// Where the plan puts its emphasis, from the Floor Age checks.
+    var planEmphasis: TrainingPlan.Emphasis? { TrainingPlan.emphasis(from: results) }
+
+    /// A week of the running plan, shaped by the latest checks.
+    func planWeek(_ number: Int) -> TrainingPlan.Week? {
+        guard let profile, let program = planProgram else { return nil }
+        return TrainingPlan.week(number, program: program, profile: profile, averageSteps: planBaseSteps,
+                                 focus: planEmphasis?.area, gentle: TrainingPlan.isGentle(profile, latest: latestResult))
+    }
+
+    /// This plan week's dose so far: logged workouts, plan days ticked off, and habits.
+    func weeklyDose(on date: Date = Date()) -> WeeklyDose? {
+        guard let profile, let start = planStart, let position = planPosition(on: date), let week = planWeek(position.week) else { return nil }
+        let cal = Calendar.current
+        let weekStart = cal.date(byAdding: .day, value: (position.week - 1) * 7, to: start) ?? start
+        let interval = DateInterval(start: weekStart, end: cal.date(byAdding: .day, value: 7, to: weekStart) ?? weekStart)
+        let planDays = week.days.compactMap { day -> (date: Date, activities: [TrainingPlan.Activity])? in
+            guard let date = cal.date(byAdding: .day, value: day.index, to: weekStart), isPlanDayDone(date) else { return nil }
+            return (date, day.activities)
+        }
+        let area = planEmphasis?.area
+        let habits = habitDays.map { (date: $0, kind: DailyHabit.today(area: area, on: $0).kind) }
+        let balanceTarget: Int? = profile.age >= 65 || area == .balance ? 3 : nil
+        return WeeklyDose.compute(week: interval, records: activityLog, planDays: planDays, habitDays: habits,
+                                  moveTarget: week.targetMinutes, balanceTarget: balanceTarget)
     }
 
     func startPlan(_ program: TrainingPlan.Program, averageSteps: Int?, on date: Date = Date()) {
@@ -300,6 +343,78 @@ final class AppModel: ObservableObject {
         if done { planDone.append(day) }
         save()
         if done { noticeNewBadge(since: before) }
+    }
+
+    // MARK: - Progression
+
+    /// Levels as plans and sessions see them today.
+    func levels(on date: Date = Date()) -> LevelBook {
+        LevelBook(progress: Dictionary(progress.map { ($0.id, $0) }, uniquingKeysWith: { $1 }),
+                  limitations: profile?.limitations ?? [],
+                  gentle: profile.map { TrainingPlan.isGentle($0, latest: latestResult) } ?? false,
+                  date: date)
+    }
+
+    func progress(for family: String) -> ExerciseProgress? {
+        progress.first { $0.id == family }
+    }
+
+    /// Logs what a finished session did for each exercise family and applies the progression
+    /// rules. Returns what changed, by family.
+    @discardableResult
+    func logSession(_ results: [FamilyResult], on date: Date = Date()) -> [String: Progression.Change] {
+        var changes: [String: Progression.Change] = [:]
+        for result in results {
+            guard let family = ExerciseLibrary.shared.family(result.family) else { continue }
+            let current = progress(for: result.family) ?? ExerciseProgress(id: result.family, level: result.level)
+            let log = SessionLog(date: date, targetReps: result.target, doneReps: result.done)
+            let (next, change) = Progression.record(log, to: current, levels: family.levels.count)
+            store(next)
+            changes[result.family] = change
+        }
+        save()
+        return changes
+    }
+
+    /// Adds "How hard was that?" to today's logs. `hurt` names the families that hurt.
+    @discardableResult
+    func rateSession(_ effort: Effort?, hurt: Set<String> = [], families: [String], on date: Date = Date()) -> [String: Progression.Change] {
+        var changes: [String: Progression.Change] = [:]
+        for id in families {
+            guard let family = ExerciseLibrary.shared.family(id), let current = progress(for: id),
+                  let last = current.lastSessions.last, Calendar.current.isDate(last.date, inSameDayAs: date) else { continue }
+            let (next, change) = Progression.rate(current, effort: hurt.contains(id) ? nil : effort, hurt: hurt.contains(id),
+                                                  levels: family.levels.count)
+            store(next)
+            changes[id] = change
+        }
+        save()
+        return changes
+    }
+
+    private func store(_ next: ExerciseProgress) {
+        progress.removeAll { $0.id == next.id }
+        progress.append(next)
+    }
+
+    // MARK: - Daily habit and weekly dose
+
+    func isHabitDone(on date: Date = Date()) -> Bool {
+        habitDays.contains { Calendar.current.isDate($0, inSameDayAs: date) }
+    }
+
+    func setHabit(done: Bool, on date: Date = Date()) {
+        habitDays.removeAll { Calendar.current.isDate($0, inSameDayAs: date) }
+        if done { habitDays.append(Calendar.current.startOfDay(for: date)) }
+        save()
+    }
+
+    func logActivity(_ record: ActivityRecord) {
+        activityLog.append(record)
+        // A year is plenty for the weekly dials.
+        let cutoff = Calendar.current.date(byAdding: .day, value: -366, to: record.date) ?? record.date
+        activityLog.removeAll { $0.date < cutoff }
+        save()
     }
 
     // MARK: - Food and weight
@@ -351,6 +466,9 @@ final class AppModel: ObservableObject {
         planBaseSteps = nil
         sleepLog = []
         challengeStart = nil
+        progress = []
+        habitDays = []
+        activityLog = []
         guard let data = try? Data(contentsOf: fileURL),
               let stored = try? JSONDecoder().decode(Stored.self, from: data) else { return }
         profile = stored.profile
@@ -364,13 +482,17 @@ final class AppModel: ObservableObject {
         planBaseSteps = stored.planBaseSteps
         sleepLog = stored.sleepLog ?? []
         challengeStart = stored.challengeStart
+        progress = stored.progress ?? []
+        habitDays = stored.habitDays ?? []
+        activityLog = stored.activityLog ?? []
     }
 
     private func save() {
         guard !loading else { return }
         let stored = Stored(profile: profile, results: results, sessionDays: sessionDays, foodLog: foodLog, weights: weights,
                             planStart: planStart, planProgram: planProgram?.rawValue, planDone: planDone,
-                            planBaseSteps: planBaseSteps, sleepLog: sleepLog, challengeStart: challengeStart)
+                            planBaseSteps: planBaseSteps, sleepLog: sleepLog, challengeStart: challengeStart,
+                            progress: progress, habitDays: habitDays, activityLog: activityLog)
         guard let data = try? JSONEncoder().encode(stored) else { return }
         try? data.write(to: fileURL, options: [.atomic, .completeFileProtection])
     }
@@ -489,9 +611,19 @@ struct PlanItem: Identifiable, Hashable {
     let exercise: Exercise
     let reps: Int?
     let seconds: Int?
+    /// The exercise family (and its level) this trains, so the session can log it for progression.
+    var family: String?
+    var level: Int?
+    /// Said after the intro, e.g. "You did 10 last time. Try 10 again."
+    var note: String?
+    /// Rest before this item when it starts the next set (longer than between exercises).
+    var restBefore: Double?
 
     init(_ exerciseID: String, reps: Int? = nil, seconds: Int? = nil) {
-        let exercise = ExerciseLibrary.shared[exerciseID]
+        self.init(exercise: ExerciseLibrary.shared[exerciseID], reps: reps, seconds: seconds)
+    }
+
+    init(exercise: Exercise, reps: Int? = nil, seconds: Int? = nil) {
         self.exercise = exercise
         self.reps = exercise.kind == .reps ? (reps ?? exercise.defaultReps ?? 10) : nil
         self.seconds = exercise.kind == .reps ? nil : (seconds ?? exercise.defaultSeconds ?? 30)
@@ -512,7 +644,7 @@ struct PlanItem: Identifiable, Hashable {
 enum PlanBuilder {
     /// Exercises that train each test area, most specific first.
     static let trainers: [FloorTest: [String]] = [
-        .sitRise: ["deep_squat_hold", "squat", "sit_rise"],
+        .sitRise: ["kneel_to_stand", "deep_squat_hold", "squat", "sit_rise"],
         .balance: ["single_leg_balance", "side_leg_raise", "calf_raise"],
         .chairStand: ["squat", "chair_stand", "calf_raise"],
         .reach: ["toe_reach", "deep_squat_hold", "side_leg_raise"],
@@ -520,16 +652,18 @@ enum PlanBuilder {
 
     static func unsafe(for limitations: Set<Limitation>) -> Set<String> {
         var ids = Set<String>()
-        if limitations.contains(.knee) { ids.formUnion(["sit_rise", "deep_squat_hold", "squat"]) }
-        if limitations.contains(.hip) { ids.formUnion(["sit_rise", "deep_squat_hold", "side_leg_raise"]) }
+        if limitations.contains(.knee) { ids.formUnion(["sit_rise", "deep_squat_hold", "squat", "wall_sit", "kneel_to_stand", "half_kneel"]) }
+        if limitations.contains(.hip) { ids.formUnion(["sit_rise", "deep_squat_hold", "side_leg_raise", "kneel_to_stand", "half_kneel"]) }
         if limitations.contains(.back) { ids.formUnion(["toe_reach", "sit_rise"]) }
         if limitations.contains(.dizziness) { ids.formUnion(["toe_reach"]) }
         return ids
     }
 
     /// Today's ~10 minute session: a warm-up, then work on the weakest areas from the last check,
-    /// finishing with pelvic floor squeezes unless they're switched off in Settings.
-    static func today(profile: Profile, latest: FloorAgeResult?, date: Date = Date(), pelvicFloor: Bool = true) -> [PlanItem] {
+    /// finishing with pelvic floor squeezes unless they're switched off in Settings. With `levels`,
+    /// exercises that progress are played at the person's level (see `Progression`).
+    static func today(profile: Profile, latest: FloorAgeResult?, date: Date = Date(), pelvicFloor: Bool = true,
+                      levels: LevelBook? = nil) -> [PlanItem] {
         let skip = unsafe(for: profile.limitations)
         let dayIndex = Calendar.current.ordinality(of: .day, in: .era, for: date) ?? 0
         let gentle = profile.limitations.contains(.medical) || profile.age >= 70
@@ -556,7 +690,14 @@ enum PlanBuilder {
         for id in ids {
             let exercise = ExerciseLibrary.shared[id]
             let reps = exercise.defaultReps.map { gentle ? max(4, $0 * 2 / 3) : $0 }
-            plan.append(PlanItem(id, reps: reps))
+            guard let levels else {
+                plan.append(PlanItem(id, reps: reps))
+                continue
+            }
+            // Two anchors can land on the same level's exercise; play it once.
+            if let item = levels.item(id, reps: reps), !plan.contains(where: { $0.exercise.id == item.exercise.id }) {
+                plan.append(item)
+            }
         }
         if pelvicFloor { plan.append(PlanItem("kegel", reps: 8)) }
         return plan

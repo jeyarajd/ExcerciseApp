@@ -58,7 +58,7 @@ struct HistoryView: View {
                         // Without Plus, only the latest check is kept on view.
                         ForEach(Array(model.results.reversed().prefix(store.hasPlus ? .max : 1))) { result in
                             NavigationLink {
-                                FloorAgeResultView(result: result)
+                                FloorAgeResultView(result: result, history: Array(model.results.prefix { $0.id != result.id }))
                                     .navigationTitle(result.date.formatted(date: .abbreviated, time: .omitted))
                             } label: {
                                 HStack {

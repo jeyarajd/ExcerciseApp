@@ -13,6 +13,8 @@ struct FloorAgeTestView: View {
     @State private var result: FloorAgeResult?
     /// The Floor Age before this check, to celebrate if it drops.
     @State private var previousFloorAge: Int?
+    /// The checks before this one, for the before/after by area.
+    @State private var previousResults: [FloorAgeResult] = []
 
     // Sit to rise inputs
     @State private var downSupports = 0
@@ -60,7 +62,7 @@ struct FloorAgeTestView: View {
         NavigationStack {
             Group {
                 if let result {
-                    FloorAgeResultView(result: result, previous: previousFloorAge) { dismiss() }
+                    FloorAgeResultView(result: result, previous: previousFloorAge, history: previousResults) { dismiss() }
                 } else if step == 0 {
                     intro
                 } else {
@@ -646,6 +648,7 @@ struct FloorAgeTestView: View {
         }
         let result = FloorAgeResult(age: model.profile?.age ?? 40, scores: scores)
         previousFloorAge = model.latestResult?.floorAge
+        previousResults = model.results
         model.add(result)
         self.result = result
         avatar.play(id: "idle")

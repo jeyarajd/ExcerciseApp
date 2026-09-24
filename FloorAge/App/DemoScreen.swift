@@ -54,6 +54,13 @@ enum DemoScreen: String, CaseIterable {
         for daysAgo in [1, 2, 4, 5] {
             model.completeSession(on: cal.date(byAdding: .day, value: -daysAgo, to: Date())!)
         }
+        // Levels: chair stands felt easy last time; balance at the tandem stance.
+        let lastSession = cal.date(byAdding: .day, value: -1, to: Date())!
+        let families = ["sit_to_stand", "balance"]
+        model.logSession([FamilyResult(family: "sit_to_stand", level: 1, target: 10, done: 10),
+                          FamilyResult(family: "balance", level: 1, target: 30, done: 30)], on: lastSession)
+        model.rateSession(.easy, families: families, on: lastSession)
+        model.setHabit(done: true, on: lastSession)
         for (weeksAgo, kg) in [(8, 71.5), (4, 70.2), (0, 68.8)] {
             model.updateBody(heightCm: 158, weightKg: kg, on: cal.date(byAdding: .weekOfYear, value: -weeksAgo, to: Date())!)
         }
@@ -151,11 +158,11 @@ private struct DemoScreenHost: View {
         case .settings:
             MainTabs(initial: .settings)
         case .session:
-            SessionView(items: PlanBuilder.today(profile: model.profile!, latest: model.latestResult), voice: voice)
+            SessionView(items: PlanBuilder.today(profile: model.profile!, latest: model.latestResult, levels: model.levels()), voice: voice)
         case .sessionRest:
-            SessionView(items: PlanBuilder.today(profile: model.profile!, latest: model.latestResult), voice: voice, demoPhase: .rest)
+            SessionView(items: PlanBuilder.today(profile: model.profile!, latest: model.latestResult, levels: model.levels()), voice: voice, demoPhase: .rest)
         case .sessionDone:
-            SessionView(items: PlanBuilder.today(profile: model.profile!, latest: model.latestResult), voice: voice, demoPhase: .done)
+            SessionView(items: PlanBuilder.today(profile: model.profile!, latest: model.latestResult, levels: model.levels()), voice: voice, demoPhase: .done)
         case .kegel:
             SessionView(items: PlanBuilder.pelvicFloor, voice: voice)
         case .test:
@@ -184,7 +191,7 @@ private struct DemoScreenHost: View {
             MainTabs(initial: .today).overlay { BadgeCelebration(badge: .seven) {} }
         case .drop:
             NavigationStack {
-                FloorAgeResultView(result: model.latestResult!, previous: model.results.dropLast().last?.floorAge)
+                FloorAgeResultView(result: model.latestResult!, history: Array(model.results.dropLast()))
                     .navigationTitle("Your Floor Age")
             }
         case .widgets:

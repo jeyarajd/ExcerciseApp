@@ -1,6 +1,1318 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "%@ didn't change at your last check, so the plan now works on %@. %@ still gets a session every week." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ no cambió en tu última prueba, así que el plan ahora trabaja: %2$@. %3$@ sigue teniendo una sesión cada semana."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "पिछली जाँच में %1$@ में बदलाव नहीं हुआ, इसलिए प्लान अब %2$@ पर काम करता है। %3$@ का अब भी हर हफ़्ते एक सेशन है।"
+          }
+        }
+      }
+    },
+    "%@ didn't change this time, so your plan now focuses on %@ instead. %@ keeps a session every week." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ no cambió esta vez, así que tu plan ahora se centra en: %2$@. %3$@ mantiene una sesión cada semana."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "इस बार %1$@ में बदलाव नहीं हुआ, इसलिए आपका प्लान अब %2$@ पर ध्यान देगा। %3$@ का हर हफ़्ते एक सेशन रहेगा।"
+          }
+        }
+      }
+    },
+    "%@ is a step easier next time, so every rep counts." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La próxima vez, %@ será un nivel más fácil, para que cada repetición cuente."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अगली बार %@ एक स्तर आसान होगा, ताकि हर रेप पूरा हो।"
+          }
+        }
+      }
+    },
+    "%@ · %lld sets" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ · %lld series"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ · %lld सेट"
+          }
+        }
+      }
+    },
+    "%@ · 1 set" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ · 1 serie"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ · 1 सेट"
+          }
+        }
+      }
+    },
+    "%@. If you've fallen in the last year or use a walking aid, keep a chair or wall within reach." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@. Si te has caído en el último año o usas una ayuda para caminar, ten una silla o una pared a mano."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@। अगर पिछले साल आप गिरे हैं या चलने में सहारा लेते हैं, तो कुर्सी या दीवार पास रखें।"
+          }
+        }
+      }
+    },
+    "%@. Use a soft mat for kneeling." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@. Usa una esterilla blanda para arrodillarte."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@। घुटने टेकने के लिए नरम मैट इस्तेमाल करें।"
+          }
+        }
+      }
+    },
+    "%lld → %lld years" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld → %lld años"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld → %lld वर्ष"
+          }
+        }
+      }
+    },
+    "A balance block 3 times a week, plus a small habit every day." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un bloque de equilibrio 3 veces por semana y un pequeño hábito cada día."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "हफ़्ते में 3 बार संतुलन का सेट, और हर दिन एक छोटी आदत।"
+          }
+        }
+      }
+    },
+    "A general fitness plan, not medical advice. Stop and rest if anything hurts, and seek help for chest pain, dizziness or sharp joint pain. If you've fallen in the last year or use a walking aid, do balance work only with a chair or wall within reach." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un plan de forma física general, no un consejo médico. Para y descansa si algo te duele, y busca ayuda si tienes dolor en el pecho, mareo o un dolor agudo en las articulaciones. Si te has caído en el último año o usas una ayuda para caminar, haz el equilibrio solo con una silla o una pared a mano."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "यह एक सामान्य फ़िटनेस प्लान है, चिकित्सा सलाह नहीं। कहीं भी दर्द हो तो रुककर आराम करें, और सीने में दर्द, चक्कर या जोड़ों में तेज़ दर्द होने पर मदद लें। अगर पिछले साल आप गिरे हैं या चलने में सहारा लेते हैं, तो संतुलन की एक्सरसाइज़ केवल कुर्सी या दीवार पास रखकर करें।"
+          }
+        }
+      }
+    },
+    "About 10 minutes of flexibility 4 times a week, strength twice." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unos 10 minutos de flexibilidad 4 veces por semana y fuerza 2."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "हफ़्ते में 4 बार लगभग 10 मिनट लचीलापन, 2 बार ताक़त।"
+          }
+        }
+      }
+    },
+    "ACSM's Health & Fitness Journal: the talk test" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ACSM's Health & Fitness Journal: la prueba del habla"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ACSM's Health & Fitness Journal: बात करने वाला टेस्ट"
+          }
+        }
+      }
+    },
+    "All-round" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Completa"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "सब तरह की"
+          }
+        }
+      }
+    },
+    "At a moderate pace you can still say a few words per breath: you can talk, but not sing." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A ritmo moderado aún puedes decir unas palabras por respiración: puedes hablar, pero no cantar."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "मध्यम गति पर आप हर साँस में कुछ शब्द बोल सकते हैं: आप बात कर सकते हैं, पर गा नहीं सकते।"
+          }
+        }
+      }
+    },
+    "Back" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atrás"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "वापस"
+          }
+        }
+      }
+    },
+    "Balance and strength built into daily tasks cut falls by nearly a third." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El equilibrio y la fuerza integrados en las tareas diarias redujeron las caídas casi un tercio."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "रोज़ के कामों में शामिल संतुलन और ताक़त ने गिरने की घटनाएँ लगभग एक-तिहाई कम कीं।"
+          }
+        }
+      }
+    },
+    "Breathe in for four, and out for four." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inspira contando cuatro y espira contando cuatro."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "चार गिनती तक साँस लें, और चार तक छोड़ें।"
+          }
+        }
+      }
+    },
+    "Brush your teeth standing on one leg (swap halfway)." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lávate los dientes sobre una pierna (cambia a mitad)."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "एक पैर पर खड़े होकर दाँत ब्रश करें (आधे में पैर बदलें)।"
+          }
+        }
+      }
+    },
+    "Check week: one set fewer, and a Floor Age check on the last day. Bodies adapt on rest." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Semana de prueba: una serie menos y una prueba de Floor Age el último día. El cuerpo se adapta al descansar."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "जाँच का हफ़्ता: एक सेट कम, और आख़िरी दिन फ़्लोर एज जाँच। आराम के दौरान शरीर मज़बूत होता है।"
+          }
+        }
+      }
+    },
+    "Clemson et al., BMJ (2012): the LiFE programme" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clemson et al., BMJ (2012): el programa LiFE"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clemson et al., BMJ (2012): LiFE प्रोग्राम"
+          }
+        }
+      }
+    },
+    "Daily habit" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hábito diario"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "रोज़ की आदत"
+          }
+        }
+      }
+    },
+    "Done for today. It counts towards your week." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hecho por hoy. Cuenta para tu semana."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आज के लिए हो गया। यह आपके हफ़्ते में गिना जाएगा।"
+          }
+        }
+      }
+    },
+    "Done. See how each area changed in History." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hecho. Mira en Historial cómo cambió cada área."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "हो गया। इतिहास में देखें कि हर हिस्सा कैसे बदला।"
+          }
+        }
+      }
+    },
+    "Easy" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fácil"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आसान"
+          }
+        }
+      }
+    },
+    "Floor Age check" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prueba de Floor Age"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "फ़्लोर एज जाँच"
+          }
+        }
+      }
+    },
+    "Floor mobility" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Movilidad en el suelo"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "फ़र्श की मोबिलिटी"
+          }
+        }
+      }
+    },
+    "Floor mobility 3 times a week, leg strength twice." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Movilidad en el suelo 3 veces por semana y fuerza de piernas 2."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "हफ़्ते में 3 बार फ़र्श की मोबिलिटी, 2 बार पैरों की ताक़त।"
+          }
+        }
+      }
+    },
+    "Fold forward gently to touch your shins while you wait for the kettle." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inclínate suavemente hacia delante hasta tocarte las espinillas mientras esperas el agua."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "केतली का इंतज़ार करते समय धीरे से आगे झुककर पिंडलियों को छुएँ।"
+          }
+        }
+      }
+    },
+    "Four quick tests to see what the last 4 weeks changed." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cuatro pruebas rápidas para ver qué cambiaron las últimas 4 semanas."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "चार छोटे टेस्ट, यह देखने के लिए कि पिछले 4 हफ़्तों में क्या बदला।"
+          }
+        }
+      }
+    },
+    "Gentle plan: every exercise starts at the easiest level, at most 2 sets, with a sturdy chair within reach for all standing moves." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plan suave: cada ejercicio empieza en el nivel más fácil, como mucho 2 series, y con una silla firme a mano para todo lo que se hace de pie."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "हल्का प्लान: हर एक्सरसाइज़ सबसे आसान स्तर से शुरू होती है, ज़्यादा से ज़्यादा 2 सेट, और खड़े होकर की जाने वाली हर मूवमेंट के लिए पास में एक मज़बूत कुर्सी।"
+          }
+        }
+      }
+    },
+    "Good. That's the right level for now." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bien. Por ahora, es el nivel adecuado."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अच्छा। अभी के लिए यही सही स्तर है।"
+          }
+        }
+      }
+    },
+    "Hard" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Difícil"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "मुश्किल"
+          }
+        }
+      }
+    },
+    "How hard was that?" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Qué tan difícil fue?"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "यह कितना मुश्किल था?"
+          }
+        }
+      }
+    },
+    "If it feels easy again, we go up." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Si vuelve a resultarte fácil, subimos de nivel."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अगर फिर से आसान लगे, तो हम अगले स्तर पर जाएँगे।"
+          }
+        }
+      }
+    },
+    "Just right" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Justo"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "बिल्कुल सही"
+          }
+        }
+      }
+    },
+    "Kneel down on a cushion to reach a low shelf, then stand back up." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arrodíllate sobre un cojín para llegar a un estante bajo y vuelve a levantarte."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "नीचे की शेल्फ़ तक पहुँचने के लिए कुशन पर घुटने टेकें, फिर वापस खड़े हों।"
+          }
+        }
+      }
+    },
+    "Leg strength 3 times a week, walking in between." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fuerza de piernas 3 veces por semana y caminar los días intermedios."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "हफ़्ते में 3 बार पैरों की ताक़त, बीच के दिनों में चलना।"
+          }
+        }
+      }
+    },
+    "Let's ease back in." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volvamos poco a poco."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "चलिए, धीरे-धीरे फिर से शुरू करते हैं।"
+          }
+        }
+      }
+    },
+    "Level up! Next time: %@." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Subes de nivel! La próxima vez: %@."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अगला स्तर! अगली बार: %@।"
+          }
+        }
+      }
+    },
+    "Momma et al., Br J Sports Med (2022)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Momma et al., Br J Sports Med (2022)"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Momma et al., Br J Sports Med (2022)"
+          }
+        }
+      }
+    },
+    "Move" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moverse"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "चलना-फिरना"
+          }
+        }
+      }
+    },
+    "Nice work. That's a set. Rest for a minute: breathe in slowly through your nose, and out through your mouth." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buen trabajo. Serie terminada. Descansa un minuto: inspira despacio por la nariz y suelta el aire por la boca."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "बहुत बढ़िया। एक सेट पूरा। एक मिनट आराम करें: नाक से धीरे साँस लें, और मुँह से छोड़ें।"
+          }
+        }
+      }
+    },
+    "Nice. One more easy session and we go up." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Muy bien. Una sesión fácil más y subimos de nivel."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "बढ़िया। एक और आसान सेशन, फिर हम आगे बढ़ेंगे।"
+          }
+        }
+      }
+    },
+    "of %lld days" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "de %lld días"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld दिनों में से"
+          }
+        }
+      }
+    },
+    "of %lld days · %lld min" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "de %lld días · %lld min"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld दिनों में से · %lld मिनट"
+          }
+        }
+      }
+    },
+    "of %lld min" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "de %lld min"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld मिनट में से"
+          }
+        }
+      }
+    },
+    "Otago Exercise Programme" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Programa de ejercicios Otago"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ओटागो एक्सरसाइज़ प्रोग्राम"
+          }
+        }
+      }
+    },
+    "Put your socks on standing up, holding the counter if you need to." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ponte los calcetines de pie, sujetándote a la encimera si lo necesitas."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "खड़े होकर मोज़े पहनें, ज़रूरत हो तो काउंटर पकड़ें।"
+          }
+        }
+      }
+    },
+    "Reach up to the top shelf and hold the stretch for 3 breaths." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estírate hacia el estante de arriba y mantén el estiramiento 3 respiraciones."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ऊपर की शेल्फ़ तक हाथ बढ़ाएँ और 3 साँसों तक खिंचाव बनाए रखें।"
+          }
+        }
+      }
+    },
+    "Rest day. Today's small habit: %@" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Día de descanso. El pequeño hábito de hoy: %@"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आराम का दिन। आज की छोटी आदत: %@"
+          }
+        }
+      }
+    },
+    "Rise onto your toes 10 times while the kettle boils." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ponte de puntillas 10 veces mientras hierve el agua."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "केतली उबलने तक 10 बार पंजों पर उठें।"
+          }
+        }
+      }
+    },
+    "Since your last check, your plan focused on %@." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desde tu última prueba, tu plan se ha centrado en: %@."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "पिछली जाँच के बाद से आपका प्लान %@ पर केंद्रित था।"
+          }
+        }
+      }
+    },
+    "Sit down and stand up from the sofa 5 times without your hands." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Siéntate y levántate del sofá 5 veces sin usar las manos."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "बिना हाथों के सोफ़े से 5 बार बैठें और उठें।"
+          }
+        }
+      }
+    },
+    "Sit on the floor for a few minutes while you watch TV, then get up slowly." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Siéntate en el suelo unos minutos mientras ves la tele y luego levántate despacio."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "टीवी देखते समय कुछ मिनट फ़र्श पर बैठें, फिर धीरे से उठें।"
+          }
+        }
+      }
+    },
+    "Something hurt" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Algo me dolió"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कहीं दर्द हुआ"
+          }
+        }
+      }
+    },
+    "Sorry that hurt. %@ will be the easier version for a week." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lamentamos que te doliera. Durante una semana, %@ será la versión más fácil."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "दर्द हुआ, इसका अफ़सोस है। एक हफ़्ते तक %@ का आसान रूप होगा।"
+          }
+        }
+      }
+    },
+    "Squat, not bend, to close a low drawer or pick something up." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Agáchate en sentadilla, sin doblar la espalda, para cerrar un cajón bajo o recoger algo."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "नीचे की दराज़ बंद करने या कुछ उठाने के लिए झुकें नहीं, स्क्वाट करें।"
+          }
+        }
+      }
+    },
+    "Stand with your feet together while you wait in a queue or on the phone." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quédate con los pies juntos mientras esperas en una cola o al teléfono."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "लाइन में या फ़ोन पर इंतज़ार करते समय पैर मिलाकर खड़े रहें।"
+          }
+        }
+      }
+    },
+    "Stop any move that causes sharp pain. If pain is sharp, doesn't settle, or comes with chest pain or dizziness, stop and talk to a doctor or physiotherapist." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detén cualquier movimiento que cause un dolor agudo. Si el dolor es agudo, no se calma o viene con dolor en el pecho o mareo, para y habla con un médico o fisioterapeuta."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "जिस भी मूवमेंट से तेज़ दर्द हो, उसे रोक दें। अगर दर्द तेज़ हो, ठीक न हो, या सीने में दर्द या चक्कर के साथ हो, तो रुकें और डॉक्टर या फ़िज़ियोथेरेपिस्ट से बात करें।"
+          }
+        }
+      }
+    },
+    "Strength" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fuerza"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ताक़त"
+          }
+        }
+      }
+    },
+    "Strength and balance 3 times a week; move up a level after 2 sets of 10 good reps; rest 1–2 minutes between sets." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fuerza y equilibrio 3 veces por semana; sube de nivel tras 2 series de 10 buenas repeticiones; descansa 1–2 minutos entre series."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "हफ़्ते में 3 बार ताक़त और संतुलन; 10 अच्छे रेप्स के 2 सेट के बाद अगला स्तर; सेटों के बीच 1–2 मिनट आराम।"
+          }
+        }
+      }
+    },
+    "Strength: more isn't better here. About 40 minutes a week is the sweet spot." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fuerza: aquí más no es mejor. Unos 40 minutos por semana es lo ideal."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ताक़त: यहाँ ज़्यादा बेहतर नहीं। हफ़्ते में लगभग 40 मिनट सबसे अच्छा है।"
+          }
+        }
+      }
+    },
+    "Take the stairs, one step at a time with the rail, instead of the lift." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sube por las escaleras, un escalón cada vez y con la barandilla, en lugar del ascensor."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "लिफ़्ट की जगह रेलिंग पकड़कर एक-एक सीढ़ी चढ़ें।"
+          }
+        }
+      }
+    },
+    "Tap when you've done it." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toca cuando lo hayas hecho."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कर लेने पर टैप करें।"
+          }
+        }
+      }
+    },
+    "Ten seconds. Next up, %@." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diez segundos. Lo siguiente: %@."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "दस सेकंड। अगली है %@।"
+          }
+        }
+      }
+    },
+    "Thanks. We'll stay at this level until it feels easier." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gracias. Seguiremos en este nivel hasta que te resulte más fácil."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "धन्यवाद। जब तक यह आसान न लगे, हम इसी स्तर पर रहेंगे।"
+          }
+        }
+      }
+    },
+    "That's plenty of strength work. More isn't better here: 30–60 minutes a week is the sweet spot." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Es mucho trabajo de fuerza. Aquí más no es mejor: 30–60 minutos por semana es lo ideal."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ताक़त की इतनी एक्सरसाइज़ काफ़ी है। यहाँ ज़्यादा बेहतर नहीं: हफ़्ते में 30–60 मिनट सबसे अच्छा है।"
+          }
+        }
+      }
+    },
+    "The biggest benefit of muscle strengthening comes at about 30–60 minutes a week, with no extra benefit above that." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El mayor beneficio del trabajo de fuerza llega con unos 30–60 minutos por semana, sin beneficio extra por encima."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "मांसपेशियों को मज़बूत करने का सबसे बड़ा फ़ायदा हफ़्ते में लगभग 30–60 मिनट पर मिलता है, उससे ज़्यादा पर कोई अतिरिक्त फ़ायदा नहीं।"
+          }
+        }
+      }
+    },
+    "The talk test: at a moderate pace you can still say a few words per breath. You should be able to talk, but not sing." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La prueba del habla: a ritmo moderado aún puedes decir unas palabras por respiración. Deberías poder hablar, pero no cantar."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "बात करने वाला टेस्ट: मध्यम गति पर आप हर साँस में कुछ शब्द बोल सकते हैं। आपको बात कर पाना चाहिए, पर गा नहीं पाना चाहिए।"
+          }
+        }
+      }
+    },
+    "This month's focus" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El foco de este mes"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "इस महीने का फ़ोकस"
+          }
+        }
+      }
+    },
+    "This week's dose" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La dosis de esta semana"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "इस हफ़्ते की खुराक"
+          }
+        }
+      }
+    },
+    "Two hard sessions in a row: same level, one set fewer next time." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dos sesiones difíciles seguidas: mismo nivel y una serie menos la próxima vez."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "लगातार दो मुश्किल सेशन: अगली बार वही स्तर, एक सेट कम।"
+          }
+        }
+      }
+    },
+    "Use the talk test: when you speed up, you should be able to talk, but not sing." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usa la prueba del habla: cuando aceleres, deberías poder hablar, pero no cantar."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "बात करने वाला टेस्ट अपनाएँ: जब आप तेज़ चलें, तब भी बात कर पाएँ, पर गा न पाएँ।"
+          }
+        }
+      }
+    },
+    "Walk heel-to-toe to the kitchen." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Camina talón con punta hasta la cocina."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "एड़ी से पंजा मिलाकर रसोई तक चलें।"
+          }
+        }
+      }
+    },
+    "Walk sideways along the kitchen bench while the kettle boils." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Camina de lado junto a la encimera mientras hierve el agua."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "केतली उबलने तक रसोई के काउंटर के साथ-साथ बग़ल में चलें।"
+          }
+        }
+      }
+    },
+    "We're keeping this one easier for a few days." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Durante unos días lo mantendremos más fácil."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कुछ दिनों तक हम इसे आसान रखेंगे।"
+          }
+        }
+      }
+    },
+    "Welcome back. We eased you in one level lower after the break." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bienvenido de nuevo. Tras el descanso, empezamos un nivel más abajo."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "वापसी पर स्वागत है। ब्रेक के बाद हमने एक स्तर नीचे से शुरुआत की।"
+          }
+        }
+      }
+    },
+    "Which one hurt?" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Cuál te dolió?"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "किसमें दर्द हुआ?"
+          }
+        }
+      }
+    },
+    "You did %lld last time. Try %lld again." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La última vez hiciste %lld. Intenta %lld otra vez."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "पिछली बार आपने %lld किए। फिर से %lld करके देखें।"
+          }
+        }
+      }
+    },
+    "You held %lld seconds last time. Try %lld again." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La última vez aguantaste %lld segundos. Intenta %lld otra vez."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "पिछली बार आपने %lld सेकंड रोका। फिर से %lld करके देखें।"
+          }
+        }
+      }
+    },
+    "Your plan's focus" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El foco de tu plan"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आपके प्लान का फ़ोकस"
+          }
+        }
+      }
+    },
+    "Your weakest area at the last check. %@ The other areas get one session a week." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu área más débil en la última prueba. %@ Las demás áreas tienen una sesión por semana."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "पिछली जाँच में आपका सबसे कमज़ोर हिस्सा। %@ बाक़ी हिस्सों का हफ़्ते में एक सेशन होता है।"
+          }
+        }
+      }
+    },
     "–" : {
       "localizations" : {
         "hi" : {

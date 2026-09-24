@@ -116,6 +116,52 @@
         }
       }
     },
+    "balance.level.3.intro": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "One leg balance with your eyes closed. Stand right next to a wall or chair. Lift one knee, find your balance, then close your eyes and hold."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "आँखें बंद करके एक पैर पर संतुलन। दीवार या कुर्सी के ठीक पास खड़े हों। एक घुटना उठाएँ, संतुलन बनाएँ, फिर आँखें बंद करके रुकें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Equilibrio a una pierna con los ojos cerrados. Ponte justo al lado de una pared o una silla. Levanta una rodilla, busca el equilibrio, cierra los ojos y aguanta."
+          }
+        }
+      }
+    },
+    "balance.level.3.name": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "One-Leg Balance, Eyes Closed"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "आँखें बंद करके एक पैर पर संतुलन"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Equilibrio a una pierna con ojos cerrados"
+          }
+        }
+      }
+    },
     "calf_raise.cue.0": {
       "extractionState": "manual",
       "localizations": {
@@ -204,6 +250,52 @@
           "stringUnit": {
             "state": "translated",
             "value": "Elevación de talones. Sube sobre las puntas de los pies, haz una pausa y baja despacio."
+          }
+        }
+      }
+    },
+    "calf_raise.level.3.intro": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "One-leg calf raises without holding on. Stand next to a chair, lift one foot behind you and rise up onto the toes of the other. Lower slowly. We'll switch legs halfway."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "बिना पकड़े एक पैर पर काफ़ रेज़। कुर्सी के पास खड़े हों, एक पैर पीछे उठाएँ और दूसरे पैर के पंजों पर ऊपर उठें। धीरे से नीचे आएँ। आधे समय पर पैर बदलेंगे।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elevación de talón a una pierna sin sujetarte. Ponte junto a una silla, levanta un pie por detrás y sube de puntillas con el otro. Baja despacio. A mitad cambiaremos de pierna."
+          }
+        }
+      }
+    },
+    "calf_raise.level.3.name": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "One-Leg Calf Raise, No Hands"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "बिना हाथों के एक पैर पर काफ़ रेज़"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elevación de talón a una pierna sin manos"
           }
         }
       }
@@ -392,6 +484,144 @@
         }
       }
     },
+    "chair_stand_hands.cue.0": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lean forward, then stand."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "आगे झुकें, फिर खड़े हों।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inclínate hacia delante y levántate."
+          }
+        }
+      }
+    },
+    "chair_stand_hands.cue.1": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Use your hands only as much as you need."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "हाथों का उतना ही सहारा लें जितना ज़रूरी हो।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usa las manos solo lo que necesites."
+          }
+        }
+      }
+    },
+    "chair_stand_hands.cue.2": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sit down with control."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "नियंत्रण के साथ बैठें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Siéntate con control."
+          }
+        }
+      }
+    },
+    "chair_stand_hands.intro": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chair stands with hands. Sit in the middle of a sturdy chair with your hands on your thighs. Push through your legs and hands to stand up fully, then sit back down slowly."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "हाथों के सहारे कुर्सी से उठना। मज़बूत कुर्सी के बीच में बैठें और हाथ जाँघों पर रखें। पैरों और हाथों से ज़ोर लगाकर पूरी तरह खड़े हों, फिर धीरे से वापस बैठें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Levantarse de la silla con manos. Siéntate en el centro de una silla firme con las manos sobre los muslos. Empuja con las piernas y las manos hasta ponerte de pie del todo y vuelve a sentarte despacio."
+          }
+        }
+      }
+    },
+    "chair_stand_hands.name": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chair Stand with Hands"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "हाथों के सहारे कुर्सी से उठना"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Levantarse de la silla con manos"
+          }
+        }
+      }
+    },
+    "chair_stand_hands.safety": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Use a sturdy chair against a wall so it can't slide."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "मज़बूत कुर्सी दीवार से सटाकर रखें ताकि वह खिसके नहीं।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usa una silla firme contra la pared para que no se deslice."
+          }
+        }
+      }
+    },
     "deep_squat_hold.cue.0": {
       "extractionState": "manual",
       "localizations": {
@@ -526,6 +756,328 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sujétate al marco de una puerta o pon una toalla doblada bajo los talones si te ayuda."
+          }
+        }
+      }
+    },
+    "feet_together_balance.cue.0": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stand tall."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "सीधे खड़े रहें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mantente erguido."
+          }
+        }
+      }
+    },
+    "feet_together_balance.cue.1": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Light hands on the chair."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "कुर्सी पर हल्के हाथ।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Manos suaves sobre la silla."
+          }
+        }
+      }
+    },
+    "feet_together_balance.cue.2": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eyes on one spot."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "नज़र एक जगह पर।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mirada en un punto."
+          }
+        }
+      }
+    },
+    "feet_together_balance.intro": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Feet together. Stand behind a sturdy chair and hold its back. Bring your feet together and stand tall. Let go a little if you feel steady."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "पैर मिलाकर खड़े हों। एक मज़बूत कुर्सी के पीछे खड़े होकर उसकी पीठ पकड़ें। पैरों को मिलाएँ और सीधे खड़े रहें। संतुलन बने तो पकड़ थोड़ी ढीली करें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pies juntos. Ponte detrás de una silla firme y sujeta el respaldo. Junta los pies y mantente erguido. Si te sientes estable, suelta un poco."
+          }
+        }
+      }
+    },
+    "feet_together_balance.name": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Feet Together Balance"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "पैर मिलाकर संतुलन"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Equilibrio con pies juntos"
+          }
+        }
+      }
+    },
+    "feet_together_balance.safety": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep a sturdy chair or a wall within reach."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "मज़बूत कुर्सी या दीवार पास रखें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ten una silla firme o una pared a mano."
+          }
+        }
+      }
+    },
+    "floor.level.2.intro": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kneel to stand without your hands. Step back and lower one knee gently to the mat, then push through your front foot to stand up, arms forward for balance."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "बिना हाथों के घुटने से खड़े होना। पीछे क़दम रखें और एक घुटना धीरे से मैट पर टिकाएँ, फिर आगे वाले पैर से ज़ोर लगाकर खड़े हों, संतुलन के लिए हाथ आगे।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De rodillas a de pie sin manos. Da un paso atrás y apoya una rodilla suavemente en la esterilla; luego empuja con el pie de delante para levantarte, con los brazos al frente para equilibrarte."
+          }
+        }
+      }
+    },
+    "floor.level.2.name": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kneel to Stand, No Hands"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "बिना हाथों के घुटने से खड़े होना"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De rodillas a de pie sin manos"
+          }
+        }
+      }
+    },
+    "half_kneel.cue.0": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tall through your spine."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "रीढ़ सीधी रखें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Columna larga y erguida."
+          }
+        }
+      }
+    },
+    "half_kneel.cue.1": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gently squeeze the back buttock."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "पीछे वाले कूल्हे को हल्का कसें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aprieta suavemente el glúteo de atrás."
+          }
+        }
+      }
+    },
+    "half_kneel.cue.2": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Breathe slowly."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "धीरे-धीरे साँस लें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Respira despacio."
+          }
+        }
+      }
+    },
+    "half_kneel.intro": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Half-kneel. On a soft mat, kneel on one knee with the other foot flat in front of you. Stand your body tall and hold. We'll swap sides halfway."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "आधा घुटना टेकना। नरम मैट पर एक घुटना टेकें और दूसरा पैर सामने ज़मीन पर सपाट रखें। शरीर को सीधा रखें और रुकें। आधे समय पर तरफ़ बदलेंगे।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Media rodilla. Sobre una esterilla blanda, apoya una rodilla y el otro pie plano delante. Mantén el cuerpo erguido y aguanta. A mitad cambiaremos de lado."
+          }
+        }
+      }
+    },
+    "half_kneel.name": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Half-Kneel Hold"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "आधा घुटना टेककर रुकना"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Media rodilla sostenida"
+          }
+        }
+      }
+    },
+    "half_kneel.safety": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Put a folded towel under your knee. Skip this if kneeling hurts."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "घुटने के नीचे मुड़ा हुआ तौलिया रखें। घुटना टेकने में दर्द हो तो इसे छोड़ दें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pon una toalla doblada bajo la rodilla. Sáltalo si arrodillarte te duele."
           }
         }
       }
@@ -710,6 +1262,144 @@
           "stringUnit": {
             "state": "translated",
             "value": "No lo practiques mientras estés orinando. Si tienes dolor pélvico o pérdidas de orina que no mejoran, consulta a un médico o a un fisioterapeuta especializado en suelo pélvico."
+          }
+        }
+      }
+    },
+    "kneel_to_stand.cue.0": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lower slowly."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "धीरे से नीचे जाएँ।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Baja despacio."
+          }
+        }
+      }
+    },
+    "kneel_to_stand.cue.1": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Push through the front heel."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "आगे की एड़ी से ज़ोर लगाएँ।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Empuja con el talón de delante."
+          }
+        }
+      }
+    },
+    "kneel_to_stand.cue.2": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stand all the way up."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "पूरी तरह खड़े हों।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ponte de pie del todo."
+          }
+        }
+      }
+    },
+    "kneel_to_stand.intro": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kneel to stand. Step back and lower one knee gently to the mat, then push through your front foot to stand up again. Use your hands on your front knee if you need them."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "घुटने से खड़े होना। पीछे क़दम रखें और एक घुटना धीरे से मैट पर टिकाएँ, फिर आगे वाले पैर से ज़ोर लगाकर फिर खड़े हों। ज़रूरत हो तो हाथ आगे वाले घुटने पर रखें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De rodillas a de pie. Da un paso atrás y apoya una rodilla suavemente en la esterilla; luego empuja con el pie de delante para volver a ponerte de pie. Apoya las manos en la rodilla de delante si lo necesitas."
+          }
+        }
+      }
+    },
+    "kneel_to_stand.name": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kneel to Stand"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "घुटने से खड़े होना"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De rodillas a de pie"
+          }
+        }
+      }
+    },
+    "kneel_to_stand.safety": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kneel on a soft mat or a folded towel, next to a chair you can hold."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "नरम मैट या मुड़े हुए तौलिये पर घुटना टेकें, पास में एक कुर्सी रखें जिसे पकड़ सकें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arrodíllate sobre una esterilla blanda o una toalla doblada, junto a una silla a la que puedas agarrarte."
           }
         }
       }
@@ -1151,6 +1841,144 @@
         }
       }
     },
+    "single_leg_calf_raise.cue.0": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rise straight up."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "सीधे ऊपर उठें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sube recto."
+          }
+        }
+      }
+    },
+    "single_leg_calf_raise.cue.1": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pause at the top."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ऊपर रुकें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pausa arriba."
+          }
+        }
+      }
+    },
+    "single_leg_calf_raise.cue.2": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lower slowly."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "धीरे से नीचे आएँ।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Baja despacio."
+          }
+        }
+      }
+    },
+    "single_leg_calf_raise.intro": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "One-leg calf raises. Hold the back of a sturdy chair, lift one foot behind you, and rise up onto the toes of the other. Lower slowly. We'll switch legs halfway."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "एक पैर पर काफ़ रेज़। मज़बूत कुर्सी की पीठ पकड़ें, एक पैर पीछे उठाएँ, और दूसरे पैर के पंजों पर ऊपर उठें। धीरे से नीचे आएँ। आधे समय पर पैर बदलेंगे।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elevación de talón a una pierna. Sujeta el respaldo de una silla firme, levanta un pie por detrás y sube de puntillas con el otro. Baja despacio. A mitad cambiaremos de pierna."
+          }
+        }
+      }
+    },
+    "single_leg_calf_raise.name": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "One-Leg Calf Raise"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "एक पैर पर काफ़ रेज़"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elevación de talón a una pierna"
+          }
+        }
+      }
+    },
+    "single_leg_calf_raise.safety": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep a hand on the chair until you feel steady."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "जब तक संतुलन न बने, एक हाथ कुर्सी पर रखें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mantén una mano en la silla hasta que te sientas estable."
+          }
+        }
+      }
+    },
     "sit_rise.cue.0": {
       "extractionState": "manual",
       "localizations": {
@@ -1289,6 +2117,52 @@
         }
       }
     },
+    "sit_to_stand.level.2.intro": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Low chair stands. Use a lower seat, like a sturdy stool or a low sofa, arms crossed on your chest. Stand up fully, then sit back down slowly."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "नीची कुर्सी से उठना। नीची सीट लें, जैसे मज़बूत स्टूल या नीचा सोफ़ा, हाथ सीने पर क्रॉस। पूरी तरह खड़े हों, फिर धीरे से वापस बैठें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Levantarse de una silla baja. Usa un asiento más bajo, como un taburete firme o un sofá bajo, con los brazos cruzados sobre el pecho. Ponte de pie del todo y vuelve a sentarte despacio."
+          }
+        }
+      }
+    },
+    "sit_to_stand.level.2.name": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Low Chair Stand"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "नीची कुर्सी से उठना"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Levantarse de una silla baja"
+          }
+        }
+      }
+    },
     "squat.cue.0": {
       "extractionState": "manual",
       "localizations": {
@@ -1404,6 +2278,52 @@
         }
       }
     },
+    "squat.level.1.intro": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Squats to a chair. Stand in front of a sturdy chair, arms forward. Sit back until you just touch the seat, then stand tall without sitting down."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "कुर्सी तक स्क्वाट। मज़बूत कुर्सी के सामने खड़े हों, हाथ आगे। तब तक पीछे बैठें जब तक सीट को हल्का सा न छू लें, फिर बिना बैठे सीधे खड़े हों।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sentadillas hasta la silla. Ponte delante de una silla firme con los brazos al frente. Échate hacia atrás hasta rozar el asiento y levántate sin llegar a sentarte."
+          }
+        }
+      }
+    },
+    "squat.level.1.name": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Squat to a Chair"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "कुर्सी तक स्क्वाट"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sentadilla hasta la silla"
+          }
+        }
+      }
+    },
     "squat.name": {
       "extractionState": "manual",
       "localizations": {
@@ -1446,6 +2366,305 @@
           "stringUnit": {
             "state": "translated",
             "value": "Baja solo hasta donde te resulte cómodo. Si tienes dudas, pon una silla detrás de ti."
+          }
+        }
+      }
+    },
+    "supported_calf_raise.cue.0": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rise straight up."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "सीधे ऊपर उठें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sube recto."
+          }
+        }
+      }
+    },
+    "supported_calf_raise.cue.1": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pause at the top."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ऊपर रुकें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pausa arriba."
+          }
+        }
+      }
+    },
+    "supported_calf_raise.cue.2": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lower slowly."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "धीरे से नीचे आएँ।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Baja despacio."
+          }
+        }
+      }
+    },
+    "supported_calf_raise.intro": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calf raises at a chair. Stand behind a sturdy chair and hold its back. Rise up onto your toes, pause, then lower slowly."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "कुर्सी पकड़कर काफ़ रेज़। मज़बूत कुर्सी के पीछे खड़े होकर उसकी पीठ पकड़ें। पंजों पर ऊपर उठें, रुकें, फिर धीरे से नीचे आएँ।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elevación de talones en la silla. Ponte detrás de una silla firme y sujeta el respaldo. Sube de puntillas, haz una pausa y baja despacio."
+          }
+        }
+      }
+    },
+    "supported_calf_raise.name": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calf Raise at a Chair"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "कुर्सी पकड़कर काफ़ रेज़"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elevación de talones en la silla"
+          }
+        }
+      }
+    },
+    "supported_calf_raise.safety": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Use a sturdy chair that can't tip or slide."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ऐसी मज़बूत कुर्सी लें जो पलटे या खिसके नहीं।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usa una silla firme que no pueda volcar ni deslizarse."
+          }
+        }
+      }
+    },
+    "tandem_stance.cue.0": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heel to toe."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "एड़ी से पंजा।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Talón con punta."
+          }
+        }
+      }
+    },
+    "tandem_stance.cue.1": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stand tall."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "सीधे खड़े रहें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mantente erguido."
+          }
+        }
+      }
+    },
+    "tandem_stance.cue.2": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eyes on one spot."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "नज़र एक जगह पर।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mirada en un punto."
+          }
+        }
+      }
+    },
+    "tandem_stance.cue.3": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Breathe slowly."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "धीरे-धीरे साँस लें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Respira despacio."
+          }
+        }
+      }
+    },
+    "tandem_stance.intro": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tandem stance. Put one foot straight in front of the other, heel touching toe, like standing on a line. Hold, then we'll swap feet halfway."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "टैंडम स्टांस। एक पैर को दूसरे के ठीक आगे रखें, एड़ी पंजे को छूती हुई, जैसे किसी रेखा पर खड़े हों। रुकें, फिर आधे समय पर पैर बदलेंगे।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Postura en tándem. Pon un pie justo delante del otro, el talón tocando la punta, como si estuvieras sobre una línea. Aguanta y a mitad cambiaremos de pie."
+          }
+        }
+      }
+    },
+    "tandem_stance.name": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tandem Stance"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "टैंडम स्टांस"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Postura en tándem"
+          }
+        }
+      }
+    },
+    "tandem_stance.safety": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stand next to a wall or kitchen counter you can touch if you wobble."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "दीवार या रसोई के काउंटर के पास खड़े हों ताकि डगमगाने पर छू सकें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ponte junto a una pared o la encimera para poder tocarla si te tambaleas."
           }
         }
       }
@@ -1584,6 +2803,144 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nunca rebotes. Detente al notar un estiramiento suave, no dolor."
+          }
+        }
+      }
+    },
+    "wall_sit.cue.0": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Back flat on the wall."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "पीठ दीवार से सटी रहे।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Espalda pegada a la pared."
+          }
+        }
+      }
+    },
+    "wall_sit.cue.1": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Knees over your ankles."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "घुटने टखनों के ऊपर।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rodillas sobre los tobillos."
+          }
+        }
+      }
+    },
+    "wall_sit.cue.2": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep breathing."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "साँस लेते रहें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sigue respirando."
+          }
+        }
+      }
+    },
+    "wall_sit.intro": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wall sit. Stand with your back flat against a wall, feet a step forward. Slide down until your knees bend, like sitting on an invisible chair, and hold."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "वॉल सिट। पीठ दीवार से सटाकर खड़े हों, पैर एक क़दम आगे। घुटने मुड़ने तक नीचे सरकें, जैसे किसी अदृश्य कुर्सी पर बैठे हों, और रुकें।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sentadilla en la pared. Ponte de pie con la espalda apoyada en la pared y los pies un paso por delante. Deslízate hacia abajo hasta doblar las rodillas, como si te sentaras en una silla invisible, y aguanta."
+          }
+        }
+      }
+    },
+    "wall_sit.name": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wall Sit"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "वॉल सिट"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sentadilla en la pared"
+          }
+        }
+      }
+    },
+    "wall_sit.safety": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Only slide as low as feels comfortable for your knees."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "उतना ही नीचे जाएँ जितना घुटनों को आराम से ठीक लगे।"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Baja solo hasta donde tus rodillas estén cómodas."
           }
         }
       }
