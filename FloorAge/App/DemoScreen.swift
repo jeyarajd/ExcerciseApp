@@ -7,7 +7,7 @@ import SwiftUI
 /// `-demoSnapshot <path.png>` to have the app save a picture of itself and quit (no screen
 /// recording permission needed).
 enum DemoScreen: String, CaseIterable {
-    case onboarding, today, track, plan, planIntro, cardio, sleep, steps, food, foodPhoto, bmi, progress, settings, session, kegel, test, sitRise, balance, chairStand, reach, result, plus, video, portrait
+    case onboarding, today, track, plan, planIntro, cardio, sleep, steps, food, foodPhoto, bmi, progress, settings, session, kegel, test, sitRise, balance, chairStand, reach, cameraChair, cameraBalance, cameraReach, result, share, plus, family, familyAdd, video, portrait
 
     /// Screens show Floor Age Plus unlocked unless launched with `-demoPlus NO`.
     static var hasPlus: Bool {
@@ -24,8 +24,12 @@ enum DemoScreen: String, CaseIterable {
 
     /// A 52-year-old with a knee limitation, three checks over two months and four recent sessions.
     static func sampleModel() -> AppModel {
-        let url = FileManager.default.temporaryDirectory.appendingPathComponent("floorage-demo.json")
-        try? FileManager.default.removeItem(at: url)
+        let tmp = FileManager.default.temporaryDirectory
+        let url = tmp.appendingPathComponent("floorage-demo.json")
+        // Start clean, including family members from an earlier run.
+        for file in (try? FileManager.default.contentsOfDirectory(atPath: tmp.path)) ?? [] where file.hasPrefix("floorage-demo") {
+            try? FileManager.default.removeItem(at: tmp.appendingPathComponent(file))
+        }
         let model = AppModel(fileURL: url)
         model.profile = Profile(name: "Priya", age: 52, limitations: [.knee], gender: .female)
         let cal = Calendar.current
@@ -59,6 +63,15 @@ enum DemoScreen: String, CaseIterable {
             let bed = cal.date(bySettingHour: bedHour, minute: bedMinute, second: 0, of: bedDay)!
             model.logSleep(SleepEntry(bedtime: bed, wake: bed.addingTimeInterval(hours * 3600), quality: hours >= 7 ? 3 : 2))
         }
+        // Priya's parents, tested on her phone (family profiles).
+        let owner = model.activeMemberID
+        for (name, age, gender, scores) in [("Raj", 78, Gender.male, ["sitRise": 4.5, "balance": 7.0, "chairStand": 10.0, "reach": 1.0]),
+                                            ("Meena", 74, Gender.female, ["sitRise": 5.5, "balance": 12.0, "chairStand": 12.0, "reach": 3.0])] {
+            model.addMember()
+            model.profile = Profile(name: name, age: age, limitations: name == "Raj" ? [.knee] : [], gender: gender)
+            model.add(FloorAgeResult(age: age, scores: scores))
+        }
+        model.switchMember(owner)
         return model
     }
 
@@ -136,6 +149,18 @@ private struct DemoScreenHost: View {
             FloorAgeTestView(startStep: 3)
         case .reach:
             FloorAgeTestView(startStep: 4)
+        case .cameraChair:
+            FloorAgeTestView(startStep: 3, demoCamera: .chairStand)
+        case .cameraBalance:
+            FloorAgeTestView(startStep: 2, demoCamera: .balance)
+        case .cameraReach:
+            FloorAgeTestView(startStep: 4, demoCamera: .reach)
+        case .family:
+            FamilyView()
+        case .familyAdd:
+            OnboardingView().onAppear { if model.isOwner { model.addMember() } }
+        case .share:
+            ShareCardView(result: model.latestResult!)
         case .result:
             NavigationStack {
                 FloorAgeResultView(result: model.latestResult!)

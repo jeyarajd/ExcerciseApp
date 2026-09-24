@@ -64,6 +64,7 @@ final class AppModel: ObservableObject {
         didSet {
             save()
             syncCoachLook()
+            updateActiveMember()
         }
     }
     @Published private(set) var results: [FloorAgeResult] = []
@@ -92,14 +93,30 @@ final class AppModel: ObservableObject {
         var sleepLog: [SleepEntry]?
     }
 
-    private let fileURL: URL
+    /// Everyone who uses this iPhone. The first is the phone's owner, whose data lives in the
+    /// original file; each family member has a file of their own next to it.
+    @Published private(set) var members: [FamilyMember] = []
+    @Published private(set) var activeMemberID: UUID
+
+    /// The owner's file. Family members' files and the family index sit beside it.
+    private let mainURL: URL
+    private var fileURL: URL
     private var loading = false
+    /// Who was active before `addMember()`, so cancelling the new profile can go back.
+    private var memberBeforeAdding: UUID?
 
     init(fileURL: URL? = nil) {
         let dir = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
         try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
-        self.fileURL = fileURL ?? dir.appendingPathComponent("floorage.json")
+        mainURL = fileURL ?? dir.appendingPathComponent("floorage.json")
+        let owner = FamilyMember(file: mainURL.lastPathComponent)
+        members = [owner]
+        activeMemberID = owner.id
+        self.fileURL = mainURL
+        loadFamily()
+        self.fileURL = url(for: activeMember)
         load()
+        updateActiveMember()
     }
 
     var latestResult: FloorAgeResult? { results.last }
@@ -107,6 +124,7 @@ final class AppModel: ObservableObject {
     func add(_ result: FloorAgeResult) {
         results.append(result)
         save()
+        updateActiveMember()
     }
 
     func completeSession(on date: Date = Date()) {
@@ -132,6 +150,10 @@ final class AppModel: ObservableObject {
     }
 
     func resetAll() {
+        if !isOwner {
+            removeMember(activeMemberID)
+            return
+        }
         profile = nil
         results = []
         sessionDays = []
@@ -269,6 +291,16 @@ final class AppModel: ObservableObject {
     private func load() {
         loading = true
         defer { loading = false }
+        profile = nil
+        results = []
+        sessionDays = []
+        foodLog = []
+        weights = []
+        planStart = nil
+        planProgram = nil
+        planDone = []
+        planBaseSteps = nil
+        sleepLog = []
         guard let data = try? Data(contentsOf: fileURL),
               let stored = try? JSONDecoder().decode(Stored.self, from: data) else { return }
         profile = stored.profile
@@ -290,6 +322,114 @@ final class AppModel: ObservableObject {
                             planBaseSteps: planBaseSteps, sleepLog: sleepLog)
         guard let data = try? JSONEncoder().encode(stored) else { return }
         try? data.write(to: fileURL, options: [.atomic, .completeFileProtection])
+    }
+}
+
+// MARK: - Family
+
+/// One person using this iPhone. Name, age and Floor Age are copied here from their profile, so the
+/// family list can show everyone without opening each file.
+struct FamilyMember: Codable, Identifiable, Equatable {
+    var id = UUID()
+    var file: String
+    var name = ""
+    var age: Int?
+    var floorAge: Int?
+    var gender: Gender?
+}
+
+extension AppModel {
+    private struct FamilyIndex: Codable {
+        var members: [FamilyMember]
+        var active: UUID
+    }
+
+    var activeMember: FamilyMember { members.first { $0.id == activeMemberID } ?? members[0] }
+
+    /// The phone's owner. Steps, Apple Health sleep and reminders belong to this iPhone, so they
+    /// only follow the owner.
+    var isOwner: Bool { activeMemberID == members.first?.id }
+
+    var owner: FamilyMember { members[0] }
+
+    /// Opens someone else's data. Everything on screen follows.
+    func switchMember(_ id: UUID) {
+        guard id != activeMemberID, let member = members.first(where: { $0.id == id }) else { return }
+        activeMemberID = id
+        fileURL = url(for: member)
+        load()
+        syncCoachLook()
+        saveFamily()
+    }
+
+    /// Starts a new, empty profile and switches to it; the app then shows onboarding for them.
+    func addMember() {
+        memberBeforeAdding = activeMemberID
+        let id = UUID()
+        members.append(FamilyMember(id: id, file: fileStem + "-" + id.uuidString + ".json"))
+        saveFamily()
+        switchMember(id)
+    }
+
+    /// True while a just-added member hasn't finished onboarding and can still be cancelled.
+    var canCancelNewMember: Bool { profile == nil && !isOwner && memberBeforeAdding != nil }
+
+    func cancelNewMember() {
+        guard canCancelNewMember else { return }
+        let back = memberBeforeAdding ?? owner.id
+        memberBeforeAdding = nil
+        removeMember(activeMemberID, switchingTo: back)
+    }
+
+    /// Removes a family member and their file. The owner can't be removed.
+    func removeMember(_ id: UUID) {
+        removeMember(id, switchingTo: owner.id)
+    }
+
+    private func removeMember(_ id: UUID, switchingTo next: UUID) {
+        guard id != owner.id, let member = members.first(where: { $0.id == id }) else { return }
+        if activeMemberID == id { switchMember(members.contains { $0.id == next } && next != id ? next : owner.id) }
+        members.removeAll { $0.id == id }
+        try? FileManager.default.removeItem(at: url(for: member))
+        saveFamily()
+    }
+
+    fileprivate func updateActiveMember() {
+        guard !loading, let index = members.firstIndex(where: { $0.id == activeMemberID }) else { return }
+        var member = members[index]
+        member.name = profile?.name ?? ""
+        member.age = profile?.age
+        member.gender = profile?.gender
+        member.floorAge = results.last?.floorAge
+        guard member != members[index] else { return }
+        members[index] = member
+        if profile != nil { memberBeforeAdding = nil }
+        saveFamily()
+    }
+
+    private var fileStem: String { mainURL.deletingPathExtension().lastPathComponent }
+    private var familyURL: URL { mainURL.deletingLastPathComponent().appendingPathComponent(fileStem + "-family.json") }
+
+    fileprivate func url(for member: FamilyMember) -> URL {
+        mainURL.deletingLastPathComponent().appendingPathComponent(member.file)
+    }
+
+    fileprivate func loadFamily() {
+        guard let data = try? Data(contentsOf: familyURL),
+              let index = try? JSONDecoder().decode(FamilyIndex.self, from: data),
+              !index.members.isEmpty else { return }
+        members = index.members
+        activeMemberID = index.members.contains { $0.id == index.active } ? index.active : index.members[0].id
+    }
+
+    private func saveFamily() {
+        // A single person needs no index; the app works exactly as before.
+        guard members.count > 1 else {
+            try? FileManager.default.removeItem(at: familyURL)
+            return
+        }
+        guard let data = try? JSONEncoder().encode(FamilyIndex(members: members, active: activeMemberID)) else { return }
+        try? data.write(to: familyURL, options: [.atomic, .completeFileProtection])
     }
 }
 

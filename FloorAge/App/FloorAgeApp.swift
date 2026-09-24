@@ -32,6 +32,7 @@ struct FloorAgeApp: App {
 
 struct RootView: View {
     @EnvironmentObject private var model: AppModel
+    @EnvironmentObject private var store: Store
 
     /// Launch with `-demoExercise <id>` to open straight into one exercise (used for CI screenshots).
     private let demoExercise = UserDefaults.standard.string(forKey: "demoExercise")
@@ -45,7 +46,14 @@ struct RootView: View {
             OnboardingView()
         } else {
             MainTabs()
+                .onAppear(perform: keepFamilyInPlus)
+                .onChange(of: store.hasPlus) { keepFamilyInPlus() }
         }
+    }
+
+    /// Family members are part of Plus; without it the app opens as the owner.
+    private func keepFamilyInPlus() {
+        if !store.hasPlus, !model.isOwner { model.switchMember(model.owner.id) }
     }
 }
 

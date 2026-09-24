@@ -118,7 +118,7 @@ struct SleepView: View {
             .onChange(of: bedtime) { saved = false }
             .onChange(of: wake) { saved = false }
 
-            if HealthSleep.isAvailable {
+            if HealthSleep.isAvailable, model.isOwner {
                 Section {
                     Toggle("Read sleep from Apple Health", isOn: $healthOn)
                         .onChange(of: healthOn) { _, on in
@@ -161,7 +161,7 @@ struct SleepView: View {
         }
         .appBackground()
         .navigationTitle("Sleep")
-        .task { if healthOn { await importFromHealth(asking: false) } }
+        .task { if healthOn, model.isOwner { await importFromHealth(asking: false) } }
     }
 
     private func importFromHealth(asking: Bool) async {

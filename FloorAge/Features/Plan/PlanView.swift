@@ -291,6 +291,8 @@ struct PlanView: View {
     // MARK: - Helpers
 
     private var averageSteps: Int? {
+        // The iPhone counts its owner's steps; a family member's goals start from the defaults.
+        guard model.isOwner else { return nil }
         let past = steps.week.dropLast().map(\.steps).filter { $0 > 0 }
         return past.isEmpty ? nil : past.reduce(0, +) / past.count
     }

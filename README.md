@@ -7,7 +7,10 @@
 - **3D coach avatar** (RealityKit). A realistic woman or man, matching the gender in your profile, demonstrates each exercise. Drag to turn it, pinch to zoom, double-tap to reset. Settings can switch to a friendly cartoon coach instead.
 - **Demo videos.** A "Watch a real demo" clip for each exercise, bundled in the app and played offline.
 - **Voice coaching** using the iPhone's built-in voices (Indian English by default). It works offline, ducks your music, and still speaks when the phone is on silent.
-- **Floor Age check.** Four guided tests produce an estimated "equivalent age" for each area and overall, plus a shareable card.
+- **Floor Age check.** Four guided tests produce an estimated "equivalent age" for each area and overall.
+- **Camera scoring.** Prop the phone up 2–3 m away, and the front camera counts chair stands, starts and stops the balance timer and suggests how far you reached. It uses Apple's on-device body pose detection (Vision); frames are analysed and discarded, never recorded. Sit to rise is still entered by hand, because a hand or knee touching the floor is too easy to miss from one camera. You can always correct the numbers.
+- **Share card.** A story-sized picture of your Floor Age and areas with a challenge ("Can you get up off the floor without using your hands?") and, once the app is live, a QR code to the App Store. You can hide your real age before sharing, and it never shows your name.
+- **Family profiles (Plus).** Test and coach parents or a partner on the same iPhone, each with their own Floor Age, plan and history. Switch with the avatar at the top of Today. Steps, Apple Health sleep and reminders stay with the phone's owner, because they come from this iPhone.
 - **Daily plan.** About 10 minutes: a warm-up plus exercises for your weakest areas, finishing with pelvic floor (Kegel) squeezes. Moves are skipped or adapted for knee, hip or back problems.
 - **Pelvic floor.** Guided Kegel squeezes with "Squeeze and lift… And relax" timing, at the end of each plan (can be switched off) or as a 2-minute session from Today.
 - **Consistency tracking.** Shows how many of the last 7 days you trained. Missing a day never resets your progress.
@@ -24,7 +27,7 @@
   Each week has run/walk intervals or walking minutes, strength days with sets × reps, balance days from 65, and a daily step goal. A guided timer talks you through each run/walk. The numbers follow WHO 2020, NHS Couch to 5K, ACSM 2009 and Paluch et al. 2022 (listed in the app).
 - **Sleep.** Log bedtime and wake time, or read them from Apple Health, and compare with the recommended 7–9 hours (7–8 from 65; National Sleep Foundation).
 - **Editable profile.** Change your age or limitations in Settings. Your plan and safety filtering update right away.
-- **Floor Age Plus.** A free download with one optional in-app purchase, no subscription. Plus unlocks the training plan, food photo calories, sleep tracking, the pelvic floor programme and the Floor Age history chart. The Floor Age check, daily sessions with the coach, steps, calories, BMI and all safety guidance stay free. See [Floor Age Plus](#floor-age-plus-in-app-purchase).
+- **Floor Age Plus.** A free download with one optional in-app purchase, no subscription. Plus unlocks the training plan, family profiles, food photo calories, sleep tracking, the pelvic floor programme and the Floor Age history chart. The Floor Age check, daily sessions with the coach, steps, calories, BMI and all safety guidance stay free. See [Floor Age Plus](#floor-age-plus-in-app-purchase).
 - **Privacy.** Everything is stored on the phone. Nothing is sent anywhere except the Plus purchase itself, which goes through Apple.
 - **Languages.** English (default), Hindi and Spanish, following the iPhone's language. Screens, spoken coaching (in the matching iPhone voice), exercise instructions and food names are all translated.
 - **Look.** A warm, slowly drifting gradient behind every screen and the 3D coach standing right on the background. Each area has its own colours: orange steps, green calories, violet BMI, midnight sleep, ocean-blue plan, amber Floor Age. Headline numbers sit on gradient hero cards with semicircle gauges, and headings use a serif display face.
@@ -105,6 +108,17 @@ To change a coach's look (body shape, skin, hair, clothes), edit `COACHES` in `t
 1. Install Blender 4.2+ and the MPFB extension (extensions.blender.org/add-ons/mpfb).
 2. Load the CC0 packs `makehuman_system_assets`, `skins01`, `skins02`, `hair01`, `shirts01`, `pants01` and `shoes01` from the [asset packs page](https://static.makehumancommunity.org/assets/assetpacks/index.html) into MPFB.
 3. Run `blender -b --python tools/build_coach.py -- FloorAge/Resources`, then `xcodegen generate`.
+
+## App Store listing
+
+The listing lives in `fastlane/metadata/` (English, Hindi, and Spanish for Mexico and Spain), ready to upload with `fastlane deliver` or to paste into App Store Connect. `python3 tools/check_appstore_metadata.py` checks the character limits. `AppStore/LISTING.md` covers:
+- the privacy and age-rating answers;
+- in-app purchase text;
+- App Review notes;
+- the screenshot plan and preview video storyboard;
+- a launch checklist.
+
+`AppStore/privacy.html` and `AppStore/support.html` are the privacy policy and support pages to publish (for example with GitHub Pages).
 
 ## Floor Age Plus (in-app purchase)
 

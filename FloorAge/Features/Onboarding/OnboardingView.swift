@@ -26,6 +26,16 @@ struct OnboardingView: View {
             .padding()
         }
         .background(AppBackground())
+        .overlay(alignment: .topLeading) {
+            if model.canCancelNewMember {
+                Button("Cancel") { model.cancelNewMember() }
+                    .font(.headline)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 8)
+                    .background(.ultraThinMaterial, in: Capsule())
+                    .padding()
+            }
+        }
         .onAppear {
             voice.say(String(localized: "\(Region.greeting) I'm your coach. Let's find out how old your body moves, and make it younger."))
         }
@@ -33,10 +43,18 @@ struct OnboardingView: View {
 
     private var welcome: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("How old does your body move?")
-                .font(.largeTitle.bold())
-            Text("Find your Floor Age with 4 simple tests, then train with a coach who shows every move and talks you through it.")
-                .foregroundStyle(.secondary)
+            if model.isOwner {
+                Text("How old does your body move?")
+                    .font(.display(.largeTitle))
+                Text("Find your Floor Age with 4 simple tests, then train with a coach who shows every move and talks you through it.")
+                    .foregroundStyle(.secondary)
+            } else {
+                Eyebrow("Family", feature: .plus)
+                Text("Add a family member")
+                    .font(.display(.largeTitle))
+                Text("They get their own Floor Age, plan and history on this iPhone. Hand them the phone, or fill it in together.")
+                    .foregroundStyle(.secondary)
+            }
             primaryButton("Get started") { page = 1 }
         }
     }

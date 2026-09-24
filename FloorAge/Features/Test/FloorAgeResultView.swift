@@ -4,7 +4,7 @@ struct FloorAgeResultView: View {
     let result: FloorAgeResult
     var onDone: (() -> Void)?
 
-    @State private var shareImage: Image?
+    @State private var sharing = false
 
     var body: some View {
         ScrollView {
@@ -35,16 +35,15 @@ struct FloorAgeResultView: View {
                     .font(.footnote)
                     .foregroundStyle(.secondary)
 
-                if let shareImage {
-                    ShareLink(item: shareImage, preview: SharePreview("My Floor Age", image: shareImage)) {
-                        Label("Share my Floor Age", systemImage: "square.and.arrow.up")
-                            .font(.headline)
-                            .foregroundStyle(Feature.floorAge.colors[1])
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 15)
-                            .background(Feature.floorAge.tint.opacity(0.14), in: Capsule())
-                    }
+                Button { sharing = true } label: {
+                    Label("Share my Floor Age", systemImage: "square.and.arrow.up")
+                        .font(.headline)
+                        .foregroundStyle(Feature.floorAge.colors[1])
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 15)
+                        .background(Feature.floorAge.tint.opacity(0.14), in: Capsule())
                 }
+                .buttonStyle(.plain)
                 if let onDone {
                     Button {
                         onDone()
@@ -57,20 +56,11 @@ struct FloorAgeResultView: View {
             .padding()
         }
         .background(AppBackground())
-        .onAppear { renderShareImage() }
-    }
-
-    @MainActor
-    private func renderShareImage() {
-        let renderer = ImageRenderer(content: FloorAgeCard(result: result).frame(width: 360).padding(20).background(Color.white))
-        renderer.scale = 3
-        if let uiImage = renderer.uiImage {
-            shareImage = Image(uiImage: uiImage)
-        }
+        .sheet(isPresented: $sharing) { ShareCardView(result: result) }
     }
 }
 
-/// The big number. Also rendered to an image for sharing.
+/// The big number at the top of the result.
 struct FloorAgeCard: View {
     let result: FloorAgeResult
 

@@ -13,7 +13,9 @@ struct TrackView: View {
                 VStack(spacing: 18) {
                     glance
                     TrainingPlanCard()
-                    NavigationLink { StepsView() } label: { stepsCard }
+                    if model.isOwner {
+                        NavigationLink { StepsView() } label: { stepsCard }
+                    }
                     NavigationLink { FoodLogView() } label: { caloriesCard }
                     NavigationLink { BMIView() } label: { bmiCard }
                     if store.hasPlus {
@@ -43,7 +45,12 @@ struct TrackView: View {
                 Text(Date().formatted(.dateTime.weekday(.wide).day().month())).font(.subheadline).opacity(0.85)
             }
             HStack(spacing: 0) {
-                glanceItem(steps.today.formatted(), "Steps", symbol: "figure.walk")
+                if model.isOwner {
+                    glanceItem(steps.today.formatted(), "Steps", symbol: "figure.walk")
+                } else {
+                    // This iPhone counts its owner's steps, so family members see their Floor Age instead.
+                    glanceItem(model.latestResult.map { "\($0.floorAge)" } ?? "–", "Floor Age", symbol: "figure.cross.training")
+                }
                 Rectangle().fill(.white.opacity(0.3)).frame(width: 1, height: 44)
                 glanceItem(model.caloriesEaten().formatted(), "kcal", symbol: "flame.fill")
                 Rectangle().fill(.white.opacity(0.3)).frame(width: 1, height: 44)

@@ -761,6 +761,22 @@
         }
       }
     },
+    "%lld people on this iPhone" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "इस iPhone पर %lld लोग"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld personas en este iPhone"
+          }
+        }
+      }
+    },
     "%lld reps" : {
       "localizations" : {
         "es" : {
@@ -853,6 +869,64 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld सेकंड।"
+          }
+        }
+      }
+    },
+    "%lld stands" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld stand"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld stands"
+                }
+              }
+            }
+          }
+        },
+        "hi" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld बार खड़े हुए"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld बार खड़े हुए"
+                }
+              }
+            }
+          }
+        },
+        "es" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld repetición"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld repeticiones"
+                }
+              }
+            }
           }
         }
       }
@@ -1343,16 +1417,16 @@
     },
     "A one-time purchase, charged to your Apple Account. Your data stays on your iPhone either way. The Floor Age check, daily sessions with the coach, steps, calories, BMI and all safety guidance stay free." : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "एक बार की ख़रीदारी, जिसका भुगतान आपके Apple खाते से होगा। आपका डेटा हर हाल में आपके iPhone पर ही रहता है। Floor Age चेक, कोच के साथ रोज़ के सेशन, कदम, कैलोरी, BMI और सुरक्षा से जुड़ी सारी जानकारी मुफ़्त रहती है।"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Un pago único, cargado a tu Cuenta de Apple. Tus datos se quedan en tu iPhone en cualquier caso. La prueba Floor Age, las sesiones diarias con el coach, los pasos, las calorías, el IMC y todas las indicaciones de seguridad siguen siendo gratis."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "एक बार की ख़रीदारी, जिसका भुगतान आपके Apple खाते से होगा। आपका डेटा हर हाल में आपके iPhone पर ही रहता है। Floor Age चेक, कोच के साथ रोज़ के सेशन, कदम, कैलोरी, BMI और सुरक्षा से जुड़ी सारी जानकारी मुफ़्त रहती है।"
           }
         }
       }
@@ -1375,16 +1449,16 @@
     },
     "A weekly walking or Couch to 5K plan with strength sets, built for your weight and age." : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "आपके वज़न और उम्र के हिसाब से बना हफ़्तेवार वॉकिंग या Couch to 5K प्लान, स्ट्रेंथ सेट के साथ।"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Un plan semanal de caminatas o Couch to 5K con series de fuerza, adaptado a tu peso y tu edad."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आपके वज़न और उम्र के हिसाब से बना हफ़्तेवार वॉकिंग या Couch to 5K प्लान, स्ट्रेंथ सेट के साथ।"
           }
         }
       }
@@ -1535,6 +1609,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "1 चीज़ जोड़ें · %@ kcal"
+          }
+        }
+      }
+    },
+    "Add a family member" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "परिवार का सदस्य जोड़ें"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir a un familiar"
           }
         }
       }
@@ -2207,6 +2297,54 @@
         }
       }
     },
+    "Camera access is off. Allow it in iPhone Settings › Privacy & Security › Camera." : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कैमरा की अनुमति बंद है। iPhone सेटिंग्स › गोपनीयता और सुरक्षा › कैमरा में इसे चालू करें।"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El acceso a la cámara está desactivado. Actívalo en Ajustes del iPhone › Privacidad y seguridad › Cámara."
+          }
+        }
+      }
+    },
+    "Camera on" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कैमरा चालू"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cámara activada"
+          }
+        }
+      }
+    },
+    "Can you get up off the floor without using your hands?" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "क्या आप हाथों का सहारा लिए बिना ज़मीन से उठ सकते हैं?"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Puedes levantarte del suelo sin usar las manos?"
+          }
+        }
+      }
+    },
     "Cancel" : {
       "localizations" : {
         "es" : {
@@ -2353,16 +2491,16 @@
     },
     "Connecting to the App Store…" : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "App Store से जुड़ रहे हैं…"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Conectando con el App Store…"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App Store से जुड़ रहे हैं…"
           }
         }
       }
@@ -2401,16 +2539,16 @@
     },
     "Couldn't reach the App Store. Check your connection and try again." : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "App Store से संपर्क नहीं हो सका। अपना इंटरनेट कनेक्शन जांचें और फिर से कोशिश करें।"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "No se pudo conectar con el App Store. Revisa tu conexión e inténtalo de nuevo."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App Store से संपर्क नहीं हो सका। अपना इंटरनेट कनेक्शन जांचें और फिर से कोशिश करें।"
           }
         }
       }
@@ -2943,6 +3081,54 @@
         }
       }
     },
+    "Everyone gets their own Floor Age, plan and history. Steps, Apple Health sleep and reminders stay with %@, because they come from this iPhone." : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "हर किसी को अपना Floor Age, प्लान और इतिहास मिलता है। कदम, Apple Health की नींद और रिमाइंडर %@ के पास रहते हैं, क्योंकि ये इसी iPhone से आते हैं।"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cada persona tiene su propio Floor Age, plan e historial. Los pasos, el sueño de Apple Health y los recordatorios siguen siendo de %@, porque vienen de este iPhone."
+          }
+        }
+      }
+    },
+    "Family" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "परिवार"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Familia"
+          }
+        }
+      }
+    },
+    "Family profiles" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "परिवार की प्रोफ़ाइलें"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Perfiles familiares"
+          }
+        }
+      }
+    },
     "Faster" : {
       "localizations" : {
         "es" : {
@@ -3003,6 +3189,38 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "4 आसान टेस्ट से अपनी Floor Age जानें, फिर ऐसे कोच के साथ ट्रेनिंग करें जो हर मूव करके दिखाए और बोलकर समझाए।"
+          }
+        }
+      }
+    },
+    "Find your Floor Age: 4 tests, 10 minutes. Scan to get the app." : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अपना Floor Age जानें: 4 टेस्ट, 10 मिनट। ऐप पाने के लिए स्कैन करें।"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Descubre tu Floor Age: 4 pruebas, 10 minutos. Escanea para descargar la app."
+          }
+        }
+      }
+    },
+    "Find your Floor Age: 4 tests, 10 minutes. Search “Floor Age” on the App Store." : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अपना Floor Age जानें: 4 टेस्ट, 10 मिनट। App Store पर “Floor Age” खोजें।"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Descubre tu Floor Age: 4 pruebas, 10 minutos. Busca “Floor Age” en el App Store."
           }
         }
       }
@@ -3153,13 +3371,13 @@
     },
     "Floor Age Plus" : {
       "localizations" : {
-        "hi" : {
+        "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Floor Age Plus"
           }
         },
-        "es" : {
+        "hi" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Floor Age Plus"
@@ -3169,16 +3387,16 @@
     },
     "Floor Age Plus is restored. Welcome back!" : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Floor Age Plus फिर से चालू हो गया है। वापसी पर स्वागत है!"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Floor Age Plus se ha restaurado. ¡Qué bueno verte de nuevo!"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Floor Age Plus फिर से चालू हो गया है। वापसी पर स्वागत है!"
           }
         }
       }
@@ -3233,16 +3451,16 @@
     },
     "Food photo calories" : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "फ़ोटो से कैलोरी"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Calorías por foto"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "फ़ोटो से कैलोरी"
           }
         }
       }
@@ -3553,16 +3771,16 @@
     },
     "Guided Kegel sessions any time, plus Kegels at the end of each daily session." : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "कभी भी गाइडेड कीगल सेशन, और हर रोज़ के सेशन के आख़िर में कीगल।"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sesiones guiadas de Kegel cuando quieras, y Kegel al final de cada sesión diaria."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कभी भी गाइडेड कीगल सेशन, और हर रोज़ के सेशन के आख़िर में कीगल।"
           }
         }
       }
@@ -3825,6 +4043,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "iPhone सेटिंग्स › गोपनीयता और सुरक्षा"
+          }
+        }
+      }
+    },
+    "Just you so far" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अभी सिर्फ़ आप"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Por ahora, solo tú"
           }
         }
       }
@@ -4117,6 +4351,22 @@
         }
       }
     },
+    "Lift your foot and the timer starts by itself" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "पैर उठाते ही टाइमर अपने आप शुरू हो जाएगा"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Levanta el pie y el cronómetro empezará solo"
+          }
+        }
+      }
+    },
     "Lift your foot. Go." : {
       "localizations" : {
         "es" : {
@@ -4167,16 +4417,16 @@
     },
     "Log your nights or read them from Apple Health, against the range for your age." : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "अपनी रातें दर्ज करें या Apple Health से पढ़ें, और अपनी उम्र के लिए सुझाई गई नींद से तुलना करें।"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Registra tus noches o léelas de Apple Health, comparadas con lo recomendado para tu edad."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अपनी रातें दर्ज करें या Apple Health से पढ़ें, और अपनी उम्र के लिए सुझाई गई नींद से तुलना करें।"
           }
         }
       }
@@ -4389,6 +4639,22 @@
         }
       }
     },
+    "My Floor Age is %lld. Can you get up off the floor without using your hands? Find your Floor Age:" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "मेरा Floor Age %lld है। क्या आप हाथों का सहारा लिए बिना ज़मीन से उठ सकते हैं? अपना Floor Age जानें:"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mi Floor Age es %lld. ¿Puedes levantarte del suelo sin usar las manos? Descubre tu Floor Age:"
+          }
+        }
+      }
+    },
     "Namaste!" : {
       "localizations" : {
         "es" : {
@@ -4563,16 +4829,16 @@
     },
     "No earlier purchase of Floor Age Plus was found for this Apple Account." : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "इस Apple खाते पर Floor Age Plus की कोई पिछली ख़रीदारी नहीं मिली।"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "No se encontró ninguna compra anterior de Floor Age Plus en esta Cuenta de Apple."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "इस Apple खाते पर Floor Age Plus की कोई पिछली ख़रीदारी नहीं मिली।"
           }
         }
       }
@@ -4605,6 +4871,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "कोई म्यूज़िक ऐप नहीं मिला"
+          }
+        }
+      }
+    },
+    "No name" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "बिना नाम"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sin nombre"
           }
         }
       }
@@ -4777,16 +5059,16 @@
     },
     "One purchase unlocks Plus for good. No subscription." : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "एक बार ख़रीदें, Plus हमेशा के लिए खुल जाएगा। कोई सब्सक्रिप्शन नहीं।"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Una sola compra desbloquea Plus para siempre. Sin suscripción."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "एक बार ख़रीदें, Plus हमेशा के लिए खुल जाएगा। कोई सब्सक्रिप्शन नहीं।"
           }
         }
       }
@@ -4953,16 +5235,16 @@
     },
     "Pelvic floor programme" : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "पेल्विक फ़्लोर प्रोग्राम"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Programa de suelo pélvico"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "पेल्विक फ़्लोर प्रोग्राम"
           }
         }
       }
@@ -5049,13 +5331,13 @@
     },
     "Plus" : {
       "localizations" : {
-        "hi" : {
+        "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Plus"
           }
         },
-        "es" : {
+        "hi" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Plus"
@@ -5129,16 +5411,16 @@
     },
     "Progress over time" : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "समय के साथ प्रगति"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tu progreso en el tiempo"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "समय के साथ प्रगति"
           }
         }
       }
@@ -5271,6 +5553,38 @@
         }
       }
     },
+    "Remove" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "हटाएं"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar"
+          }
+        }
+      }
+    },
+    "Remove %@ and all their results from this iPhone?" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ और उनके सभी नतीजे इस iPhone से हटाएं?"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Eliminar a %@ y todos sus resultados de este iPhone?"
+          }
+        }
+      }
+    },
     "reps" : {
       "localizations" : {
         "es" : {
@@ -5353,16 +5667,16 @@
     },
     "Restore Purchases" : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ख़रीदारी रीस्टोर करें"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Restaurar compras"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ख़रीदारी रीस्टोर करें"
           }
         }
       }
@@ -5591,6 +5905,22 @@
         }
       }
     },
+    "search “Floor Age” on the App Store." : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App Store पर “Floor Age” खोजें।"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "busca “Floor Age” en el App Store."
+          }
+        }
+      }
+    },
     "Search roti, dal, idli…" : {
       "localizations" : {
         "es" : {
@@ -5757,6 +6087,22 @@
         }
       }
     },
+    "Share" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "शेयर करें"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartir"
+          }
+        }
+      }
+    },
     "Share my Floor Age" : {
       "localizations" : {
         "es" : {
@@ -5769,6 +6115,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "मेरी Floor Age शेयर करें"
+          }
+        }
+      }
+    },
+    "Show my real age" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "मेरी असली उम्र दिखाएं"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar mi edad real"
           }
         }
       }
@@ -5903,16 +6265,16 @@
     },
     "Sleep tracking" : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "नींद ट्रैकिंग"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Seguimiento del sueño"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "नींद ट्रैकिंग"
           }
         }
       }
@@ -6031,16 +6393,16 @@
     },
     "Snap your plate for calorie suggestions, checked on your iPhone." : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "अपनी प्लेट की फ़ोटो लें और कैलोरी के सुझाव पाएं, जांच आपके iPhone पर ही होती है।"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Haz una foto de tu plato y recibe sugerencias de calorías, analizadas en tu iPhone."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अपनी प्लेट की फ़ोटो लें और कैलोरी के सुझाव पाएं, जांच आपके iPhone पर ही होती है।"
           }
         }
       }
@@ -6221,6 +6583,38 @@
         }
       }
     },
+    "Starting the camera…" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कैमरा शुरू हो रहा है…"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iniciando la cámara…"
+          }
+        }
+      }
+    },
+    "Step back so your feet are in view" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "थोड़ा पीछे हटें ताकि आपके पैर दिखें"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aléjate un poco para que se vean tus pies"
+          }
+        }
+      }
+    },
     "Step counting is off. Turn on Motion & Fitness for Floor Age in iPhone Settings › Privacy & Security." : {
       "localizations" : {
         "es" : {
@@ -6233,6 +6627,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "कदम गिनना बंद है। iPhone सेटिंग्स › गोपनीयता और सुरक्षा में जाकर Floor Age के लिए गति और फ़िटनेस चालू करें।"
+          }
+        }
+      }
+    },
+    "Step into view, 2–3 m from the phone" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "फ़ोन से 2–3 मीटर दूर, कैमरे के सामने आएं"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ponte delante de la cámara, a 2–3 m del teléfono"
           }
         }
       }
@@ -6393,6 +6803,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "स्ट्रेंथ 1 सेट"
+          }
+        }
+      }
+    },
+    "Suggested by the camera. Tap another answer if it's not right." : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कैमरे का सुझाव। सही न हो तो दूसरा जवाब चुनें।"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sugerido por la cámara. Toca otra respuesta si no es correcta."
           }
         }
       }
@@ -6563,6 +6989,22 @@
         }
       }
     },
+    "Test and coach your parents or partner on this iPhone, each with their own Floor Age and plan." : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "इसी iPhone पर अपने माता-पिता या जीवनसाथी का टेस्ट और कोचिंग करें, हर किसी का अपना Floor Age और प्लान।"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Evalúa y entrena a tus padres o a tu pareja en este iPhone, cada uno con su propio Floor Age y plan."
+          }
+        }
+      }
+    },
     "Test voice" : {
       "localizations" : {
         "es" : {
@@ -6613,16 +7055,16 @@
     },
     "The App Store couldn't confirm this purchase. Please try Restore Purchases." : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "App Store इस ख़रीदारी की पुष्टि नहीं कर सका। कृपया \"ख़रीदारी रीस्टोर करें\" आज़माएं।"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "El App Store no pudo confirmar esta compra. Prueba con Restaurar compras."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App Store इस ख़रीदारी की पुष्टि नहीं कर सका। कृपया \"ख़रीदारी रीस्टोर करें\" आज़माएं।"
           }
         }
       }
@@ -6643,18 +7085,66 @@
         }
       }
     },
-    "The purchase didn't go through. Please try again." : {
+    "the owner" : {
       "localizations" : {
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ख़रीदारी पूरी नहीं हो सकी। कृपया फिर से कोशिश करें।"
+            "value" : "फ़ोन के मालिक"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
+            "value" : "el propietario"
+          }
+        }
+      }
+    },
+    "The picture shows your Floor Age and areas, never your name. It's shared only where you choose." : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "तस्वीर में आपका Floor Age और हर हिस्से का नतीजा दिखता है, आपका नाम कभी नहीं। यह सिर्फ़ वहीं शेयर होती है जहां आप चुनें।"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La imagen muestra tu Floor Age y tus áreas, nunca tu nombre. Solo se comparte donde tú elijas."
+          }
+        }
+      }
+    },
+    "The purchase didn't go through. Please try again." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "La compra no se completó. Inténtalo de nuevo."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ख़रीदारी पूरी नहीं हो सकी। कृपया फिर से कोशिश करें।"
+          }
+        }
+      }
+    },
+    "They get their own Floor Age, plan and history on this iPhone. Hand them the phone, or fill it in together." : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "उन्हें इसी iPhone पर अपना Floor Age, प्लान और इतिहास मिलेगा। फ़ोन उन्हें दे दें, या साथ मिलकर भरें।"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tendrá su propio Floor Age, plan e historial en este iPhone. Pásale el teléfono o rellénalo juntos."
           }
         }
       }
@@ -6691,6 +7181,38 @@
         }
       }
     },
+    "This device has no front camera." : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "इस डिवाइस में सामने का कैमरा नहीं है।"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este dispositivo no tiene cámara frontal."
+          }
+        }
+      }
+    },
+    "This iPhone's owner" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "इस iPhone के मालिक"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Propietario de este iPhone"
+          }
+        }
+      }
+    },
     "Tick what's on your plate" : {
       "localizations" : {
         "es" : {
@@ -6719,6 +7241,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "समय"
+          }
+        }
+      }
+    },
+    "Tip: prop the phone up 2–3 m away and the camera counts for you. Nothing is recorded." : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "टिप: फ़ोन को 2–3 मीटर दूर टिकाकर रखें, कैमरा आपके लिए गिनेगा। कुछ भी रिकॉर्ड नहीं होता।"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Consejo: apoya el teléfono a 2–3 m y la cámara contará por ti. No se graba nada."
           }
         }
       }
@@ -6899,6 +7437,38 @@
         }
       }
     },
+    "Tracking. Face the phone." : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ट्रैक कर रहे हैं। फ़ोन की ओर मुंह करें।"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Siguiéndote. Mira hacia el teléfono."
+          }
+        }
+      }
+    },
+    "Tracking. Stand side-on to the phone." : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ट्रैक कर रहे हैं। फ़ोन की ओर बगल से खड़े हों।"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Siguiéndote. Ponte de lado al teléfono."
+          }
+        }
+      }
+    },
     "Training plan" : {
       "localizations" : {
         "es" : {
@@ -6915,18 +7485,18 @@
         }
       }
     },
-    "Training plan, food photos, sleep, pelvic floor and progress history" : {
+    "Training plan, family profiles, food photos, sleep, pelvic floor and progress history" : {
       "localizations" : {
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ट्रेनिंग प्लान, फ़ोटो से कैलोरी, नींद, पेल्विक फ़्लोर और प्रगति का इतिहास"
+            "value" : "ट्रेनिंग प्लान, परिवार की प्रोफ़ाइलें, फ़ोटो से कैलोरी, नींद, पेल्विक फ़्लोर और प्रगति का इतिहास"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Plan de entrenamiento, fotos de comida, sueño, suelo pélvico e historial de progreso"
+            "value" : "Plan de entrenamiento, perfiles familiares, fotos de comida, sueño, suelo pélvico e historial de progreso"
           }
         }
       }
@@ -6997,80 +7567,96 @@
     },
     "Unlock everything, once. No subscription." : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "एक बार में सब कुछ अनलॉक करें। कोई सब्सक्रिप्शन नहीं।"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Desbloquéalo todo, una sola vez. Sin suscripción."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "एक बार में सब कुछ अनलॉक करें। कोई सब्सक्रिप्शन नहीं।"
           }
         }
       }
     },
     "Unlock Floor Age Plus" : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Floor Age Plus अनलॉक करें"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Desbloquear Floor Age Plus"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Floor Age Plus अनलॉक करें"
           }
         }
       }
     },
     "Unlock for %@" : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ में अनलॉक करें"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Desbloquear por %@"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ में अनलॉक करें"
           }
         }
       }
     },
     "Unlocked. Thank you for supporting Floor Age!" : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "अनलॉक हो गया। Floor Age का साथ देने के लिए धन्यवाद!"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Desbloqueado. ¡Gracias por apoyar Floor Age!"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अनलॉक हो गया। Floor Age का साथ देने के लिए धन्यवाद!"
           }
         }
       }
     },
     "Unlocked. Thank you!" : {
       "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desbloqueado. ¡Gracias!"
+          }
+        },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "अनलॉक हो गया। धन्यवाद!"
           }
+        }
+      }
+    },
+    "Use camera" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कैमरा इस्तेमाल करें"
+          }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Desbloqueado. ¡Gracias!"
+            "value" : "Usar la cámara"
           }
         }
       }
@@ -7417,6 +8003,22 @@
         }
       }
     },
+    "Who's training?" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कौन ट्रेनिंग कर रहा है?"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Quién entrena?"
+          }
+        }
+      }
+    },
     "Woke up" : {
       "localizations" : {
         "es" : {
@@ -7477,6 +8079,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "कल"
+          }
+        }
+      }
+    },
+    "You" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आप"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tú"
           }
         }
       }
@@ -7675,16 +8293,16 @@
     },
     "Your Floor Age chart and every past check." : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "आपका Floor Age चार्ट और हर पिछला चेक।"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tu gráfica de Floor Age y todas tus pruebas anteriores."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आपका Floor Age चार्ट और हर पिछला चेक।"
           }
         }
       }
@@ -7809,16 +8427,16 @@
     },
     "Your purchase is waiting for approval. Plus unlocks as soon as it's approved." : {
       "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "आपकी ख़रीदारी मंज़ूरी का इंतज़ार कर रही है। मंज़ूरी मिलते ही Plus अनलॉक हो जाएगा।"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tu compra está pendiente de aprobación. Plus se desbloqueará en cuanto se apruebe."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आपकी ख़रीदारी मंज़ूरी का इंतज़ार कर रही है। मंज़ूरी मिलते ही Plus अनलॉक हो जाएगा।"
           }
         }
       }

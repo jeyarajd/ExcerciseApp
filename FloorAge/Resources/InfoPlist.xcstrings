@@ -56,19 +56,19 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Take a photo of your meal to get calorie suggestions. The photo is checked on your iPhone and is never saved or sent."
+            "value" : "Point the camera at your meal for calorie suggestions, or let it follow your movements to score the Floor Age check. Everything is checked on your iPhone and never saved or sent."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Toma una foto de tu comida para obtener sugerencias de calorías. La foto se analiza en tu iPhone y nunca se guarda ni se envía."
+            "value" : "Apunta la cámara a tu comida para recibir sugerencias de calorías, o deja que siga tus movimientos para puntuar la prueba Floor Age. Todo se analiza en tu iPhone y nunca se guarda ni se envía."
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "कैलोरी के सुझाव पाने के लिए अपने खाने की फ़ोटो लें। फ़ोटो की जांच आपके iPhone पर ही होती है, और वह कभी सेव नहीं होती, न कहीं भेजी जाती है।"
+            "value" : "कैलोरी के सुझाव के लिए कैमरा अपने खाने की ओर करें, या Floor Age चेक में कैमरे को अपनी हरकतें गिनने दें। सब कुछ आपके iPhone पर ही जांचा जाता है, और कभी सेव नहीं होता, न कहीं भेजा जाता है।"
           }
         }
       }

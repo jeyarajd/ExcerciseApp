@@ -6,6 +6,7 @@ struct SettingsView: View {
     @EnvironmentObject private var store: Store
     @State private var confirmingReset = false
     @State private var showingPlus = false
+    @State private var showingFamily = false
     @State private var storeMessage: String?
     @State private var reminderOn = Reminders.isOn
     @State private var reminderTime = ReminderTime.date(fromMinute: Reminders.minuteOfDay)
@@ -16,6 +17,23 @@ struct SettingsView: View {
         NavigationStack {
             Form {
                 plusSection
+
+                Section {
+                    Button { showingFamily = true } label: {
+                        HStack(spacing: 12) {
+                            MemberAvatar(member: model.activeMember, size: 34)
+                            VStack(alignment: .leading, spacing: 1) {
+                                Text("Family").font(.headline)
+                                Text(model.members.count == 1 ? String(localized: "Just you so far") : String(localized: "\(model.members.count) people on this iPhone"))
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                            }
+                            Spacer(minLength: 0)
+                            Image(systemName: "chevron.right").font(.caption.weight(.semibold)).foregroundStyle(.tertiary)
+                        }
+                    }
+                    .tint(.primary)
+                }
 
                 Section {
                     Picker("Coach", selection: Binding(get: { CoachStyle.current }, set: { CoachStyle.current = $0 })) {
@@ -123,6 +141,9 @@ struct SettingsView: View {
             .sheet(isPresented: $showingPlus) {
                 PlusView().environmentObject(store)
             }
+            .sheet(isPresented: $showingFamily) {
+                FamilyView().environmentObject(model).environmentObject(store)
+            }
             .messageAlert($storeMessage)
             .confirmationDialog("Delete your profile, Floor Age results and session history?",
                                 isPresented: $confirmingReset, titleVisibility: .visible) {
@@ -154,7 +175,7 @@ extension SettingsView {
                         FeatureBadge(feature: .plus, size: 34)
                         VStack(alignment: .leading, spacing: 1) {
                             Text("Floor Age Plus").font(.headline)
-                            Text("Training plan, food photos, sleep, pelvic floor and progress history")
+                            Text("Training plan, family profiles, food photos, sleep, pelvic floor and progress history")
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
                         }

@@ -3,13 +3,14 @@ import SwiftUI
 /// What Floor Age Plus unlocks. The Floor Age check, daily sessions with the coach, steps,
 /// calories, BMI and all safety guidance stay free.
 enum PlusFeature: CaseIterable, Identifiable {
-    case plan, foodPhoto, sleep, pelvicFloor, history
+    case plan, family, foodPhoto, sleep, pelvicFloor, history
 
     var id: Self { self }
 
     var title: String {
         switch self {
         case .plan: String(localized: "Training plan")
+        case .family: String(localized: "Family profiles")
         case .foodPhoto: String(localized: "Food photo calories")
         case .sleep: String(localized: "Sleep tracking")
         case .pelvicFloor: String(localized: "Pelvic floor programme")
@@ -20,6 +21,7 @@ enum PlusFeature: CaseIterable, Identifiable {
     var detail: String {
         switch self {
         case .plan: String(localized: "A weekly walking or Couch to 5K plan with strength sets, built for your weight and age.")
+        case .family: String(localized: "Test and coach your parents or partner on this iPhone, each with their own Floor Age and plan.")
         case .foodPhoto: String(localized: "Snap your plate for calorie suggestions, checked on your iPhone.")
         case .sleep: String(localized: "Log your nights or read them from Apple Health, against the range for your age.")
         case .pelvicFloor: String(localized: "Guided Kegel sessions any time, plus Kegels at the end of each daily session.")
@@ -30,6 +32,7 @@ enum PlusFeature: CaseIterable, Identifiable {
     var symbol: String {
         switch self {
         case .plan: "calendar.badge.checkmark"
+        case .family: "person.2.fill"
         case .foodPhoto: "camera.fill"
         case .sleep: "moon.stars.fill"
         case .pelvicFloor: "figure.mind.and.body"
@@ -40,6 +43,7 @@ enum PlusFeature: CaseIterable, Identifiable {
     var feature: Feature {
         switch self {
         case .plan: .plan
+        case .family: .glance
         case .foodPhoto: .calories
         case .sleep: .sleep
         case .pelvicFloor: .floorAge

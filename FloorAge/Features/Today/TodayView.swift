@@ -43,6 +43,9 @@ struct TodayView: View {
             }
             .background(AppBackground())
             .navigationTitle("Today")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) { FamilySwitcherButton() }
+            }
             .fullScreenCover(item: $session) { wrapper in
                 SessionView(items: wrapper.items, voice: voice)
                     .environmentObject(model)

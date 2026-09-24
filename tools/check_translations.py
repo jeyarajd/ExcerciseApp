@@ -22,7 +22,9 @@ def placeholders(text):
 
 
 def value(entry, language):
-    unit = entry.get("localizations", {}).get(language, {}).get("stringUnit", {})
+    localization = entry.get("localizations", {}).get(language, {})
+    # Plural strings keep their text under variations; check the "other" form.
+    unit = localization.get("stringUnit") or localization.get("variations", {}).get("plural", {}).get("other", {}).get("stringUnit", {})
     return unit.get("value") if unit.get("state") == "translated" else None
 
 

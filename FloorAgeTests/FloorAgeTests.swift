@@ -685,3 +685,161 @@ final class StoreTests: XCTestCase {
         XCTAssertTrue(Store(preview: true).hasPlus)
     }
 }
+
+final class FamilyTests: XCTestCase {
+    private var dir: URL!
+
+    override func setUpWithError() throws {
+        dir = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+    }
+
+    override func tearDownWithError() throws {
+        try? FileManager.default.removeItem(at: dir)
+    }
+
+    private func newModel() -> AppModel { AppModel(fileURL: dir.appendingPathComponent("floorage.json")) }
+
+    func testEachMemberKeepsTheirOwnData() {
+        let model = newModel()
+        model.profile = Profile(name: "Priya", age: 52, limitations: [])
+        model.add(FloorAgeResult(age: 52, scores: ["sitRise": 7, "balance": 20, "chairStand": 14, "reach": 3]))
+        model.addMember()
+        XCTAssertNil(model.profile, "a new member starts with onboarding")
+        XCTAssertFalse(model.isOwner)
+        model.profile = Profile(name: "Raj", age: 78, limitations: [.knee], gender: .male)
+        XCTAssertTrue(model.results.isEmpty)
+
+        model.switchMember(model.owner.id)
+        XCTAssertEqual(model.profile?.name, "Priya")
+        XCTAssertEqual(model.results.count, 1)
+        XCTAssertEqual(model.members.map(\.name), ["Priya", "Raj"])
+        XCTAssertEqual(model.members[1].age, 78)
+        XCTAssertEqual(model.members[0].floorAge, model.results.last?.floorAge)
+    }
+
+    func testFamilyAndActiveMemberSurviveARestart() {
+        let model = newModel()
+        model.profile = Profile(name: "Priya", age: 52, limitations: [])
+        model.addMember()
+        model.profile = Profile(name: "Meena", age: 74, limitations: [.hip])
+        let reopened = newModel()
+        XCTAssertEqual(reopened.members.count, 2)
+        XCTAssertEqual(reopened.profile?.name, "Meena", "reopens as whoever was active")
+        XCTAssertFalse(reopened.isOwner)
+    }
+
+    func testCancellingANewMemberGoesBack() {
+        let model = newModel()
+        model.profile = Profile(name: "Priya", age: 52, limitations: [])
+        model.addMember()
+        XCTAssertTrue(model.canCancelNewMember)
+        model.cancelNewMember()
+        XCTAssertEqual(model.members.count, 1)
+        XCTAssertEqual(model.profile?.name, "Priya")
+        XCTAssertFalse(FileManager.default.fileExists(atPath: dir.appendingPathComponent("floorage-family.json").path),
+                       "one person needs no family index")
+    }
+
+    func testRemovingAMemberDeletesTheirFileButNeverTheOwner() throws {
+        let model = newModel()
+        model.profile = Profile(name: "Priya", age: 52, limitations: [])
+        model.addMember()
+        model.profile = Profile(name: "Raj", age: 78, limitations: [])
+        let raj = model.activeMemberID
+        let rajFile = dir.appendingPathComponent(try XCTUnwrap(model.members.last).file)
+        XCTAssertTrue(FileManager.default.fileExists(atPath: rajFile.path))
+        model.removeMember(model.owner.id)
+        XCTAssertEqual(model.members.count, 2, "the owner can't be removed")
+        model.removeMember(raj)
+        XCTAssertEqual(model.members.count, 1)
+        XCTAssertTrue(model.isOwner)
+        XCTAssertEqual(model.profile?.name, "Priya")
+        XCTAssertFalse(FileManager.default.fileExists(atPath: rajFile.path))
+    }
+
+    func testDeletingAFamilyMembersDataRemovesOnlyThem() {
+        let model = newModel()
+        model.profile = Profile(name: "Priya", age: 52, limitations: [])
+        model.addMember()
+        model.profile = Profile(name: "Raj", age: 78, limitations: [])
+        model.resetAll()
+        XCTAssertEqual(model.members.count, 1)
+        XCTAssertEqual(model.profile?.name, "Priya")
+    }
+
+    func testASinglePersonUsesTheOriginalFile() {
+        let model = newModel()
+        model.profile = Profile(name: "Priya", age: 52, limitations: [])
+        XCTAssertTrue(FileManager.default.fileExists(atPath: dir.appendingPathComponent("floorage.json").path))
+        XCTAssertEqual(model.members.count, 1)
+        XCTAssertTrue(model.isOwner)
+    }
+}
+
+final class PoseScoringTests: XCTestCase {
+    /// Holds each posture for several frames, like a camera at 15–30 fps.
+    private func frames(_ pose: BodyPose, _ count: Int = 6) -> [BodyPose] { Array(repeating: pose, count: count) }
+
+    func testChairStandsCountEachFullStandFromSitting() {
+        var counter = ChairStandCounter()
+        let seated = BodyPose.sample(rise: 0.05), standing = BodyPose.sample(rise: 1)
+        var poses = frames(seated)
+        for _ in 0..<3 { poses += frames(standing) + frames(seated) }
+        for pose in poses { _ = counter.update(pose) }
+        XCTAssertEqual(counter.count, 3)
+    }
+
+    func testStartingOnYourFeetAndHalfStandsDontCount() {
+        var counter = ChairStandCounter()
+        // Starts standing, sits, then only half rises twice, then one full stand.
+        let poses = frames(.sample(rise: 1)) + frames(.sample(rise: 0.1))
+            + frames(.sample(rise: 0.5)) + frames(.sample(rise: 0.1)) + frames(.sample(rise: 0.55)) + frames(.sample(rise: 0.1))
+            + frames(.sample(rise: 0.95))
+        for pose in poses { _ = counter.update(pose) }
+        XCTAssertEqual(counter.count, 1)
+    }
+
+    func testOneStrayFrameIsIgnored() {
+        var counter = ChairStandCounter()
+        let poses = frames(.sample(rise: 0)) + [.sample(rise: 1)] + frames(.sample(rise: 0))
+        for pose in poses { _ = counter.update(pose) }
+        XCTAssertEqual(counter.count, 0)
+    }
+
+    func testChairStandIgnoresFramesWithoutLegs() {
+        var counter = ChairStandCounter()
+        var noLegs = BodyPose.sample(rise: 1)
+        noLegs.joints[.leftKnee] = nil
+        noLegs.joints[.rightKnee] = nil
+        XCTAssertFalse(noLegs.legsVisible)
+        XCTAssertFalse(counter.update(noLegs))
+    }
+
+    func testBalanceNoticesTheFootLiftingAndTouchingDown() {
+        var detector = BalanceDetector()
+        var events: [BalanceDetector.Event] = []
+        for pose in frames(.sample()) + frames(.sample(lift: 1)) + frames(.sample(lift: 0.8)) + frames(.sample()) {
+            if let event = detector.update(pose) { events.append(event) }
+        }
+        XCTAssertEqual(events, [.lifted, .down])
+    }
+
+    func testReachBands() {
+        XCTAssertEqual(ReachEstimator.level(depth: -0.1), .palmsFlat)
+        XCTAssertEqual(ReachEstimator.level(depth: 0.08), .fingersToFloor)
+        XCTAssertEqual(ReachEstimator.level(depth: 0.25), .toes)
+        XCTAssertEqual(ReachEstimator.level(depth: 0.45), .ankles)
+        XCTAssertEqual(ReachEstimator.level(depth: 0.9), .shins)
+        XCTAssertEqual(ReachEstimator.level(depth: 1.4), .knees)
+    }
+
+    func testReachKeepsTheDeepestPointAndIgnoresStanding() {
+        var estimator = ReachEstimator()
+        estimator.update(.sample())  // hands at the hips: not folded, no reading
+        XCTAssertNil(estimator.level)
+        for fold in stride(from: 0.2, through: 1.0, by: 0.2) { estimator.update(.sample(fold: fold, wristDepth: 0.45)) }
+        estimator.update(.sample(fold: 0.5, wristDepth: 0.45))  // coming back up
+        XCTAssertEqual(estimator.level, .ankles)
+    }
+}

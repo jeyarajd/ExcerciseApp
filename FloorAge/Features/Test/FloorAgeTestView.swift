@@ -29,12 +29,23 @@ struct FloorAgeTestView: View {
     @State private var chairGo = false
     // Reach
     @State private var reach: ReachLevel?
+    /// Once the person picks an answer themselves, the camera stops suggesting one.
+    @State private var reachPickedByHand = false
+    // Camera scoring (chair stand, balance, reach)
+    @StateObject private var camera: PoseCamera
+    @State private var useCamera: Bool
+    @State private var chairCounter = ChairStandCounter()
+    @State private var balanceDetector = BalanceDetector()
+    @State private var reachEstimator = ReachEstimator()
 
     private let tests = FloorTest.allCases
 
     /// `startStep` 1–4 opens straight at a test (used for screenshots); 0 is the intro.
-    init(startStep: Int = 0) {
+    /// `demoCamera` plays scripted movement instead of the camera (Debug demo screens).
+    init(startStep: Int = 0, demoCamera: PoseCamera.Demo? = nil) {
         _step = State(initialValue: startStep)
+        _camera = StateObject(wrappedValue: PoseCamera(demo: demoCamera))
+        _useCamera = State(initialValue: demoCamera != nil)
     }
     private let tick = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
 
@@ -57,9 +68,17 @@ struct FloorAgeTestView: View {
             }
         }
         .onAppear {
-            if tests.indices.contains(step - 1) { avatar.play(id: tests[step - 1].exerciseID) }
+            camera.onPose = handle
+            if tests.indices.contains(step - 1) {
+                avatar.play(id: tests[step - 1].exerciseID)
+                updateCamera(for: tests[step - 1])
+                if camera.isDemo, tests[step - 1] == .chairStand { startChairStand() }
+            }
         }
-        .onDisappear { stopTimers() }
+        .onDisappear {
+            stopTimers()
+            camera.stop()
+        }
         .onReceive(tick) { _ in
             if let start = balanceStart {
                 balanceNow = min(Date().timeIntervalSince(start), 45)
@@ -149,12 +168,19 @@ struct FloorAgeTestView: View {
         let unsafe = PlanBuilder.unsafe(for: model.profile?.limitations ?? []).contains(test.exerciseID)
         return ScrollView {
             VStack(alignment: .leading, spacing: 18) {
-                AvatarView(controller: avatar)
-                    .frame(height: 280)
-                    .background(RadialGradient(colors: [test.feature.tint.opacity(0.28), .clear],
-                                               center: .bottom, startRadius: 10, endRadius: 230))
-                    .clipShape(RoundedRectangle(cornerRadius: 28, style: .continuous))
-                    .overlay(alignment: .top) { progressBar.padding(14) }
+                Group {
+                    if useCamera, test.usesCamera {
+                        CameraStage(camera: camera, feature: test.feature, hint: cameraHint(test))
+                            .frame(height: 440)
+                    } else {
+                        AvatarView(controller: avatar)
+                            .frame(height: 280)
+                    }
+                }
+                .background(RadialGradient(colors: [test.feature.tint.opacity(0.28), .clear],
+                                           center: .bottom, startRadius: 10, endRadius: 230))
+                .clipShape(RoundedRectangle(cornerRadius: 28, style: .continuous))
+                .overlay(alignment: .top) { progressBar.padding(14) }
 
                 VStack(alignment: .leading, spacing: 6) {
                     Eyebrow("Test \(step) of \(tests.count)", feature: test.feature)
@@ -182,9 +208,29 @@ struct FloorAgeTestView: View {
                                 .background(test.feature.tint.opacity(0.14), in: Capsule())
                         }
                         .buttonStyle(.plain)
+                        if test.usesCamera {
+                            Button {
+                                useCamera.toggle()
+                                updateCamera(for: test)
+                            } label: {
+                                Label(useCamera ? "Camera on" : "Use camera", systemImage: useCamera ? "camera.fill" : "camera.viewfinder")
+                                    .font(.subheadline.weight(.semibold))
+                                    .padding(.horizontal, 12)
+                                    .padding(.vertical, 7)
+                                    .foregroundStyle(useCamera ? .white : test.feature.colors.last!)
+                                    .background(useCamera ? AnyShapeStyle(test.feature.gradient) : AnyShapeStyle(test.feature.tint.opacity(0.14)),
+                                                in: Capsule())
+                            }
+                            .buttonStyle(.plain)
+                        }
                         if let exercise = ExerciseLibrary.shared.exercise(test.exerciseID) {
                             DemoVideoButton(exercise: exercise, compact: true) { voice.stop() }
                         }
+                    }
+                    if test.usesCamera, !useCamera {
+                        Text("Tip: prop the phone up 2–3 m away and the camera counts for you. Nothing is recorded.")
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -290,6 +336,11 @@ struct FloorAgeTestView: View {
                 if let best = balanceBest {
                     Text("Best: \(best, specifier: "%.1f") s").font(.subheadline.weight(.semibold)).opacity(0.9)
                 }
+                if useCamera, balanceStart == nil {
+                    Label("Lift your foot and the timer starts by itself", systemImage: "camera.fill")
+                        .font(.footnote.weight(.semibold))
+                        .opacity(0.9)
+                }
             }
             .frame(maxWidth: .infinity)
             .heroCard(test.feature, symbol: test.symbol, padding: 20)
@@ -307,6 +358,15 @@ struct FloorAgeTestView: View {
                         }
                     }
                     .frame(maxWidth: 260)
+                    if useCamera, chairGo {
+                        Label("\(chairCounter.count) stands", systemImage: "camera.fill")
+                            .font(.metric(22))
+                            .contentTransition(.numericText())
+                            .animation(.snappy, value: chairCounter.count)
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 6)
+                            .background(.white.opacity(0.2), in: Capsule())
+                    }
                 } else if !chairDone {
                     Image(systemName: "timer")
                         .font(.system(size: 54, weight: .semibold))
@@ -326,10 +386,17 @@ struct FloorAgeTestView: View {
             .heroCard(test.feature, symbol: test.symbol, padding: 20)
         case .reach:
             VStack(spacing: 10) {
+                if useCamera, !reachPickedByHand, reachEstimator.level != nil {
+                    Label("Suggested by the camera. Tap another answer if it's not right.", systemImage: "camera.fill")
+                        .font(.footnote.weight(.semibold))
+                        .foregroundStyle(test.feature.colors.last!)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
                 ForEach(ReachLevel.allCases) { level in
                     let selected = reach == level
                     Button {
                         withAnimation(.snappy) { reach = level }
+                        reachPickedByHand = true
                     } label: {
                         HStack(spacing: 14) {
                             Image(systemName: selected ? "checkmark.circle.fill" : "circle")
@@ -361,14 +428,70 @@ struct FloorAgeTestView: View {
         }
     }
 
+    // MARK: - Camera
+
+    /// Runs the camera only while it's switched on and the current test can use it.
+    private func updateCamera(for test: FloorTest) {
+        chairCounter = ChairStandCounter()
+        balanceDetector = BalanceDetector()
+        if useCamera, test.usesCamera {
+            camera.start()
+        } else {
+            camera.stop()
+        }
+    }
+
+    private func handle(_ pose: BodyPose) {
+        guard useCamera, tests.indices.contains(step - 1), result == nil else { return }
+        switch tests[step - 1] {
+        case .chairStand:
+            if chairGo, chairCountdown != nil, chairCounter.update(pose) {
+                chairReps = chairCounter.count
+            }
+        case .balance:
+            switch balanceDetector.update(pose) {
+            case .lifted where balanceStart == nil:
+                balanceStart = Date()
+                balanceNow = 0
+            case .down where balanceStart != nil:
+                stopBalance()
+            default:
+                break
+            }
+        case .reach:
+            reachEstimator.update(pose)
+            if !reachPickedByHand, let level = reachEstimator.level, level != reach {
+                withAnimation(.snappy) { reach = level }
+            }
+        case .sitRise:
+            break
+        }
+    }
+
+    private func cameraHint(_ test: FloorTest) -> String {
+        switch camera.status {
+        case .denied: return String(localized: "Camera access is off. Allow it in iPhone Settings › Privacy & Security › Camera.")
+        case .unavailable: return String(localized: "This device has no front camera.")
+        case .off, .starting: return String(localized: "Starting the camera…")
+        case .running: break
+        }
+        guard let pose = camera.pose else { return String(localized: "Step into view, 2–3 m from the phone") }
+        guard pose.legsVisible else { return String(localized: "Step back so your feet are in view") }
+        return test == .balance ? String(localized: "Tracking. Face the phone.") : String(localized: "Tracking. Stand side-on to the phone.")
+    }
+
     // MARK: - Actions
 
     private func go(to newStep: Int) {
         stopTimers()
         step = newStep
-        guard newStep >= 1, newStep <= tests.count else { return }
+        guard newStep >= 1, newStep <= tests.count else {
+            camera.stop()
+            return
+        }
         let test = tests[newStep - 1]
         avatar.play(id: test.exerciseID)
+        updateCamera(for: test)
         voice.say(String(localized: "\(test.title). \(test.instructions)"), interrupt: true)
     }
 
@@ -409,6 +532,7 @@ struct FloorAgeTestView: View {
     }
 
     private func finish() {
+        camera.stop()
         guard !scores.isEmpty else {
             voice.stop()
             dismiss()
@@ -444,6 +568,7 @@ struct FloorAgeTestView: View {
     private func startChairStand() {
         chairCountdown = 3
         chairGo = false
+        chairCounter = ChairStandCounter()
         voice.say(String(localized: "Arms crossed. Three. Two. One. Go!"), interrupt: true)
         chairTask = Task { @MainActor in
             for n in stride(from: 2, through: 1, by: -1) {
@@ -463,6 +588,7 @@ struct FloorAgeTestView: View {
                 guard !Task.isCancelled else { return }
             }
             chairCountdown = nil
+            if useCamera, camera.status == .running { chairReps = chairCounter.count }
             chairDone = true
             voice.say(String(localized: "Stop! How many full stands did you do?"), interrupt: true)
         }
@@ -470,6 +596,10 @@ struct FloorAgeTestView: View {
 }
 
 extension FloorTest {
+    /// Tests the camera can score. Sit to rise is entered by hand: hands and knees touching the
+    /// floor are too easy to miss from one camera.
+    var usesCamera: Bool { self != .sitRise }
+
     /// Each test keeps its own colours through the check and on the result.
     var feature: Feature {
         switch self {
