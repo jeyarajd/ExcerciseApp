@@ -101,7 +101,7 @@ enum Feature {
 
 extension View {
     /// Rich gradient card with white text, a soft light bloom and a large faded symbol.
-    func heroCard(_ feature: Feature, padding: CGFloat = 18, cornerRadius: CGFloat = 26) -> some View {
+    func heroCard(_ feature: Feature, symbol: String? = nil, padding: CGFloat = 18, cornerRadius: CGFloat = 26) -> some View {
         let shape = RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
         return self
             .padding(padding)
@@ -114,7 +114,7 @@ extension View {
                         Circle().fill(.white.opacity(0.22)).frame(width: 180, height: 180).blur(radius: 40).offset(x: 50, y: -80)
                     }
                     .overlay(alignment: .topTrailing) {
-                        Image(systemName: feature.symbol)
+                        Image(systemName: symbol ?? feature.symbol)
                             .font(.system(size: 120, weight: .bold))
                             .foregroundStyle(.white.opacity(0.1))
                             .rotationEffect(.degrees(-12))
@@ -151,6 +151,63 @@ struct FeatureBadge: View {
             .frame(width: size, height: size)
             .background(feature.gradient, in: RoundedRectangle(cornerRadius: size * 0.3, style: .continuous))
             .shadow(color: feature.colors.last!.opacity(0.35), radius: 6, y: 3)
+    }
+}
+
+/// The main action on a screen: a full-width gradient capsule in the feature's colours.
+struct GradientButtonStyle: ButtonStyle {
+    var feature: Feature = .floorAge
+    @Environment(\.isEnabled) private var isEnabled
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .font(.headline)
+            .foregroundStyle(.white)
+            .padding(.vertical, 16)
+            .padding(.horizontal, 22)
+            .frame(maxWidth: .infinity)
+            .background(feature.gradient, in: Capsule())
+            .overlay(Capsule().strokeBorder(.white.opacity(0.3), lineWidth: 1))
+            .shadow(color: feature.colors.last!.opacity(isEnabled ? 0.4 : 0), radius: 12, y: 6)
+            .opacity(isEnabled ? (configuration.isPressed ? 0.85 : 1) : 0.4)
+            .scaleEffect(configuration.isPressed ? 0.97 : 1)
+            .animation(.spring(duration: 0.25), value: configuration.isPressed)
+    }
+}
+
+/// A white capsule for actions that sit on a hero card.
+struct OnHeroButtonStyle: ButtonStyle {
+    var feature: Feature
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .font(.headline)
+            .foregroundStyle(feature.colors.last!)
+            .padding(.vertical, 14)
+            .frame(maxWidth: .infinity)
+            .background(.white, in: Capsule())
+            .shadow(color: .black.opacity(0.12), radius: 8, y: 4)
+            .scaleEffect(configuration.isPressed ? 0.97 : 1)
+            .animation(.spring(duration: 0.25), value: configuration.isPressed)
+    }
+}
+
+/// Small spaced capitals above a heading.
+struct Eyebrow: View {
+    let text: Text
+    var feature: Feature = .floorAge
+
+    init(_ key: LocalizedStringKey, feature: Feature = .floorAge) {
+        text = Text(key)
+        self.feature = feature
+    }
+
+    var body: some View {
+        text
+            .font(.caption.weight(.heavy))
+            .tracking(1.8)
+            .textCase(.uppercase)
+            .foregroundStyle(feature.gradient)
     }
 }
 

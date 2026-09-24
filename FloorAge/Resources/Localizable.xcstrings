@@ -857,6 +857,22 @@
         }
       }
     },
+    "%lld tests" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld टेस्ट"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld pruebas"
+          }
+        }
+      }
+    },
     "%lld years older than my age (%lld)" : {
       "localizations" : {
         "en" : {
@@ -1353,6 +1369,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "रोज़ लगभग 7,000–8,000 कदम अच्छी सेहत से जुड़े हैं। 10 मिनट की तेज़ वॉक लगभग 1,000 कदम होती है। एक दिन छूटने से आपकी प्रगति कभी शून्य नहीं होती।"
+          }
+        }
+      }
+    },
+    "About 10 min" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "लगभग 10 मिनट"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unos 10 min"
           }
         }
       }
@@ -3167,18 +3199,18 @@
         }
       }
     },
-    "Full stands: %lld" : {
+    "Full stands" : {
       "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Repeticiones completas: %lld"
-          }
-        },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "पूरी तरह खड़े होना: %lld बार"
+            "value" : "पूरी तरह खड़े होना"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Repeticiones completas"
           }
         }
       }
@@ -3199,6 +3231,22 @@
         }
       }
     },
+    "Get ready" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "तैयार हो जाइए"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prepárate"
+          }
+        }
+      }
+    },
     "Get started" : {
       "localizations" : {
         "es" : {
@@ -3211,6 +3259,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "शुरू करें"
+          }
+        }
+      }
+    },
+    "Getting up" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "उठते समय"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Al levantarte"
           }
         }
       }
@@ -3275,6 +3339,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "लक्ष्य %lld+"
+          }
+        }
+      }
+    },
+    "Going down" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "बैठते समय"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Al bajar"
           }
         }
       }
@@ -5303,6 +5383,38 @@
         }
       }
     },
+    "seconds" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "सेकंड"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "segundos"
+          }
+        }
+      }
+    },
+    "seconds left" : {
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "सेकंड बाकी"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "segundos restantes"
+          }
+        }
+      }
+    },
     "See my Floor Age" : {
       "localizations" : {
         "es" : {
@@ -6013,34 +6125,18 @@
         }
       }
     },
-    "Supports getting up: %lld" : {
+    "supports" : {
       "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Apoyos al levantarte: %lld"
-          }
-        },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "उठते समय सहारा: %lld"
+            "value" : "सहारे"
           }
-        }
-      }
-    },
-    "Supports going down: %lld" : {
-      "localizations" : {
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Apoyos al bajar: %lld"
-          }
-        },
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "बैठते समय सहारा: %lld"
+            "value" : "apoyos"
           }
         }
       }

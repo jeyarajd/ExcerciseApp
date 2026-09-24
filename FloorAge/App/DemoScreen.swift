@@ -7,7 +7,7 @@ import SwiftUI
 /// `-demoSnapshot <path.png>` to have the app save a picture of itself and quit (no screen
 /// recording permission needed).
 enum DemoScreen: String, CaseIterable {
-    case onboarding, today, track, plan, planIntro, cardio, sleep, steps, food, foodPhoto, bmi, progress, settings, session, kegel, test, balance, result, video, portrait
+    case onboarding, today, track, plan, planIntro, cardio, sleep, steps, food, foodPhoto, bmi, progress, settings, session, kegel, test, sitRise, balance, chairStand, reach, result, video, portrait
 
     static var current: DemoScreen? {
         #if DEBUG
@@ -123,8 +123,14 @@ private struct DemoScreenHost: View {
             SessionView(items: PlanBuilder.pelvicFloor, voice: voice)
         case .test:
             FloorAgeTestView()
+        case .sitRise:
+            FloorAgeTestView(startStep: 1)
         case .balance:
             FloorAgeTestView(startStep: 2)
+        case .chairStand:
+            FloorAgeTestView(startStep: 3)
+        case .reach:
+            FloorAgeTestView(startStep: 4)
         case .result:
             NavigationStack {
                 FloorAgeResultView(result: model.latestResult!)
