@@ -300,10 +300,12 @@ struct AvatarAuditView: View {
             for mirrored in exercise.mirrorHalfway == true ? [false, true] : [false] {
                 avatar.play(exercise, mirrored: mirrored)
                 avatar.speed = 0
+                #if DEBUG
                 // `-demoAuditYaw 200` looks from that side instead of the exercise's own angle.
                 if UserDefaults.standard.object(forKey: "demoAuditYaw") != nil {
                     avatar.turn(toDegrees: UserDefaults.standard.double(forKey: "demoAuditYaw"))
                 }
+                #endif
                 for t in moments {
                     avatar.seek(to: t)
                     // Long enough for the camera to turn and the framing to settle.
