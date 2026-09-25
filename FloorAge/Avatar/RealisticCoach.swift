@@ -59,6 +59,9 @@ final class RealisticCoach: CoachBody {
     var scale: Float { legRatio }
     var headHeight: Float { 0.28 }
     private var ourRestPelvis: SIMD3<Float> = .zero
+    /// Finger and thumb bones' local rotations for a relaxed, softly curled hand (instead of the
+    /// model's straight, splayed rest pose).
+    private var relaxed: [Int: simd_quatf] = [:]
     /// Where the "EyesClosed" weight sits in the model's blend shape weights, and its current value.
     private var eyelids: (set: Int, weight: Int)?
     private var shownClosed: Float = -1
@@ -201,8 +204,39 @@ final class RealisticCoach: CoachBody {
         ourRestPelvis = solver.solvePelvis(zero, ground: .feet, seatZ: 0, rootZ: 0)
         legRatio = max(0.5, restPosition[pelvis].y / max(ourRestPelvis.y, 0.1))
         prepareEyelids()
+        prepareHands()
         return true
     }
+
+    /// Curls each finger joint towards the palm (more in the middle joint), and the thumb a little.
+    private func prepareHands() {
+        relaxed = [:]
+        let curl: [(String, [Float])] = [("index", [12, 22, 14]), ("middle", [15, 26, 16]), ("ring", [18, 28, 16]),
+                                         ("pinky", [21, 30, 16]), ("thumb", [6, 12, 8])]
+        for side in ["l", "r"] {
+            guard let hand = index["hand_" + side], let first = index["index_01_" + side], let last = index["pinky_01_" + side]
+            else { continue }
+            // The palm faces this way at rest.
+            var palm = normalize(cross(restPosition[first] - restPosition[hand], restPosition[last] - restPosition[hand]))
+            if side == "r" { palm = -palm }
+            palm *= Self.palmSide
+            for (finger, degrees) in curl {
+                for (k, angle) in degrees.enumerated() {
+                    guard let i = index["\(finger)_0\(k + 1)_\(side)"] else { continue }
+                    let next = index["\(finger)_0\(k + 2)_\(side)"] ?? i
+                    let parentBone = parent[i] ?? i
+                    let along = next != i ? restPosition[next] - restPosition[i] : restPosition[i] - restPosition[parentBone]
+                    let axis = normalize(cross(normalize(along), palm))
+                    guard axis.x.isFinite else { continue }
+                    let local = restRotation[i].inverse.act(axis)
+                    relaxed[i] = restLocal[i].rotation * simd_quatf(angle: angle * .pi / 180, axis: local)
+                }
+            }
+        }
+    }
+
+    /// Which way "towards the palm" is for the MakeHuman hands (checked on camera).
+    private static let palmSide: Float = -1
 
     /// Finds the "EyesClosed" blend shape that tools/build_coach.py bakes from the MakeHuman
     /// eyelid bones (older models without it just don't blink).
@@ -236,7 +270,8 @@ final class RealisticCoach: CoachBody {
             if let joint = jointFor[i], let q = ours[joint]?.q {
                 rotation[i] = q * (align[i] ?? simd_quatf(ix: 0, iy: 0, iz: 0, r: 1)) * restRotation[i]
             } else if let p = parent[i] {
-                rotation[i] = rotation[p] * restLocal[i].rotation
+                rotation[i] = rotation[p] * (relaxed[i] ?? restLocal[i].rotation)
+                if let lift = shoulderLift(bones[i], ours) { rotation[i] = lift * rotation[i] }
             }
             if bones[i] == "pelvis" {
                 position[i] = restPosition[i] + (pose.pelvis - ourRestPelvis) * legRatio
@@ -251,7 +286,10 @@ final class RealisticCoach: CoachBody {
             rotation[s2] = simd_slerp(rotation[s1], rotation[s3], 0.5)
             for i in bones.indices where isBelow(i, s2) {
                 if let p = parent[i], i != s2 {
-                    if jointFor[i] == nil { rotation[i] = rotation[p] * restLocal[i].rotation }
+                    if jointFor[i] == nil {
+                        rotation[i] = rotation[p] * (relaxed[i] ?? restLocal[i].rotation)
+                        if let lift = shoulderLift(bones[i], ours) { rotation[i] = lift * rotation[i] }
+                    }
                     position[i] = position[p] + rotation[p].act(restLocal[i].translation)
                 }
             }
@@ -265,6 +303,8 @@ final class RealisticCoach: CoachBody {
             for i in bones.indices { position[i].y += dy }
         }
 
+        flattenToes(&rotation, position)
+
         for i in bones.indices {
             if let p = parent[i] {
                 local[i].rotation = rotation[p].inverse * rotation[i]
@@ -277,6 +317,33 @@ final class RealisticCoach: CoachBody {
         }
         model.jointTransforms = local
         lastPositions = Dictionary(uniqueKeysWithValues: bones.indices.map { (bones[$0], position[$0]) })
+    }
+
+    /// The shoulders rise a little as the arms lift past 60 degrees, like a real shoulder blade:
+    /// a quarter of the extra lift, at most 15 degrees. Left is +X, so the left collarbone turns
+    /// the other way about the forward axis from the right.
+    private func shoulderLift(_ bone: String, _ ours: [String: (q: simd_quatf, p: SIMD3<Float>)]) -> simd_quatf? {
+        guard bone == "clavicle_l" || bone == "clavicle_r",
+              let arm = ours[bone == "clavicle_l" ? "lShoulder" : "rShoulder"] else { return nil }
+        let direction = arm.q.act([0, -1, 0])
+        let raised = acos(max(-1, min(1, -direction.y))) * 180 / .pi
+        guard raised > 60 else { return nil }
+        let degrees = min((raised - 60) * 0.25, 15)
+        return simd_quatf(angle: degrees * .pi / 180 * (bone == "clavicle_l" ? 1 : -1), axis: [0, 0, 1])
+    }
+
+    /// On tiptoe (heel up, ball of the foot on the floor) the toes stay flat on the floor,
+    /// bending at the ball instead of the whole shoe tipping onto its point.
+    private func flattenToes(_ rotation: inout [simd_quatf], _ position: [SIMD3<Float>]) {
+        for side in ["l", "r"] {
+            guard let ball = index["ball_" + side], position[ball].y < 0.06 else { continue }
+            let toes = (rotation[ball] * restRotation[ball].inverse).act([0, 0, 1])
+            guard toes.y < -0.02 else { continue }
+            let flat = normalize(SIMD3<Float>(toes.x, 0, toes.z))
+            let angle = acos(max(-1, min(1, dot(normalize(toes), flat))))
+            let fix = simd_quatf(from: normalize(toes), to: flat)
+            rotation[ball] = (angle > 1.05 ? simd_slerp(simd_quatf(ix: 0, iy: 0, iz: 0, r: 1), fix, 1.05 / angle) : fix) * rotation[ball]
+        }
     }
 
     /// World positions of every bone from the last `apply`, in the app's space (tests and debugging).

@@ -37,6 +37,35 @@ extension Pose {
     }
 }
 
+/// Follow-through: the upper body trails the animation by a few hundredths of a second, the
+/// wrists and head most, the spine least, so moves read as a body with weight rather than a
+/// machine hitting each keyframe exactly. Hips and legs are left exact, so the feet never slide.
+/// A display layer (like breathing), not part of the clip, so `tools/pose_preview.py` doesn't copy it.
+struct FollowThrough {
+    /// How quickly each joint catches up (per second); lower trails more.
+    static let rates: [String: Float] = [
+        "spine": 30, "chest": 24, "neck": 18, "head": 14,
+        "lShoulder": 22, "rShoulder": 22, "lElbow": 17, "rElbow": 17, "lWrist": 12, "rWrist": 12,
+    ]
+    private var smoothed: [String: SIMD3<Float>] = [:]
+
+    mutating func apply(_ pose: Pose, dt: TimeInterval) -> Pose {
+        var out = pose
+        for (joint, rate) in Self.rates {
+            let target = pose.angles[joint] ?? .zero
+            let previous = smoothed[joint] ?? target
+            let k = 1 - exp(-rate * Float(min(dt, 0.1)))
+            let next = previous + (target - previous) * k
+            smoothed[joint] = next
+            out.angles[joint] = next
+        }
+        return out
+    }
+
+    /// Jump straight to the pose (no trailing), e.g. after seeking.
+    mutating func reset() { smoothed = [:] }
+}
+
 /// Forward kinematics and ground contact for the rig. Must stay in step with `tools/pose_preview.py`.
 struct PoseSolver {
     struct Joint {

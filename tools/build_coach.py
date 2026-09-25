@@ -157,6 +157,47 @@ def inflate(obj, amount, waist=None):
     print("INFLATED", obj.name, amount, "below the waist" if waist is not None else "")
 
 
+def keep_skin_at_openings(body, meshes, rim_margin=0.025, cover=0.02):
+    """MakeHuman deletes the skin under each garment, right up to its edges, so wherever a collar
+    or sleeve stands off the body there's a hole to see through. Keep the skin that isn't really
+    covered: where the nearest bit of garment is close to one of its open edges (neckline,
+    sleeves, hem), or where no garment is within `cover` at all."""
+    from mathutils import kdtree
+    from mathutils.bvhtree import BVHTree
+
+    def tree_of(points):
+        tree = kdtree.KDTree(len(points))
+        for n, p in enumerate(points):
+            tree.insert(p, n)
+        tree.balance()
+        return tree
+
+    for garment in meshes:
+        group = body.vertex_groups.get(f"Delete.{garment.name.split('.', 1)[-1]}")
+        if group is None:
+            continue
+        faces_per_edge = {}
+        for poly in garment.data.polygons:
+            for key in poly.edge_keys:
+                faces_per_edge[key] = faces_per_edge.get(key, 0) + 1
+        rim_index = {i for key, n in faces_per_edge.items() if n == 1 for i in key}
+        points = [garment.matrix_world @ v.co for v in garment.data.vertices]
+        if not rim_index or not points:
+            continue
+        # Distances to the garment's surface, not its vertices (which are far apart on the legs).
+        surface = BVHTree.FromPolygons(points, [tuple(poly.vertices) for poly in garment.data.polygons])
+        rim = tree_of([points[i] for i in rim_index])
+        kept = []
+        for v in body.data.vertices:
+            if not any(g.group == group.index for g in v.groups):
+                continue
+            nearest, _, _, distance = surface.find_nearest(body.matrix_world @ v.co)
+            if nearest is None or distance > cover or rim.find(nearest)[2] < rim_margin:
+                kept.append(v.index)
+        group.remove(kept)
+        print("KEPT SKIN", garment.name, len(kept), "verts")
+
+
 def find(relative):
     for root in (DATA, LocationService.get_mpfb_data()):
         path = os.path.join(root, relative)
@@ -175,7 +216,9 @@ def clear_scene():
 
 
 # Materials that need alpha cut-outs; everything else is exported fully opaque.
-CUTOUT = ("eyebrow", "eyelash", "hair", "ponytail", "short0")
+# The eyes too: MakeHuman's eye texture is clear over the cornea, and drawn opaque that clear
+# part comes out black and hides the iris.
+CUTOUT = ("eyebrow", "eyelash", "hair", "ponytail", "short0", "high-poly")
 TEXTURES = tempfile.mkdtemp(prefix="coach_textures_")
 
 
@@ -284,6 +327,9 @@ def tune_materials(mesh, spec):
 # Upper and lower eyelid bones of MPFB's "default" rig, and the X rotation (degrees) that closes
 # them: -22/+8 shuts the eyes with a clean lash line (further and the lashes crumple).
 EYELIDS = {"orbicularis03": -22, "orbicularis04": 8}
+# The resting eyes are opened a touch (upper lid up 5, lower down 2): MakeHuman's default lids
+# read as sleepy in the app's lighting.
+EYES_AWAKE = {"orbicularis03": 5, "orbicularis04": -2}
 
 
 def assemble(spec, rig):
@@ -316,6 +362,7 @@ def assemble(spec, rig):
                 if spine:
                     WAIST["hem"] = (armature.matrix_world @ spine.head_local).z
                 inflate(obj, amount, waist=WAIST["hem"])
+    keep_skin_at_openings(body, meshes)
     # Apply everything except the armature (helper masks, clothes-hiding masks, subdivision), then
     # join into one skinned mesh so the app poses a single skeleton.
     for obj in meshes:
@@ -336,27 +383,33 @@ def assemble(spec, rig):
 
 
 def eyes_closed(spec):
-    """The coach's vertices with the eyelids shut, and at rest, from the "default" rig."""
+    """The coach's vertices at rest, with the eyes a little wider awake, and with the eyelids
+    shut, from the "default" rig."""
     body, armature = assemble(spec, "default")
     rest = [v.co.copy() for v in body.data.vertices]
-    for bone, degrees in EYELIDS.items():
-        for side in ("L", "R"):
-            pose = armature.pose.bones[f"{bone}.{side}"]
-            pose.rotation_mode = "XYZ"
-            pose.rotation_euler = (np.radians(degrees), 0, 0)
-    bpy.context.view_layer.update()
-    evaluated = body.evaluated_get(bpy.context.evaluated_depsgraph_get())
-    closed = [v.co.copy() for v in evaluated.data.vertices]
-    return rest, closed
+
+    def posed(lids):
+        for bone, degrees in lids.items():
+            for side in ("L", "R"):
+                pose = armature.pose.bones[f"{bone}.{side}"]
+                pose.rotation_mode = "XYZ"
+                pose.rotation_euler = (np.radians(degrees), 0, 0)
+        bpy.context.view_layer.update()
+        evaluated = body.evaluated_get(bpy.context.evaluated_depsgraph_get())
+        return [v.co.copy() for v in evaluated.data.vertices]
+
+    return rest, posed(EYES_AWAKE), posed(EYELIDS)
 
 
 def build(name, spec):
     assemble(spec, "game_engine")  # measures the waist for trimming
-    rest, closed = eyes_closed(spec)
+    rest, awake, closed = eyes_closed(spec)
     body, armature = assemble(spec, "game_engine")
-    # Same mesh on both rigs, so the closed eyelids carry over vertex for vertex.
+    # Same mesh on both rigs, so the eyelids carry over vertex for vertex.
     ours = [v.co for v in body.data.vertices]
     if len(ours) == len(rest) and max((a - b).length for a, b in zip(ours, rest)) < 1e-4:
+        for v, a in zip(body.data.vertices, awake):
+            v.co = a.copy()
         body.shape_key_add(name="Basis")
         key = body.shape_key_add(name="EyesClosed")
         moved = 0

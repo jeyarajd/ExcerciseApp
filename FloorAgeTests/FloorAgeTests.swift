@@ -702,6 +702,38 @@ final class RealisticCoachTests: XCTestCase {
         }
     }
 
+    func testHandsRestCurledAndToesStayFlatOnTiptoe() throws {
+        let body = try coach(.female)
+        let solver = PoseSolver(rig: library.rig)
+        body.apply(Pose(angles: [:], pelvis: solver.solvePelvis([:], ground: .feet, seatZ: 0, rootZ: 0)))
+        var p = body.lastPositions
+        // A relaxed hand: the fingertips curl in, closer to the wrist than a straight finger reaches.
+        let wrist = try XCTUnwrap(p["hand_l"]), knuckle = try XCTUnwrap(p["middle_01_l"]), tip = try XCTUnwrap(p["middle_03_l"])
+        XCTAssertLessThan(simd_distance(wrist, tip), simd_distance(wrist, knuckle) + simd_distance(knuckle, tip) - 0.003)
+
+        // Top of a calf raise: the heel is up and the ball of the foot stays on the floor.
+        let raise = ExerciseClip(exercise: library["calf_raise"])
+        body.apply(raise.sample(at: 1.2))
+        p = body.lastPositions
+        XCTAssertGreaterThan(try XCTUnwrap(p["foot_l"]).y, try XCTUnwrap(p["ball_l"]).y + 0.03, "heel lifted")
+        XCTAssertLessThan(try XCTUnwrap(p["ball_l"]).y, 0.06, "ball of the foot on the floor")
+    }
+
+    func testFollowThroughTrailsThenSettlesAndResets() {
+        var follow = FollowThrough()
+        let still = Pose(angles: ["lElbow": .zero, "lHip": .zero], pelvis: .zero)
+        _ = follow.apply(still, dt: 1 / 60)
+        let bent = Pose(angles: ["lElbow": [-90, 0, 0], "lHip": [-40, 0, 0]], pelvis: .zero)
+        let first = follow.apply(bent, dt: 1 / 60)
+        XCTAssertGreaterThan(first.angles["lElbow"]!.x, -90, "the elbow trails")
+        XCTAssertEqual(first.angles["lHip"]!.x, -40, "legs stay exact, so the feet never slide")
+        var last = first
+        for _ in 0..<60 { last = follow.apply(bent, dt: 1 / 60) }
+        XCTAssertEqual(last.angles["lElbow"]!.x, -90, accuracy: 0.5, "it catches up within a second")
+        follow.reset()
+        XCTAssertEqual(follow.apply(still, dt: 1 / 60).angles["lElbow"]!.x, 0, "a reset jumps straight to the pose")
+    }
+
     func testExercisesMoveTheBody() throws {
         let body = try coach(.female)
         let squat = ExerciseClip(exercise: library["squat"])

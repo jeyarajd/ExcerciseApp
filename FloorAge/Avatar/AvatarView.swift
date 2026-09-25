@@ -21,6 +21,7 @@ final class AvatarController: NSObject, ObservableObject {
     private var blendFrom: Pose?
     private var blendTime: Double = 0
     private var lastPose: Pose?
+    private var followThrough = FollowThrough()
     private let contactShadow = AvatarSet.contactShadow()
     /// Always-running clock for breathing and blinking, even while paused.
     private var lifeTime: Double = 0
@@ -174,6 +175,7 @@ final class AvatarController: NSObject, ObservableObject {
     func seek(to t: Double) {
         time = t
         blendFrom = nil
+        followThrough.reset()
     }
 
     // MARK: - View
@@ -309,7 +311,7 @@ final class AvatarController: NSObject, ObservableObject {
             if u >= 1 { blendFrom = nil }
         }
         lastPose = pose
-        rig.apply(alive(pose, dt: dt))
+        rig.apply(alive(followThrough.apply(pose, dt: dt), dt: dt))
         frame(pose, dt: dt)
         // The contact shadow follows the body over the floor.
         contactShadow?.position = [pose.pelvis.x, 0.004, pose.pelvis.z + 0.04]
