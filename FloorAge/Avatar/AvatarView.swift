@@ -16,7 +16,6 @@ final class AvatarController: NSObject, ObservableObject {
 
     private let library = ExerciseLibrary.shared
     private lazy var rig: CoachBody = Self.makeBody(library.rig)
-    private var styleObserver: NSObjectProtocol?
     private var clip: ExerciseClip?
     private var time: Double = 0
     private var blendFrom: Pose?
@@ -86,27 +85,16 @@ final class AvatarController: NSObject, ObservableObject {
         lookObserver = NotificationCenter.default.addObserver(forName: CoachLook.changed, object: nil, queue: .main) { [weak self] _ in
             self?.rig.restyle(.current)
         }
-        styleObserver = NotificationCenter.default.addObserver(forName: CoachStyle.changed, object: nil, queue: .main) { [weak self] _ in
-            self?.swapBody()
-        }
     }
 
     deinit {
-        [lookObserver, styleObserver].compactMap { $0 }.forEach(NotificationCenter.default.removeObserver)
+        lookObserver.map(NotificationCenter.default.removeObserver)
     }
 
-    /// The realistic coach when it's bundled and chosen, otherwise the stylized one.
+    /// The realistic coach (bundled with the app; if its model ever failed to load, the scene
+    /// shows the props without a body rather than crashing).
     private static func makeBody(_ rig: Rig) -> CoachBody {
-        if CoachStyle.current == .realistic, let body = RealisticCoach(look: .current, rig: rig) { return body }
-        return AvatarRig(rig: rig)
-    }
-
-    private func swapBody() {
-        let parent = rig.root.parent
-        rig.root.removeFromParent()
-        rig = Self.makeBody(library.rig)
-        parent?.addChild(rig.root)
-        if let lastPose { rig.apply(lastPose) }
+        RealisticCoach(look: .current, rig: rig) ?? MissingBody()
     }
 
     func play(_ exercise: Exercise, mirrored: Bool = false) {

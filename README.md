@@ -4,7 +4,7 @@
 
 ## What's in the app
 
-- **3D coach avatar** (RealityKit). A realistic woman or man, matching the gender in your profile, demonstrates each exercise. Drag to turn it, pinch to zoom, double-tap to reset. Settings can switch to a friendly cartoon coach instead.
+- **3D coach avatar** (RealityKit). A realistic woman or man, chosen in onboarding or Settings, demonstrates each exercise. Drag to turn it, pinch to zoom, double-tap to reset.
 - **Demo videos.** A "Watch a real demo" clip for each exercise, bundled in the app and played offline.
 - **Voice coaching** using the iPhone's built-in voices (Indian English by default). It works offline, ducks your music, and still speaks when the phone is on silent.
 - **Floor Age check.** Four guided tests produce an estimated "equivalent age" for each area and overall.

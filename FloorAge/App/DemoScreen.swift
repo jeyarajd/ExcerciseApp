@@ -262,7 +262,7 @@ private enum SelfSnapshot {
 
 /// `-demoAudit <folder>`: plays every exercise and saves a picture of the coach at each keyframe
 /// and halfway between keyframes (mirrored too, for exercises that switch sides), then quits.
-/// Launch it once per coach with `-coachLook female|male` and `-coachStyle realistic|friendly`.
+/// Launch it once per coach with `-coachLook female|male`.
 struct AvatarAuditView: View {
     let folder: String
     @StateObject private var avatar = AvatarController()

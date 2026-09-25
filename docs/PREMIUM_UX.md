@@ -16,7 +16,7 @@ A to-do list for giving Floor Age a premium feel. It follows the rules in `CLAUD
 ## 1. Coach presentation (the hero of the app) (done)
 
 1. **Face and hands lighting.** In `AvatarController.makeView`, bring `key.light.intensity` down to about 1800 and turn the rim light up to about 1200, so the new darker skin tones keep their shape against the peach background. Set `intensityExponent` to between 0.6 and 0.8 for dark mode only.
-2. **Idle life.** Between reps, add a slow weight shift (±1.5° pelvis roll over 4 s) on top of the existing breathing and blink. Add it in `PoseAnimator` so the stylized rig gets it too.
+2. **Idle life.** Between reps, add a slow weight shift (±1.5° pelvis roll over 4 s) on top of the existing breathing and blink. Add it in `PoseAnimator`.
 3. **Entrance.** When a session opens, fade the coach in and scale it from 0.96 to 1.0 (0.4 s spring) instead of popping it in. The contact shadow fades in with it.
 4. **Camera choreography.** Set a preferred yaw for each exercise in `exercises.json` (for example, a side view for toe reach and hip hinge), and animate the camera there over 0.6 s when the exercise changes. Always respect Reduce Motion.
 5. **Look-at.** During the intro and rest phases, turn the coach's head towards the camera (up to 20°), so it feels as if it's talking to you.
@@ -43,7 +43,7 @@ A to-do list for giving Floor Age a premium feel. It follows the rules in `CLAUD
 ## 4. Today and onboarding (done)
 
 - The Today hero shows a live, slowly idling coach (small `AvatarView`, no gestures) next to the Floor Age gauge, not a static card.
-- Onboarding: choose a coach (woman or man, realistic or cartoon) with a live preview that turns slowly, and hear a short spoken hello with `VoiceCoach`.
+- Onboarding: choose a coach (woman or man; the cartoon style was later removed) with a live preview that turns slowly, and hear a short spoken hello with `VoiceCoach`.
 - Skeleton loading states: use `.redacted(reason: .placeholder)` for cards while `AppModel` loads, so nothing jumps. `AppModel` loads synchronously, so this went where data really arrives late: the step gauges and week bars until CoreMotion or Health answers (`StepCounter.isLoading`).
 
 ## 5. Visual system (`App/Theme.swift`) (done)

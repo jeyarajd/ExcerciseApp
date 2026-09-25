@@ -2,7 +2,7 @@ import Foundation
 import RealityKit
 
 
-/// A body the avatar controller can pose: the stylized `AvatarRig` or the realistic coach.
+/// A body the avatar controller can pose: the realistic coach (or `MissingBody` if its model can't load).
 protocol CoachBody: AnyObject {
     var root: Entity { get }
     func apply(_ pose: Pose)
@@ -17,7 +17,7 @@ protocol CoachBody: AnyObject {
 
 /// Realistic coach built with MakeHuman (CC0, see tools/build_coach.py), bundled as
 /// `coach_female.usdz` / `coach_male.usdz`. Its skeleton (MPFB "game_engine" rig) is driven by the
-/// same poses as the stylized coach: our forward kinematics gives each joint's rotation, which is
+/// poses in exercises.json: our forward kinematics gives each joint's rotation, which is
 /// applied to the matching bone on top of that bone's rest pose.
 final class RealisticCoach: CoachBody {
     let root = Entity()
@@ -291,4 +291,14 @@ final class RealisticCoach: CoachBody {
         }
         return false
     }
+}
+
+/// Stands in for the coach if the bundled model can't be loaded.
+final class MissingBody: CoachBody {
+    let root = Entity()
+    var scale: Float { 1 }
+    var headHeight: Float { 0.25 }
+    func apply(_ pose: Pose) {}
+    func blink(_ closed: Float) {}
+    func restyle(_ look: CoachLook) {}
 }

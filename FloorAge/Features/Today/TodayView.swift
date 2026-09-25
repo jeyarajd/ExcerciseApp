@@ -110,7 +110,7 @@ struct TodayView: View {
             HStack(alignment: .bottom, spacing: Space.xs) {
                 AvatarView(controller: avatar, interactive: false, showsMat: false)
                     .frame(width: large ? 96 : 128, height: large ? 180 : 228)
-                    // A soft spotlight lifts the coach off the gradient (the cartoon coach wears orange).
+                    // A soft spotlight lifts the coach off the gradient.
                     .background {
                         RadialGradient(colors: [.white.opacity(0.4), .white.opacity(0)], center: .center, startRadius: 10, endRadius: 120)
                             .frame(width: 260, height: 300)

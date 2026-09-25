@@ -10,7 +10,6 @@ struct OnboardingView: View {
     @State private var age = 40
     @State private var gender: Gender?
     @State private var coach = CoachLook.current
-    @State private var style = CoachStyle.current
     @State private var limitations: Set<Limitation> = []
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
@@ -104,10 +103,6 @@ struct OnboardingView: View {
                 ForEach(CoachLook.allCases) { Text($0.label).tag($0) }
             }
             .pickerStyle(.segmented)
-            Picker("Style", selection: $style) {
-                ForEach(CoachStyle.allCases) { Text($0.label).tag($0) }
-            }
-            .pickerStyle(.segmented)
             Text("You can change your coach at any time in Settings.")
                 .font(.footnote)
                 .fixedSize(horizontal: false, vertical: true)
@@ -118,12 +113,10 @@ struct OnboardingView: View {
             }
         }
         .sensoryFeedback(.selection, trigger: coach)
-        .sensoryFeedback(.selection, trigger: style)
         .onChange(of: coach) { _, value in
             CoachLook.preview(value)
             sayHello()
         }
-        .onChange(of: style) { _, value in CoachStyle.current = value }
     }
 
     private func sayHello() {

@@ -7,7 +7,6 @@ struct SettingsView: View {
     @State private var confirmingReset = false
     @State private var showingPlus = false
     @State private var showingFamily = false
-    @State private var coachStyle = CoachStyle.current
     @State private var healthWorkouts = AppleHealth.savesWorkouts
     @State private var healthSteps = AppleHealth.readsSteps
     @EnvironmentObject private var steps: StepCounter
@@ -45,11 +44,6 @@ struct SettingsView: View {
                     }
                     .pickerStyle(.segmented)
                     .sensoryFeedback(.selection, trigger: model.profile?.coachLook)
-                    Picker("Style", selection: Binding(get: { coachStyle }, set: { CoachStyle.current = $0; coachStyle = $0 })) {
-                        ForEach(CoachStyle.allCases) { Text($0.label).tag($0) }
-                    }
-                    .pickerStyle(.segmented)
-                    .sensoryFeedback(.selection, trigger: coachStyle)
                 } header: {
                     Text("Coach look")
                 } footer: {

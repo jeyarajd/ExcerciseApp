@@ -11059,38 +11059,6 @@
         }
       }
     },
-    "Realistic" : {
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Realista"
-          }
-        },
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "यथार्थवादी"
-          }
-        }
-      }
-    },
-    "Friendly cartoon" : {
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dibujo amable"
-          }
-        },
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "दोस्ताना कार्टून"
-          }
-        }
-      }
-    },
     "%lld areas worked" : {
       "localizations" : {
         "es" : {
@@ -11375,22 +11343,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "जाँच शुरू करें"
-          }
-        }
-      }
-    },
-    "Style" : {
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Estilo"
-          }
-        },
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "शैली"
           }
         }
       }
