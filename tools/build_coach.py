@@ -50,8 +50,9 @@ COACHES = {
         "clothes": ["clothes/female_sportsuit01/female_sportsuit01.mhclo",
                     "clothes/joepal_crude_t-shirt_female/joepal_crude_t-shirt_female.mhclo", "clothes/shoes05/shoes05.mhclo"],
         "trim_above_waist": ["female_sportsuit01"],
-        # A slightly looser tee, so the tights' waistband never pokes through its hem when seated.
-        "inflate": {"joepal_crude_t-shirt_female": 0.008},
+        # A tee a little looser round the hips, so the tights' waistband never pokes through its hem
+        # when seated.
+        "inflate_hem": {"joepal_crude_t-shirt_female": 0.01},
         "recolor": {"joepal_crude_t-shirt_female": ("tint", TEAL), "female_sportsuit01": ("blue_to", TEAL),
                     "shoes05": ("green_to", ORANGE)},
         "hair_color": (0.035, 0.025, 0.02),
@@ -68,8 +69,11 @@ COACHES = {
         # Training tee over running tights (the sports suit, cut at the waist) and shorts.
         "clothes": ["clothes/female_sportsuit01/female_sportsuit01.mhclo", "clothes/cortu_jeans_shorts/cortu_jeans_shorts.mhclo",
                     "clothes/elvs_crude_t-shirt_male/elvs_crude_t-shirt_male.mhclo", "clothes/shoes05/shoes05.mhclo"],
-        "trim_above_waist": ["female_sportsuit01"],
-        "inflate": {"cortu_jeans_shorts": 0.012, "elvs_crude_t-shirt_male": 0.008},
+        # The shorts end at the waist like the tights, and the tee sits outside both, so nothing
+        # pokes through its hem when he sits.
+        "trim_above_waist": ["female_sportsuit01", "cortu_jeans_shorts"],
+        "inflate": {"cortu_jeans_shorts": 0.012},
+        "inflate_hem": {"elvs_crude_t-shirt_male": 0.02},
         "no_normal_map": ["cortu_jeans_shorts"],
         "recolor": {"elvs_crude_t-shirt_male": ("tint", TEAL), "cortu_jeans_shorts": ("charcoal", None),
                     "female_sportsuit01": ("blue_to", TEAL), "shoes05": ("green_to", ORANGE)},
@@ -128,6 +132,29 @@ def trim_above_waist(obj, armature):
     bm.to_mesh(obj.data)
     bm.free()
     print("TRIMMED", obj.name, len(doomed), "verts above", round(waist, 3))
+
+
+def inflate(obj, amount, waist=None):
+    """Push a clothing layer out by `amount` so it sits clearly outside the layer under it.
+    Vertices duplicated along texture seams move together, along their averaged normal, so the
+    seams don't open up. With `waist`, only the part below it moves fully, fading out 15 cm above,
+    so a tee loosens round the hips while its collar and shoulders keep their shape."""
+    from collections import defaultdict
+    from mathutils import Vector
+    groups = defaultdict(list)
+    for v in obj.data.vertices:
+        groups[tuple(round(c, 5) for c in v.co)].append(v)
+    for verts in groups.values():
+        normal = sum((v.normal for v in verts), Vector())
+        if normal.length > 0:
+            normal.normalize()
+        weight = 1.0
+        if waist is not None:
+            z = (obj.matrix_world @ verts[0].co).z
+            weight = min(max((waist + 0.15 - z) / 0.15, 0.0), 1.0)
+        for v in verts:
+            v.co += normal * amount * weight
+    print("INFLATED", obj.name, amount, "below the waist" if waist is not None else "")
 
 
 def find(relative):
@@ -282,10 +309,13 @@ def assemble(spec, rig):
             trim_above_waist(obj, armature)
         for key, amount in spec.get("inflate", {}).items():
             if key in obj.name:
-                # Sit this layer clearly outside the tights so it isn't hidden under them.
-                for v in obj.data.vertices:
-                    v.co += v.normal * amount
-                print("INFLATED", obj.name, amount)
+                inflate(obj, amount)
+        for key, amount in spec.get("inflate_hem", {}).items():
+            if key in obj.name:
+                spine = armature.data.bones.get("spine_01")
+                if spine:
+                    WAIST["hem"] = (armature.matrix_world @ spine.head_local).z
+                inflate(obj, amount, waist=WAIST["hem"])
     # Apply everything except the armature (helper masks, clothes-hiding masks, subdivision), then
     # join into one skinned mesh so the app poses a single skeleton.
     for obj in meshes:
