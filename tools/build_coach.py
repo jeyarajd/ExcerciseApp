@@ -34,6 +34,8 @@ DATA = LocationService.get_user_data()
 # Brand colours from App/Theme.swift: the calories/mat teal and the steps/Floor Age orange.
 TEAL = (0.02, 0.42, 0.45)
 ORANGE = (1.0, 0.56, 0.2)
+# A deeper teal for the men's training tee.
+DEEP_TEAL = (0.015, 0.32, 0.35)
 
 # v2 looks: South Asian coaches in their early 30s (the app speaks Indian English by default and
 # coaches whole families), athletic but attainable bodies, and matching teal-and-orange training
@@ -59,31 +61,58 @@ COACHES = {
         "skin_tone": (0.86, 0.76, 0.7),
     },
     "male": {
-        "macro": {"gender": 1.0, "age": 0.6, "muscle": 0.68, "weight": 0.5, "proportions": 0.85, "height": 0.6,
+        # A well-built fitness coach: athletic rather than bodybuilder, early 30s.
+        "macro": {"gender": 1.0, "age": 0.55, "muscle": 0.88, "weight": 0.56, "proportions": 1.0, "height": 0.68,
                   "cupsize": 0.5, "firmness": 0.5, "race": {"asian": 0.7, "caucasian": 0.2, "african": 0.1}},
+        # Broad shoulders tapering to a narrower waist (the V shape), fuller chest, lats, shoulders
+        # and arms, strong legs and neck, and a squarer jaw.
+        "targets": {"torso-vshape-incr": 0.6, "measure-shoulder-dist-incr": 0.35, "torso-muscle-pectoral-incr": 0.5,
+                    "torso-muscle-dorsi-incr": 0.45, "measure-waist-circ-decr": 0.25, "measure-neck-circ-incr": 0.35,
+                    "l-upperarm-muscle-incr": 0.5, "r-upperarm-muscle-incr": 0.5,
+                    "l-upperarm-shoulder-muscle-incr": 0.6, "r-upperarm-shoulder-muscle-incr": 0.6,
+                    "l-lowerarm-muscle-incr": 0.35, "r-lowerarm-muscle-incr": 0.35,
+                    "l-upperleg-muscle-incr": 0.35, "r-upperleg-muscle-incr": 0.35,
+                    "l-lowerleg-muscle-incr": 0.35, "r-lowerleg-muscle-incr": 0.35,
+                    "chin-width-incr": 0.3, "chin-prominent-incr": 0.2, "head-square": 0.3},
         "skin": "skins/toigo_light_skin_male_bronze/toigo_light_skin_male_bronze.mhmat",
         "skin_tone": (0.78, 0.7, 0.66),
         "hair": "hair/short04/short04.mhclo",
         "eyebrows": "eyebrows/eyebrow001/eyebrow001.mhclo",
         "eyelashes": "eyelashes/eyelashes01/eyelashes01.mhclo",
-        # Training tee over running tights (the sports suit, cut at the waist) and shorts.
-        "clothes": ["clothes/female_sportsuit01/female_sportsuit01.mhclo", "clothes/cortu_jeans_shorts/cortu_jeans_shorts.mhclo",
-                    "clothes/elvs_crude_t-shirt_male/elvs_crude_t-shirt_male.mhclo", "clothes/shoes05/shoes05.mhclo"],
-        # The shorts end at the waist like the tights, and the tee sits outside both, so nothing
-        # pokes through its hem when he sits.
-        "trim_above_waist": ["female_sportsuit01", "cortu_jeans_shorts"],
-        "inflate": {"cortu_jeans_shorts": 0.012},
-        "inflate_hem": {"elvs_crude_t-shirt_male": 0.02},
-        "no_normal_map": ["cortu_jeans_shorts"],
-        "recolor": {"elvs_crude_t-shirt_male": ("tint", TEAL), "cortu_jeans_shorts": ("charcoal", None),
-                    "female_sportsuit01": ("blue_to", TEAL), "shoes05": ("green_to", ORANGE)},
+        # Modern gym kit from CC0 pieces: MakeHuman's plain crew-neck tee and full-length trousers
+        # (one garment), recoloured to a deep teal tee and plain near-black training pants, with
+        # trainers.
+        "clothes": ["clothes/male_casualsuit06/male_casualsuit06.mhclo", "clothes/shoes05/shoes05.mhclo"],
+        # Welded along its seams and eased out a little, so the broader shoulders never poke
+        # through.
+        "weld_seams": ["male_casualsuit06"],
+        "inflate": {"male_casualsuit06": 0.005},
+        "no_normal_map": ["male_casualsuit06"],
+        "recolor": {"male_casualsuit06": ("tee_and_jeans", DEEP_TEAL), "shoes05": ("green_to", ORANGE)},
         "hair_color": (0.03, 0.022, 0.018),
     },
 }
 
 
-def recolor_pixels(px, mode, color):
-    """px: (N, 4) float RGBA. Returns recoloured pixels for the brand kit."""
+def box_blur(image, radius):
+    """Mean over a (2 radius + 1) square around each pixel of a 2D array."""
+    padded = np.pad(image, radius + 1, mode="edge").astype(np.float64)
+    total = padded.cumsum(axis=0).cumsum(axis=1)
+    k = 2 * radius + 1
+    window = total[k:, k:] - total[:-k, k:] - total[k:, :-k] + total[:-k, :-k]
+    return (window / (k * k))[: image.shape[0], : image.shape[1]].astype(np.float32)
+
+
+def masked_blur(values, valid, radius):
+    """Blur of `values` that only averages pixels where `valid` is set (normalised convolution),
+    so the blur never pulls in the dark background around a texture's islands at its seams."""
+    weight = box_blur(valid.astype(np.float32), radius)
+    blurred = box_blur(np.where(valid, values, 0).astype(np.float32), radius)
+    return np.where(weight > 1e-3, blurred / np.maximum(weight, 1e-3), values).astype(np.float32)
+
+
+def recolor_pixels(px, mode, color, size=None):
+    """px: (N, 4) float RGBA, `size` (width, height). Returns recoloured pixels for the brand kit."""
     rgb = px[:, :3]
     lum = (rgb * np.array([0.3, 0.59, 0.11], dtype=np.float32)).sum(axis=1, keepdims=True)
     c = np.array(color or (0, 0, 0), dtype=np.float32)
@@ -93,6 +122,40 @@ def recolor_pixels(px, mode, color):
         rgb[:] = np.clip(shade * c, 0, 1)
     elif mode == "charcoal":
         rgb[:] = np.clip(lum * 0.55, 0, 1) * np.array([0.9, 0.93, 1.0], dtype=np.float32)
+    elif mode == "tee_and_jeans":
+        # One garment with a tee and jeans (MakeHuman's male casual suits): the denim becomes plain
+        # near-black training pants, everything else is the tee, tinted `color`. Stitching and
+        # prints are smoothed away, keeping only the broad folds.
+        r, g, b = rgb[:, 0], rgb[:, 1], rgb[:, 2]
+        jeans = (b > r + 0.06) & (b >= g - 0.02)
+        shading = lum[:, 0]
+        if size is not None:
+            w, h = size
+            def grow(mask, r):
+                return box_blur(mask.astype(np.float32), r) > 0.02
+
+            def shrink(mask, r):
+                return ~grow(~mask, r)
+
+            jeans = jeans.reshape(h, w)
+            # Small bluish islands on the tee (its logo's lettering) aren't denim: open the mask
+            # (shrink, then grow) to drop them, then close it (grow, then shrink) over the denim's
+            # orange stitching.
+            jeans = grow(shrink(jeans, 6), 6)
+            jeans = shrink(grow(jeans, 6), 6)
+            flat = shading.reshape(h, w)
+            # Fabric is lighter than the empty background around the texture's islands.
+            cloth = flat > 0.06
+            fabric = masked_blur(flat, jeans & cloth, 5)
+            # The tee has prints front and back (logos): keep only its broadest, gentlest shading,
+            # so they disappear and the scene's lighting does the rest.
+            tee = masked_blur(flat, ~jeans & cloth, 24)
+            shading = np.where(jeans, fabric, tee).ravel()
+            jeans = jeans.ravel()
+        top = ~jeans
+        shade = np.clip(shading[top] / max(float(np.percentile(shading[top], 90)) if top.any() else 1, 1e-3), 0.9, 1.03)
+        rgb[top] = np.clip(shade[:, None] * c, 0, 1)
+        rgb[jeans] = np.clip(0.035 + shading[jeans, None] * 0.2, 0, 1) * np.array([0.92, 0.95, 1.0], dtype=np.float32)
     elif mode in ("blue_to", "green_to"):
         r, g, b = rgb[:, 0], rgb[:, 1], rgb[:, 2]
         if mode == "blue_to":
@@ -132,6 +195,19 @@ def trim_above_waist(obj, armature):
     bm.to_mesh(obj.data)
     bm.free()
     print("TRIMMED", obj.name, len(doomed), "verts above", round(waist, 3))
+
+
+def weld_seams(obj):
+    """Joins the vertices a garment duplicates along its texture seams (UVs are kept per corner),
+    so the lighting doesn't crease there and the seams aren't mistaken for openings."""
+    import bmesh
+    bm = bmesh.new()
+    bm.from_mesh(obj.data)
+    before = len(bm.verts)
+    bmesh.ops.remove_doubles(bm, verts=bm.verts, dist=1e-5)
+    bm.to_mesh(obj.data)
+    bm.free()
+    print("WELDED", obj.name, before - len(obj.data.vertices), "seam verts")
 
 
 def inflate(obj, amount, waist=None):
@@ -271,7 +347,7 @@ def fix_materials(mesh, tints):
             rule = next((r for key, r in tints.items() if key in mat.name), None)
             if rule:
                 px = np.array(pixels, dtype=np.float32).reshape(-1, 4)
-                px = recolor_pixels(px, *rule)
+                px = recolor_pixels(px, *rule, size=(w, h))
                 pixels = px.ravel().tolist()
             copy.pixels = pixels
             if max(w, h) > limit:
@@ -338,6 +414,12 @@ def assemble(spec, rig):
     # Keep the helper and joint vertex groups: the rig uses them to place its bones.
     body = HumanService.create_human(mask_helpers=True, detailed_helpers=True, extra_vertex_groups=True,
                                      feet_on_ground=True, scale=0.1, macro_detail_dict=spec["macro"])
+    # Finer shaping on top of the macros (MakeHuman target names, weights 0-1).
+    for target, weight in spec.get("targets", {}).items():
+        path = TargetService.target_full_path(target)
+        if path is None:
+            raise FileNotFoundError(f"MakeHuman target {target}")
+        TargetService.load_target(body, path, weight=weight)
     TargetService.bake_targets(body)
     HumanService.add_builtin_rig(body, rig, import_weights=True)
     HumanService.set_character_skin(find(spec["skin"]), body, skin_type="GAMEENGINE", material_instances=False)
@@ -350,6 +432,9 @@ def assemble(spec, rig):
 
     armature = body.parent
     meshes = [o for o in bpy.data.objects if o.type == "MESH"]
+    for obj in meshes:
+        if any(key in obj.name for key in spec.get("weld_seams", [])):
+            weld_seams(obj)
     for obj in meshes:
         if any(key in obj.name for key in spec.get("trim_above_waist", [])):
             trim_above_waist(obj, armature)
